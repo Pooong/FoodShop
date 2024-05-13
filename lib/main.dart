@@ -1,19 +1,7 @@
-
-import 'package:find_food/views/DisplayPages.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'app.dart';
 
-
-void main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget{
-  const MyApp({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-      home: const DisplayPages(pageIndex: 0)
-    );
-  }
+FutureOr<void> main() async {
+  runApp(const App());
 }
