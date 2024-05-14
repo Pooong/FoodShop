@@ -7,9 +7,9 @@ import 'package:get/get.dart';
 
 class MainController extends GetxController {
   RxInt currentIndex = 0.obs;
-  final pages = <String>['/diary', '/exercise', '/result', '/profile'];
+  final pages = <String>['/home', '/map', '/post', '/notify'];
   Route? onGenerateRoute(RouteSettings settings) {
-    if (settings.name == '/diary') {
+    if (settings.name == '/home') {
       return GetPageRoute(
         settings: settings,
         page: () => const HomePage(),
@@ -18,7 +18,7 @@ class MainController extends GetxController {
       );
     }
 
-    if (settings.name == '/exercise') {
+    if (settings.name == '/map') {
       return GetPageRoute(
         settings: settings,
         page: () => const Maps(),
@@ -27,7 +27,7 @@ class MainController extends GetxController {
       );
     }
 
-    if (settings.name == '/result') {
+    if (settings.name == '/post') {
       return GetPageRoute(
         settings: settings,
         page: () => Post(),
@@ -35,7 +35,7 @@ class MainController extends GetxController {
         transition: Transition.fadeIn,
       );
     }
-    if (settings.name == '/profile') {
+    if (settings.name == '/notify') {
       return GetPageRoute(
         settings: settings,
         page: () => const Notify(),
