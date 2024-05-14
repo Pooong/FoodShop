@@ -1,9 +1,7 @@
-import 'package:fitness_tracker_app/features/nav/diary/di/diary_binding.dart';
-import 'package:fitness_tracker_app/features/nav/diary/presentation/page/diary_page.dart';
-import 'package:fitness_tracker_app/features/nav/exercise/di/type_exercise_binding.dart';
-import 'package:fitness_tracker_app/features/nav/exercise/presentation/page/type_exercise_page.dart';
-import 'package:fitness_tracker_app/features/nav/profile/di/profile_binding.dart';
-import 'package:fitness_tracker_app/features/nav/profile/presentation/page/profile_page.dart';
+import 'package:find_food/views/pages/HomePage.dart';
+import 'package:find_food/views/pages/Maps.dart';
+import 'package:find_food/views/pages/Notify.dart';
+import 'package:find_food/views/pages/Post.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,8 +12,8 @@ class MainController extends GetxController {
     if (settings.name == '/diary') {
       return GetPageRoute(
         settings: settings,
-        page: () => const DiaryPage(),
-        binding: DiaryBindding(),
+        page: () => const HomePage(),
+        // binding: DiaryBindding(),
         transition: Transition.fadeIn,
       );
     }
@@ -23,8 +21,8 @@ class MainController extends GetxController {
     if (settings.name == '/exercise') {
       return GetPageRoute(
         settings: settings,
-        page: () => const TypeExercisePage(),
-        binding: TypeExerciseBindding(),
+        page: () => const Maps(),
+        // binding: TypeExerciseBindding(),
         transition: Transition.fadeIn,
       );
     }
@@ -32,7 +30,7 @@ class MainController extends GetxController {
     if (settings.name == '/result') {
       return GetPageRoute(
         settings: settings,
-        page: () => Container(),
+        page: () => Post(),
         // binding: MyLibraryBinding(),
         transition: Transition.fadeIn,
       );
@@ -40,8 +38,8 @@ class MainController extends GetxController {
     if (settings.name == '/profile') {
       return GetPageRoute(
         settings: settings,
-        page: () => const ProfilePage(),
-        binding: ProfileBindding(),
+        page: () => const Notify(),
+        // binding: ProfileBindding(),
         transition: Transition.fadeIn,
       );
     }
