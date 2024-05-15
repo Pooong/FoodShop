@@ -32,9 +32,9 @@ migrate_working_dir/
 .pub/
 /build/
 pubspec.lock
-/linux/
-/macos/
-/windows/
+linux/
+macos/
+windows/
 /.vscode/
 
 # Web related

@@ -3,6 +3,7 @@ import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+// ignore: must_be_immutable
 class ButtonWidget extends StatelessWidget {
   final VoidCallback ontap;
   final String text;

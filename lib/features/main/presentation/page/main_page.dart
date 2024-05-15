@@ -1,5 +1,5 @@
 import 'package:find_food/features/main/presentation/controller/main_controller.dart';
-import 'package:find_food/widgets/BottomNavigationBarWidget.dart';
+import 'package:find_food/core/ui/widgets/nav/BottomNavigationBarWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
