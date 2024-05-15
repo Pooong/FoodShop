@@ -1,7 +1,6 @@
 // ignore: file_names
 import 'dart:async';
 
-import 'package:find_food/consts.dart';
 import 'package:find_food/widgets/MeaSureDistans.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -9,9 +8,9 @@ import 'package:geolocator/geolocator.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-
 class Maps extends StatefulWidget {
   const Maps({super.key});
+
   @override
   State<Maps> createState() => MapsState();
 }
@@ -42,7 +41,7 @@ class MapsState extends State<Maps> {
   }
 
   @override
-  Widget build(BuildContext context) {                     
+  Widget build(BuildContext context) { 
     return Stack(
       children: [
         _currentP == null
@@ -129,7 +128,7 @@ class MapsState extends State<Maps> {
     try {
       PolylinePoints polylinePoints = PolylinePoints();
       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        GOOGLE_MAPS_API_KEY,
+        "heodlasldjis",
         PointLatLng(_pCanThoUniversity.latitude, _pCanThoUniversity.longitude),
         PointLatLng(_pCanthoCollege.latitude, _pCanthoCollege.longitude),
         travelMode: TravelMode.driving,

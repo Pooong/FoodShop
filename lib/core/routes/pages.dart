@@ -12,22 +12,31 @@ import 'package:get/get.dart';
 class Pages {
   static const initial = Routes.splash;
   static const main = Routes.main;
+
   static final routes = [
+
+    // trang đăng nhập
     GetPage(
       name: Routes.login,
       page: () => const LoginPage(),
       binding: LoginBindding(),
     ),
+
+    // trang đăng ký
     GetPage(
       name: Routes.register,
       page: () => const RegisterPage(),
       binding: RegisterBindding(),
     ),
+
+    // màng hình chính
     GetPage(
       name: Routes.main,
       page: () => const MainPage(),
       binding: MainBindding(),
     ),
+
+    // màng hình chờ loading
     GetPage(
       name: Routes.splash,
       page: () => const SplashPage(),

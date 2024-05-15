@@ -2,14 +2,16 @@ import 'package:find_food/core/extensions/color.dart';
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const primary = Color(0xFF4CAF50);
+  static const primary = Color(0xFFEB2F06);
   static const primary2 = Color(0xFF00F0FF);
   static const secondary = Color(0xFFFF5722);
+
   static const grey = Color(0xFFACACAC);
   static const grey1 = Color(0xFF9DA8C3);
   static const grey2 = Color(0xFFF1F1F1);
   static const black = Color(0xFF020112);
   static const white = Color(0xFFFFFFFF);
+  
   static const transparent = Colors.transparent;
   static const error = Color(0xFFF83758);
   static const colorPink = Color(0xFF9FA8DA);
@@ -24,6 +26,7 @@ class AppColors {
   static Color gray2 = HexColor('#e8e0e3');
   static const gray = Color(0xffE3E8EE);
   static const blue = Color(0xFF5DCCFC);
+  
   static Color getColorBMI(double bmi) {
     if (bmi < 18.5) {
       return const Color(0xFF84CDEE);

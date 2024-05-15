@@ -3,7 +3,7 @@ import 'package:find_food/views/pages/HomePage.dart';
 import 'package:find_food/views/pages/Notify.dart';
 import 'package:find_food/views/pages/Post.dart';
 import 'package:find_food/views/pages/Profile.dart';
-import 'package:find_food/widgets/BottomNavigationBarWidget.dart';
+import 'package:find_food/core/ui/widgets/nav/BottomNavigationBarWidget.dart';
 import 'package:find_food/views/pages/Maps.dart';
 import 'package:flutter/material.dart';
 

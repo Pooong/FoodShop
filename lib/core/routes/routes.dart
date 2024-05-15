@@ -18,4 +18,10 @@ abstract class Routes {
   static const foodCart = "/foodCart";
   static const activity = "/activity";
   static const searchActivity = "/searchActivity";
+
+
+  // create new page
+
+  static const uploadPostPage = "/uploadPostPage";
+  static const homePage = "/homePage";
 }
