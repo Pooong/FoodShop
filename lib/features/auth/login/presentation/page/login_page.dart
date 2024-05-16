@@ -35,7 +35,7 @@ class LoginPage extends GetView<LoginController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Welcome to Tamang Food Servicess",
+                "Welcome to Tamangg Food Servicess",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   color: AppColors.primary,

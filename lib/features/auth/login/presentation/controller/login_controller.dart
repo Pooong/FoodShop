@@ -47,7 +47,7 @@ class LoginController extends GetxController {
     // DialogsUtils.showAlterLoading();
     final result = await FirebaseAuthentication.logIn(
       email: "admin@gmail.com",
-      password: "12345678",
+      password: "123456789",
     );
 
     // Get.back();

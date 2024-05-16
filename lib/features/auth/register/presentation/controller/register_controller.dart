@@ -80,7 +80,7 @@ class RegisterController extends GetxController {
       Get.offAllNamed(Routes.emailVerify);
     } else {
       Get.back();
-      SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
+      SnackbarUtil.show(result.exp?.message ?? "something_went_wronggg");
     }
   }
 }

@@ -19,6 +19,6 @@ class ForgetPasswordController extends GetxController {
   }
 
   void handleForgetPass() async {
-    print("helo");
+    print("helaaaaao");
   }
 }

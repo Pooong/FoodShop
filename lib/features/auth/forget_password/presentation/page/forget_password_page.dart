@@ -46,7 +46,7 @@ class ForgetPasswordPage extends GetView<ForgetPasswordController> {
               ),
               const SizedBox(height: 20),
               Text(
-                "Enter your email address and we will send you a reset instructions.",
+                "Enter your email address andd we will send you a reset instructions.",
                 style: TextStyle(
                   color: AppColors.black,
                   fontSize: 20,
