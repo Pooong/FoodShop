@@ -1,8 +1,9 @@
+import 'package:find_food/features/nav/home/introduce/presentation/controller/introduce_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class UploadPage extends GetView {
-  const UploadPage({super.key});
+class IntroducePage extends GetView<IntroduceController> {
+  const IntroducePage({super.key});
 
   @override
   Widget build(BuildContext context) {
