@@ -11,6 +11,11 @@ class AppColors {
   static const grey2 = Color(0xFFF1F1F1);
   static const black = Color(0xFF020112);
   static const white = Color(0xFFFFFFFF);
+
+  static const gray= Color(0xFF636363);
+  static const Color gray2 = Color.fromARGB(13, 0, 0, 0);
+  static const Color red = Color(0XFFc23616);
+  
   
   static const transparent = Colors.transparent;
   static const error = Color(0xFFF83758);
@@ -18,13 +23,16 @@ class AppColors {
   static Color colorPink2 = HexColor('#b20088');
   static Color colorPink3 = HexColor('#f5ecef');
   static Color black4 = HexColor('#1F1F1F');
-  static Color red = HexColor('#FF0000');
   static Color greenBold = HexColor('#4CAF50');
   static Color yellow1 = HexColor('#FFBA00');
   static Color yellow2 = HexColor('#FFD974');
   static Color yellow3 = HexColor('#FFBA00');
-  static Color gray2 = HexColor('#e8e0e3');
-  static const gray = Color(0xffE3E8EE);
+
+  
+
+  // static const gray = Color(0xffE3E8EE);
+
+
   static const blue = Color(0xFF5DCCFC);
   
   static Color getColorBMI(double bmi) {

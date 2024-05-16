@@ -67,6 +67,10 @@ dependencies:
   dropdown_button2: ^2.3.9
   permission_handler: ^11.0.1
   gestures: ^1.0.0
+  
+  image_field: ^0.0.10
+  linear_progress_bar: ^1.1.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
