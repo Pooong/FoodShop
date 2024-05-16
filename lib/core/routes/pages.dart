@@ -1,4 +1,6 @@
 import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/features/auth/forget_password/di/forget_password_binding.dart';
+import 'package:find_food/features/auth/forget_password/presentation/page/forget_password_page.dart';
 import 'package:find_food/features/auth/login/di/login_binding.dart';
 import 'package:find_food/features/auth/login/presentation/page/login_page.dart';
 import 'package:find_food/features/auth/register/di/register_binding.dart';
@@ -20,7 +22,6 @@ class Pages {
   static const main = Routes.main;
 
   static final routes = [
-
     // trang đăng nhập
     GetPage(
       name: Routes.login,
@@ -47,6 +48,14 @@ class Pages {
       name: Routes.splash,
       page: () => const SplashPage(),
       binding: SplashBinding(),
+    ),
+
+    //Trang quên mật khẩu
+
+    GetPage(
+      name: Routes.forgetpass,
+      page: () => const ForgetPasswordPage(),
+      binding: ForgetPasswordBinding(),
     ),
 
 
