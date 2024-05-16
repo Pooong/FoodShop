@@ -29,12 +29,12 @@ class SplashController extends GetxController {
     // }
 
     _getuserUseCase.getUser().then((value) {
-      Get.offNamed(Routes.login);
-      // if (value != null) {
-      //   Get.offNamed(Routes.main);
-      // } else {
-      //   Get.offNamed(Routes.login);
-      // }
+      // Get.offNamed(Routes.login);
+      if (value != null) {
+        Get.offNamed(Routes.main);
+      } else {
+        Get.offNamed(Routes.login);
+      }
     });
   }
 }

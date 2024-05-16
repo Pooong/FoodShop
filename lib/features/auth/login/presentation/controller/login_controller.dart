@@ -10,7 +10,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-
 class LoginController extends GetxController {
   final SaveUserUseCase _saveUserUseCase;
   LoginController(this._saveUserUseCase);
@@ -51,7 +50,6 @@ class LoginController extends GetxController {
       password: "12345678",
     );
 
-
     // Get.back();
     if (result.status == Status.success) {
       User? user = result.data;
@@ -75,8 +73,6 @@ class LoginController extends GetxController {
       // }
       final resultUser = await FirestoreUser.getUser(user!.uid);
       if (resultUser.status == Status.success) {
-
-
         //
 
         // if (resultUser.data!.isComplete == false) {
@@ -89,7 +85,6 @@ class LoginController extends GetxController {
         _saveUserUseCase.saveUser(resultUser.data!);
 
         Get.offAllNamed(Routes.main);
-
       } else {
         SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
       }
@@ -98,17 +93,12 @@ class LoginController extends GetxController {
     }
   }
 
-
-
-
-
-
   void register() async {
     // if (!validateEmail() || !validatePassword()) {
     //   return;
     // }
     // DialogsUtils.showAlterLoading();
-    
+
     final result = await FirebaseAuthentication.signUp(
       email: "admin@gmail.com",
       password: "12345678",
@@ -139,4 +129,8 @@ class LoginController extends GetxController {
     }
   }
 
+  login() async {
+    const username = "thanthan";
+    const password = "1234567";
+  }
 }
