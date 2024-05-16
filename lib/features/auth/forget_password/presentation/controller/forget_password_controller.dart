@@ -18,5 +18,7 @@ class ForgetPasswordController extends GetxController {
     super.onInit();
   }
 
-  void handleForgetPass() async {}
+  void handleForgetPass() async {
+    print("helo");
+  }
 }

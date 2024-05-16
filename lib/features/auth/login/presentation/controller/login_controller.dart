@@ -27,7 +27,7 @@ class LoginController extends GetxController {
 
   bool _validateEmail() {
     if (emailController.text.isEmpty) {
-      emailError.value = "email_cannot_be_empty".tr;
+      emailError.value = "email_cannot_be_emptyy".tr;
       return false;
     } else if (!Validators.validateEmail(emailController.text)) {
       emailError.value = 'email_invalid';

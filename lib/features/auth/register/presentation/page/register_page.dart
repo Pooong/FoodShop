@@ -58,7 +58,7 @@ class RegisterPage extends GetView<RegisterController> {
                       ),
                     ),
                     TextSpan(
-                      text: "Already have account?",
+                      text: "Already have accounts?",
                       style: TextStyle(
                         fontWeight: FontWeight.w200,
                         color: AppColors.primary,

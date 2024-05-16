@@ -24,7 +24,7 @@ class ForgetPasswordPage extends GetView<ForgetPasswordController> {
           },
         ),
         title: const Text(
-          "Forgot Password",
+          "Forgot Passwordddd",
           style: TextStyle(color: AppColors.white),
         ),
         centerTitle: true,
