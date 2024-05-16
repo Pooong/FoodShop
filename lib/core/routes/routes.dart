@@ -23,5 +23,8 @@ abstract class Routes {
   // create new page
 
   static const uploadPostPage = "/uploadPostPage";
-  static const homePage = "/homePage";
+  static const getLoactionPage ="/getLocationPage";
+  
+  static const maps='/maps';
+
 }

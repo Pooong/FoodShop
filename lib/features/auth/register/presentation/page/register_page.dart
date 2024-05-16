@@ -10,7 +10,6 @@ class RegisterPage extends GetView<RegisterController> {
   const RegisterPage({super.key});
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

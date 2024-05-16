@@ -49,7 +49,7 @@ class LoginPage extends GetView<LoginController> {
 
                 const SizedBox(height: 20),
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Username',
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -64,7 +64,7 @@ class LoginPage extends GetView<LoginController> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Password',
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -78,13 +78,13 @@ class LoginPage extends GetView<LoginController> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                Text(
+                const Text(
                   "Forget Password?",
                   style: TextStyle(color: Colors.black),
                 ),
                 const SizedBox(height: 15),
 
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: TextButton(
                     style: TextButton.styleFrom(
@@ -92,7 +92,7 @@ class LoginPage extends GetView<LoginController> {
                       backgroundColor: Color(0xffEB2F06),
                       padding: const EdgeInsets.all(16.0),
                       textStyle: const TextStyle(fontSize: 20),
-                      side: BorderSide(
+                      side: const BorderSide(
                           color: Colors.white,
                           width: 2), // Thêm viền màu trắng và rộng 2
                       shape: RoundedRectangleBorder(
@@ -106,7 +106,7 @@ class LoginPage extends GetView<LoginController> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10), // Khoảng cách giữa nút và đường viền
+                const SizedBox(height: 10), // Khoảng cách giữa nút và đường viền
 
                 // RichText(
                 //   text: TextSpan(
@@ -139,13 +139,13 @@ class LoginPage extends GetView<LoginController> {
                 //   ),
                 // ),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Text('Don’t have account?'),
-                  SizedBox(width: 4),
+                  const Text('Don’t have account?'),
+                  const SizedBox(width: 4),
                   GestureDetector(
                     onTap: () {
                       Get.toNamed('/register');
                     },
-                    child: Text(
+                    child: const Text(
                       'Create New Account here',
                       style: TextStyle(
                         color: AppColors.secondary,
@@ -155,8 +155,8 @@ class LoginPage extends GetView<LoginController> {
                   ),
                 ]),
 
-                SizedBox(height: 10), // Khoảng cách giữa nút và đường viền
-                Row(
+                const SizedBox(height: 10), // Khoảng cách giữa nút và đường viền
+                const Row(
                   children: [
                     Expanded(
                       child: Divider(
@@ -168,13 +168,13 @@ class LoginPage extends GetView<LoginController> {
                     ),
                   ],
                 ),
-                Text(
+                const Text(
                   "Or",
                   style: TextStyle(color: Colors.black),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
 
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: TextButton(
                     style: TextButton.styleFrom(
@@ -182,7 +182,7 @@ class LoginPage extends GetView<LoginController> {
                       backgroundColor: Color(0xFF395998),
                       padding: const EdgeInsets.all(16.0),
                       textStyle: const TextStyle(fontSize: 20),
-                      side: BorderSide(
+                      side: const BorderSide(
                           color: Colors.white,
                           width: 2), // Thêm viền màu trắng và rộng 2
                       shape: RoundedRectangleBorder(
@@ -205,9 +205,9 @@ class LoginPage extends GetView<LoginController> {
                           ),
                         ),
                         // Thay thế bằng biểu tượng bạn muốn
-                        SizedBox(
+                        const SizedBox(
                             width: 8), // Khoảng cách giữa biểu tượng và văn bản
-                        Expanded(
+                        const Expanded(
                           child: Text(
                             'Login with Facebook',
                             style: TextStyle(color: Colors.white),
@@ -218,8 +218,8 @@ class LoginPage extends GetView<LoginController> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                Container(
+                const SizedBox(height: 10),
+                SizedBox(
                   width: double.infinity,
                   child: TextButton(
                     style: TextButton.styleFrom(
@@ -227,7 +227,7 @@ class LoginPage extends GetView<LoginController> {
                       backgroundColor: Color(0xFF4285F4),
                       padding: const EdgeInsets.all(16.0),
                       textStyle: const TextStyle(fontSize: 20),
-                      side: BorderSide(
+                      side: const BorderSide(
                           color: Colors.white,
                           width: 2), // Thêm viền màu trắng và rộng 2
                       shape: RoundedRectangleBorder(
@@ -250,9 +250,9 @@ class LoginPage extends GetView<LoginController> {
                           ),
                         ),
                         // Thay thế bằng biểu tượng bạn muốn
-                        SizedBox(
+                        const SizedBox(
                             width: 8), // Khoảng cách giữa biểu tượng và văn bản
-                        Expanded(
+                        const Expanded(
                           child: Text(
                             'Login with Google',
                             style: TextStyle(color: Colors.white),
