@@ -1,6 +1,6 @@
+import 'package:find_food/features/nav/explore/search/presentation/page/search_page.dart';
 import 'package:find_food/features/nav/home/home/presentation/page/home_page.dart';
 import 'package:find_food/features/nav/post/upload/presentation/page/upload_page.dart';
-import 'package:find_food/views/pages/Maps.dart';
 import 'package:find_food/views/pages/Notify.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class MainController extends GetxController {
   RxInt currentIndex = 0.obs;
 
-  final pages = <String>['/home', '/map', '/upload_post', '/notify', '/profile' ];
+  final pages = <String>['/home', '/explore', '/upload_post', '/notify', '/profile'];
 
   Route? onGenerateRoute(RouteSettings settings) {
     if (settings.name == '/home') {
@@ -20,10 +20,10 @@ class MainController extends GetxController {
       );
     }
     
-    if (settings.name == '/map') {
+    if (settings.name == '/explore') {
       return GetPageRoute(
         settings: settings,
-        page: () => const Maps(),
+        page: () => const SearchPage(),
         // binding: TypeExerciseBindding(),
         transition: Transition.fadeIn,
       );
@@ -46,6 +46,8 @@ class MainController extends GetxController {
         transition: Transition.fadeIn,
       );
     }
+
+
     if (settings.name == '/profile') {
       return GetPageRoute(
         settings: settings,
@@ -54,6 +56,7 @@ class MainController extends GetxController {
         transition: Transition.fadeIn,
       );
     }
+
 
     return null;
   }

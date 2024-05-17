@@ -16,6 +16,7 @@ class AppColors {
   static const Color gray2 = Color.fromARGB(13, 0, 0, 0);
   static const Color red = Color(0XFFc23616);
   
+  static const Color yellow =Color(0xFFFFD600);
   
   static const transparent = Colors.transparent;
   static const error = Color(0xFFF83758);
@@ -24,9 +25,6 @@ class AppColors {
   static Color colorPink3 = HexColor('#f5ecef');
   static Color black4 = HexColor('#1F1F1F');
   static Color greenBold = HexColor('#4CAF50');
-  static Color yellow1 = HexColor('#FFBA00');
-  static Color yellow2 = HexColor('#FFD974');
-  static Color yellow3 = HexColor('#FFBA00');
 
   
 

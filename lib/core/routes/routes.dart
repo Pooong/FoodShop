@@ -28,4 +28,6 @@ abstract class Routes {
   
   static const maps='/maps';
 
+  static const resultSearch='/resultSearch';
+
 }
