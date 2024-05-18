@@ -19,9 +19,15 @@ abstract class Routes {
   static const activity = "/activity";
   static const searchActivity = "/searchActivity";
 
-
   // create new page
 
   static const uploadPostPage = "/uploadPostPage";
-  static const homePage = "/homePage";
+  static const getLoactionPage ="/getLocationPage";
+
+  static const forgetpass = "/forgetpass";
+  
+  static const maps='/maps';
+
+  static const resultSearch='/resultSearch';
+
 }

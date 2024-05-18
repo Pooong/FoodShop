@@ -7,7 +7,9 @@ class LoginBindding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => Prefs(), fenix: true);
+
     Get.lazyPut(() => SaveUserUseCase(Get.find()));
+
     Get.lazyPut(() => LoginController(Get.find()));
   }
 }

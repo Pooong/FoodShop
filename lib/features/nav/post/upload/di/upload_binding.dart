@@ -6,7 +6,6 @@ class UploadBinding extends Bindings{
   @override
   void dependencies() {
     Get.lazyPut(() => Prefs(), fenix: true);
-    
   }
 
 }
