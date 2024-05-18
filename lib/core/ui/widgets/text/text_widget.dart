@@ -33,7 +33,7 @@ class TextWidget extends StatelessWidget {
       text.tr,
       maxLines: maxLines,
       textAlign: textAlign,
-      style: GoogleFonts.nunitoSans(
+      style: GoogleFonts.roboto(
         textStyle: TextStyle(
           color: color,
           fontSize: size,

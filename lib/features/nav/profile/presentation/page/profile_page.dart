@@ -9,7 +9,7 @@ class ProfilePage extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ProfileAppbar(),
+      appBar: const ProfileAppbar(),
       body: Column(
         children: <Widget>[
           _buildUserInfo(),
