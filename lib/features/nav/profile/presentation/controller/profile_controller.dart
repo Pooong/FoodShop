@@ -12,7 +12,7 @@ class ProfileController extends GetxController {
   final pages = <String>['/profile_list', '/profile_favorite', '/profile_bookmark', '/profile_locked'];
 
   Route? onGenerateRoute(RouteSettings settings) {
-    if (settings.name == '/user_list') {
+    if (settings.name == '/profile_list') {
       return GetPageRoute(
         settings: settings,
         page: () => const ProfileListPage(),
@@ -21,7 +21,7 @@ class ProfileController extends GetxController {
       );
     }
 
-    if (settings.name == '/user_favorite') {
+    if (settings.name == '/profile_favorite') {
       return GetPageRoute(
         settings: settings,
         page: () => const ProfileFavoritePage(),
@@ -30,7 +30,7 @@ class ProfileController extends GetxController {
       );
     }
 
-    if (settings.name == '/user_bookmark') {
+    if (settings.name == '/profile_bookmark') {
       return GetPageRoute(
         settings: settings,
         page: () => const ProfileBookmarkPage(),
@@ -39,7 +39,7 @@ class ProfileController extends GetxController {
       );
     }
 
-    if (settings.name == '/user_locked') {
+    if (settings.name == '/profile_locked') {
       return GetPageRoute(
         settings: settings,
         page: () => const ProfileLockedPage(),

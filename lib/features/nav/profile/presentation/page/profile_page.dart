@@ -1,4 +1,5 @@
 import 'package:find_food/core/ui/widgets/appbar/profile_appbar.dart';
+import 'package:find_food/core/ui/widgets/nav/ProflieNavigationBarWidget.dart';
 import 'package:find_food/features/nav/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,12 +10,27 @@ class ProfilePage extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ProfileAppbar(),
+      appBar: const ProfileAppbar(),
       body: Column(
         children: <Widget>[
           _buildUserInfo(),
-          
+          Navigator(
+            key: Get.nestedKey(2),
+            initialRoute: "/profile_list",
+            onGenerateRoute: controller.onGenerateRoute,
+          ),
         ],
+      ),
+      bottomNavigationBar: _bottomNavigationBar(),
+    );
+  }
+  _bottomNavigationBar() {
+    return Obx(
+      () => ProfileNavigationBarWidget(
+        currentIndex: controller.currentIndex.value,
+        onPageChanged: (index) {
+          controller.onChangeItemBottomBar(index);
+        },
       ),
     );
   }
@@ -42,4 +58,3 @@ Widget _buildUserInfo() {
     ),
   );
 }
-

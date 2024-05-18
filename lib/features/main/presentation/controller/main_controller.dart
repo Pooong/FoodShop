@@ -1,5 +1,6 @@
 import 'package:find_food/features/nav/home/home/presentation/page/home_page.dart';
 import 'package:find_food/features/nav/post/upload/presentation/page/upload_page.dart';
+import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
 import 'package:find_food/views/pages/Maps.dart';
 import 'package:find_food/views/pages/Notify.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class MainController extends GetxController {
     if (settings.name == '/profile') {
       return GetPageRoute(
         settings: settings,
-        page: () => const Notify(),
+        page: () => const ProfilePage(),
         // binding: ProfileBindding(),
         transition: Transition.fadeIn,
       );

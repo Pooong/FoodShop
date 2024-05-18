@@ -27,5 +27,9 @@ abstract class Routes {
   static const forgetpass = "/forgetpass";
   
   static const maps='/maps';
+  static const profile = "/profile";
+
+  static const accountSetting = "/accountSetting";
+
 
 }

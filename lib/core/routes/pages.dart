@@ -1,4 +1,6 @@
 import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/features/account_setting/di/account_setting_binding.dart';
+import 'package:find_food/features/account_setting/presentation/page/account_setting_page.dart';
 import 'package:find_food/features/auth/forget_password/di/forget_password_binding.dart';
 import 'package:find_food/features/auth/forget_password/presentation/page/forget_password_page.dart';
 import 'package:find_food/features/auth/login/di/login_binding.dart';
@@ -13,6 +15,8 @@ import 'package:find_food/features/maps/maps/di/maps_binding.dart';
 import 'package:find_food/features/maps/maps/presentation/page/maps_page.dart';
 import 'package:find_food/features/nav/post/upload/di/upload_binding.dart';
 import 'package:find_food/features/nav/post/upload/presentation/page/upload_page.dart';
+import 'package:find_food/features/nav/profile/di/profile_binding.dart';
+import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
 import 'package:find_food/features/splash/di/splash_binding.dart';
 import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
@@ -58,6 +62,19 @@ class Pages {
       binding: ForgetPasswordBinding(),
     ),
 
+    //trang profile
+    GetPage(
+      name: Routes.profile,
+      page: () => const ProfilePage(),
+      binding: ProfileBindding(),
+    ),
+
+    //trang setting account
+    GetPage(
+      name: Routes.accountSetting,
+      page: () => const AccountSettingPage(),
+      binding: AccountSettingBinding(),
+    ),
 
     // =====================  ROUTE POST =====================
 
@@ -81,6 +98,8 @@ class Pages {
       page: () => const MapsPage(),
       binding: MapsBinding(),
     ),
+
+    
 
   ];
 }

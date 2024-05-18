@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
     
 class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget{
 
@@ -12,7 +13,7 @@ class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget{
         actions: [
           IconButton(
             onPressed: () {
-              
+              Get.offNamed("/accountSetting");
             },
             icon: Icon(Icons.settings),
           ),

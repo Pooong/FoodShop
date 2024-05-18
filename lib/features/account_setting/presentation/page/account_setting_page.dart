@@ -1,5 +1,6 @@
 import 'package:find_food/features/nav/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class AccountSettingPage extends GetView<ProfileController> {
@@ -9,23 +10,22 @@ class AccountSettingPage extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Account Settings"),
-        actions: [
-          
-        ],
+        title: const Text("Account Settings"),
+        actions: [],
         centerTitle: true,
       ),
-
       body: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const SizedBox(height: 20,),
             _buildSection(
               context,
               icon: Icons.person,
               title: "Profile Information",
               subtitle: "Change your account profile information",
               sectionIcon: Icons.arrow_forward_ios,
+              route: "",
             ),
             _buildSection(
               context,
@@ -33,6 +33,7 @@ class AccountSettingPage extends GetView<ProfileController> {
               title: "Change password",
               subtitle: "Change your current password",
               sectionIcon: Icons.arrow_forward_ios,
+              route: "",
             ),
             _buildSection(
               context,
@@ -40,6 +41,7 @@ class AccountSettingPage extends GetView<ProfileController> {
               title: "Location",
               subtitle: "Add or change your location",
               sectionIcon: Icons.arrow_forward_ios,
+              route: "",
             ),
             _buildSection(
               context,
@@ -47,6 +49,14 @@ class AccountSettingPage extends GetView<ProfileController> {
               title: "Social account",
               subtitle: "Add Facebook, Twitter, .etc",
               sectionIcon: Icons.arrow_forward_ios,
+              route: "",
+            ),
+            const SizedBox(height: 20,),
+            const Text(
+              "NOTIFICATIONS",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )
             ),
             _buildSection2(
               context,
@@ -60,12 +70,20 @@ class AccountSettingPage extends GetView<ProfileController> {
               title: "Push Notification",
               subtitle: "Add Facebook, Twitter, .etc",
             ),
+            const SizedBox(height: 20,),
+            const Text(
+              "MORE",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )
+            ),
             _buildSection(
               context,
               icon: Icons.star,
               title: "Rate us",
               subtitle: "Rate us on GooglePlay or App Store",
               sectionIcon: Icons.arrow_forward_ios,
+              route: "",
             ),
             _buildSection(
               context,
@@ -73,6 +91,7 @@ class AccountSettingPage extends GetView<ProfileController> {
               title: "FAQ",
               subtitle: "Frequency asked questions",
               sectionIcon: Icons.arrow_forward_ios,
+              route: "",
             ),
             _buildSection(
               context,
@@ -80,6 +99,7 @@ class AccountSettingPage extends GetView<ProfileController> {
               title: "About us",
               subtitle: "About us or policy and insurance",
               sectionIcon: Icons.arrow_forward_ios,
+              route: "",
             ),
             _buildSection(
               context,
@@ -87,6 +107,7 @@ class AccountSettingPage extends GetView<ProfileController> {
               title: "Logout",
               subtitle: "",
               sectionIcon: Icons.arrow_forward_ios,
+              route: "",
             ),
           ],
         ),
@@ -100,6 +121,7 @@ Widget _buildSection(BuildContext context,
     required String title,
     required String subtitle,
     required IconData sectionIcon,
+    required String route,
     Widget? trailingWidget}) {
   return ListTile(
     leading: Icon(icon, size: 24.0),
@@ -112,7 +134,9 @@ Widget _buildSection(BuildContext context,
       style: Theme.of(context).textTheme.bodySmall,
     ),
     trailing: trailingWidget != null ? trailingWidget : Icon(sectionIcon),
-    onTap: () {},
+    onTap: () {
+      Get.toNamed(route);
+    },
   );
 }
 
