@@ -32,4 +32,6 @@ abstract class Routes {
   static const accountSetting = "/accountSetting";
 
 
+  static const resultSearch='/resultSearch';
+
 }

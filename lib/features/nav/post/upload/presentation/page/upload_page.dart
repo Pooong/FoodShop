@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 class UploadPage extends GetView<UploadController> {
   const UploadPage({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -84,7 +84,6 @@ class UploadPage extends GetView<UploadController> {
             ),
 
             const SizedBox(height: 20), // Adding some space
-
             //button get loction.
             InkWell(
               onTap: ()=> Get.toNamed('/getLocationPage'),

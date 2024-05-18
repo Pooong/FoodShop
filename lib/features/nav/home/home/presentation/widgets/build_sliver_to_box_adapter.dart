@@ -4,6 +4,7 @@ const EdgeInsets _padding = EdgeInsets.all(10);
 const double _imageHeight = 200;
 const double _starIconSize = 16;
 
+
 Widget buildSliverToBoxAdapter() {
   return SliverPadding(
     padding: _padding,
@@ -26,11 +27,15 @@ Widget buildSliverToBoxAdapter() {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
-                'assets/images/home.jpg',
-                height: _imageHeight,
-                fit: BoxFit.cover,
-              ),
+              ClipRRect( 
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)),  
+                  child: Image.asset(
+                    'assets/images/home.png',
+                    height: 200,  
+                    width: double.infinity, 
+                    fit: BoxFit.cover,  
+                  ),
+                ),
               const SizedBox(height: 10),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -62,7 +67,7 @@ Widget buildSliverToBoxAdapter() {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Text(
-                          '12',
+                          '4',
                           style: TextStyle(fontSize: _starIconSize, color: Colors.black),
                         ),
                         const SizedBox(width: 5),
@@ -77,8 +82,13 @@ Widget buildSliverToBoxAdapter() {
                         ),
                         const SizedBox(width: 5),
                         const Text(
-                          'Cách 2.7km',
+                          '(100)',
                           style: TextStyle(fontSize: _starIconSize, color: Colors.black),
+                        ),
+                        const SizedBox(width: 5),
+                        const Text(
+                          'Cách 2.7km',
+                          style: TextStyle(color: Colors.black),
                         ),
                       ],
                     ),

@@ -1,7 +1,8 @@
 // ignore: file_names
 import 'dart:async';
 
-import 'package:find_food/widgets/MeaSureDistans.dart';
+import 'package:find_food/core/configs/app_colors.dart';
+import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart' as geo;
@@ -10,12 +11,9 @@ import 'package:location/location.dart';
 
 class LoadMaps extends StatefulWidget {
   const LoadMaps({super.key});
-
   @override
   State<LoadMaps> createState() => LoadMapsState();
 }
-
-
 class LoadMapsState extends State<LoadMaps> {
   final Location _locationController = Location();
 
@@ -41,15 +39,14 @@ class LoadMapsState extends State<LoadMaps> {
   }
 
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         _currentP == null
-        ? const Center(
-            child: Text("Loading ..."),
-          )
-        : 
-        GoogleMap(
+            ? const Center(
+                child: Text("Loading ..."),
+              )
+            : GoogleMap(
                 onMapCreated: ((GoogleMapController controller) =>
                     _mapController.complete(controller)),
                 initialCameraPosition:
@@ -69,13 +66,27 @@ class LoadMapsState extends State<LoadMaps> {
                       position: _pCanthoCollege),
                 },
               ),
-    
-        ElevatedButton(onPressed: getCurrentLocation, child:const Text("get current location"))
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 30),
+            width: 350,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:AppColors.primary,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  )
+                ),
+                onPressed: getCurrentLocation,
+            
+                child: const Text("Get Current Location",style: TextStyle(color: AppColors.white,fontSize: AppDimens.textSize18),)),
+          ),
+        )
       ],
     );
   }
-
-
 
   Future<void> _cameraTopPosition(LatLng pos) async {
     final GoogleMapController controller = await _mapController.future;
@@ -116,8 +127,6 @@ class LoadMapsState extends State<LoadMaps> {
           _currentP =
               LatLng(currentLocation.latitude!, currentLocation.longitude!);
           _cameraTopPosition(_currentP!);
-          String distance = MeaSureDistans.calculateDistance(_pCanThoUniversity.latitude, _pCanThoUniversity.longitude, _pCanthoCollege.latitude, _pCanthoCollege.longitude);
-          print("The distance between the two locations is $distance.");
         });
       }
     });
@@ -154,7 +163,7 @@ class LoadMapsState extends State<LoadMaps> {
     geo.Position position = await geo.Geolocator.getCurrentPosition(
         desiredAccuracy: geo.LocationAccuracy.high);
     setState(() {
-      _currentP=LatLng(position.latitude, position.longitude);
+      _currentP = LatLng(position.latitude, position.longitude);
     });
   }
 }

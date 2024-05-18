@@ -15,7 +15,7 @@ class TextWidget extends StatelessWidget {
   final TextDecoration? textDecoration;
   final FontStyle? fontStyle;
   const TextWidget({
-    Key? key,
+    super.key,
     this.textAlign,
     this.listShadow,
     this.maxLines = 1000,
@@ -25,7 +25,7 @@ class TextWidget extends StatelessWidget {
     this.fontWeight = FontWeight.normal,
     this.fontStyle = FontStyle.normal,
     this.textDecoration = TextDecoration.none,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class TextWidget extends StatelessWidget {
       text.tr,
       maxLines: maxLines,
       textAlign: textAlign,
-      style: GoogleFonts.nunitoSans(
+      style: GoogleFonts.roboto(
         textStyle: TextStyle(
           color: color,
           fontSize: size,

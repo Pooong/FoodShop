@@ -125,8 +125,8 @@ class LoginPage extends GetView<LoginController> {
                             String username = _usernameController.text;
                             String password = _passwordController.text;
 
-                            if (username == "thanthan" &&
-                                password == "1234567") {
+                            if (username == "1" &&
+                                password == "1") {
                               controller
                                   .login(); // Gọi hàm login từ LoginController
                               Get.offNamed(
