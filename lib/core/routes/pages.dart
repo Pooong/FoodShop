@@ -1,5 +1,9 @@
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/features/account_setting/di/account_setting_binding.dart';
+import 'package:find_food/features/account_setting/nav/change_password/di/change_password_binding.dart';
+import 'package:find_food/features/account_setting/nav/change_password/presentation/page/change_password_page.dart';
+import 'package:find_food/features/account_setting/nav/setting_information/di/setting_information_binding.dart';
+import 'package:find_food/features/account_setting/nav/setting_information/presentation/page/setting_information_page.dart';
 import 'package:find_food/features/account_setting/presentation/page/account_setting_page.dart';
 import 'package:find_food/features/auth/forget_password/di/forget_password_binding.dart';
 import 'package:find_food/features/auth/forget_password/presentation/page/forget_password_page.dart';
@@ -76,6 +80,20 @@ class Pages {
       name: Routes.accountSetting,
       page: () => const AccountSettingPage(),
       binding: AccountSettingBinding(),
+    ),
+
+    //trang setting information
+    GetPage(
+      name: Routes.settingInformation,
+      page: () => const SettingInformationPage(),
+      binding: SettingInformationBinding(),
+    ),
+
+    //trang change password
+    GetPage(
+      name: Routes.changePassword,
+      page: () => const ChangePasswordPage(),
+      binding: ChangePasswordBinding(),
     ),
 
     // =====================  ROUTE POST =====================
