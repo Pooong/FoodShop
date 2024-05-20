@@ -53,6 +53,7 @@ class LoginController extends GetxController {
     // Get.back();
     if (result.status == Status.success) {
       User? user = result.data;
+
       // if (user != null && !user.emailVerified) {
       //   await FirebaseAuthentication.sendMailVerify();
       //   Get.offAllNamed(Routes.emailVerify);
@@ -71,13 +72,16 @@ class LoginController extends GetxController {
       //     SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
       //   }
       // }
+
       final resultUser = await FirestoreUser.getUser(user!.uid);
       if (resultUser.status == Status.success) {
-        //
 
+        //
         // if (resultUser.data!.isComplete == false) {
         //   Get.offAllNamed(Routes.userInfor, arguments: resultUser.data);
+      
         // } else {
+      
         //   _saveUserUseCase.saveUser(resultUser.data!);
         //   Get.offAllNamed(Routes.main);
         // }
@@ -85,6 +89,7 @@ class LoginController extends GetxController {
         _saveUserUseCase.saveUser(resultUser.data!);
 
         Get.offAllNamed(Routes.main);
+
       } else {
         SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
       }
@@ -94,6 +99,7 @@ class LoginController extends GetxController {
   }
 
   void register() async {
+
     // if (!validateEmail() || !validatePassword()) {
     //   return;
     // }
@@ -103,12 +109,15 @@ class LoginController extends GetxController {
       email: "admin@gmail.com",
       password: "12345678",
     );
+    
     if (result.status == Status.success) {
       UserModel user = UserModel(
         uid: result.data!.uid,
         email: result.data!.email!,
       );
+
       createNewUser(user);
+
     } else {
       Get.back();
       if (result.exp?.code == "email-already-in-use") {

@@ -10,7 +10,6 @@ class MainPage extends GetView<MainController> {
   Widget build(BuildContext context) {
     return Scaffold(
       // xay dung appbar biến đổi theo từng trang
-      appBar: controller.changeAppBar(1),
       body: Navigator(
         key: Get.nestedKey(1),
         initialRoute: "/home",
@@ -20,17 +19,7 @@ class MainPage extends GetView<MainController> {
       bottomNavigationBar: _bottomNavigationBar(),
     );
   }
-
-_buildAppBar() {
-    PreferredSizeWidget currentAppBar = controller.changeAppBar(controller.currentIndex.value);
-
-    return Obx(() {
-      currentAppBar = controller.changeAppBar(controller.currentIndex.value);
-      return currentAppBar;
-    });
-  }
-
-
+  
   _bottomNavigationBar() {
     return Obx(
       () => BottomNavigationBarWidget(

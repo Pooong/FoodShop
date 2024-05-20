@@ -15,7 +15,7 @@ class ProfilePage extends GetView<ProfileController> {
       appBar: const ProfileAppbar(),
       body: Column(
         children: <Widget>[
-          _buildUserInfo(),
+          _buildUserInfo(context),
           Obx(() => NavControllList(
                 currentIndex: controller.currentIndex.value,
                 onPageChanged: (index) {
@@ -34,10 +34,11 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _buildUserInfo() {
-    return const SizedBox(
-      height: 200,
-      child: Row(
+  Widget _buildUserInfo(BuildContext context) {
+    return  SizedBox(
+      // height: MediaQuery.of(context).size.height * 0.2,
+      height: Get.height * 0.25,
+      child:  const Row (
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Column(

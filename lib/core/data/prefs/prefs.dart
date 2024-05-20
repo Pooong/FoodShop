@@ -45,10 +45,12 @@ class Prefs {
     prefs.setInt(key, value);
   }
 
+  
   Future remove(String key) async {
     final SharedPreferences prefs = await _prefs;
     prefs.remove(key);
   }
+
 
   Future clear() async {
     final SharedPreferences prefs = await _prefs;
@@ -59,4 +61,5 @@ class Prefs {
     final SharedPreferences prefs = await _prefs;
     prefs.clear();
   }
+
 }
