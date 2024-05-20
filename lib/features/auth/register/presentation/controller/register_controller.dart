@@ -49,26 +49,35 @@ class RegisterController extends GetxController {
   }
 
   void register() async {
+    print("==================OK VAO CONTROLLER=====================");
     if (!validateEmail() || !validatePassword()) {
+      print("==================FAILS ROI DO==================");
       return;
     }
+    print("===============PROCESSING===============");
     DialogsUtils.showAlterLoading();
     final result = await FirebaseAuthentication.signUp(
       email: emailController.text,
       password: passwordController.text,
     );
+    print("===============WAITTINGgggggg===============");
+
     if (result.status == Status.success) {
       UserModel user = UserModel(
         uid: result.data!.uid,
         email: result.data!.email!,
       );
       createNewUser(user);
+      print("DANG KY THANH CONG!! XIN CHUC MUNG");
     } else {
       Get.back();
       if (result.exp?.code == "email-already-in-use") {
+        print("something_went_wrong");
+
         msgEmailError.value = 'email_already_in_use';
         return;
       }
+
       SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
     }
   }

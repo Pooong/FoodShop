@@ -75,13 +75,12 @@ class LoginController extends GetxController {
 
       final resultUser = await FirestoreUser.getUser(user!.uid);
       if (resultUser.status == Status.success) {
-
         //
         // if (resultUser.data!.isComplete == false) {
         //   Get.offAllNamed(Routes.userInfor, arguments: resultUser.data);
-      
+
         // } else {
-      
+
         //   _saveUserUseCase.saveUser(resultUser.data!);
         //   Get.offAllNamed(Routes.main);
         // }
@@ -89,51 +88,10 @@ class LoginController extends GetxController {
         _saveUserUseCase.saveUser(resultUser.data!);
 
         Get.offAllNamed(Routes.main);
-
       } else {
         SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
       }
     } else {
-      SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
-    }
-  }
-
-  void register() async {
-
-    // if (!validateEmail() || !validatePassword()) {
-    //   return;
-    // }
-    // DialogsUtils.showAlterLoading();
-
-    final result = await FirebaseAuthentication.signUp(
-      email: "admin@gmail.com",
-      password: "12345678",
-    );
-    
-    if (result.status == Status.success) {
-      UserModel user = UserModel(
-        uid: result.data!.uid,
-        email: result.data!.email!,
-      );
-
-      createNewUser(user);
-
-    } else {
-      Get.back();
-      if (result.exp?.code == "email-already-in-use") {
-        // msgEmailError.value = 'email_already_in_use';
-        return;
-      }
-      SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
-    }
-  }
-
-  createNewUser(UserModel user) async {
-    final result = await FirestoreUser.createUser(user);
-    if (result.status == Status.success) {
-      Get.back();
-    } else {
-      Get.back();
       SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
     }
   }
