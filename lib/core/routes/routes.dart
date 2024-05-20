@@ -21,17 +21,16 @@ abstract class Routes {
 
   // create new page
 
+  static const forgetpass = "/forgetpass";
+
+  static const profile = "/profile";
+  static const accountSetting = "/accountSetting";
+  static const settingInformation ="/settingInformation";
+  static const changePassword = "/changePassword";
+
+  static const maps='/maps';
+  static const resultSearch='/resultSearch';
   static const uploadPostPage = "/uploadPostPage";
   static const getLoactionPage ="/getLocationPage";
-
-  static const forgetpass = "/forgetpass";
-  
-  static const maps='/maps';
-  static const profile = "/profile";
-
-  static const accountSetting = "/accountSetting";
-
-
-  static const resultSearch='/resultSearch';
 
 }
