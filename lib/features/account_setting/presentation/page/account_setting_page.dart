@@ -25,7 +25,7 @@ class AccountSettingPage extends GetView<ProfileController> {
               title: "Profile Information",
               subtitle: "Change your account profile information",
               sectionIcon: Icons.arrow_forward_ios,
-              route: "",
+              route: "/settingInformation",
             ),
             _buildSection(
               context,
@@ -33,7 +33,7 @@ class AccountSettingPage extends GetView<ProfileController> {
               title: "Change password",
               subtitle: "Change your current password",
               sectionIcon: Icons.arrow_forward_ios,
-              route: "",
+              route: "/changePassword",
             ),
             _buildSection(
               context,
