@@ -35,14 +35,14 @@ class Pages {
     // trang đăng nhập
     GetPage(
       name: Routes.login,
-      page: () => const LoginPage(),
+      page: () => LoginPage(),
       binding: LoginBindding(),
     ),
 
     // trang đăng ký
     GetPage(
       name: Routes.register,
-      page: () => const RegisterPage(),
+      page: () => RegisterPage(),
       binding: RegisterBindding(),
     ),
 
@@ -111,15 +111,13 @@ class Pages {
       page: () => const LocationPage(),
       binding: LocationBinding(),
     ),
-    
+
     // màng hình hiển thị Maps
     GetPage(
       name: Routes.maps,
       page: () => const MapsPage(),
       binding: MapsBinding(),
     ),
-
-
 
     // màng hình tìm kiếm
     GetPage(

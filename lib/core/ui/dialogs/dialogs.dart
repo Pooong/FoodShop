@@ -1,6 +1,7 @@
+// DialogsUtils class (updated with Cancel button)
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/configs/enum.dart'; // Import TypeDialog
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,8 +13,7 @@ class DialogsUtils {
     Get.dialog(Dialog(
       backgroundColor: AppColors.white.withOpacity(0.8),
       shape: RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.circular(20.0), // Đặt giá trị border radius tùy chọn
+        borderRadius: BorderRadius.circular(20.0),
       ),
       child: Container(
         height: 160,
@@ -21,7 +21,7 @@ class DialogsUtils {
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Column(
           children: [
-            Lottie.asset('assets/jsons/loading.json', height: 60.0),
+            // Lottie.asset('assets/jsons/loading.json', height: 60.0),
             const SizedBox(height: 10),
             const TextWidget(
               text: "Loading....",
@@ -69,14 +69,19 @@ class DialogsUtils {
                     height: 30.0,
                     margin: const EdgeInsets.all(18.0),
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: typeDialog == TypeDialog.error
-                            ? AppColors.red
-                            : AppColors.primary),
+                      shape: BoxShape.circle,
+                      color: typeDialog == TypeDialog.error
+                          ? AppColors.red
+                          : typeDialog == TypeDialog.success
+                              ? AppColors.primary
+                              : Colors.amber,
+                    ),
                     child: Icon(
                       typeDialog == TypeDialog.error
                           ? Icons.priority_high
-                          : Icons.check,
+                          : typeDialog == TypeDialog.success
+                              ? Icons.check
+                              : Icons.warning,
                       color: Colors.white,
                     ),
                   ),
@@ -110,32 +115,62 @@ class DialogsUtils {
                           bottomRight: Radius.circular(10.0)),
                       color: Color(0xFFEBEDF0),
                     ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color(0xFFD2D3D4),
-                        elevation: 0.0,
-                        backgroundColor: const Color(0xFFEBEDF0),
-                        padding: EdgeInsets.zero, // foreground
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10.0),
-                            bottomRight: Radius.circular(10.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: const Color(0xFFD2D3D4),
+                              elevation: 0.0,
+                              backgroundColor: const Color(0xFFEBEDF0),
+                              padding: EdgeInsets.zero,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                            child: const Text(
+                              'Hủy',
+                              style: TextStyle(
+                                fontSize: AppDimens.textSize18,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            onPressed: () {
+                              Get.back(); // Đóng dialog
+                            },
                           ),
                         ),
-                      ),
-                      child: const Text(
-                        'OK',
-                        style: TextStyle(
-                          fontSize: AppDimens.textSize18,
-                          color: AppColors.black,
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: const Color(0xFFD2D3D4),
+                              elevation: 0.0,
+                              backgroundColor: const Color(0xFFEBEDF0),
+                              padding: EdgeInsets.zero,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                            child: const Text(
+                              'OK',
+                              style: TextStyle(
+                                fontSize: AppDimens.textSize18,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            onPressed: () {
+                              if (onPresss != null) {
+                                onPresss();
+                              }
+                              Get.back(); // Đóng dialog
+                            },
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        if (onPresss != null) {
-                          onPresss();
-                        }
-                        Get.back();
-                      },
+                      ],
                     ),
                   ),
                 ],
