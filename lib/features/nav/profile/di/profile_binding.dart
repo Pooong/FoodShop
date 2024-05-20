@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 class ProfileBindding extends Bindings {
   @override
   void dependencies() {
+
     Get.lazyPut(() => Prefs(), fenix: true);
-    // Get.lazyPut(() => SaveUserUseCase(Get.find()));
-    Get.lazyPut(() => ProfileController());
+
+    Get.lazyPut(()=> ProfileController());
+
   }
 }

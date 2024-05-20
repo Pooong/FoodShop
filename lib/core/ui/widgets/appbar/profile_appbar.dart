@@ -3,19 +3,19 @@ import 'package:get/get.dart';
     
 class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget{
 
-  const ProfileAppbar({ Key? key }) : super(key: key);
+  const ProfileAppbar({ super.key });
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: const Text("Profile"),
         actions: [
           IconButton(
             onPressed: () {
-              Get.offNamed("/accountSetting");
+              Get.toNamed("/accountSetting");
             },
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
           ),
         ],
         centerTitle: true,

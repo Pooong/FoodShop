@@ -14,6 +14,8 @@ class BottomNavigationBarWidget extends StatelessWidget {
       required this.onPageChanged
     });
 
+
+
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
@@ -23,9 +25,11 @@ class BottomNavigationBarWidget extends StatelessWidget {
       height: 70,
       backgroundColor: Colors.transparent, // Sử dụng màu trong suốt
       index: currentIndex,
+      
       onTap: (index) {
         onPageChanged(index);
       },
+
       items: const [
         Icon(
           Icons.home,
