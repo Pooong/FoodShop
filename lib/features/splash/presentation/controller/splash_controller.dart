@@ -14,6 +14,7 @@ class SplashController extends GetxController {
   }
 
   Future<void> simulateLoading() async {
+    
     // for (int i = 0; i <= 100; i++) {
     //   await Future.delayed(const Duration(milliseconds: 20));
     //   loadingProgress.value = i / 100.0;
@@ -31,11 +32,11 @@ class SplashController extends GetxController {
 
 
     _getuserUseCase.getUser().then((value) {
-        Get.offNamed(Routes.main);
-      // if (value != null) {
-      // } else {
-      //   Get.offNamed(Routes.login);
-      // }
+      if (value != null) {
+        Get.offNamed(Routes.login);
+      } else {
+        Get.offNamed(Routes.login);
+      }
     });
   }
 }

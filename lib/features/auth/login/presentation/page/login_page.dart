@@ -1,5 +1,4 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/features/auth/login/presentation/controller/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -130,7 +129,7 @@ class LoginPage extends GetView<LoginController> {
                               controller
                                   .login(); // Gọi hàm login từ LoginController
                               Get.offNamed(
-                                  '/main  '); // Điều hướng đến trang HomePage
+                                  '/main'); // Điều hướng đến trang HomePage
                             } else {
                               // Hiển thị thông báo lỗi khi tên người dùng hoặc mật khẩu không chính xác
                               Get.snackbar(

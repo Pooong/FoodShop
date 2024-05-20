@@ -1,8 +1,6 @@
-import 'package:find_food/core/ui/widgets/appbar/explore_appbar.dart';
-import 'package:find_food/core/ui/widgets/appbar/home_appbar.dart';
-import 'package:find_food/core/ui/widgets/appbar/upload_post_appbar.dart';
 import 'package:find_food/features/nav/explore/search/presentation/page/search_page.dart';
 import 'package:find_food/features/nav/home/home/presentation/page/home_page.dart';
+import 'package:find_food/features/nav/notify/notify/presentation/page/notify_page.dart';
 import 'package:find_food/features/nav/post/upload/presentation/page/upload_page.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +8,7 @@ import 'package:get/get.dart';
 
 class MainController extends GetxController {
   RxInt currentIndex = 0.obs;
-
-  final List appbars = <Widget>[
-    const HomeAppbar(),
-    const ExploreAppbar(),
-    const UploadPostAppbar(),
-  ];
-
+  
   final pages = <String>[
     '/home',
     '/explore',
@@ -56,7 +48,7 @@ class MainController extends GetxController {
     if (settings.name == '/notify') {
       return GetPageRoute(
         settings: settings,
-        page: () => const UploadPage(),
+        page: () => const NotifyPage(),
         // binding: ProfileBindding(),
         transition: Transition.fadeIn,
       );
@@ -72,19 +64,6 @@ class MainController extends GetxController {
     }
 
     return null;
-  }
-
- PreferredSizeWidget changeAppBar(int index) {
-    if (index >= 0 && index < appbars.length) {
-      return appbars[index];
-    }
-    return  PreferredSize(
-      preferredSize: Size.fromHeight(56.0), // Typical height for an AppBar
-      child: AppBar(
-        title: const Text("Default AppBar"),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
 
 

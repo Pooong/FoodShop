@@ -1,6 +1,5 @@
 import 'package:find_food/features/nav/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class AccountSettingPage extends GetView<ProfileController> {
@@ -10,6 +9,7 @@ class AccountSettingPage extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: InkWell(onTap: ()=> Get.back(),child: Icon(Icons.arrow_back_ios)),
         title: const Text("Account Settings"),
         actions: [],
         centerTitle: true,
