@@ -59,10 +59,10 @@ class _NavControllListState extends State<NavControllList> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              itemNav(icon: Icons.list, index: 0),
-              itemNav(icon: Icons.favorite_border, index: 1),
-              itemNav(icon: Icons.bookmark_outline, index: 2),
-              itemNav(icon: Icons.lock_outline, index: 3),
+              Flexible(child: itemNav(icon: Icons.list, index: 0)),
+              Flexible(child: itemNav(icon: Icons.favorite_border, index: 1)),
+              Flexible(child: itemNav(icon: Icons.bookmark_outline, index: 2)),
+              Flexible(child: itemNav(icon: Icons.lock_outline, index: 3)),
             ],
           ),
         ),
@@ -79,7 +79,8 @@ class _NavControllListState extends State<NavControllList> {
       child: Container(
         decoration: BoxDecoration(
           border: isActive
-              ? const Border(bottom: BorderSide(width: 2, color: AppColors.black))
+              ? const Border(
+                  bottom: BorderSide(width: 2, color: AppColors.black))
               : null,
         ),
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
