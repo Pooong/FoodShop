@@ -130,7 +130,7 @@ class LoginController extends GetxController {
   }
 
   login() async {
-    const username = "thanthan";
-    const password = "1234567";
+    const username = "1";
+    const password = "1";
   }
 }
