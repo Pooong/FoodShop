@@ -65,17 +65,21 @@ class AccountSettingPage extends GetView<ProfileController> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 )),
-            _buildSection2(
+            _buildSection(
               context,
               icon: Icons.edit_notifications,
               title: "Push Notification",
               subtitle: "Add Facebook, Twitter, .etc",
+              sectionIcon: Icons.edit,
+              route: '',
             ),
-            _buildSection2(
+            _buildSection(
               context,
               icon: Icons.sms_rounded,
               title: "Push Notification",
               subtitle: "Add Facebook, Twitter, .etc",
+              sectionIcon: Icons.sms,
+              route: '',
             ),
             const SizedBox(
               height: 20,
@@ -182,46 +186,4 @@ Widget _buildSection3(BuildContext context,
     ),
     trailing: trailingWidget != null ? trailingWidget : Icon(sectionIcon),
   );
-}
-
-Widget _buildSection2(
-  BuildContext context, {
-  required IconData icon,
-  required String title,
-  required String subtitle,
-}) {
-  return ListTile(
-    leading: Icon(icon, size: 24.0),
-    title: Text(
-      title,
-      style: Theme.of(context).textTheme.bodyLarge,
-    ),
-    subtitle: Text(
-      subtitle,
-      style: Theme.of(context).textTheme.bodySmall,
-    ),
-    trailing: SwitchDemo(),
-  );
-}
-
-class SwitchDemo extends StatefulWidget {
-  @override
-  _SwitchDemoState createState() => _SwitchDemoState();
-}
-
-class _SwitchDemoState extends State<SwitchDemo> {
-  bool _switchValue = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Switch(
-      value: _switchValue,
-      activeColor: Colors.red,
-      onChanged: (value) {
-        setState(() {
-          _switchValue = value;
-        });
-      },
-    );
-  }
 }

@@ -66,7 +66,7 @@ class _NavControllListState extends State<NavControllList> {
             ],
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 20.0),
       ],
     );
   }
