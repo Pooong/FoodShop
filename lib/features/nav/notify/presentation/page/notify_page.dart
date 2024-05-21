@@ -17,57 +17,61 @@ class NotifyPage extends GetView<NotifyController> {
       body: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              
-              Obx(
-                () => TextButton(
-                  onPressed: () => controller.selectTab('social'),
-                  child: Text(
-                    'Social',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: controller.selectedTab.value == 'social'
-                          ? Colors.white
-                          : Colors.black,
+              Expanded(
+                child: Obx(
+                  () => Container(
+                    margin: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: controller.selectedTab.value == 'social' ? Colors.red : Colors.white,
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
                     ),
-                  ),
-                  style: ButtonStyle(
-                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                    child: TextButton(
+                      onPressed: () => controller.selectTab('social'),
+                      child: Text(
+                        'Social',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: controller.selectedTab.value == 'social' ? Colors.white : Colors.black,
+                        ),
                       ),
                     ),
-                    backgroundColor: WidgetStateProperty.all<Color>(controller.selectedTab.value == 'social'
-                          ? Colors.red
-                          : Colors.white,
-                          ),
                   ),
                 ),
-                  
-                ),
-              Obx(
-                () => TextButton(
-                  onPressed: () => controller.selectTab('news'),
-                  child: Text(
-                    'News',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: controller.selectedTab.value == 'news'
-                           ? Colors.white
-                          : Colors.black,
+              ),
+              Expanded(
+                child: Obx(
+                  () => Container(
+                    margin: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: controller.selectedTab.value == 'news' ? Colors.red : Colors.white,
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
                     ),
-                  ),
-                  style: ButtonStyle(
-                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                    child: TextButton(
+                      onPressed: () => controller.selectTab('news'),
+                      child: Text(
+                        'News',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: controller.selectedTab.value == 'news' ? Colors.white : Colors.black,
+                        ),
                       ),
-                    ),
-                    backgroundColor: WidgetStateProperty.all<Color>(
-                      controller.selectedTab.value == 'news'
-                        ? Colors.red
-                        : Colors.white,
                     ),
                   ),
                 ),

@@ -33,15 +33,12 @@ abstract class Routes {
   static const uploadPostPage = "/uploadPostPage";
   static const getLoactionPage ="/getLocationPage";
 
-<<<<<<< HEAD
   static const notify = "/notify";
   static const socialNotify = "/socialNotify";
   static const newsNotify = "/newsNotify";
   static const notifySetting = "/notifySetting";
-=======
 
   //food detail
   static const postsDetail = '/postsDetail';
->>>>>>> main
 
 }

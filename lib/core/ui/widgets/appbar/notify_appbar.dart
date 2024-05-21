@@ -8,7 +8,7 @@ class NotifyAppbar extends StatelessWidget implements PreferredSizeWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Notify"),
+        title: const Text("Notification"),
         actions: [
           IconButton(
             onPressed: () {
@@ -18,7 +18,16 @@ class NotifyAppbar extends StatelessWidget implements PreferredSizeWidget{
           ),
         ],
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize:
+              const Size.fromHeight(1.0), 
+          child: Container(
+            color: Colors.grey,
+            height: 0.5, 
+          ),
+        ),
       ),
+      
     );
   }
   
