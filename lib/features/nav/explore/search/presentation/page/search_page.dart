@@ -92,24 +92,27 @@ class SearchPage extends GetView<SearchController> {
                   SizedBox(
                     height: 10,
                   ),
-                  
                   GridView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // You can adjust the number of columns here
+                      crossAxisCount:
+                          2, // You can adjust the number of columns here
                       crossAxisSpacing: 10.0,
                       mainAxisSpacing: 10.0,
                     ),
-                    itemCount: 20, // Replace yourItemCount with the actual number of items
+                    itemCount:
+                        20, // Replace yourItemCount with the actual number of items
                     itemBuilder: (BuildContext context, int index) {
                       // Replace FoodCard with your custom widget
                       return FoodCard(
-                        imageUrl: 'assets/images/home.png', // Replace with actual image URL
+                        imageUrl:
+                            'assets/images/home.png', // Replace with actual image URL
                         rating: 5, // Replace with actual rating
                         reviews: 23, // Replace with actual review count
                         distance: 1.2, // Replace with actual distance
-                        title: 'this is title post  ${index+1}', // Replace with actual title
+                        title:
+                            'this is title poaaaaaaaaassssssssssssssssaaaaast  ${index + 1}', // Replace with actual title
                       );
                     },
                   ),

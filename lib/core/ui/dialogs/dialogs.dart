@@ -6,7 +6,7 @@ import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:lottie/lottie.dart';
+// import 'package:lottie/lottie.dart';
 
 class DialogsUtils {
   static void showAlterLoading() {
@@ -71,7 +71,7 @@ class DialogsUtils {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: typeDialog == TypeDialog.error
-                          ? AppColors.red
+                          ? AppColors.greenBold
                           : typeDialog == TypeDialog.success
                               ? AppColors.primary
                               : Colors.amber,
@@ -138,7 +138,7 @@ class DialogsUtils {
                               ),
                             ),
                             onPressed: () {
-                              Get.back(); // Đóng dialog
+                              Get.back(closeOverlays: true); // Đóng dialog
                             },
                           ),
                         ),
