@@ -68,6 +68,8 @@ class RegisterController extends GetxController {
         email: result.data!.email!,
       );
       createNewUser(user);
+      DialogsUtils.showAlterLoading();
+
       print("DANG KY THANH CONG!! XIN CHUC MUNG");
     } else {
       Get.back();
