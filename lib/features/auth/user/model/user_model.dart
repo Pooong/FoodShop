@@ -5,7 +5,7 @@ class UserModel {
   String? displayName;
   String? photoUrl;
   String? createdAt;
-
+  bool? isComplete;
   UserModel({
     required this.uid,
     // required this.password,
@@ -13,6 +13,7 @@ class UserModel {
     this.displayName,
     this.photoUrl,
     this.createdAt,
+    this.isComplete,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +24,7 @@ class UserModel {
       displayName: json['displayName'],
       photoUrl: json['photoUrl'],
       createdAt: json['createdAt'],
+      isComplete: json['isComplete'],
     );
   }
 
@@ -31,6 +33,7 @@ class UserModel {
       'uid': uid,
       // 'password': password,
       'email': email,
+      'isComplete': isComplete,
       'displayName': displayName,
       'photoUrl': photoUrl,
       'createdAt': createdAt,

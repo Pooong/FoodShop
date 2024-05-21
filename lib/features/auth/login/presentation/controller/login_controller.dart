@@ -2,6 +2,7 @@ import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firebae_auth/firebase_auth.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
 import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/core/utils/validator.dart';
 import 'package:find_food/features/auth/user/domain/use_case/save_user_use_case.dart';
@@ -42,56 +43,86 @@ class LoginController extends GetxController {
     }
   }
 
-  void handleLoginWithEmail() async {
-    // if (!_validateEmail()) return;
-    // DialogsUtils.showAlterLoading();
-    final result = await FirebaseAuthentication.logIn(
-      email: "admin@gmail.com",
-      password: "123456789",
-    );
+  // void handleLoginWithEmail() async {
+  //   print("---------------------OK---------------------");
+  //   if (!_validateEmail()) return;
+  //   DialogsUtils.showAlterLoading();
+  //   final result = await FirebaseAuthentication.logIn(
+  //     email: emailController.text, // Sử dụng email từ controller
+  //     password: passwordController.text,
+  //   );
+  //   print("---------------------PROCESSING---------------------");
 
-    // Get.back();
+  //   Get.back();
+  //   if (result.status == Status.success) {
+  //     User? user = result.data;
+  //     print("---------------------CASE   1---------------------");
+
+  //     if (user != null && !user.emailVerified) {
+  //       print("---------------------CASE   2---------------------");
+
+  //       await FirebaseAuthentication.sendMailVerify();
+  //       Get.offAllNamed(Routes.emailVerify);
+  //     } else {
+  //       print("---------------------CASE   3---------------------");
+
+  //       final resultUser = await FirestoreUser.getUser(user!.uid);
+  //       if (resultUser.status == Status.success) {
+  //         if (resultUser.data!.isComplete == false) {
+  //           print("---------------------CASE   4---------------------");
+
+  //           Get.offAllNamed(Routes.userInfor, arguments: resultUser.data);
+  //         } else {
+  //           print("---------------------CASE   5---------------------");
+
+  //           _saveUserUseCase.saveUser(resultUser.data!);
+  //           Get.offAllNamed(Routes.main);
+  //         }
+  //         _saveUserUseCase.saveUser(resultUser.data!);
+  //         Get.offAllNamed(Routes.main);
+  //       } else {
+  //         print("---------------------CASE   FAILS---------------------");
+
+  //         SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
+  //       }
+  //     }
+  //   }
+  // }
+  void handleLoginWithEmail() async {
+    print("---------------------OK---------------------");
+    if (!_validateEmail()) return;
+    DialogsUtils.showAlterLoading();
+    final result = await FirebaseAuthentication.logIn(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+    print("---------------------PROCESSING---------------------");
+
+    Get.back();
     if (result.status == Status.success) {
       User? user = result.data;
-
-      // if (user != null && !user.emailVerified) {
-      //   await FirebaseAuthentication.sendMailVerify();
-      //   Get.offAllNamed(Routes.emailVerify);
-      // } else {
-      //   final resultUser = await FirestoreUser.getUser(user!.uid);
-      //   if (resultUser.status == Status.success) {
-      //     // if (resultUser.data!.isComplete == false) {
-      //     //   Get.offAllNamed(Routes.userInfor, arguments: resultUser.data);
-      //     // } else {
-      //     //   _saveUserUseCase.saveUser(resultUser.data!);
-      //     //   Get.offAllNamed(Routes.main);
-      //     // }
-      //     _saveUserUseCase.saveUser(resultUser.data!);
-      //     Get.offAllNamed(Routes.main);
-      //   } else {
-      //     SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
-      //   }
-      // }
+      print("---------------------CASE   1---------------------");
 
       final resultUser = await FirestoreUser.getUser(user!.uid);
       if (resultUser.status == Status.success) {
-        //
-        // if (resultUser.data!.isComplete == false) {
-        //   Get.offAllNamed(Routes.userInfor, arguments: resultUser.data);
-
-        // } else {
-
-        //   _saveUserUseCase.saveUser(resultUser.data!);
-        //   Get.offAllNamed(Routes.main);
-        // }
+        if (resultUser.data!.isComplete == false) {
+          print("---------------------CASE   2---------------------");
+          Get.offAllNamed(Routes.userInfor, arguments: resultUser.data);
+        } else {
+          print("---------------------CASE   SUCCESS---------------------");
+          _saveUserUseCase.saveUser(resultUser.data!);
+          Get.offAllNamed(Routes.main);
+        }
+        print("---------------------CASE   SUCCESS---------------------");
 
         _saveUserUseCase.saveUser(resultUser.data!);
-
         Get.offAllNamed(Routes.main);
       } else {
-        SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
+        print("---------------------CASE   FAILS---------------------");
+        SnackbarUtil.show(resultUser.exp?.message ?? "something_went_wrong");
       }
     } else {
+      print("=======================NOOB========================");
       SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
     }
   }
