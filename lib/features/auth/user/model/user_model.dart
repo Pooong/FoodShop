@@ -1,5 +1,6 @@
 class UserModel {
   final String uid;
+  // final String password;
   final String email;
   String? displayName;
   String? photoUrl;
@@ -7,6 +8,7 @@ class UserModel {
 
   UserModel({
     required this.uid,
+    // required this.password,
     required this.email,
     this.displayName,
     this.photoUrl,
@@ -16,6 +18,7 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       uid: json['uid'],
+      // password: json['password'],
       email: json['email'],
       displayName: json['displayName'],
       photoUrl: json['photoUrl'],
@@ -26,6 +29,7 @@ class UserModel {
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,
+      // 'password': password,
       'email': email,
       'displayName': displayName,
       'photoUrl': photoUrl,

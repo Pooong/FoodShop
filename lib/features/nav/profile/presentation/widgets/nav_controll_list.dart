@@ -66,7 +66,7 @@ class _NavControllListState extends State<NavControllList> {
             ],
           ),
         ),
-        const SizedBox(height: 20.0),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -79,7 +79,8 @@ class _NavControllListState extends State<NavControllList> {
       child: Container(
         decoration: BoxDecoration(
           border: isActive
-              ? const Border(bottom: BorderSide(width: 2, color: AppColors.black))
+              ? const Border(
+                  bottom: BorderSide(width: 2, color: AppColors.black))
               : null,
         ),
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
