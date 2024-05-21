@@ -7,29 +7,39 @@ class SettingInformationPage extends GetView<SettingInformationController> {
 
   @override
   Widget build(BuildContext context) {
+    final SettingInformationController controller = Get.put(SettingInformationController());
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Account Settings"),
+        title: const Text("Settings Information"),
         actions: [],
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(
-              height: 20,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Container(
+            height: Get.height - Get.height * 0.16,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    _buildFullNameField(),
+                    const SizedBox(height: 10.0),
+                    _buildEmailField(),
+                    const SizedBox(height: 10.0),
+                    _buildPhoneNumberField(),
+                    const SizedBox(height: 10.0),
+                    _buildPasswordField(),
+                    const SizedBox(height: 30.0),
+                  ],
+                ),
+                _buildSubmitButton(),
+              ],
             ),
-            _buildFullNameField(),
-            const SizedBox(height: 10.0),
-            _buildEmailField(),
-            const SizedBox(height: 10.0),
-            _buildPhoneNumberField(),
-            const SizedBox(height: 10.0),
-            _buildPasswordField(),
-            const SizedBox(height: 10.0),
-            _buildSubmitButton(),
-          ],
+          ),
         ),
       ),
     );
@@ -37,92 +47,138 @@ class SettingInformationPage extends GetView<SettingInformationController> {
 }
 
 Widget _buildFullNameField() {
-  return TextFormField(
-    decoration: const InputDecoration(
-      labelText: "Full Name",
-      hintText: "Full Name",
-      border: UnderlineInputBorder(),
-      labelStyle: TextStyle(color: Colors.grey),
-    ),
-    keyboardType: TextInputType.name,
-    style: const TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-      fontSize: 20,
-    ),
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return "Please enter your Full name";
-      }
-      return null;
-    },
-    onSaved: (value) {},
+  return  TextFormField(
+      decoration: const InputDecoration(
+        labelText: "Full Name",
+        labelStyle: TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+        ),
+        hintText: "Enter your full name",
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontSize: 10,
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red, // Change the color here
+            width: 2.0,
+          ),
+        ),
+      ),
+      keyboardType: TextInputType.name,
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Please enter your Full name";
+        }
+        return null;
+      },
+      onSaved: (value) {},
+  
   );
 }
 
 Widget _buildEmailField() {
   return TextFormField(
-    decoration: const InputDecoration(
-      labelText: "Email Address",
-      hintText: "Email Address",
-      border: UnderlineInputBorder(),
-      labelStyle: TextStyle(color: Colors.grey),
-    ),
-    keyboardType: TextInputType.emailAddress,
-    style: const TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-      fontSize: 20,
-    ),
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return "Your email ";
-      }
-      if (!value.contains('@')) {
-        return "Please enter an correct email!";
-      }
-      return null;
-    },
-    onSaved: (value) {},
+      decoration: const InputDecoration(
+        labelText: "Email Address",
+        labelStyle: TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+        ),
+        hintText: "Enter Your Email Address",
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontSize: 10,
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 2.0,
+          ),
+        ),
+      ),
+      keyboardType: TextInputType.emailAddress,
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Your email is required";
+        }
+        if (!value.contains('@')) {
+          return "Please enter an correct email!";
+        }
+        return null;
+      },
+      onSaved: (value) {},
   );
 }
 
 Widget _buildPhoneNumberField() {
-  return TextFormField(
-    decoration: const InputDecoration(
-      labelText: "Phone Number",
-      hintText: "Phone Number",
-      border: UnderlineInputBorder(),
-      labelStyle: TextStyle(color: Colors.grey),
-    ),
-    keyboardType: TextInputType.phone,
-    style: const TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-      fontSize: 20,
-    ),
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return "Please enter your phone number";
-      }
-      return null;
-    },
-    onSaved: (value) {},
+  return  TextFormField(
+      decoration: const InputDecoration(
+        labelText: "Phone Number",
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black,
+            width: 2.0,
+          ),
+        ),
+        labelStyle: TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+        ),
+        hintText: "Enter Your Phone Number",
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontSize: 10,
+        ),
+      ),
+      keyboardType: TextInputType.phone,
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Please enter your phone number";
+        }
+        return null;
+      },
+      onSaved: (value) {},
   );
 }
 
 Widget _buildPasswordField() {
   return TextFormField(
-    enabled: false, // Disable TextFormField
-    obscureText: true,
-    decoration: InputDecoration(
-      labelText: "Password",
-      labelStyle: TextStyle(color: Colors.grey),
-      hintText: "Password",
-      border: UnderlineInputBorder(),
-      suffix: GestureDetector(
+      //enabled: false, // Disable TextFormField
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: "Password",
+        labelStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+        ),
+        hintText: "Password",
+        hintStyle: const TextStyle(
+          color: Colors.grey,
+          fontSize: 10,
+        ),
+        border: const UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black,
+            width: 2.0,
+          ),
+        ),
+        suffix: GestureDetector(
           onTap: () {
-              Get.offNamed("/changePassword");
+            Get.offNamed("/changePassword");
           },
           child: const Text(
             "Change",
@@ -131,24 +187,30 @@ Widget _buildPasswordField() {
             ),
           ),
         ),
-    ),
-    style: const TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-      fontSize: 20,
-    ),
+      ),
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+      ),
   );
 }
 
 Widget _buildSubmitButton() {
   return SizedBox(
-    width: double.infinity,
-    child: ElevatedButton(
-      onPressed: () {},
-      child: const Text(
-        "Save Change",
-        style: TextStyle(color: Colors.white),
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        onPressed: () {},
+        child: const Text(
+          "Save Change",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
-    ),
   );
 }

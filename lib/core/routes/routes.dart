@@ -33,4 +33,9 @@ abstract class Routes {
   static const uploadPostPage = "/uploadPostPage";
   static const getLoactionPage ="/getLocationPage";
 
+  static const notify = "/notify";
+  static const socialNotify = "/socialNotify";
+  static const newsNotify = "/newsNotify";
+  static const notifySetting = "/notifySetting";
+
 }
