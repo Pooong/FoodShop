@@ -1,5 +1,5 @@
 import 'package:find_food/core/ui/widgets/appbar/home_appbar.dart';
-import 'package:find_food/features/nav/home/home/presentation/widgets/build_sliver_to_box_adapter.dart';
+import 'package:find_food/core/ui/widgets/card/build_sliver_to_box_adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

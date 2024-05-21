@@ -1,8 +1,8 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/ui/widgets/card/build_sliver_to_box_adapter.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/find_post/result_search/presentation/controller/result_search_controller.dart';
-import 'package:find_food/features/nav/home/home/presentation/widgets/build_sliver_to_box_adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -51,12 +51,14 @@ class ResultSearchPage extends GetView<ResultSearchController> {
                       text: "search result: ",
                       fontWeight: FontWeight.w500,
                     ),
-                    SizedBox(
-                      width: 280,
-                      child: Text(
-                        value,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                    Flexible(
+                      child: SizedBox(
+                        width: 280,
+                        child: Text(
+                          value,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     )
                   ],
@@ -70,10 +72,7 @@ class ResultSearchPage extends GetView<ResultSearchController> {
       // Hiển thị  danh sách sản phẩm tìm kiếm
       body: CustomScrollView(
         slivers: [
-          buildSliverToBoxAdapter(),
-          buildSliverToBoxAdapter(),
-          buildSliverToBoxAdapter(),
-          buildSliverToBoxAdapter(),
+          for(var i =1;i<=20;i++)
           buildSliverToBoxAdapter(),
         ],
       ),

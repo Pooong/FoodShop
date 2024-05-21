@@ -10,7 +10,7 @@ class ExploreFoodCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 15),
+      margin: const EdgeInsets.only(right: 15),
       width: 150,
       height: 200,
       clipBehavior: Clip.antiAlias,

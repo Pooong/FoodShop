@@ -59,18 +59,14 @@ class _NavControllListState extends State<NavControllList> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              itemNav(icon: Icons.list, index: 0),
-              itemNav(icon: Icons.favorite_border, index: 1),
-              itemNav(icon: Icons.bookmark_outline, index: 2),
-              itemNav(icon: Icons.lock_outline, index: 3),
+              Flexible(child: itemNav(icon: Icons.list, index: 0)),
+              Flexible(child: itemNav(icon: Icons.favorite_border, index: 1)),
+              Flexible(child: itemNav(icon: Icons.bookmark_outline, index: 2)),
+              Flexible(child: itemNav(icon: Icons.lock_outline, index: 3)),
             ],
           ),
         ),
-<<<<<<< HEAD
-        const SizedBox(height: 20),
-=======
         const SizedBox(height: 20.0),
->>>>>>> f0abbd31b4d6e30f394e5d0a58dd1e85a8f39ccb
       ],
     );
   }

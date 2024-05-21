@@ -23,6 +23,8 @@ import 'package:find_food/features/nav/post/upload/di/upload_binding.dart';
 import 'package:find_food/features/nav/post/upload/presentation/page/upload_page.dart';
 import 'package:find_food/features/nav/profile/di/profile_binding.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
+import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
+import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
 import 'package:find_food/features/splash/di/splash_binding.dart';
 import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
@@ -127,5 +129,15 @@ class Pages {
       page: () => const ResultSearchPage(),
       binding: ResultSearchBinding(),
     ),
+
+    // màng hình tìm kiếm
+    GetPage(
+      name: Routes.postsDetail,
+      page: () => const PostsDetailPage(),
+      binding: PostsDetailBinding(),
+    ),
+
+
+
   ];
 }
