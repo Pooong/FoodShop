@@ -27,66 +27,70 @@ class FoodCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(15.0),
-              topRight: Radius.circular(15.0),
-            ),
-            child: Image.asset(
-              imageUrl,
-              height: 100.0,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              children: [
-                Text(
-                  '$rating ',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Icon(
-                  Icons.star,
-                  color: Colors.yellow[700],
-                  size: 16.0,
-                ),
-                SizedBox(width: 4.0),
-                Text(
-                  '($reviews)',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.grey,
-                  ),
-                ),
-                Spacer(),
-                Text(
-                  '$distance km',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
-            child: Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
+          Flexible(
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(15.0),
+                topRight: Radius.circular(15.0),
+              ),
+              child: Image.asset(
+                imageUrl,
+                height: 200.0,
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
             ),
           ),
+          Flexible(
+              child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      '$rating ',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Icon(
+                      Icons.star,
+                      color: Colors.yellow[700],
+                      size: 16.0,
+                    ),
+                    SizedBox(width: 4.0),
+                    Text(
+                      '($reviews)',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Spacer(),
+                    Text(
+                      '$distance km',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+                Flexible(
+                    child: Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ))
+              ],
+            ),
+          ))
         ],
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:find_food/features/nav/explore/search/presentation/page/search_page.dart';
 import 'package:find_food/features/nav/home/home/presentation/page/home_page.dart';
-import 'package:find_food/features/nav/notify/notify/presentation/page/notify_page.dart';
+import 'package:find_food/features/nav/notify/presentation/page/notify_page.dart';
 import 'package:find_food/features/nav/post/upload/presentation/page/upload_page.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
 import 'package:flutter/material.dart';

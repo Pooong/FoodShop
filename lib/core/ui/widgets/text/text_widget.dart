@@ -14,7 +14,7 @@ class TextWidget extends StatelessWidget {
   final List<Shadow>? listShadow;
   final TextDecoration? textDecoration;
   final FontStyle? fontStyle;
-  const TextWidget({
+  const TextWidget( {
     super.key,
     this.textAlign,
     this.listShadow,
