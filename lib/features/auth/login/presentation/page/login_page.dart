@@ -9,6 +9,7 @@ class LoginPage extends GetView<LoginController> {
   LoginPage({super.key});
   final _formKey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

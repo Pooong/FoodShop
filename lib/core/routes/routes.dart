@@ -33,4 +33,8 @@ abstract class Routes {
   static const uploadPostPage = "/uploadPostPage";
   static const getLoactionPage ="/getLocationPage";
 
+
+  //food detail
+  static const postsDetail = '/postsDetail';
+
 }

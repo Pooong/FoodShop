@@ -1,4 +1,4 @@
-import 'package:find_food/app_config.dart';
+import 'package:find_food/app_config.dart';                              
 import 'package:flutter/material.dart';
 
 import 'app.dart';
