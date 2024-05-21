@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 class LoginPage extends GetView<LoginController> {
   LoginPage({super.key});
   final _formKey = GlobalKey<FormState>();
-  final LoginController controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +55,9 @@ class LoginPage extends GetView<LoginController> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
+                      controller: controller.emailController,
                       decoration: const InputDecoration(
-                        labelText: 'Username',
+                        labelText: 'Email',
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: AppColors.grey,
@@ -71,13 +71,17 @@ class LoginPage extends GetView<LoginController> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your username';
+                          return 'Please enter your email';
                         }
+                        // if (!controller.validateEmail()) {
+                        //   return "Email invalid";
+                        // }
                         return null;
                       },
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      controller: controller.passwordController,
                       decoration: const InputDecoration(
                         labelText: 'Password',
                         enabledBorder: UnderlineInputBorder(
@@ -116,7 +120,11 @@ class LoginPage extends GetView<LoginController> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            controller.handleLoginWithEmail();
+                          }
+                        },
                         child: const Text(
                           'Sign In',
                           style: TextStyle(color: Colors.white),
