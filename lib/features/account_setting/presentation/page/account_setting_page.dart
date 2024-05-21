@@ -20,7 +20,6 @@ class AccountSettingPage extends GetView<ProfileController> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
