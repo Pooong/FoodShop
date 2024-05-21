@@ -71,7 +71,7 @@ class DialogsUtils {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: typeDialog == TypeDialog.error
-                          ? AppColors.red
+                          ? AppColors.greenBold
                           : typeDialog == TypeDialog.success
                               ? AppColors.primary
                               : Colors.amber,
@@ -138,7 +138,7 @@ class DialogsUtils {
                               ),
                             ),
                             onPressed: () {
-                              Get.back(); // Đóng dialog
+                              Get.back(closeOverlays: true); // Đóng dialog
                             },
                           ),
                         ),
