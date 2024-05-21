@@ -45,7 +45,7 @@ class FoodCard extends StatelessWidget {
               children: [
                 Text(
                   '$rating ',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -58,7 +58,7 @@ class FoodCard extends StatelessWidget {
                 SizedBox(width: 4.0),
                 Text(
                   '($reviews)',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     color: Colors.grey,
                   ),
@@ -66,7 +66,7 @@ class FoodCard extends StatelessWidget {
                 Spacer(),
                 Text(
                   '$distance km',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     color: Colors.grey,
                   ),
@@ -81,7 +81,6 @@ class FoodCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
               ),
