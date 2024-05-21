@@ -1,6 +1,5 @@
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ResultSearchAppbar extends StatelessWidget {
   const ResultSearchAppbar({super.key});

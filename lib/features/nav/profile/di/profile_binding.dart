@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 class ProfileBindding extends Bindings {
   @override
   void dependencies() {
-
     Get.lazyPut(() => Prefs(), fenix: true);
 
     Get.lazyPut(()=> ProfileController());
