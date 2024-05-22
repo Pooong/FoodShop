@@ -10,12 +10,11 @@ class ExploreAppbar extends StatelessWidget  implements PreferredSizeWidget {
   
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController();
-
-    void _handleSearch(String value){
+    final TextEditingController controller = TextEditingController();
+    void handleSearch(String value){
       Get.toNamed(Routes.resultSearch,arguments: value);
       // Get.toNamed(Routes.resultSearch);
-    }
+    } 
 
     return PreferredSize(
         preferredSize: const Size.fromHeight(115),
@@ -40,14 +39,14 @@ class ExploreAppbar extends StatelessWidget  implements PreferredSizeWidget {
                   decoration: BoxDecoration(
                     color: AppColors.gray2,
                     border: Border.all(
-                      color: AppColors.gray2,
+                      color: AppColors.gray.withOpacity(.1),
                       width: 1,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: TextField(
-                    controller: _controller,
-                    onSubmitted: _handleSearch,
+                    controller: controller,
+                    onSubmitted: handleSearch,
                     textInputAction: TextInputAction.done, 
                     decoration: const InputDecoration(
                         hintStyle: TextStyle(

@@ -4,6 +4,7 @@ import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/enum.dart'; // Import TypeDialog
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 // import 'package:lottie/lottie.dart';
