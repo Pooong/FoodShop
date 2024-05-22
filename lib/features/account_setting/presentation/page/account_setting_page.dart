@@ -1,8 +1,10 @@
-import 'package:find_food/features/nav/profile/presentation/controller/profile_controller.dart';
+import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/ui/dialogs/dialogs.dart';
+import 'package:find_food/features/account_setting/presentation/controller/account_setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AccountSettingPage extends GetView<ProfileController> {
+class AccountSettingPage extends GetView<AccountSettingController> {
   const AccountSettingPage({super.key});
 
   @override
@@ -52,9 +54,7 @@ class AccountSettingPage extends GetView<ProfileController> {
                 sectionIcon: Icons.arrow_forward_ios,
                 route: "",
               ),
-              
               const SizedBox(height: 20,),
-              
               Row(
                 
                 children: [
@@ -99,6 +99,17 @@ class AccountSettingPage extends GetView<ProfileController> {
                 subtitle: "",
                 sectionIcon: Icons.arrow_forward_ios,
                 route: "",
+                onTap: () {
+                DialogsUtils.showAlertDialog(
+                  title: "Đăng xuất",
+                  message: "Bạn có muốn đăng xuất ?",
+                  typeDialog: TypeDialog.success,
+                  onPresss: () async {
+                    await AccountSettingController.logoutUser();
+                    Get.offAllNamed('/login'); // Điều hướng về trang đăng nhập
+                  },
+                );
+              },
               ),
             ],
           ),
