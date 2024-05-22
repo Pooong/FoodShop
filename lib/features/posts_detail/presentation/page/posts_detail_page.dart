@@ -105,7 +105,9 @@ class PostsDetailPage extends GetView<PostsDetailController> {
                       ),
                     ],
                   )),
-                  InkWell(onTap: (){},child: Image.asset('assets/images/send.png'))
+                  InkWell(
+                      onTap: () {},
+                      child: Image.asset('assets/images/send.png'))
                 ],
               ),
             )
