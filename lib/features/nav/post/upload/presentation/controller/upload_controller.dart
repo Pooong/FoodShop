@@ -18,6 +18,10 @@ class UploadController extends GetxController {
         .addAll(pickedImages.map((image) => File(image.path)).toList());
   }
 
+  bool check_list_empty(){
+    return selectedImages.length==0;
+  }
+
   void removeImage(File image) {
     selectedImages.remove(image);
   }

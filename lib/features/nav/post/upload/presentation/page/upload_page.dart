@@ -1,10 +1,10 @@
-
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/widgets/appbar/upload_post_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/features/nav/post/upload/presentation/controller/upload_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
 class UploadPage extends GetView<UploadController> {
@@ -21,6 +21,7 @@ class UploadPage extends GetView<UploadController> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
+
               // Image Picker
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,8 +29,8 @@ class UploadPage extends GetView<UploadController> {
                   titleField(title: 'Images'),
                   Obx(() {
                     return Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
+                      spacing: 15,
+                      runSpacing: 15,
                       children: controller.selectedImages.map((image) {
                         return Stack(
                           children: [
@@ -62,20 +63,25 @@ class UploadPage extends GetView<UploadController> {
                     onTap: () {
                       controller.pickImages();
                     },
-                    child: Container(
-                      width: double.infinity,
-                      height: 180,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.gray.withOpacity(0.1),
-                          width: 2,
+                    child: Obx(
+                      () => Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        width: double.infinity,
+                        height: controller.check_list_empty() ? 180 : 40,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.gray.withOpacity(0.1),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.gray2,
                         ),
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColors.gray2,
-                      ),
-                      child: const Icon(
-                        Icons.add_photo_alternate,
-                        size: 120,
+                        child: controller.check_list_empty()
+                            ? const Icon(
+                                Icons.add_photo_alternate,
+                                size: 120,
+                              )
+                            : const Icon(Icons.add, size: 40),
                       ),
                     ),
                   ),
@@ -102,7 +108,6 @@ class UploadPage extends GetView<UploadController> {
                 ],
               ),
               const SizedBox(height: 20),
-
 
               // Description Field
               Column(

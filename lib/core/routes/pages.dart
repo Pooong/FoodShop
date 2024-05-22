@@ -167,7 +167,7 @@ class Pages {
     // màng hình tìm kiếm
     GetPage(
       name: Routes.postsDetail,
-      page: () => const PostsDetailPage(),
+      page: () => PostsDetailPage(),
       binding: PostsDetailBinding(),
     ),
 

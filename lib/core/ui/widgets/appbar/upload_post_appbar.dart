@@ -9,7 +9,6 @@ class UploadPostAppbar extends StatelessWidget implements PreferredSizeWidget  {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-                leading: const Icon(Icons.arrow_back_ios),
         title: const Text(
           "Upload Post",
           style: TextStyle(
