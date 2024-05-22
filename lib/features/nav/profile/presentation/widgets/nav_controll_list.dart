@@ -10,7 +10,7 @@ class NavControllList extends StatefulWidget {
     required this.currentIndex,
     required this.onPageChanged,
   });
-   
+
   @override
   // ignore: library_private_types_in_public_api
   _NavControllListState createState() => _NavControllListState();

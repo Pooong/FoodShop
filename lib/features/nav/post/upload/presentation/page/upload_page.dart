@@ -1,4 +1,3 @@
-
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/widgets/appbar/upload_post_appbar.dart';
@@ -28,8 +27,8 @@ class UploadPage extends GetView<UploadController> {
                   titleField(title: 'Images'),
                   Obx(() {
                     return Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
+                      spacing: 15,
+                      runSpacing: 15,
                       children: controller.selectedImages.map((image) {
                         return Stack(
                           children: [
@@ -62,20 +61,25 @@ class UploadPage extends GetView<UploadController> {
                     onTap: () {
                       controller.pickImages();
                     },
-                    child: Container(
-                      width: double.infinity,
-                      height: 180,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.gray.withOpacity(0.1),
-                          width: 2,
+                    child: Obx(
+                      () => Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        width: double.infinity,
+                        height: controller.check_list_empty() ? 180 : 40,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.gray.withOpacity(0.1),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.gray2,
                         ),
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColors.gray2,
-                      ),
-                      child: const Icon(
-                        Icons.add_photo_alternate,
-                        size: 120,
+                        child: controller.check_list_empty()
+                            ? const Icon(
+                                Icons.add_photo_alternate,
+                                size: 120,
+                              )
+                            : const Icon(Icons.add, size: 40),
                       ),
                     ),
                   ),
@@ -102,7 +106,6 @@ class UploadPage extends GetView<UploadController> {
                 ],
               ),
               const SizedBox(height: 20),
-
 
               // Description Field
               Column(
@@ -189,29 +192,3 @@ class UploadPage extends GetView<UploadController> {
     );
   }
 }
-
-// class UploadController extends GetxController {
-//   var selectedImages = <File>[].obs;
-//   final titleController = TextEditingController();
-//   final descriptionController = TextEditingController();
-
-//   Future<void> pickImages() async {
-//     final picker = ImagePicker();
-//     final pickedImages = await picker.pickMultiImage();
-
-//     if (pickedImages != null) {
-//       selectedImages.addAll(pickedImages.map((image) => File(image.path)).toList());
-//     } else {
-//       // User canceled the picker
-//     }
-//   }
-
-//   void removeImage(File image) {
-//     selectedImages.remove(image);
-//   }
-
-//   void uploadPost() {
-//     // Implement your upload logic here
-//     // You can use titleController.text, descriptionController.text, and selectedImages
-//   }
-// }
