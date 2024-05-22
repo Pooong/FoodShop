@@ -183,6 +183,10 @@ class DialogsUtils {
     );
   }
 
+
+
+ //========================= RATING ===============================================
+ 
   static void showRatingDialog({
     required double initialRating,
     required ValueChanged<double> onRatingUpdate,
