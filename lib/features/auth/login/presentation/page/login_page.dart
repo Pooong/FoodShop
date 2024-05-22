@@ -6,13 +6,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends GetView<LoginController> {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+  final _formKey = GlobalKey<FormState>();
+
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final TextEditingController _usernameController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primary,
@@ -57,9 +56,9 @@ class LoginPage extends GetView<LoginController> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
-                      controller: _usernameController,
+                      controller: controller.emailController,
                       decoration: const InputDecoration(
-                        labelText: 'Username',
+                        labelText: 'Email',
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: AppColors.grey,
@@ -73,14 +72,17 @@ class LoginPage extends GetView<LoginController> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your username';
+                          return 'Please enter your email';
                         }
+                        // if (!controller.validateEmail()) {
+                        //   return "Email invalid";
+                        // }
                         return null;
                       },
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      controller: _passwordController,
+                      controller: controller.passwordController,
                       decoration: const InputDecoration(
                         labelText: 'Password',
                         enabledBorder: UnderlineInputBorder(
@@ -121,20 +123,7 @@ class LoginPage extends GetView<LoginController> {
                         ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            String username = _usernameController.text;
-                            String password = _passwordController.text;
-
-                            if (username == "1" &&
-                                password == "1") {
-                              controller
-                                  .login(); // Gọi hàm login từ LoginController
-                              Get.offNamed(
-                                  '/main'); // Điều hướng đến trang HomePage
-                            } else {
-                              // Hiển thị thông báo lỗi khi tên người dùng hoặc mật khẩu không chính xác
-                              Get.snackbar(
-                                  'Error', 'Invalid username or password');
-                            }
+                            controller.handleLoginWithEmail();
                           }
                         },
                         child: const Text(

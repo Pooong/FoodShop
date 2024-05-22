@@ -19,10 +19,20 @@ import 'package:find_food/features/maps/location/di/location_binding.dart';
 import 'package:find_food/features/maps/location/presentation/page/location_page.dart';
 import 'package:find_food/features/maps/maps/di/maps_binding.dart';
 import 'package:find_food/features/maps/maps/presentation/page/maps_page.dart';
+import 'package:find_food/features/nav/notify/di/notify_binding.dart';
+import 'package:find_food/features/nav/notify/nav/news_notify/di/news_notify_binding.dart';
+import 'package:find_food/features/nav/notify/nav/news_notify/presentation/page/news_notify_page.dart';
+import 'package:find_food/features/nav/notify/nav/notify_setting/di/notify_setting_binding.dart';
+import 'package:find_food/features/nav/notify/nav/notify_setting/presentation/page/notify_setting_page.dart';
+import 'package:find_food/features/nav/notify/nav/social_notify/di/social_notify_binding.dart';
+import 'package:find_food/features/nav/notify/nav/social_notify/presentation/page/social_notify_page.dart';
+import 'package:find_food/features/nav/notify/presentation/page/notify_page.dart';
 import 'package:find_food/features/nav/post/upload/di/upload_binding.dart';
 import 'package:find_food/features/nav/post/upload/presentation/page/upload_page.dart';
 import 'package:find_food/features/nav/profile/di/profile_binding.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
+import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
+import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
 import 'package:find_food/features/splash/di/splash_binding.dart';
 import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
@@ -35,14 +45,14 @@ class Pages {
     // trang đăng nhập
     GetPage(
       name: Routes.login,
-      page: () => const LoginPage(),
+      page: () => LoginPage(),
       binding: LoginBindding(),
     ),
 
     // trang đăng ký
     GetPage(
       name: Routes.register,
-      page: () => const RegisterPage(),
+      page: () => RegisterPage(),
       binding: RegisterBindding(),
     ),
 
@@ -96,6 +106,34 @@ class Pages {
       binding: ChangePasswordBinding(),
     ),
 
+    //trang notifications
+    GetPage(
+      name: Routes.notify,
+      page: () => const NotifyPage(),
+      binding: NotifyBinding(),
+    ),
+
+    //trang social notify
+    GetPage(
+      name: Routes.socialNotify,
+      page: () =>  SocialNotifyPage(),
+      binding: SocialNotifyBinding(),
+    ),
+
+    //trang news notify
+    GetPage(
+      name: Routes.newsNotify,
+      page: () => const NewsNotifyPage(),
+      binding: NewsNotifyBinding(),
+    ),
+
+    //trang Notify Settings
+    GetPage(
+      name: Routes.notifySetting,
+      page: () => const NotifySettingPage(),
+      binding: NotifySettingBinding(),
+    ),
+
     // =====================  ROUTE POST =====================
 
     //màng hình đăng bài viết
@@ -111,7 +149,7 @@ class Pages {
       page: () => const LocationPage(),
       binding: LocationBinding(),
     ),
-    
+
     // màng hình hiển thị Maps
     GetPage(
       name: Routes.maps,
@@ -119,13 +157,21 @@ class Pages {
       binding: MapsBinding(),
     ),
 
-
-
     // màng hình tìm kiếm
     GetPage(
       name: Routes.resultSearch,
       page: () => const ResultSearchPage(),
       binding: ResultSearchBinding(),
     ),
+
+    // màng hình tìm kiếm
+    GetPage(
+      name: Routes.postsDetail,
+      page: () => const PostsDetailPage(),
+      binding: PostsDetailBinding(),
+    ),
+
+
+
   ];
 }

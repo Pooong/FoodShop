@@ -1,4 +1,7 @@
+import 'package:find_food/core/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 
 const EdgeInsets _padding = EdgeInsets.all(10);
 const double _imageHeight = 200;
@@ -6,6 +9,7 @@ const double _starIconSize = 16;
 
 
 Widget buildSliverToBoxAdapter() {
+
   return SliverPadding(
     padding: _padding,
     sliver: SliverToBoxAdapter(
@@ -29,13 +33,22 @@ Widget buildSliverToBoxAdapter() {
             children: [
               ClipRRect( 
                   borderRadius: BorderRadius.vertical(top: Radius.circular(10)),  
-                  child: Image.asset(
-                    'assets/images/home.png',
-                    height: 200,  
-                    width: double.infinity, 
-                    fit: BoxFit.cover,  
-                  ),
+
+                  child:
+                  
+                   InkWell(
+                    
+                    onTap: ()=>Get.toNamed(Routes.postsDetail),
+
+                     child: Image.asset(
+                      'assets/images/home.png',
+                      height: 200,  
+                      width: double.infinity, 
+                      fit: BoxFit.cover,  
+                                       ),
+                   ),
                 ),
+
               const SizedBox(height: 10),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -87,7 +100,7 @@ Widget buildSliverToBoxAdapter() {
                         ),
                         const SizedBox(width: 5),
                         const Text(
-                          'Cách 2.7km',
+                          '2.7km',
                           style: TextStyle(color: Colors.black),
                         ),
                       ],

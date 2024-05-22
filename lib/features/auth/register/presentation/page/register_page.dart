@@ -1,19 +1,18 @@
-import 'package:find_food/app.dart';
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/features/auth/register/presentation/controller/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-// import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class RegisterPage extends GetView<RegisterController> {
-  const RegisterPage({super.key});
+class RegisterPage extends StatelessWidget {
+  RegisterPage({super.key});
+  final _formKey = GlobalKey<FormState>();
+
+  final RegisterController controller = Get.put(RegisterController());
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primary,
@@ -82,8 +81,9 @@ class RegisterPage extends GetView<RegisterController> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
+                        controller: controller.emailController,
                         decoration: const InputDecoration(
-                          labelText: 'Username',
+                          labelText: 'Email',
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                                 color:
@@ -97,13 +97,18 @@ class RegisterPage extends GetView<RegisterController> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                            return 'Please enter your email';
+                          }
+                          if (!controller.validateEmail()) {
+                            return controller.msgEmailError.value;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
+                        obscureText: true,
+                        controller: controller.passwordController,
                         decoration: const InputDecoration(
                           labelText: 'Password',
                           enabledBorder: UnderlineInputBorder(
@@ -121,11 +126,15 @@ class RegisterPage extends GetView<RegisterController> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password';
                           }
+                          if (!controller.validatePassword()) {
+                            return controller.msgPasswordError.value;
+                          }
                           return null;
                         },
                       ),
                       const SizedBox(height: 15),
                       TextFormField(
+                        obscureText: true,
                         decoration: const InputDecoration(
                           labelText: 'Confirm Password',
                           enabledBorder: UnderlineInputBorder(
@@ -141,7 +150,10 @@ class RegisterPage extends GetView<RegisterController> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                            return 'Please confirm your password';
+                          }
+                          if (value != controller.passwordController.text) {
+                            return 'Passwords do not match';
                           }
                           return null;
                         },
@@ -165,8 +177,7 @@ class RegisterPage extends GetView<RegisterController> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // Call the login method in the controller
-                              // LoginController.login();
+                              controller.register();
                             }
                           },
                           child: const Text(
@@ -177,7 +188,6 @@ class RegisterPage extends GetView<RegisterController> {
                       ),
                     ],
                   )),
-
               const SizedBox(height: 10), // Khoảng cách giữa nút và đường viền
               const Row(
                 children: [
@@ -193,7 +203,6 @@ class RegisterPage extends GetView<RegisterController> {
               ),
               const Text("Or"),
               const SizedBox(height: 10),
-
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
