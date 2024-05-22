@@ -10,7 +10,6 @@ class ExploreFoodCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(right: 15),
       width: 150,
       height: 200,
       clipBehavior: Clip.antiAlias,
@@ -35,9 +34,9 @@ class ExploreFoodCard extends StatelessWidget {
           Positioned(
               bottom: 0,
               left: 0,
+              right: 0,
+              height: 150,
               child: Container(
-                height: 100,
-                width: 150,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment

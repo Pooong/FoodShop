@@ -16,26 +16,24 @@ class SearchPage extends GetView<SearchController> {
       appBar: const ExploreAppbar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
               /// list san pham 1
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Top Area",
-                    style: TextStyle(
-                        fontSize: AppDimens.textSize20,
-                        fontWeight: FontWeight.w500),
-                  ),
+                const TextWidget(text: "Area",size: AppDimens.textSize20,fontWeight: FontWeight.w500,),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         children: [
-                          for (var i = 1; i <= 20; i++) const ExploreFoodCard(),
+                          for (var i = 1; i <= 20; i++)
+                            Container(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: const ExploreFoodCard()),
                         ],
                       ),
                     ),
@@ -56,14 +54,18 @@ class SearchPage extends GetView<SearchController> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextWidget(text: "Favorite"),
+                  const TextWidget(text: "Favorite",size: AppDimens.textSize20,fontWeight: FontWeight.w500,),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         children: [
-                          for (var i = 1; i <= 20; i++) const ExploreFoodCard(),
+                          for (var i = 1; i <= 20; i++)
+                            Container(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: const ExploreFoodCard(),
+                            ),
                         ],
                       ),
                     ),

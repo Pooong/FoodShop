@@ -4,7 +4,6 @@ import 'package:find_food/core/ui/widgets/appbar/upload_post_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/features/nav/post/upload/presentation/controller/upload_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
 class UploadPage extends GetView<UploadController> {
@@ -21,7 +20,6 @@ class UploadPage extends GetView<UploadController> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-
               // Image Picker
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,29 +192,3 @@ class UploadPage extends GetView<UploadController> {
     );
   }
 }
-
-// class UploadController extends GetxController {
-//   var selectedImages = <File>[].obs;
-//   final titleController = TextEditingController();
-//   final descriptionController = TextEditingController();
-
-//   Future<void> pickImages() async {
-//     final picker = ImagePicker();
-//     final pickedImages = await picker.pickMultiImage();
-
-//     if (pickedImages != null) {
-//       selectedImages.addAll(pickedImages.map((image) => File(image.path)).toList());
-//     } else {
-//       // User canceled the picker
-//     }
-//   }
-
-//   void removeImage(File image) {
-//     selectedImages.remove(image);
-//   }
-
-//   void uploadPost() {
-//     // Implement your upload logic here
-//     // You can use titleController.text, descriptionController.text, and selectedImages
-//   }
-// }
