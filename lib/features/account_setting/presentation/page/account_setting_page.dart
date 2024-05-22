@@ -1,5 +1,4 @@
 import 'package:find_food/core/configs/enum.dart';
-import 'package:find_food/core/data/firebase/model/result.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/features/account_setting/presentation/controller/account_setting_controller.dart';
 import 'package:find_food/features/nav/profile/presentation/controller/profile_controller.dart';
