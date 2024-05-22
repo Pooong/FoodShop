@@ -182,7 +182,6 @@ class DialogsUtils {
       ),
     );
   }
-
   static void showAlertDialog2({
     required String title,
     required String message,
