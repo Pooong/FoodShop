@@ -11,8 +11,15 @@ class NotifySettingPage extends GetView<NotifySettingController> {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(onTap: ()=> Get.back(),child: Icon(Icons.arrow_back)),
-        title: const Text("Notify setting"),
+        title: const Text("Notification setting"),
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(
+            color: Colors.grey,
+            height: 0.5,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

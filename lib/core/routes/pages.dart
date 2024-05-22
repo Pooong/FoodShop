@@ -123,7 +123,7 @@ class Pages {
     //trang news notify
     GetPage(
       name: Routes.newsNotify,
-      page: () => const NewsNotifyPage(),
+      page: () => NewsNotifyPage(),
       binding: NewsNotifyBinding(),
     ),
 
