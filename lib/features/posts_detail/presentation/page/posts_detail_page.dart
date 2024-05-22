@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class PostsDetailPage extends GetView<PostsDetailController> {
-  PostsDetailPage({super.key});
+  const PostsDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
