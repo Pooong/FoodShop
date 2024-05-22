@@ -25,13 +25,13 @@ abstract class Routes {
 
   static const profile = "/profile";
   static const accountSetting = "/accountSetting";
-  static const settingInformation ="/settingInformation";
+  static const settingInformation = "/settingInformation";
   static const changePassword = "/changePassword";
 
-  static const maps='/maps';
-  static const resultSearch='/resultSearch';
+  static const maps = '/maps';
+  static const resultSearch = '/resultSearch';
   static const uploadPostPage = "/uploadPostPage";
-  static const getLoactionPage ="/getLocationPage";
+  static const getLoactionPage = "/getLocationPage";
 
   static const notify = "/notify";
   static const socialNotify = "/socialNotify";
