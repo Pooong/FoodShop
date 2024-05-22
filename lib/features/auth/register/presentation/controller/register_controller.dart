@@ -55,6 +55,7 @@ class RegisterController extends GetxController {
       return;
     }
     print("===============PROCESSING===============");
+    // DialogsUtils.showAlterLoading();
     final result = await FirebaseAuthentication.signUp(
       email: emailController.text,
       password: passwordController.text,
@@ -66,14 +67,12 @@ class RegisterController extends GetxController {
         uid: result.data!.uid,
         email: result.data!.email!,
       );
-      // DialogsUtils.showAlterLoading();
-
       DialogsUtils.showAlertDialog(
           title: "Đăng ký thành công",
           message: "Bạn sẽ được chuyển đến trang đăng nhập",
           typeDialog: TypeDialog.success,
           onPresss: () async =>
-              {await createNewUser(user), Get.offAllNamed('/login')});
+              {await createNewUser(user), Get.offAllNamed("/login")});
       print("DANG KY THANH CONG!! XIN CHUC MUNG");
     } else {
       Get.back();

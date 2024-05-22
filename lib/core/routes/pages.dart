@@ -33,6 +33,8 @@ import 'package:find_food/features/nav/profile/di/profile_binding.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
 import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
 import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
+import 'package:find_food/features/restaurant/di/restaurant_binding.dart';
+import 'package:find_food/features/restaurant/pressentation/page/restaurant_page.dart';
 import 'package:find_food/features/splash/di/splash_binding.dart';
 import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
@@ -116,7 +118,7 @@ class Pages {
     //trang social notify
     GetPage(
       name: Routes.socialNotify,
-      page: () =>  SocialNotifyPage(),
+      page: () => SocialNotifyPage(),
       binding: SocialNotifyBinding(),
     ),
 
@@ -171,7 +173,11 @@ class Pages {
       binding: PostsDetailBinding(),
     ),
 
-
-
+    //restaurant page
+    GetPage(
+      name: Routes.restaurant,
+      page: () => RestaurantPage(),
+      binding: RestaurantBinding(),
+    ),
   ];
 }
