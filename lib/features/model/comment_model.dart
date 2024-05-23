@@ -4,14 +4,12 @@ class CommentModel {
   final String? id;
   final double favorite;
   final String comment;
-  final double rate;
   final UserModel author;
 
   CommentModel({
     this.id,
     required this.favorite,
     required this.comment,
-    required this.rate,
     required this.author,
   });
 
@@ -26,7 +24,6 @@ class CommentModel {
       id: id ?? this.id,
       favorite: favorite ?? this.favorite,
       comment: comment ?? this.comment,
-      rate: rate ?? this.rate,
       author: author ?? this.author,
     );
   }
@@ -35,7 +32,6 @@ class CommentModel {
     return {
       'favorite': favorite,
       'comment': comment,
-      'rate': rate,
       'author': author.toJson(),
     };
   }
@@ -45,7 +41,6 @@ class CommentModel {
       id: json['id'],
       favorite: json['favorite'],
       comment: json['comment'],
-      rate: json['rate'],
       author: UserModel.fromJson(json['author']),
     );
   }

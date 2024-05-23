@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 import 'dart:ffi';
 
 import 'package:find_food/core/configs/app_colors.dart';
+=======
+>>>>>>> origin
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -344,7 +347,6 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
             ),
 
 
-            
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
