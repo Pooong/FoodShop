@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -157,7 +158,8 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
         ],
       ),
 
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
@@ -387,8 +389,8 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
                               const Column(
                                 children: [
                                   Icon(Icons.comment,
-                                      color: Colors.black, size: 20.0),
-                                  TextWidget(text: "100",size:AppDimens.textSize15)
+                                      color: Color.fromRGBO(0, 0, 0, 1), size: 20.0),
+                                  TextWidget(text: "100",size: AppDimens.textSize15),
                                 ],
                               ),
                               const SizedBox(width: 20.0,),
@@ -407,7 +409,7 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
                                     },
 
                                   ),
-                                  const TextWidget(text: "100",size:AppDimens.textSize15)
+                                  const TextWidget(text: "100",size:AppDimens.textSize15),
                                 ],
                               ),
                             ],
@@ -446,6 +448,7 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
 
         ],
       ),
+      )
     );
   }
 }

@@ -1,9 +1,10 @@
 import 'package:find_food/core/ui/widgets/appbar/home_appbar.dart';
 import 'package:find_food/core/ui/widgets/card/posts_card.dart';
+import 'package:find_food/features/nav/home/home/presentation/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomePage extends GetView {
+class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
   
 
