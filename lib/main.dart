@@ -5,10 +5,5 @@ import 'app.dart';
 
 void main() async {
   appConfig();
-<<<<<<< HEAD
-  runApp(const App()); 
-}
-=======
   runApp(const App());
 }
->>>>>>> main
