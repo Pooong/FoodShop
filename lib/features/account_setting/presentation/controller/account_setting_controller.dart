@@ -2,7 +2,6 @@
 import 'package:find_food/core/data/prefs/prefs.dart';
 
 import 'package:flutter/material.dart';
->>>>>>> d2b0026e5644271df910c7bed451fef06ac75abe
 import 'package:get/get.dart';
 //import 'package:find_food/core/configs/prefs_constants.dart';
 import 'package:find_food/core/data/prefs/prefs.dart';
