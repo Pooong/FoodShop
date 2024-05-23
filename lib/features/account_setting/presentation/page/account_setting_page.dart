@@ -1,5 +1,3 @@
-import 'package:find_food/core/configs/enum.dart';
-import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/features/account_setting/presentation/controller/account_setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -97,7 +95,7 @@ class AccountSettingPage extends GetView<AccountSettingController> {
                 route: "",
                 onTap: () async {
                   await AccountSettingController.logoutUser();
-                  Get.offAllNamed('/login'); 
+                  Get.offAllNamed('/login');
                 },
               ),
             ],

@@ -14,7 +14,7 @@ class HomePage extends GetView {
       body: CustomScrollView(
         slivers: [
           for(var i=1;i<=10;i++)
-          const PostsCard()
+            PostsCard()
         ],
       ),
     );
