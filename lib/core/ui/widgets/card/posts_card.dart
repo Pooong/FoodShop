@@ -36,7 +36,7 @@ class PostsCard extends StatelessWidget {
                 ClipRRect(
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
                   child: InkWell(
-                    onTap: () => Get.toNamed(Routes.bottomPostsDetail),
+                    onTap: () => Get.toNamed(Routes.postsDetail),
                     child: Image.asset(
                       'assets/images/home.png',
                       height: 200,
