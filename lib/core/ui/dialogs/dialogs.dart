@@ -282,11 +282,6 @@ class DialogsUtils {
   //   required double initialRating,
   //   required ValueChanged<double> onRatingUpdate,
   //   VoidCallback? onSubmit,
-  // static void showAlertDialog2({
-  //   required String title,
-  //   required String message,
-  //   required TypeDialog typeDialog,
-  //   VoidCallback? onPresss,
   // }) {
   //   double currentRating = initialRating;
 

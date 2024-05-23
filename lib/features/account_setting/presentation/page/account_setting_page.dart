@@ -95,17 +95,9 @@ class AccountSettingPage extends GetView<AccountSettingController> {
                 subtitle: "",
                 sectionIcon: Icons.arrow_forward_ios,
                 route: "",
-                onTap: () {
-                  DialogsUtils.showAlertDialog(
-                    title: "Đăng xuất",
-                    message: "Bạn có muốn đăng xuất ?",
-                    typeDialog: TypeDialog.success,
-                    onPresss: () async {
-                      await AccountSettingController.logoutUser();
-                      Get.offAllNamed(
-                          '/login'); // Điều hướng về trang đăng nhập
-                    },
-                  );
+                onTap: () async {
+                  await AccountSettingController.logoutUser();
+                  Get.offAllNamed('/login'); 
                 },
               ),
             ],
