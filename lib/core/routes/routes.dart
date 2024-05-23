@@ -39,7 +39,10 @@ abstract class Routes {
   static const notifySetting = "/notifySetting";
 
   //food detail
-  static const postsDetail = '/postsDetail';
+  static const bottomPostsDetail = '/bottomPostsDetail';
+  static const topPostsDetail = '/topPostsDetail';
+  static const PostsDetail = '/PostsDetail';
+
 
   //restaurant page
   static const restaurant = '/restaurant';

@@ -1,3 +1,5 @@
+import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/features/account_setting/presentation/controller/account_setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -93,9 +95,17 @@ class AccountSettingPage extends GetView<AccountSettingController> {
                 subtitle: "",
                 sectionIcon: Icons.arrow_forward_ios,
                 route: "",
-                onTap: () async {
-                  await AccountSettingController.logoutUser();
-                  Get.offAllNamed('/login'); 
+                onTap: () {
+                  DialogsUtils.showAlertDialog(
+                    title: "Đăng xuất",
+                    message: "Bạn có muốn đăng xuất ?",
+                    typeDialog: TypeDialog.success,
+                    onPresss: () async {
+                      await AccountSettingController.logoutUser();
+                      Get.offAllNamed(
+                          '/login'); // Điều hướng về trang đăng nhập
+                    },
+                  );
                 },
               ),
             ],
@@ -136,4 +146,3 @@ Widget _buildSection(
           },
   );
 }
-
