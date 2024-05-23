@@ -274,99 +274,99 @@ class DialogsUtils {
       ),
     );
   }
-
-
-
- //========================= RATING ===============================================
-  static void showRatingDialog({
-    required double initialRating,
-    required ValueChanged<double> onRatingUpdate,
-    VoidCallback? onSubmit,
-  }) {
-    double currentRating = initialRating;
-
-    Get.dialog(
-      AlertDialog(
-        backgroundColor: const Color(0xFFEBEDF0),
-        elevation: 50.0,
-        contentPadding: EdgeInsets.zero,
-        shape: const RoundedRectangleBorder(
-          side: BorderSide(color: Color(0xFFEBEDF0), width: 4.0),
-          borderRadius: BorderRadius.all(
-            Radius.circular(16.0),
-          ),
-        ),
-        content: Wrap(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              width: 350,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
-                color: AppColors.white,
-              ),
-              child: Column(
-                children: [
-                  RatingBar.builder(
-                    initialRating: initialRating,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: false,
-                    itemCount: 5,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star_rounded,
-                      color: Color.fromARGB(255, 255, 232, 59),
-                    ),
-                    onRatingUpdate: (rating) {
-                      currentRating = rating;
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Click To Rate",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: AppDimens.textSize20,
-                            color: AppColors.black,
-                          ),
-                        ),
-                        Image.asset("assets/images/click_rate.png"),
-                      ],
-                    ),
-                  ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          foregroundColor: AppColors.primary,
-                          backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5))),
-                      onPressed: () {
-                        onRatingUpdate(currentRating);
-                        if (onSubmit != null) {
-                          onSubmit();
-                        }
-                        Get.back(); // Close dialog
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 60),
-                        child: TextWidget(
-                            text: "Rate",
-                            size: AppDimens.textSize20,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.white),
-                      ))
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
+
+
+//  //========================= RATING ===============================================
+//   static void showRatingDialog2({
+//     required double initialRating,
+//     required ValueChanged<double> onRatingUpdate,
+//     VoidCallback? onSubmit,
+//   }) {
+//     double currentRating = initialRating;
+
+//     Get.dialog(
+//       AlertDialog(
+//         backgroundColor: const Color(0xFFEBEDF0),
+//         elevation: 50.0,
+//         contentPadding: EdgeInsets.zero,
+//         shape: const RoundedRectangleBorder(
+//           side: BorderSide(color: Color(0xFFEBEDF0), width: 4.0),
+//           borderRadius: BorderRadius.all(
+//             Radius.circular(16.0),
+//           ),
+//         ),
+//         content: Wrap(
+//           children: [
+//             Container(
+//               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+//               width: 350,
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(16.0),
+//                 color: AppColors.white,
+//               ),
+//               child: Column(
+//                 children: [
+//                   RatingBar.builder(
+//                     initialRating: initialRating,
+//                     minRating: 1,
+//                     direction: Axis.horizontal,
+//                     allowHalfRating: false,
+//                     itemCount: 5,
+//                     itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+//                     itemBuilder: (context, _) => const Icon(
+//                       Icons.star_rounded,
+//                       color: Color.fromARGB(255, 255, 232, 59),
+//                     ),
+//                     onRatingUpdate: (rating) {
+//                       currentRating = rating;
+//                     },
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsets.all(10.0),
+//                     child: Row(
+//                       crossAxisAlignment: CrossAxisAlignment.center,
+//                       mainAxisAlignment: MainAxisAlignment.center,
+//                       children: [
+//                         const Text(
+//                           "Click To Rate",
+//                           style: TextStyle(
+//                             fontWeight: FontWeight.w500,
+//                             fontSize: AppDimens.textSize20,
+//                             color: AppColors.black,
+//                           ),
+//                         ),
+//                         Image.asset("assets/images/click_rate.png"),
+//                       ],
+//                     ),
+//                   ),
+//                   ElevatedButton(
+//                       style: ElevatedButton.styleFrom(
+//                           foregroundColor: AppColors.primary,
+//                           backgroundColor: AppColors.primary,
+//                           shape: RoundedRectangleBorder(
+//                               borderRadius: BorderRadius.circular(5))),
+//                       onPressed: () {
+//                         onRatingUpdate(currentRating);
+//                         if (onSubmit != null) {
+//                           onSubmit();
+//                         }
+//                         Get.back(); // Close dialog
+//                       },
+//                       child: const Padding(
+//                         padding: EdgeInsets.symmetric(horizontal: 60),
+//                         child: TextWidget(
+//                             text: "Rate",
+//                             size: AppDimens.textSize20,
+//                             fontWeight: FontWeight.w500,
+//                             color: AppColors.white),
+//                       ))
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
