@@ -1,9 +1,12 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/configs/app_images_string.dart';
+import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 
 // ignore: must_be_immutable
 class PostsCard extends StatelessWidget {
@@ -18,13 +21,13 @@ class PostsCard extends StatelessWidget {
 
   PostsCard({
     super.key,
-    this.title = "writing title post this here writing title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this here  .... ",
-    this.imageUrl = "assets/images/img_post_card.jpg",
-    this.rating = 4.6,
-    this.customerRated = 200,
-    this.distance = 2.5,
-    this.description="Write descrtion this here plasee",
-    this.activate=true
+    this.title =AppTextString.fCardTitleDefault ,
+    this.imageUrl = AppImagesString.iPostsDefault,
+    this.rating = 0.0,
+    this.customerRated = 0,
+    this.distance = 0.0,
+    this.description=AppTextString.fCardDesription,
+    this.activate=false
   });
 
   @override
@@ -80,7 +83,7 @@ class PostsCard extends StatelessWidget {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Row(  
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -109,7 +112,7 @@ class PostsCard extends StatelessWidget {
                               TextWidget(text: "$distance km",size: AppDimens.textSize10,),
                             ],
                           ),
-                          TextWidget(text: activate ? "Opening":"Close", color: activate?AppColors.greenBold:AppColors.red,)
+                          TextWidget(text: activate ? "Opening":"Closed", color: activate?AppColors.greenBold:AppColors.red,size: AppDimens.textSize12,)
                         ],
                       ),
                     ],
