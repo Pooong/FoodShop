@@ -1,5 +1,6 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/appbar/explore_appbar.dart';
 import 'package:find_food/core/ui/widgets/card/explore_food_card.dart';
 import 'package:find_food/core/ui/widgets/card/food_card.dart';
@@ -19,11 +20,19 @@ class SearchPage extends GetView<SearchController> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
+              ElevatedButton(
+                  onPressed: () => Get.toNamed(Routes.restaurant),
+                  child: Text("to retaurant")),
+
               /// list san pham 1
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                const TextWidget(text: "Area",size: AppDimens.textSize20,fontWeight: FontWeight.w500,),
+                  const TextWidget(
+                    text: "Area",
+                    size: AppDimens.textSize20,
+                    fontWeight: FontWeight.w500,
+                  ),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Padding(
@@ -54,7 +63,11 @@ class SearchPage extends GetView<SearchController> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TextWidget(text: "Favorite",size: AppDimens.textSize20,fontWeight: FontWeight.w500,),
+                  const TextWidget(
+                    text: "Favorite",
+                    size: AppDimens.textSize20,
+                    fontWeight: FontWeight.w500,
+                  ),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Padding(

@@ -8,10 +8,10 @@ class AccountSettingController extends GetxController {
   Route? onGenerateRoute(Route setting) {
     return null;
   }
+
   static Future<void> logoutUser() async {
     final Prefs prefs = Prefs.preferences;
     await prefs.clear();
-    Get.offAllNamed(
-        '/login'); 
+    Get.offAllNamed('/login');
   }
 }
