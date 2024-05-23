@@ -13,46 +13,61 @@ class ProfilePage extends GetView<ProfileController> {
 
     return Scaffold(
       appBar: const ProfileAppbar(),
-      body: Column(
+      body: Stack(
         children: <Widget>[
-          _buildUserInfo(context),
-          Obx(() => NavControllList(
-                currentIndex: controller.currentIndex.value,
-                onPageChanged: (index) {
-                  controller.onChangeNavList(index);
-                },
-              )),
-          Expanded(
-            child: Navigator(
-              key: Get.nestedKey(3),
-              initialRoute: "/profile_list",
-              onGenerateRoute: controller.onGenerateRoute,
-            ),
+          Column(
+            children: <Widget>[
+              _buildUserInfo(context),
+              SizedBox(height: 10.0,),
+              Obx(() => NavControllList(
+                    currentIndex: controller.currentIndex.value,
+                    onPageChanged: (index) {
+                      controller.onChangeNavList(index);
+                    },
+                  )),
+              Expanded(
+                child: Navigator(
+                  key: Get.nestedKey(3),
+                  initialRoute: "/profile_list",
+                  onGenerateRoute: controller.onGenerateRoute,
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
-
   Widget _buildUserInfo(BuildContext context) {
-    return  SizedBox(
-      // height: MediaQuery.of(context).size.height * 0.2,
-      height: Get.height * 0.25,
-      child:  const Row (
-        mainAxisAlignment: MainAxisAlignment.center,
+    return SizedBox(
+      height: Get.height * 0.28,
+      child: Stack(
+        fit: StackFit.expand,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 60,
-              ),
-              SizedBox(height: 20),
-              Text(
-                "User name",
-                style: TextStyle(fontSize: 20),
-              ),
-            ],
+          Image.asset(
+            "assets/images/home.png",
+            fit: BoxFit.cover,
+          ),
+          const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage('assets/images/author.jpg'),
+                ),
+                const SizedBox(height: 10.0),
+                const Text(
+                  "User name",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10.0,)
+              ],
+            ),
           ),
         ],
       ),
