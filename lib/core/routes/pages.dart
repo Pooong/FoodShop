@@ -32,6 +32,7 @@ import 'package:find_food/features/nav/post/upload/presentation/page/upload_page
 import 'package:find_food/features/nav/profile/di/profile_binding.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
 import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
+import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
 // import 'package:find_food/features/posts_detail/nav/bottom_post_detail.dart/di/presentation/page/bottom_posts_detail_page.dart';
 // import 'package:find_food/features/posts_detail/nav/top_post_detail.dart/presentation/page/top_post_detail_page.dart';
 // import 'package:find_food/features/posts_detail/presentation/page/post_detail_page.dart';
@@ -168,24 +169,12 @@ class Pages {
       binding: ResultSearchBinding(),
     ),
 
-    // chân trang chi tiết
-    // GetPage(
-    //   name: Routes.bottomPostsDetail,
-    //   page: () => BottomPostsDetailPage(),
-    //   binding: PostsDetailBinding(),
-    // ),
-    // đầu trang chi tiết
-    //  GetPage(
-    //   name: Routes.topPostsDetail,
-    //   page: () => TopPostsDetail(),
-    //   binding: PostsDetailBinding(),
-    // ),
-    // chi tiết bài viết
-    // GetPage(
-    //   name: Routes.PostsDetail,
-    //   page: () => PostDetailPage(),
-    //   binding: PostsDetailBinding(),
-    // ),
+    // màng hình tìm kiếm
+    GetPage(
+      name: Routes.postsDetail,
+      page: () => PostsDetailPage(),
+      binding: PostsDetailBinding(),
+    ),
 
     //restaurant page
     GetPage(
