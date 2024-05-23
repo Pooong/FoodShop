@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class PostsDetailPage extends GetView<PostsDetailController> {
-  PostsDetailPage({super.key});
+  const PostsDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,9 @@ class PostsDetailPage extends GetView<PostsDetailController> {
                       ),
                     ],
                   )),
-                  InkWell(onTap: (){},child: Image.asset('assets/images/send.png'))
+                  InkWell(
+                      onTap: () {},
+                      child: Image.asset('assets/images/send.png'))
                 ],
               ),
             )
