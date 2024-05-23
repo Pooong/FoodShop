@@ -95,6 +95,7 @@ flutter:
   assets:
     - assets/jsons/
     - assets/images/
+    - assets/images/defaults/
     - assets/icons/
     - assets/images/food/
 

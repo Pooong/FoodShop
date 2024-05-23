@@ -67,7 +67,7 @@ class RegisterController extends GetxController {
         uid: result.data!.uid,
         email: result.data!.email!,
       );
-      DialogsUtils.showAlertDialog2(
+      DialogsUtils.showAlertDialog(
           title: "Đăng ký thành công",
           message: "Bạn sẽ được chuyển đến trang đăng nhập",
           typeDialog: TypeDialog.success,

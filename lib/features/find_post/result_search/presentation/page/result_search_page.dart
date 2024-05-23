@@ -1,6 +1,6 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/ui/widgets/card/build_sliver_to_box_adapter.dart';
+import 'package:find_food/core/ui/widgets/card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/find_post/result_search/presentation/controller/result_search_controller.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +73,7 @@ class ResultSearchPage extends GetView<ResultSearchController> {
       body: CustomScrollView(
         slivers: [
           for(var i =1;i<=20;i++)
-          buildSliverToBoxAdapter(),
+          PostsCard(),
         ],
       ),
     );
