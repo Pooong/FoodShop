@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+
 import 'package:find_food/core/data/prefs/prefs.dart';
-=======
+
 import 'package:flutter/material.dart';
 >>>>>>> d2b0026e5644271df910c7bed451fef06ac75abe
 import 'package:get/get.dart';
@@ -16,11 +16,6 @@ class AccountSettingController extends GetxController {
   static Future<void> logoutUser() async {
     final Prefs prefs = Prefs.preferences;
     await prefs.clear();
-<<<<<<< HEAD
-    Get.offAllNamed(
-        '/login'); 
-=======
     Get.offAllNamed('/login');
->>>>>>> d2b0026e5644271df910c7bed451fef06ac75abe
   }
 }
