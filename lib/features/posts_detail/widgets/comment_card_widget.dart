@@ -1,5 +1,7 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/configs/app_images_string.dart';
+import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,11 +13,11 @@ class CommentCardWidget extends StatelessWidget {
   final int? favorite;
   final String? comment;
   final double? star;
-
+  
   const CommentCardWidget({
     super.key,  
     required this.id,
-    this.authorImg = "assets/images/author.jpg",
+    this.authorImg = AppImagesString.iUserDefault,
     this.authorName = "author name",
     this.favorite = 10,
     this.comment = "writing your coment this here",
@@ -140,28 +142,10 @@ class CommentCardWidget extends StatelessWidget {
           left: 15,
           top: 25,
           child: Column(
+
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    border: Border.all(color: AppColors.white, width: 2),
-                    boxShadow: [
-                      BoxShadow(
-                          color: AppColors.black.withOpacity(.2),
-                          blurRadius: 1,
-                          spreadRadius: 1)
-                    ]),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10000),
-                  child: Image.asset(
-                    authorImg!,
-                    width: 45,
-                    height: 45,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+              Avatar(authorImg: authorImg),
               const SizedBox(
                 height: 10,
               ),
@@ -177,6 +161,7 @@ class CommentCardWidget extends StatelessWidget {
     );
   }
 }
+
 
 // favorite function
 class FavoriteIcons extends StatefulWidget {
