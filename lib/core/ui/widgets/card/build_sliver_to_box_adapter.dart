@@ -38,7 +38,7 @@ Widget buildSliverToBoxAdapter() {
                   
                    InkWell(
                     
-                    onTap: ()=>Get.toNamed(Routes.postsDetail),
+                    onTap: ()=>Get.toNamed(Routes.PostsDetail),
 
                      child: Image.asset(
                       'assets/images/home.png',

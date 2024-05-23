@@ -4,7 +4,7 @@ import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CommentWidget extends StatelessWidget {
+class CommentCardWidget extends StatelessWidget {
   final int id;
   final String? authorImg;
   final String? authorName;
@@ -12,8 +12,8 @@ class CommentWidget extends StatelessWidget {
   final String? comment;
   final double? star;
 
-  const CommentWidget({
-    super.key,
+  const CommentCardWidget({
+    super.key,  
     required this.id,
     this.authorImg = "assets/images/author.jpg",
     this.authorName = "author name",
@@ -24,16 +24,17 @@ class CommentWidget extends StatelessWidget {
 
 
 
+ // ignore: non_constant_identifier_names
  List<Icon> _star_caculator(double star) {
   if(star>5 ) star=5;
   if(star<0) star=0;
 
-  bool half_star = false;
+  bool halfStar = false;
   double ccl_1 = star % 1;
 
   int ccl_2 = star ~/ 1;
 
-  if (ccl_1 > 0) half_star = true;
+  if (ccl_1 > 0) halfStar = true;
 
   return <Icon>[
     for (var i = 1; i <= ccl_2; i++)
@@ -42,13 +43,13 @@ class CommentWidget extends StatelessWidget {
         color: AppColors.yellow,
         size: AppDimens.textSize20,
       ),
-    if (half_star)
+    if (halfStar)
       const Icon(
         Icons.star_half_rounded,
         color: AppColors.yellow,
         size: AppDimens.textSize20,
       ),
-    for (var i = ccl_2 + (half_star ? 2 : 1); i <= 5; i++)
+    for (var i = ccl_2 + (halfStar ? 2 : 1); i <= 5; i++)
       const Icon(
         Icons.star_border_rounded,
         color: AppColors.yellow,
@@ -57,13 +58,14 @@ class CommentWidget extends StatelessWidget {
   ];
 }
 
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
           margin: const EdgeInsets.only(
-              top: 20, left: 20, right: 20),
+              top: 20, left: 10, right: 10),
 
           width: double.infinity,
           constraints: const BoxConstraints(minHeight: 100),
@@ -79,14 +81,14 @@ class CommentWidget extends StatelessWidget {
               ],
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-                bottomRight: Radius.circular(30),
+                topRight: Radius.circular(10),
+                bottomRight: Radius.circular(10),
               )),
 
           // content comment
           child: Container(
             margin: const EdgeInsets.only(top: 35),
-            padding: const EdgeInsets.only(left: 57, right: 10, bottom: 15),
+            padding: const EdgeInsets.only(left: 60, right: 15, bottom: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -108,17 +110,18 @@ class CommentWidget extends StatelessWidget {
           ),
         ),
 
+
         // headline comment posts
         Positioned(
-            left: 19,
-            right: Get.width * 0.35,
+            left: 9,
+            right: Get.width * 0.45,
             top: 20,
             child: Container(
               height: 30,
               padding: EdgeInsets.only(left: Get.width * 0.05),
               decoration: BoxDecoration(
                   border: Border.all(
-                      color: AppColors.gray.withOpacity(.2), width: 1.5),
+                      color: AppColors.gray.withOpacity(.1), width: 1),
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(35),
                       bottomRight: Radius.circular(40)),
@@ -134,7 +137,7 @@ class CommentWidget extends StatelessWidget {
 
         //customs avatar
         Positioned(
-          left: 25,
+          left: 15,
           top: 25,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -216,6 +219,7 @@ class _FavoriteIconsState extends State<FavoriteIcons> {
             size: AppDimens.textSize16,
           ),
         ),
+
         const SizedBox(
           width: 5,
         ),
