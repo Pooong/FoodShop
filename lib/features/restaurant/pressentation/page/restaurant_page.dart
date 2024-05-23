@@ -266,6 +266,9 @@ class RestaurantPage extends GetView<RestaurantController> {
       itemCount: FoodModel.menu.length,
       itemBuilder: (BuildContext context, int index) {
         final foodmenu = FoodModel.menu[index];
+
+
+
         return Card(
           // Set the shape of the card using a rounded rectangle border with a 8 pixel radius
           shape: RoundedRectangleBorder(
@@ -310,6 +313,8 @@ class RestaurantPage extends GetView<RestaurantController> {
                     // Display the card's text using a font size of 15 and a light grey color
                     Text(
                       "Price: \$${foodmenu.priceFood}",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                       style: TextStyle(
                         fontSize: AppDimens.textSize14,
                         color: Colors.grey[700],
