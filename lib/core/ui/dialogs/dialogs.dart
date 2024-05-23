@@ -276,11 +276,14 @@ class DialogsUtils {
       ),
     );
   }
-
+}
 
 
  //========================= RATING ===============================================
+<<<<<<< HEAD
   
+=======
+>>>>>>> main
 //   static void showRatingDialog({
 //     required double initialRating,
 //     required ValueChanged<double> onRatingUpdate,
@@ -372,4 +375,8 @@ class DialogsUtils {
 //       ),
 //     );
 //   }
+<<<<<<< HEAD
 }
+=======
+// }
+>>>>>>> main

@@ -96,7 +96,11 @@ Widget buildSliverToBoxAdapter() {
                         const SizedBox(width: 5),
                         const Text(
                           '(100)',  
+<<<<<<< HEAD
                           style: TextStyle(fontSize: _starIconSize, color: Colors.black),
+=======
+                          style: TextStyle(fontSize: _starIconSize, color:    Colors.black),
+>>>>>>> main
                         ),
                         const SizedBox(width: 5),
                         const Text(

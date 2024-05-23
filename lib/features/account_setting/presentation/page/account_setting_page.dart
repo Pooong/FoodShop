@@ -1,3 +1,5 @@
+import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/features/account_setting/presentation/controller/account_setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,8 +12,7 @@ class AccountSettingPage extends GetView<AccountSettingController> {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-            onTap: () => Get.back(),
-            child: const Icon(Icons.arrow_back)),
+            onTap: () => Get.back(), child: const Icon(Icons.arrow_back)),
         title: const Text("Account Settings"),
         centerTitle: true,
       ),
@@ -95,9 +96,9 @@ class AccountSettingPage extends GetView<AccountSettingController> {
                 sectionIcon: Icons.arrow_forward_ios,
                 route: "",
                 onTap: () async {
-                    await AccountSettingController.logoutUser();
-                    Get.offAllNamed('/login'); // Điều hướng về trang đăng nhập
-                  },
+                  await AccountSettingController.logoutUser();
+                  Get.offAllNamed('/login'); 
+                },
               ),
             ],
           ),
@@ -106,7 +107,6 @@ class AccountSettingPage extends GetView<AccountSettingController> {
     );
   }
 }
-
 
 Widget _buildSection(
   BuildContext context, {
@@ -129,7 +129,7 @@ Widget _buildSection(
       style: Theme.of(context).textTheme.bodySmall,
     ),
     trailing: trailingWidget ?? Icon(sectionIcon),
-    onTap: onTap != null 
+    onTap: onTap != null
         ? () => onTap()
         : () {
             if (route.isNotEmpty) {
