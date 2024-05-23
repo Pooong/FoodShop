@@ -1,5 +1,8 @@
 class AppDimens {
+  static const double textSize9 = 9.0;
+
   static const double textSize10 = 10.0;
+
   static const double textSize11 = 11.0;
   static const double textSize12 = 12.0;
   static const double textSize13 = 13.0;

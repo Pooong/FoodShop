@@ -95,7 +95,7 @@ class AccountSettingPage extends GetView<AccountSettingController> {
                 route: "",
                 onTap: () async {
                   await AccountSettingController.logoutUser();
-                  Get.offAllNamed('/login'); 
+                  Get.offAllNamed('/login');
                 },
               ),
             ],

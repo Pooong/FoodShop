@@ -67,12 +67,12 @@ dependencies:
   dropdown_button2: ^2.3.9
   permission_handler: ^11.0.1
   gestures: ^1.0.0
-  
+
   image_field: ^0.0.10
   linear_progress_bar: ^1.1.1
 
   flutter_rating_bar: ^4.0.1
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -97,6 +97,7 @@ flutter:
     - assets/images/
     - assets/images/defaults/
     - assets/icons/
+    - assets/images/food/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
