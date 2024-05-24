@@ -126,9 +126,4 @@ class LoginController extends GetxController {
       SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
     }
   }
-
-  login() async {
-    const username = "1";
-    const password = "1";
-  }
 }

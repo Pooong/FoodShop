@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/restaurant/pressentation/controller/restaurant_controller.dart';
 import 'package:find_food/features/restaurant/pressentation/model/food_model.dart';
+import 'package:find_food/features/restaurant/pressentation/widgets/card_menu_restaurant.dart';
+import 'package:find_food/features/restaurant/pressentation/widgets/edit_modal_menu.dart';
 import 'package:find_food/features/restaurant/pressentation/widgets/item_infor_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -128,11 +132,9 @@ class RestaurantPage extends GetView<RestaurantController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    "5.0",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: AppDimens.textSize42),
+                  TextWidget(
+                    text: "5.0",
+                    size: AppDimens.textSize32,
                   ),
                   SizedBox(
                       width: 5.0), // Add spacing between elements (optional)
@@ -152,13 +154,11 @@ class RestaurantPage extends GetView<RestaurantController> {
                   ),
                   SizedBox(
                       width: 5.0), // Add spacing between elements (optional)
-                  Text(
-                    "(300)",
-                    style: TextStyle(
-                      fontSize: AppDimens.textSize10,
-                      color: AppColors.black,
-                    ),
+                  TextWidget(
+                    text: "(300)",
+                    size: AppDimens.textSize14,
                   ),
+                  SizedBox(width: 15.0),
                 ],
               ),
             ],
@@ -219,16 +219,12 @@ class RestaurantPage extends GetView<RestaurantController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      "OPENING",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: AppDimens.textSize18),
+                    TextWidget(
+                      text: "OPENING",
+                      fontWeight: FontWeight.bold,
+                      size: AppDimens.textSize18,
                     ),
-                    Text(
-                      "7:00 - 23:00",
-                      style: TextStyle(fontSize: AppDimens.textSize18),
-                    )
+                    TextWidget(text: "7:00 - 23:00", size: AppDimens.textSize18)
                   ],
                 ),
                 Row(
@@ -240,11 +236,9 @@ class RestaurantPage extends GetView<RestaurantController> {
                       color: AppColors.black,
                       size: 25,
                     ),
-                    Text(
-                      "Contact",
-                      style: TextStyle(
-                          fontSize: AppDimens.textSize18,
-                          color: AppColors.primary),
+                    TextWidget(
+                      text: "Contact",
+                      color: AppColors.primary,
                     )
                   ],
                 ),
@@ -258,76 +252,104 @@ class RestaurantPage extends GetView<RestaurantController> {
     );
   }
 
-  GridView buildGridOrders() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemCount: FoodModel.menu.length,
-      itemBuilder: (BuildContext context, int index) {
-        final foodmenu = FoodModel.menu[index];
-        return Card(
-          // Set the shape of the card using a rounded rectangle border with a 8 pixel radius
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          // Set the clip behavior of the card
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          // Define the child widgets of the card
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Flexible(
-                child: Image(
-                  image: AssetImage(foodmenu.imageFood),
-                  height: 160,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
+  // GridView buildGridOrders() {
+  //   return GridView.builder(
+  //     shrinkWrap: true,
+  //     physics: const NeverScrollableScrollPhysics(),
+  //     padding: const EdgeInsets.symmetric(horizontal: 20),
+  //     itemCount: FoodModel.menu.length,
+  //     itemBuilder: (BuildContext context, int index) {
+  //       final foodmenu = FoodModel.menu[index];
+  //       return CardMenuRestaurant(
+  //         img: foodmenu.imageFood,
+  //         foodname: foodmenu.foodName,
+  //         pricefood: foodmenu.priceFood,
+  //       );
+  //     },
+  //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //         crossAxisCount: 2, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
+  //   );
+  // }
 
-              // Add a container with padding that contains the card's title, text, and buttons
-              Container(
-                decoration: const BoxDecoration(
-                    border: Border(
-                  top: BorderSide(color: AppColors.primary, width: 5.0),
-                )),
-                padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // Display the card's title using a font size of 24 and a dark grey color
-                    Text(
-                      foodmenu.foodName,
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontSize: AppDimens.textSize18,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                    // Add a space between the title and the text
-                    Container(height: 10),
-                    // Display the card's text using a font size of 15 and a light grey color
-                    Text(
-                      "Price: \$${foodmenu.priceFood}",
-                      style: TextStyle(
-                        fontSize: AppDimens.textSize14,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                    // Add a row with two buttons spaced apart and aligned to the right side of the card
-                  ],
+  // Widget buildGridOrders() {
+  //   return Obx(() {
+  //     return GridView.builder(
+  //       shrinkWrap: true,
+  //       physics: const NeverScrollableScrollPhysics(),
+  //       padding: const EdgeInsets.symmetric(horizontal: 20),
+  //       itemCount: controller.menu.length,
+  //       itemBuilder: (BuildContext context, int index) {
+  //         final foodMenu = controller.menu[index];
+  //         return CardMenuRestaurant(
+  //           img: foodMenu.imageFood,
+  //           foodname: foodMenu.foodName,
+  //           pricefood: foodMenu.priceFood,
+  //         );
+  //       },
+  //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //         crossAxisCount: 2,
+  //         crossAxisSpacing: 4.0,
+  //         mainAxisSpacing: 4.0,
+  //       ),
+  //     );
+  //   });
+  // }
+
+  Widget buildGridOrders() {
+    return Obx(() {
+      return GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: controller.menu.length,
+        itemBuilder: (BuildContext context, int index) {
+          final foodMenu = controller.menu[index];
+          return GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
                 ),
-              ),
-              // Add a small space between the card and the next widget
-              const SizedBox(height: 5),
-            ],
-          ),
-        );
-      },
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
-    );
+                builder: (BuildContext context) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context)
+                          .viewInsets
+                          .bottom, // Đảm bảo widget được hiển thị trên bàn phím
+                    ),
+                    child: ListView(
+                      shrinkWrap: true, // Giảm không gian cần thiết
+                      children: [
+                        Center(
+                          child: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            child: EditFoodModal(food: foodMenu, index: index),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+            child: CardMenuRestaurant(
+              img: foodMenu.imageFood,
+              foodname: foodMenu.foodName,
+              pricefood: foodMenu.priceFood,
+            ),
+          );
+        },
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 4.0,
+          mainAxisSpacing: 4.0,
+        ),
+      );
+    });
   }
 
   AppBar buildAppBar() {
@@ -347,10 +369,10 @@ class RestaurantPage extends GetView<RestaurantController> {
           Get.back();
         },
       ),
-      title: const Text(
-        "RESTAURANT",
-        style: TextStyle(color: AppColors.primary),
-      ),
+      title: const TextWidget(
+          text: 'RESTAURANT',
+          color: AppColors.primary,
+          fontWeight: FontWeight.bold),
       centerTitle: true,
     );
   }

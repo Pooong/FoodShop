@@ -13,19 +13,19 @@ class PostsCard extends StatelessWidget {
   final int customerRated;
   final double distance;
   final String description;
-  
+
   bool activate;
 
-  PostsCard({
-    super.key,
-    this.title = "writing title post this here writing title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this here  .... ",
-    this.imageUrl = "assets/images/img_post_card.jpg",
-    this.rating = 4.6,
-    this.customerRated = 200,
-    this.distance = 2.5,
-    this.description="Write descrtion this here plasee",
-    this.activate=true
-  });
+  PostsCard(
+      {super.key,
+      this.title =
+          "writing title post this here writing title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this herewriting title post this here  .... ",
+      this.imageUrl = "assets/images/img_post_card.jpg",
+      this.rating = 4.6,
+      this.customerRated = 200,
+      this.distance = 2.5,
+      this.description = "Write descrtion this here plasee",
+      this.activate = true});
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +66,18 @@ class PostsCard extends StatelessWidget {
                     ),
                   ),
                 ),
-
-
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextWidget(text: title,size: AppDimens.textSize20,fontWeight: FontWeight.w500,maxLines: 2,),
+                      TextWidget(
+                        text: title,
+                        size: AppDimens.textSize20,
+                        fontWeight: FontWeight.w500,
+                        maxLines: 2,
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Text(description),
@@ -82,34 +86,47 @@ class PostsCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Row(  
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
                                 rating.toString(),
                                 style: const TextStyle(
-                                    fontSize: starIconSize, color: Colors.black),
+                                    fontSize: starIconSize,
+                                    color: Colors.black),
                               ),
                               const SizedBox(width: 5),
                               Row(
                                 children: List.generate(5, (index) {
                                   if (index < 4) {
                                     return const Icon(Icons.star,
-                                        color: Colors.yellow, size: starIconSize);
+                                        color: Colors.yellow,
+                                        size: starIconSize);
                                   } else {
                                     return const Icon(Icons.star_border,
-                                        color: Colors.yellow, size: starIconSize);
+                                        color: Colors.yellow,
+                                        size: starIconSize);
                                   }
                                 }),
                               ),
                               const SizedBox(width: 5),
-                              TextWidget(text: "($customerRated)",size:AppDimens.textSize14,),
+                              TextWidget(
+                                text: "($customerRated)",
+                                size: AppDimens.textSize14,
+                              ),
                               const SizedBox(width: 5),
-                              TextWidget(text: "$distance km",size: AppDimens.textSize10,),
+                              TextWidget(
+                                text: "$distance km",
+                                size: AppDimens.textSize10,
+                              ),
                             ],
                           ),
-                          TextWidget(text: activate ? "Opening":"Close", color: activate?AppColors.greenBold:AppColors.red,)
+                          TextWidget(
+                            text: activate ? "Opening" : "Close",
+                            color:
+                                activate ? AppColors.greenBold : AppColors.red,
+                          )
                         ],
                       ),
                     ],

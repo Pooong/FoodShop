@@ -67,7 +67,7 @@ class RegisterController extends GetxController {
         uid: result.data!.uid,
         email: result.data!.email!,
       );
-      DialogsUtils.showAlertDialog(
+      DialogsUtils.showAlertDialog2(
           title: "Đăng ký thành công",
           message: "Bạn sẽ được chuyển đến trang đăng nhập",
           typeDialog: TypeDialog.success,
@@ -91,7 +91,7 @@ class RegisterController extends GetxController {
     final result = await FirestoreUser.createUser(user);
     if (result.status == Status.success) {
       Get.back();
-      Get.offAllNamed(Routes.emailVerify);
+      // Get.offAllNamed(Routes.login);
     } else {
       Get.back();
       SnackbarUtil.show(result.exp?.message ?? "something_went_wronggg");
