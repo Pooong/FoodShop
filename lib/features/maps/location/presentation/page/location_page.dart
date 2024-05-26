@@ -1,5 +1,6 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/ui/widgets/appbar/get_location_appbar.dart';
+import 'package:find_food/features/maps/location/models/place.dart';
 import 'package:find_food/features/maps/location/presentation/controller/location_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,15 +22,22 @@ class LocationPage extends GetView<LocationController> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                   color: const Color.fromARGB(18, 0, 0, 0)),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.search),
+                  GestureDetector(
+                    child: const Icon(Icons.search),
+                    onTap: () {
+                      controller
+                          .handleSearch(controller.addressController.text);
+                    },
+                  ),
                   SizedBox(width: 10),
                   Expanded(
                       child: SizedBox(
                     height: 30,
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: controller.addressController,
+                      decoration: const InputDecoration(
                           labelText: "search location this here",
                           labelStyle:
                               TextStyle(color: Color.fromARGB(187, 0, 0, 0)),
@@ -44,7 +52,9 @@ class LocationPage extends GetView<LocationController> {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 15),
               child: ElevatedButton(
-                  onPressed: () {Get.toNamed('/maps');},
+                  onPressed: () {
+                    Get.toNamed('/maps');
+                  },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           const Color.fromARGB(177, 0, 0, 0))),
@@ -75,7 +85,8 @@ class LocationPage extends GetView<LocationController> {
                 ],
               ),
             ),
-            lineBetween()
+            lineBetween(),
+            buildListPlace()
           ],
         ),
       ),
@@ -87,6 +98,20 @@ class LocationPage extends GetView<LocationController> {
       height: 2,
       width: double.infinity,
       color: AppColors.gray2,
+    );
+  }
+
+  Widget buildListPlace() {
+    return StreamBuilder<List<Place>>(
+      stream: controller.controllerOut,
+      builder: (context, snapshot) {
+        if (snapshot.data == null) {
+          return const Center(child: Text('No data address found'));
+        }
+        final data = snapshot.data;
+        print(data);
+        return Container();
+      },
     );
   }
 }
