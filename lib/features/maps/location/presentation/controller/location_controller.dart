@@ -28,12 +28,32 @@ class LocationController extends GetxController {
   var addressController = TextEditingController();
 
   final _deley = Deley(milliseconds: 500);
-
+  final debounceDelay = const Duration(milliseconds: 1000);
+  Timer? _debounceTimer;
   final _controller = StreamController<List<Place>>.broadcast();
   Stream<List<Place>> get controllerOut =>
       _controller.stream.asBroadcastStream();
 
   StreamSink<List<Place>> get controllerIn => _controller.sink;
+  final dataArgument = Get.arguments;
+  RxBool isLoading = false.obs;
+  @override
+  void onInit() {}
+
+  onTextChange(String value) {
+    if (_debounceTimer != null && _debounceTimer!.isActive) {
+      _debounceTimer!.cancel();
+    }
+
+    _debounceTimer = Timer(debounceDelay, () {
+      if (value.isNotEmpty) {
+        handleSearch(value);
+      } else {
+        // places.clear();
+        clearPlaces();
+      }
+    });
+  }
 
   addPlace(Place place) {
     places.add(place);
@@ -58,12 +78,9 @@ class LocationController extends GetxController {
             List<Placemark> placeMarks = await placemarkFromCoordinates(
                 location.latitude, location.longitude);
             placeMarks.forEach((placeMark) {
-              addPlace(Place(
-                name: placeMark.name ?? "",
-                street: placeMark.street ?? "",
-                locality: placeMark.locality ?? "",
-                country: placeMark.country ?? "",
-              ));
+              addPlace(
+                Place.fromPlacemarkAndLocation(placeMark, location),
+              );
             });
           });
         } on Exception catch (e) {
@@ -79,5 +96,30 @@ class LocationController extends GetxController {
   void onClose() {
     super.onClose();
     _controller.close();
+  }
+
+  onSelectPlace(Place place) {
+    Get.back(result: place);
+  }
+
+  getCurrentPosition() async {
+    // isLoading.value = true;
+    Position position = await LocationService.getCurrentLocation();
+    places = await LocationService.getPlacemarksFromPosition(position);
+    // isLoading.value = false;
+    controllerIn.add(places);
+  }
+
+  void clearPlaces() {
+    places.clear();
+    controllerIn.add(List<Place>.from(
+        places)); // Sử dụng danh sách mới để kích hoạt cập nhật stream
+  }
+
+  @override
+  void onReady() {
+    if (dataArgument != null && dataArgument is Place) {
+      addPlace(dataArgument);
+    }
   }
 }

@@ -38,11 +38,14 @@ class LocationPage extends GetView<LocationController> {
                     child: TextField(
                       controller: controller.addressController,
                       decoration: const InputDecoration(
-                          labelText: "search location this here",
-                          labelStyle:
-                              TextStyle(color: Color.fromARGB(187, 0, 0, 0)),
-                          border:
-                              OutlineInputBorder(borderSide: BorderSide.none)),
+                        labelText: "search location this here",
+                        labelStyle:
+                            TextStyle(color: Color.fromARGB(187, 0, 0, 0)),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                      ),
+                      onChanged: (value) {
+                        controller.onTextChange(value);
+                      },
                     ),
                   ))
                 ],
@@ -53,7 +56,8 @@ class LocationPage extends GetView<LocationController> {
               margin: const EdgeInsets.symmetric(vertical: 15),
               child: ElevatedButton(
                   onPressed: () {
-                    Get.toNamed('/maps');
+                    // Get.toNamed('/maps');
+                    controller.getCurrentPosition();
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
@@ -69,23 +73,24 @@ class LocationPage extends GetView<LocationController> {
                     ],
                   )),
             ),
-            lineBetween(),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 15),
-              child: const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(Icons.search),
-                  ),
-                  Text(
-                    "Ninh kieu, Can tho",
-                    style: TextStyle(color: Color.fromARGB(154, 0, 0, 0)),
-                  )
-                ],
-              ),
-            ),
-            lineBetween(),
+            // lineBetween(),
+            // Container(
+            //   margin: const EdgeInsets.symmetric(vertical: 15),
+            //   child: const Row(
+            //     children: [
+            //       Padding(
+            //         padding: EdgeInsets.only(right: 10),
+            //         child: Icon(Icons.search),
+            //       ),
+            //       Text(
+            //         "Ninh kieu, Can tho",
+            //         style: TextStyle(color: Color.fromARGB(154, 0, 0, 0)),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            // lineBetween(),
+            // buildListPlace(),
             buildListPlace()
           ],
         ),
@@ -105,13 +110,61 @@ class LocationPage extends GetView<LocationController> {
     return StreamBuilder<List<Place>>(
       stream: controller.controllerOut,
       builder: (context, snapshot) {
-        if (snapshot.data == null) {
+        if (snapshot.data == null || snapshot.data!.isEmpty) {
           return const Center(child: Text('No data address found'));
         }
         final data = snapshot.data;
-        print(data);
-        return Container();
+
+        return data != null && data.isNotEmpty
+            ? Expanded(
+                child: ListView.builder(
+                    // shrinkWrap: true,
+                    itemCount: data!.length,
+                    itemBuilder: (_, index) {
+                      Place place = data![index];
+                      return ItemPlace(place: place);
+                    }),
+              )
+            : const SizedBox.shrink();
       },
+    );
+  }
+
+  Widget ItemPlace({required Place place}) {
+    return GestureDetector(
+      onTap: () {
+        controller.onSelectPlace(place);
+      },
+      child: Column(
+        children: [
+          const Divider(
+            color: AppColors.gray2,
+            height: 2.0,
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 15),
+            child: Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: Icon(Icons.search),
+                ),
+                Expanded(
+                  child: Text(
+                    place.displayAddress(),
+                    style: const TextStyle(color: Color.fromARGB(154, 0, 0, 0)),
+                    maxLines: 1,
+                  ),
+                )
+              ],
+            ),
+          ),
+          const Divider(
+            color: AppColors.gray2,
+            height: 2.0,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:find_food/core/data/firebase/firestore_database/firestore_post_d
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
+import 'package:find_food/features/maps/location/models/place.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ class UploadController extends GetxController {
   var selectedImages = <File>[].obs;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
+  Place? placeSelected;
   UserModel? user;
   List<String> listPathUrl = [];
   @override

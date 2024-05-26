@@ -1,3 +1,5 @@
+import 'package:find_food/features/maps/location/models/place.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
@@ -41,5 +43,38 @@ class LocationService {
 
   static Future<void> openLocationSettings() async {
     await Geolocator.openLocationSettings();
+  }
+
+  static Future<List<Place>> getPlacemarksFromPosition(
+      Position position) async {
+    List<Place> listPlace = [];
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+      placemarks.forEach((placeMark) {
+        listPlace.add(Place.fromPlacemarkAndLocation(
+            placeMark,
+            Location(
+              latitude: position.latitude,
+              longitude: position.longitude,
+              timestamp: position.timestamp,
+            )));
+      });
+      return listPlace;
+    } catch (e) {
+      print('Error occurred while getting placemarks: $e');
+      return [];
+    }
+  }
+
+  static Future<Location> getLocationFromPosition(Position position) async {
+    // Simply convert Position to Location as they both contain latitude and longitude
+    return Location(
+      latitude: position.latitude,
+      longitude: position.longitude,
+      timestamp: position.timestamp,
+    );
   }
 }
