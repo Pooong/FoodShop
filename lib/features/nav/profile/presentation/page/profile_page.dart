@@ -18,26 +18,38 @@ class ProfilePage extends GetView<ProfileController> {
           Column(
             children: <Widget>[
               _buildUserInfo(context),
-              SizedBox(height: 10.0,),
+              const SizedBox(
+                height: 10.0,
+              ),
               Obx(() => NavControllList(
                     currentIndex: controller.currentIndex.value,
                     onPageChanged: (index) {
                       controller.onChangeNavList(index);
                     },
                   )),
+              // Expanded(
+              //   child: Navigator(
+              //     key: Get.nestedKey(3),
+              //     initialRoute: "/profile_list",
+              //     onGenerateRoute: controller.onGenerateRoute,
+              //   ),
+              // ),
               Expanded(
-                child: Navigator(
-                  key: Get.nestedKey(3),
-                  initialRoute: "/profile_list",
-                  onGenerateRoute: controller.onGenerateRoute,
+                child: PageView(
+                  controller: controller.pageController,
+                  onPageChanged: (index) {
+                    controller.onChangePage(index);
+                  },
+                  children: controller.getPages(),
                 ),
-              ),
+              )
             ],
           ),
         ],
       ),
     );
   }
+
   Widget _buildUserInfo(BuildContext context) {
     return SizedBox(
       height: Get.height * 0.28,
@@ -56,8 +68,8 @@ class ProfilePage extends GetView<ProfileController> {
                   radius: 50,
                   backgroundImage: AssetImage('assets/images/author.jpg'),
                 ),
-                const SizedBox(height: 10.0),
-                const Text(
+                SizedBox(height: 10.0),
+                Text(
                   "User name",
                   style: TextStyle(
                     fontSize: 20,
@@ -65,7 +77,9 @@ class ProfilePage extends GetView<ProfileController> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 10.0,)
+                SizedBox(
+                  height: 10.0,
+                )
               ],
             ),
           ),

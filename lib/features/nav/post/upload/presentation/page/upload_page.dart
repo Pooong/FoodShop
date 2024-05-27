@@ -135,7 +135,15 @@ class UploadPage extends GetView<UploadController> {
 
                   // Location Picker
                   InkWell(
-                    onTap: () => Get.toNamed('/getLocationPage'),
+                    onTap: () async {
+                      final result = await Get.toNamed(
+                        '/getLocationPage',
+                        arguments: controller.placeSelected,
+                      );
+                      if (result != null) {
+                        controller.placeSelected = result;
+                      }
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.gray2,
