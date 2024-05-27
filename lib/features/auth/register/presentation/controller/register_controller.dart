@@ -17,6 +17,7 @@ class RegisterController extends GetxController {
   RxString msgEmailError = ''.obs;
   RxString msgPasswordError = ''.obs;
   RxString msgConfirmPasswordError = ''.obs;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool validateEmail() {
     if (emailController.text.isEmpty) {
       msgEmailError.value = 'email_cannot_be_empty';

@@ -3,20 +3,21 @@ import 'package:find_food/features/nav/profile/nav/profile_list/presentation/con
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ProfileListPage extends GetView<ProfileListController> {
-  const ProfileListPage({super.key});
-
+class ProfileListPage extends StatelessWidget {
+  ProfileListPage({super.key});
+  ProfileListController profileListController =
+      Get.put(ProfileListController());
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 10),
       child: GridView.count(
-                        crossAxisCount: 2, // Số cột trong GridView
-                        crossAxisSpacing: 10, // Khoảng cách ngang giữa các ô
-                        mainAxisSpacing: 10, // Khoảng cách dọc giữa các ô
-                        children: [
-                          for (var i = 1;i<=20;i++) const ExploreFoodCard(),
-                        ],
+        crossAxisCount: 2, // Số cột trong GridView
+        crossAxisSpacing: 10, // Khoảng cách ngang giữa các ô
+        mainAxisSpacing: 10, // Khoảng cách dọc giữa các ô
+        children: [
+          for (var i = 1; i <= 20; i++) const ExploreFoodCard(),
+        ],
       ),
     );
   }

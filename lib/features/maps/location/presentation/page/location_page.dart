@@ -21,20 +21,24 @@ class LocationPage extends GetView<LocationController> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                   color: const Color.fromARGB(18, 0, 0, 0)),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.search),
+                  GestureDetector(
+                    child: const Icon(Icons.search),
+                    onTap: () {},
+                  ),
                   SizedBox(width: 10),
                   Expanded(
                       child: SizedBox(
                     height: 30,
                     child: TextField(
-                      decoration: InputDecoration(
-                          labelText: "search location this here",
-                          labelStyle:
-                              TextStyle(color: Color.fromARGB(187, 0, 0, 0)),
-                          border:
-                              OutlineInputBorder(borderSide: BorderSide.none)),
+                      decoration: const InputDecoration(
+                        labelText: "search location this here",
+                        labelStyle:
+                            TextStyle(color: Color.fromARGB(187, 0, 0, 0)),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                      ),
+                      onChanged: (value) {},
                     ),
                   ))
                 ],
@@ -44,7 +48,9 @@ class LocationPage extends GetView<LocationController> {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 15),
               child: ElevatedButton(
-                  onPressed: () {Get.toNamed('/maps');},
+                  onPressed: () {
+                    Get.toNamed('/maps');
+                  },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           const Color.fromARGB(177, 0, 0, 0))),
