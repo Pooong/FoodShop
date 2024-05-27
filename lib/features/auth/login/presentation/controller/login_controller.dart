@@ -87,6 +87,7 @@ class LoginController extends GetxController {
   //     }
   //   }
   // }
+  
   void handleLoginWithEmail() async {
     print("---------------------OK---------------------");
     if (!_validateEmail()) return;

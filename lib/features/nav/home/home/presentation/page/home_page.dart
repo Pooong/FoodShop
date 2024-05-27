@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomePage extends GetView<HomeController> {
-  const HomePage({super.key});
 
+  const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +22,7 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget buildListPost() {
-    print("rebuild");
+    print("rebuild home");
     return controller.listPost.isNotEmpty
         ? ListView.builder(
             shrinkWrap: true,

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 class HomeController extends GetxController {
   final GetuserUseCase _getuserUseCase;
   HomeController(this._getuserUseCase);
+  
   List<PostDataModel> listPost = [];
 
   UserModel? user;
@@ -17,10 +18,14 @@ class HomeController extends GetxController {
   //   return null;
   // }
 
+  RxBool hello=true.obs;
+
   @override
   void onInit() async {
     user = await _getuserUseCase.getUser();
     getPosts();
+
+  print("home");
   }
 
   void getPosts() async {

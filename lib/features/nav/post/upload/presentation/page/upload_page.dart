@@ -6,6 +6,9 @@ import 'package:find_food/features/nav/post/upload/presentation/controller/uploa
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
+//streamCotroller, StreamBuilder
+
 class UploadPage extends GetView<UploadController> {
   const UploadPage({super.key});
 
@@ -154,7 +157,7 @@ class UploadPage extends GetView<UploadController> {
                           width: 1,
                         ),
                       ),
-                      child: const Padding(
+                      child: const Padding( 
                         padding: EdgeInsets.all(8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
