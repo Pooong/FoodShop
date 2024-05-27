@@ -6,7 +6,6 @@ import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/core/utils/validator.dart';
 import 'package:find_food/features/auth/user/domain/use_case/save_user_use_case.dart';
-import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -20,7 +19,7 @@ class LoginController extends GetxController {
   RxBool isEyePassword = true.obs;
   RxString emailError = ''.obs;
   RxString passwordError = ''.obs;
-
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   void onInit() {
     super.onInit();
@@ -105,14 +104,14 @@ class LoginController extends GetxController {
 
       final resultUser = await FirestoreUser.getUser(user!.uid);
       if (resultUser.status == Status.success) {
-        if (resultUser.data!.isComplete == false) {
-          print("---------------------CASE   2---------------------");
-          Get.offAllNamed(Routes.userInfor, arguments: resultUser.data);
-        } else {
-          print("---------------------CASE   SUCCESS---------------------");
-          _saveUserUseCase.saveUser(resultUser.data!);
-          Get.offAllNamed(Routes.main);
-        }
+        // if (resultUser.data!.isComplete == false) {
+        //   print("---------------------CASE   2---------------------");
+        //   Get.offAllNamed(Routes.userInfor, arguments: resultUser.data);
+        // } else {
+        //   print("---------------------CASE   SUCCESS---------------------");
+        //   _saveUserUseCase.saveUser(resultUser.data!);
+        //   Get.offAllNamed(Routes.main);
+        // }
         print("---------------------CASE   SUCCESS---------------------");
 
         _saveUserUseCase.saveUser(resultUser.data!);
@@ -130,5 +129,10 @@ class LoginController extends GetxController {
   login() async {
     const username = "1";
     const password = "1";
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
   }
 }

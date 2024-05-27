@@ -19,7 +19,7 @@ class MainController extends GetxController {
     '/profile'
   ];
 
-  Route? onGenerateRoute(RouteSettings settings) {
+  Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     if (settings.name == '/home') {
       return GetPageRoute(
         settings: settings,
@@ -71,6 +71,6 @@ class MainController extends GetxController {
   void onChangeItemBottomBar(int index) {
     if (currentIndex.value == index) return;
     currentIndex.value = index;
-    Get.offAndToNamed(pages[index], id: 1);
+    Get.offAndToNamed(pages[index], id: 10);
   }
 }
