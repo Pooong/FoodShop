@@ -1,6 +1,8 @@
 import 'package:find_food/features/nav/explore/search/presentation/page/search_page.dart';
+import 'package:find_food/features/nav/home/home/di/home_binding.dart';
 import 'package:find_food/features/nav/home/home/presentation/page/home_page.dart';
 import 'package:find_food/features/nav/notify/presentation/page/notify_page.dart';
+import 'package:find_food/features/nav/post/upload/di/upload_binding.dart';
 import 'package:find_food/features/nav/post/upload/presentation/page/upload_page.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,7 @@ import 'package:get/get.dart';
 
 class MainController extends GetxController {
   RxInt currentIndex = 0.obs;
-  
+
   final pages = <String>[
     '/home',
     '/explore',
@@ -22,7 +24,7 @@ class MainController extends GetxController {
       return GetPageRoute(
         settings: settings,
         page: () => const HomePage(),
-        // binding: DiaryBindding(),
+        binding: HomeBinding(),
         transition: Transition.fadeIn,
       );
     }
@@ -40,7 +42,7 @@ class MainController extends GetxController {
       return GetPageRoute(
         settings: settings,
         page: () => const UploadPage(),
-        // binding: MyLibraryBinding(),
+        binding: UploadBinding(),
         transition: Transition.fadeIn,
       );
     }
@@ -65,9 +67,6 @@ class MainController extends GetxController {
 
     return null;
   }
-
-
-
 
   void onChangeItemBottomBar(int index) {
     if (currentIndex.value == index) return;

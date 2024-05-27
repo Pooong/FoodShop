@@ -6,16 +6,33 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends GetView<RegisterController> {
   RegisterPage({super.key});
   final _formKey = GlobalKey<FormState>();
-  final RegisterController controller = Get.put(RegisterController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbarRegisterPage(),
       body: bodyRegisterPage(),
+    );
+  }
+
+  AppBar appbarRegisterPage() {
+    return AppBar(
+      backgroundColor: AppColors.primary,
+      leading: IconButton(
+        color: AppColors.white,
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Get.back();
+        },
+      ),
+      title: const TextWidget(
+        text: "Sign In",
+        color: AppColors.white,
+      ),
+      centerTitle: true,
     );
   }
 
@@ -282,24 +299,6 @@ class RegisterPage extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  AppBar appbarRegisterPage() {
-    return AppBar(
-      backgroundColor: AppColors.primary,
-      leading: IconButton(
-        color: AppColors.white,
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () {
-          Get.back();
-        },
-      ),
-      title: const TextWidget(
-        text: "Sign In",
-        color: AppColors.white,
-      ),
-      centerTitle: true,
     );
   }
 }

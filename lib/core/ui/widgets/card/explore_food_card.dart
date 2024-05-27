@@ -1,6 +1,7 @@
 // ignore: camel_case_types
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:flutter/material.dart';
 
 
@@ -14,7 +15,7 @@ class ExploreFoodCard extends StatelessWidget {
   const ExploreFoodCard(
       {super.key,
       this.title = "posts no title plase add your's title",
-      this.imageUrl = 'assets/images/defaults/default_posts.png',
+      this.imageUrl = AppImagesString.iCardDefault,
       this.rating = 5.0,
       this.customerRating = 100,
       this.distance = 2.0,

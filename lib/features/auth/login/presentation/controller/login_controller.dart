@@ -89,40 +89,30 @@ class LoginController extends GetxController {
   //   }
   // }
   void handleLoginWithEmail() async {
-    print("---------------------OK---------------------");
     if (!_validateEmail()) return;
     DialogsUtils.showAlterLoading();
     final result = await FirebaseAuthentication.logIn(
       email: emailController.text,
       password: passwordController.text,
     );
-    print("---------------------PROCESSING---------------------");
 
     Get.back();
     if (result.status == Status.success) {
       User? user = result.data;
-      print("---------------------CASE   1---------------------");
 
       final resultUser = await FirestoreUser.getUser(user!.uid);
       if (resultUser.status == Status.success) {
         if (resultUser.data!.isComplete == false) {
-          print("---------------------CASE   2---------------------");
           Get.offAllNamed(Routes.userInfor, arguments: resultUser.data);
         } else {
-          print("---------------------CASE   SUCCESS---------------------");
           _saveUserUseCase.saveUser(resultUser.data!);
           Get.offAllNamed(Routes.main);
         }
-        print("---------------------CASE   SUCCESS---------------------");
 
         _saveUserUseCase.saveUser(resultUser.data!);
         Get.offAllNamed(Routes.main);
-      } else {
-        print("---------------------CASE   FAILS---------------------");
-        SnackbarUtil.show(resultUser.exp?.message ?? "something_went_wrong");
-      }
+      } else {}
     } else {
-      print("=======================NOOB========================");
       SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
     }
   }

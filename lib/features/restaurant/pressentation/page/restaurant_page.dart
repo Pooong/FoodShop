@@ -271,77 +271,77 @@ class RestaurantPage extends GetView<RestaurantController> {
   //   );
   // }
 
-  // Widget buildGridOrders() {
-  //   return Obx(() {
-  //     return GridView.builder(
-  //       shrinkWrap: true,
-  //       physics: const NeverScrollableScrollPhysics(),
-  //       padding: const EdgeInsets.symmetric(horizontal: 20),
-  //       itemCount: controller.menu.length,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         final foodMenu = controller.menu[index];
-  //         return CardMenuRestaurant(
-  //           img: foodMenu.imageFood,
-  //           foodname: foodMenu.foodName,
-  //           pricefood: foodMenu.priceFood,
-  //         );
-  //       },
-  //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //         crossAxisCount: 2,
-  //         crossAxisSpacing: 4.0,
-  //         mainAxisSpacing: 4.0,
-  //       ),
-  //     );
-  //   });
-  // }
-
   Widget buildGridOrders() {
     return Obx(() {
       return GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        itemCount: controller.menu.length,
+        // itemCount: controller.menu.length,
+        itemCount: controller.itemsToShow.value <= controller.menu.length
+            ? controller.itemsToShow.value + 1
+            : controller.itemsToShow.value,
+
         itemBuilder: (BuildContext context, int index) {
-          final foodMenu = controller.menu[index];
-          return GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
+          print(index);
+          if (index == controller.itemsToShow.value) {
+            // print(index);
+            return GestureDetector(
+              onTap: controller.seeMore,
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: TextWidget(
+                  textAlign: TextAlign.start,
+                  text: "See More",
+                  color: AppColors.blue,
+                  size: AppDimens.textSize18,
                 ),
-                builder: (BuildContext context) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context)
-                          .viewInsets
-                          .bottom, // Đảm bảo widget được hiển thị trên bàn phím
+              ),
+            );
+          } else {
+            final foodMenu = controller.menu[index];
+            // print(index);
+
+            return GestureDetector(
+              onTap: () {
+                controller.inforCard(foodMenu);
+                // print(controller.menu[index].foodName);
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
                     ),
-                    child: ListView(
-                      shrinkWrap: true, // Giảm không gian cần thiết
-                      children: [
-                        Center(
-                          child: Container(
-                            padding: const EdgeInsets.all(16.0),
-                            child: EditFoodModal(food: foodMenu, index: index),
+                  ),
+                  builder: (BuildContext context) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(16.0),
+                              child:
+                                  EditFoodModal(food: foodMenu, index: index),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-            child: CardMenuRestaurant(
-              img: foodMenu.imageFood,
-              foodname: foodMenu.foodName,
-              pricefood: foodMenu.priceFood,
-            ),
-          );
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              child: CardMenuRestaurant(
+                img: foodMenu.imageFood,
+                foodname: foodMenu.foodName,
+                pricefood: foodMenu.priceFood,
+              ),
+            );
+          }
         },
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,

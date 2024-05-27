@@ -3,24 +3,14 @@ import 'package:get/get.dart';
 import 'package:find_food/features/restaurant/pressentation/controller/restaurant_controller.dart';
 import 'package:find_food/features/restaurant/pressentation/model/food_model.dart';
 
-class EditFoodModal extends StatelessWidget {
+class EditFoodModal extends GetView<RestaurantController> {
   final FoodModel food;
   final int index;
 
   EditFoodModal({required this.food, required this.index});
 
-  final TextEditingController imageController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    final RestaurantController controller = Get.find();
-
-    imageController.text = food.imageFood;
-    nameController.text = food.foodName;
-    priceController.text = food.priceFood;
-
     return Container(
       padding: EdgeInsets.all(16.0),
       child: Column(
@@ -28,15 +18,15 @@ class EditFoodModal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextField(
-            controller: imageController,
+            controller: controller.imageController,
             decoration: InputDecoration(labelText: 'Image URL'),
           ),
           TextField(
-            controller: nameController,
+            controller: controller.nameController,
             decoration: InputDecoration(labelText: 'Food Name'),
           ),
           TextField(
-            controller: priceController,
+            controller: controller.priceController,
             decoration: InputDecoration(labelText: 'Price'),
           ),
           SizedBox(height: 20),
@@ -45,14 +35,14 @@ class EditFoodModal extends StatelessWidget {
               controller.updateFood(
                 index,
                 FoodModel(
-                  imageController.text,
-                  nameController.text,
-                  priceController.text,
+                  controller.imageController.text,
+                  controller.nameController.text,
+                  controller.priceController.text,
                 ),
               );
               Get.back();
             },
-            child: Text('Save'),
+            child: const Text('Save'),
           ),
         ],
       ),
