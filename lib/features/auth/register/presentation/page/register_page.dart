@@ -102,10 +102,7 @@ class RegisterPage extends GetView<RegisterController> {
                   ],
                 ),
               ),
-
-              // ignore: prefer_const_constructors
-              SizedBox(height: 20),
-
+              SizedBox(height: 20),z
               Form(
                   key: controller.formKey,
                   child: Column(
