@@ -11,6 +11,7 @@ import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class UploadController extends GetxController {
   final GetuserUseCase _getuserUseCase;
@@ -18,9 +19,11 @@ class UploadController extends GetxController {
   var selectedImages = <File>[].obs;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-  Place? placeSelected;
+
   UserModel? user;
+
   List<String> listPathUrl = [];
+  
   @override
   void onInit() async {
     user = await _getuserUseCase.getUser();
@@ -44,20 +47,21 @@ class UploadController extends GetxController {
         }
       }
     }
+
     final post = PostDataModel(
-      title: 'Sample Post',
-      subtitle: 'This is a sample subtitle',
+      title: titleController.text,
+      subtitle:descriptionController.text,
       favoriteCount: 10,
       imageList: listPathUrl,
       restaurantId: 'restaurant1',
-      createAt: '2024-05-24',
+      createAt:  DateFormat('dd/MM/yyyy').format(DateTime.now()),
       isBookmarked: true,
       isFavorited: true,
       latitude: 37.7749,
       longitude: -122.4194,
     );
     final result = await FirestorePostData.savedPost(
-        postDataModel: post, userId: user!.uid!);
+        postDataModel: post, userId: user!.uid);
     if (result.status == Status.success) {
       listPathUrl.clear();
       selectedImages.clear();
@@ -68,15 +72,16 @@ class UploadController extends GetxController {
     }
   }
 
+  // ignore: non_constant_identifier_names
   bool check_list_empty() {
-    return selectedImages.length == 0;
+    return selectedImages.isEmpty;
   }
 
   Future<String?> uploadFile({required File imageFile}) async {
     String? pathUrl;
     final result = await FirebaseStorageData.uploadImage(
-        imageFile: imageFile!,
-        userId: user!.uid ?? "",
+        imageFile: imageFile,
+        userId: user!.uid,
         collection: "post_images");
     if (result.status == Status.success) {
       pathUrl = result.data ?? "";

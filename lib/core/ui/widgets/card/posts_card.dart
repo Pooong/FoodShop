@@ -3,6 +3,7 @@ import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/core/ui/widgets/icons/rating.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import 'package:get/get.dart';
 class PostsCard extends StatelessWidget {
   final String title;
   final String imageUrl;
-  final double rating;
+  final double rate;
   final int customerRated;
   final double distance;
   final String description;
@@ -22,9 +23,9 @@ class PostsCard extends StatelessWidget {
   PostsCard(
       {super.key,
       this.title = AppTextString.fCardTitleDefault,
-      this.imageUrl = AppImagesString.iPostsDefault,
-      this.rating = 0.0,
-      this.customerRated = 0,
+      this.imageUrl = AppImagesString.iPostsDefault ,
+      this.rate = 4.5,
+      this.customerRated = 20,
       this.distance = 0.0,
       this.description = AppTextString.fCardDesription,
       this.activate = false,
@@ -35,106 +36,7 @@ class PostsCard extends StatelessWidget {
     const EdgeInsets padding = EdgeInsets.all(10);
     const double starIconSize = AppDimens.textSize22;
 
-    // return SliverPadding(
-    //   padding: padding,
-    //   sliver: SliverToBoxAdapter(
-    //     child: Container(
-    //       decoration: BoxDecoration(
-    //         color: Colors.white,
-    //         borderRadius: BorderRadius.circular(10),
-    //         boxShadow: [
-    //           BoxShadow(
-    //             color: Colors.grey.withOpacity(0.3),
-    //             spreadRadius: 3,
-    //             blurRadius: 2,
-    //             offset: const Offset(0, 1),
-    //           ),
-    //         ],
-    //       ),
-    //       child: Column(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: [
-    //           ClipRRect(
-    //             borderRadius:
-    //                 const BorderRadius.vertical(top: Radius.circular(10)),
-    //             child: InkWell(
-    //               onTap: () => Get.toNamed(Routes.postsDetail),
-    //               child: Image.asset(
-    //                 imageUrl,
-    //                 height: 200,
-    //                 width: double.infinity,
-    //                 fit: BoxFit.cover,
-    //               ),
-    //             ),
-    //           ),
-    //           Container(
-    //             padding:
-    //                 const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-    //             child: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               children: [
-    //                 TextWidget(
-    //                   text: title,
-    //                   size: AppDimens.textSize20,
-    //                   fontWeight: FontWeight.w500,
-    //                   maxLines: 2,
-    //                 ),
-    //                 Padding(
-    //                   padding: const EdgeInsets.only(bottom: 20),
-    //                   child: Text(description),
-    //                 ),
-    //                 Row(
-    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                   crossAxisAlignment: CrossAxisAlignment.center,
-    //                   children: [
-    //                     Row(
-    //                       mainAxisAlignment: MainAxisAlignment.start,
-    //                       crossAxisAlignment: CrossAxisAlignment.center,
-    //                       children: [
-    //                         Text(
-    //                           rating.toString(),
-    //                           style: const TextStyle(
-    //                               fontSize: starIconSize, color: Colors.black),
-    //                         ),
-    //                         const SizedBox(width: 5),
-    //                         Row(
-    //                           children: List.generate(5, (index) {
-    //                             if (index < 4) {
-    //                               return const Icon(Icons.star,
-    //                                   color: Colors.yellow, size: starIconSize);
-    //                             } else {
-    //                               return const Icon(Icons.star_border,
-    //                                   color: Colors.yellow, size: starIconSize);
-    //                             }
-    //                           }),
-    //                         ),
-    //                         const SizedBox(width: 5),
-    //                         TextWidget(
-    //                           text: "($customerRated)",
-    //                           size: AppDimens.textSize14,
-    //                         ),
-    //                         const SizedBox(width: 5),
-    //                         TextWidget(
-    //                           text: "$distance km",
-    //                           size: AppDimens.textSize10,
-    //                         ),
-    //                       ],
-    //                     ),
-    //                     TextWidget(
-    //                       text: activate ? "Opening" : "Closed",
-    //                       color: activate ? AppColors.greenBold : AppColors.red,
-    //                       size: AppDimens.textSize12,
-    //                     )
-    //                   ],
-    //                 ),
-    //               ],
-    //             ),
-    //           )
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
+
     return Container(
       margin: padding,
       decoration: BoxDecoration(
@@ -156,28 +58,45 @@ class PostsCard extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
             child: InkWell(
               onTap: () => Get.toNamed(Routes.postsDetail),
-              child: Image.asset(
+              child:postDataModel.imageList !=null &&
+              postDataModel.imageList!.isNotEmpty ?
+               Image.network(
+                postDataModel.imageList!.first,
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ):
+              Image.asset(
                 imageUrl,
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.contain,
-              ),
+              )
+              ,
             ),
           ),
+          Container(
+            height:1,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+            ),
+          ),
+
+
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextWidget(
-                  text: postDataModel.title ?? "",
+                  text: postDataModel.title ?? title,
                   size: AppDimens.textSize20,
                   fontWeight: FontWeight.w500,
                   maxLines: 2,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: Text(postDataModel.subtitle ?? ""),
+                  child: Text(postDataModel.subtitle ?? description),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,23 +107,16 @@ class PostsCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          postDataModel.favoriteCount.toString(),
+                          rate.toString(),
                           style: const TextStyle(
                               fontSize: starIconSize, color: Colors.black),
                         ),
                         const SizedBox(width: 5),
                         Row(
-                          children: List.generate(5, (index) {
-                            if (index < 4) {
-                              return const Icon(Icons.star,
-                                  color: Colors.yellow, size: starIconSize);
-                            } else {
-                              return const Icon(Icons.star_border,
-                                  color: Colors.yellow, size: starIconSize);
-                            }
-                          }),
+                          children: [...Rating.RenderStar(star: rate,sizeStar: starIconSize)]
                         ),
                         const SizedBox(width: 5),
+                        
                         TextWidget(
                           text: "($customerRated)",
                           size: AppDimens.textSize14,
