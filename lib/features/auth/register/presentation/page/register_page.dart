@@ -1,13 +1,12 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/features/auth/register/presentation/controller/register_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
-  final _formKey = GlobalKey<FormState>();
 
   final RegisterController controller = Get.put(RegisterController());
 
@@ -77,7 +76,7 @@ class RegisterPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Form(
-                  key: _formKey,
+                  key: controller.formKey,
                   child: Column(
                     children: <Widget>[
                       TextFormField(
@@ -176,7 +175,7 @@ class RegisterPage extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {
+                            if (controller.formKey.currentState!.validate()) {
                               controller.register();
                             }
                           },

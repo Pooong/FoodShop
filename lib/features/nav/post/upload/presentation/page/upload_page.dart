@@ -1,6 +1,5 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/appbar/upload_post_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/features/nav/post/upload/presentation/controller/upload_controller.dart';
@@ -137,7 +136,15 @@ class UploadPage extends GetView<UploadController> {
 
                   // Location Picker
                   InkWell(
-                    onTap: () => Get.toNamed(Routes.getLoactionPage),
+                    onTap: () async {
+                      final result = await Get.toNamed(
+                        '/getLocationPage',
+                        arguments: controller.placeSelected,
+                      );
+                      if (result != null) {
+                        controller.placeSelected = result;
+                      }
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.gray2,

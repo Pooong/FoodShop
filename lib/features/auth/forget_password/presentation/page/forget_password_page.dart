@@ -1,9 +1,7 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/features/auth/forget_password/presentation/controller/forget_password_controller.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ForgetPasswordPage extends GetView<ForgetPasswordController> {
@@ -11,8 +9,6 @@ class ForgetPasswordPage extends GetView<ForgetPasswordController> {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primary,
@@ -55,7 +51,7 @@ class ForgetPasswordPage extends GetView<ForgetPasswordController> {
               ),
               const SizedBox(height: 20),
               Form(
-                  key: _formKey,
+                  key: controller.formKey,
                   child: Column(
                     children: <Widget>[
                       TextFormField(
@@ -97,7 +93,7 @@ class ForgetPasswordPage extends GetView<ForgetPasswordController> {
                             ),
                           ),
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {
+                            if (controller.formKey.currentState!.validate()) {
                               // Call the login method in the controller
                               // LoginController.login();
                             }

@@ -17,6 +17,7 @@ class RegisterController extends GetxController {
   RxString msgEmailError = ''.obs;
   RxString msgPasswordError = ''.obs;
   RxString msgConfirmPasswordError = ''.obs;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool validateEmail() {
     if (emailController.text.isEmpty) {
       msgEmailError.value = 'email_cannot_be_empty';
@@ -91,7 +92,7 @@ class RegisterController extends GetxController {
     final result = await FirestoreUser.createUser(user);
     if (result.status == Status.success) {
       Get.back();
-      Get.offAllNamed(Routes.emailVerify);
+      // Get.offAllNamed(Routes.emailVerify);
     } else {
       Get.back();
       SnackbarUtil.show(result.exp?.message ?? "something_went_wronggg");
