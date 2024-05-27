@@ -58,7 +58,6 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
     }
   }
 
-
   // Hàm để chuyển sang ảnh tiếp theo
   void _nextImage() {
     if (_mainPageController.page!.toInt() < mainImages.length - 1) {
@@ -92,7 +91,6 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
               },
             ),
           ),
-          
           actions: [
             TextButton(
               onPressed: () {
@@ -143,7 +141,6 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
             ),
           ],
         ),
-
         actions: [
           IconButton(
             onPressed: _toggleFavorite,
@@ -154,15 +151,13 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
           ),
         ],
       ),
-
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text("Writing this post's descrition this here ...."),
-            ),
-
+            padding: EdgeInsets.all(10.0),
+            child: Text("Writing this post's descrition this here ...."),
+          ),
           const SizedBox(height: 10),
           SizedBox(
             height: 300,
@@ -185,7 +180,6 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
                               ),
                             ],
                           ),
-          
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: Column(
@@ -229,8 +223,8 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
                                                   children: [
                                                     ClipRRect(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(10.0),
+                                                          BorderRadius.circular(
+                                                              10.0),
                                                       child: Image.asset(
                                                         smallImages[index],
                                                         fit: BoxFit.cover,
@@ -321,11 +315,9 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
               ],
             ),
           ),
-
           const SizedBox(height: 15),
-
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.0),
@@ -338,8 +330,6 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
                 ),
               ],
             ),
-
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -358,14 +348,10 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
                           ),
                         ),
                         const SizedBox(width: 5),
-                        const Icon(Icons.star,
-                            color: Colors.amber, size: 20.0),
-                        const Icon(Icons.star,
-                            color: Colors.amber, size: 20.0),
-                        const Icon(Icons.star,
-                            color: Colors.amber, size: 20.0),
-                        const Icon(Icons.star,
-                            color: Colors.amber, size: 20.0),
+                        const Icon(Icons.star, color: Colors.amber, size: 20.0),
+                        const Icon(Icons.star, color: Colors.amber, size: 20.0),
+                        const Icon(Icons.star, color: Colors.amber, size: 20.0),
+                        const Icon(Icons.star, color: Colors.amber, size: 20.0),
                         const Icon(Icons.star_border,
                             color: Colors.amber, size: 20.0),
                         const Text(
@@ -376,19 +362,21 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
                           ),
                         ),
                         const SizedBox(width: 10),
-
                         Expanded(
                           child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               const Column(
                                 children: [
                                   Icon(Icons.comment,
                                       color: Colors.black, size: 20.0),
-                                  TextWidget(text: "100",size:AppDimens.textSize15)
+                                  TextWidget(
+                                      text: "100", size: AppDimens.textSize15)
                                 ],
                               ),
-                              const SizedBox(width: 20.0,),
+                              const SizedBox(
+                                width: 20.0,
+                              ),
                               Column(
                                 children: [
                                   InkWell(
@@ -402,9 +390,9 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
                                     onTap: () {
                                       toggleFavoriteStatus();
                                     },
-
                                   ),
-                                  const TextWidget(text: "100",size:AppDimens.textSize15)
+                                  const TextWidget(
+                                      text: "100", size: AppDimens.textSize15)
                                 ],
                               ),
                             ],
@@ -438,9 +426,6 @@ class _TopPostsDetailState extends State<TopPostsDetail> {
               ],
             ),
           ),
-
-          
-
         ],
       ),
     );

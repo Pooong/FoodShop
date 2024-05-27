@@ -1,5 +1,6 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/appbar/upload_post_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/features/nav/post/upload/presentation/controller/upload_controller.dart';
@@ -11,8 +12,7 @@ class UploadPage extends GetView<UploadController> {
 
   @override
   Widget build(BuildContext context) {
-    // final controller = Get.put(UploadController());
-
+    
     return Scaffold(
       appBar: const UploadPostAppbar(),
       body: SingleChildScrollView(
@@ -137,7 +137,7 @@ class UploadPage extends GetView<UploadController> {
 
                   // Location Picker
                   InkWell(
-                    onTap: () => Get.toNamed('/getLocationPage'),
+                    onTap: () => Get.toNamed(Routes.getLoactionPage),
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.gray2,

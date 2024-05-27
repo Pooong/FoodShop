@@ -8,15 +8,18 @@ class CommentData {
       'favorite': 15,
       'comment': 'This is a great app!',
       'star': 4.5,
+      "isActive":false
     },
     {
       'id': 2,
       'authorImg': 'assets/images/author.jpg',
-      'authorName': 'Jane Smith',
+      'authorName': 'Jane ld Smith',
       'favorite': 10,
       'comment': 'I love the design!',
       'star': 5.0,
+      "isActive":false
     },
+    
     {
       'id': 3,
       'authorImg': 'assets/images/author.jpg',
@@ -24,6 +27,7 @@ class CommentData {
       'favorite': 20,
       'comment': 'The functionality is amazing The functionality is amazing The functionality is amazing The functionality is amazing The functionality is amazing !',
       'star': 1.0,
+      "isActive":false
     },
     {
       'id': 4,
@@ -32,6 +36,7 @@ class CommentData {
       'favorite': 12,
       'comment': 'Great user experience!',
       'star': 4.8,
+      "isActive":false
     },
     {
       'id': 5,
@@ -40,6 +45,7 @@ class CommentData {
       'favorite': 17,
       'comment': 'Nice interface!',
       'star': 4.2,
+      "isActive":false
     },
     {
       'id': 6,
@@ -48,6 +54,7 @@ class CommentData {
       'favorite': 13,
       'comment': 'User-friendly design.',
       'star': 4.6,
+      "isActive":false
     },
     {
       'id': 7,
@@ -56,6 +63,7 @@ class CommentData {
       'favorite': 22,
       'comment': 'Highly recommended!',
       'star': 4.9,
+      "isActive":false
     },
     {
       'id': 8,
@@ -64,6 +72,7 @@ class CommentData {
       'favorite': 19,
       'comment': 'Amazing app!',
       'star': 4.7,
+      "isActive":false
     },
     {
       'id': 9,
@@ -72,6 +81,7 @@ class CommentData {
       'favorite': 16,
       'comment': 'Very helpful.',
       'star': 4.3,
+      "isActive":false
     },
     {
       'id': 10,
@@ -80,6 +90,7 @@ class CommentData {
       'favorite': 14,
       'comment': 'Great features!',
       'star': 4.4,
+      "isActive":false
     },
     {
       'id': 11,
@@ -88,6 +99,7 @@ class CommentData {
       'favorite': 18,
       'comment': 'Love it!',
       'star': 4.8,
+      "isActive":false
     },
     {
       'id': 12,
@@ -96,6 +108,7 @@ class CommentData {
       'favorite': 21,
       'comment': 'Excellent app!',
       'star': 4.9,
+      "isActive":false
     },
     {
       'id': 13,
@@ -104,6 +117,7 @@ class CommentData {
       'favorite': 20,
       'comment': 'Very user-friendly.',
       'star': 4.5,
+      "isActive":false
     },
     {
       'id': 14,
@@ -112,6 +126,7 @@ class CommentData {
       'favorite': 15,
       'comment': 'Easy to use.',
       'star': 4.2,
+      "isActive":false
     },
     {
       'id': 15,
@@ -120,6 +135,7 @@ class CommentData {
       'favorite': 19,
       'comment': 'Great app!',
       'star': 4.7,
+      "isActive":false
     },
     {
       'id': 16,
@@ -128,6 +144,7 @@ class CommentData {
       'favorite': 16,
       'comment': 'Awesome!',
       'star': 4.6,
+      "isActive":false
     },
     {
       'id': 17,
@@ -136,6 +153,7 @@ class CommentData {
       'favorite': 23,
       'comment': 'Fantastic app!',
       'star': 5.0,
+      "isActive":false
     },
     {
       'id': 18,
@@ -144,6 +162,7 @@ class CommentData {
       'favorite': 17,
       'comment': 'Love the features!',
       'star': 4.8,
+      "isActive":false
     },
     {
       'id': 19,
@@ -152,6 +171,7 @@ class CommentData {
       'favorite': 20,
       'comment': 'Highly useful.',
       'star': 4.3,
+      "isActive":false
     },
     {
       'id': 20,
@@ -160,6 +180,7 @@ class CommentData {
       'favorite': 18,
       'comment': 'Very useful app!',
       'star': 4.2,
+      "isActive":false
     },
   ];
 }

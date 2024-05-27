@@ -11,6 +11,7 @@ class HomeController extends GetxController {
   final GetuserUseCase _getuserUseCase;
   HomeController(this._getuserUseCase);
   List<PostDataModel> listPost = [];
+
   UserModel? user;
   Route? onGenerateRoute(Route setting) {
     return null;
@@ -23,10 +24,9 @@ class HomeController extends GetxController {
   }
 
   void getPosts() async {
-    final result = await FirestorePostData.getListPost(user!.uid);
+    final result = await FirestorePostData.getListPost();
     if (result.status == Status.success) {
       listPost = result.data!;
-      print(listPost.length);
       update(["fetchPosts"]);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
