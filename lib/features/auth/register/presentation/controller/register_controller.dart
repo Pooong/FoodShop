@@ -91,7 +91,7 @@ class RegisterController extends GetxController {
     final result = await FirestoreUser.createUser(user);
     if (result.status == Status.success) {
       Get.back();
-      Get.offAllNamed(Routes.emailVerify);
+      // Get.offAllNamed(Routes.login);
     } else {
       Get.back();
       SnackbarUtil.show(result.exp?.message ?? "something_went_wronggg");
