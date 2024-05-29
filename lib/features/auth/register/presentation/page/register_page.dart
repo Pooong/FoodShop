@@ -105,58 +105,72 @@ class RegisterPage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 20),
-                      TextFormField(
-                        obscureText: true,
-                        controller: controller.passwordController,
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    Colors.grey), // Màu sắc của border bottom
+                      Obx(() {
+                        return TextFormField(
+                          obscureText: controller.showPassword.value,
+                          controller: controller.passwordController,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            suffixIcon: IconButton(
+                                onPressed: controller.toggleVisiblePassword,
+                                icon: Icon(controller.changIconPassword.value
+                                    ? Icons.visibility
+                                    : Icons.visibility_off)),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      Colors.grey), // Màu sắc của border bottom
+                            ),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors
+                                      .green), // Màu sắc của border bottom khi trường được tập trung
+                            ),
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors
-                                    .green), // Màu sắc của border bottom khi trường được tập trung
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            if (!controller.validatePassword()) {
+                              return controller.msgPasswordError.value;
+                            }
+                            return null;
+                          },
+                        );
+                      }),
+                      Obx(() {
+                        return TextFormField(
+                          obscureText: controller.showPassword.value,
+                          decoration: InputDecoration(
+                            labelText: 'Confirm Password',
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      Colors.grey), // Màu sắc của border bottom
+                            ),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors
+                                      .green), // Màu sắc của border bottom khi trường được tập trung
+                            ),
+                            suffixIcon: IconButton(
+                                onPressed: controller.toggleVisiblePassword,
+                                icon: Icon(controller.changIconPassword.value
+                                    ? Icons.visibility
+                                    : Icons.visibility_off)),
                           ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          if (!controller.validatePassword()) {
-                            return controller.msgPasswordError.value;
-                          }
-                          return null;
-                        },
-                      ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please confirm your password';
+                            }
+                            if (value != controller.passwordController.text) {
+                              return 'Passwords do not match';
+                            }
+                            return null;
+                          },
+                        );
+                      }),
                       const SizedBox(height: 15),
-                      TextFormField(
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Confirm Password',
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    Colors.grey), // Màu sắc của border bottom
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors
-                                    .green), // Màu sắc của border bottom khi trường được tập trung
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please confirm your password';
-                          }
-                          if (value != controller.passwordController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
-                      ),
                       const SizedBox(height: 15),
                       SizedBox(
                         width: double.infinity,
