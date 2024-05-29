@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';

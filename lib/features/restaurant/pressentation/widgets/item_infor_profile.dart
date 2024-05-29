@@ -12,16 +12,20 @@ class ItemInforProfile extends StatelessWidget {
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
+            maxLines: 2,
+            textAlign: TextAlign.center,
             quantity.toString(),
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: AppDimens.textSize18),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, fontSize: AppDimens.textSize14),
           ),
           Text(
+            maxLines: 2,
+            textAlign: TextAlign.center,
             title,
-            style: TextStyle(fontSize: AppDimens.textSize18),
+            style: const TextStyle(fontSize: AppDimens.textSize18),
           )
         ],
       ),
