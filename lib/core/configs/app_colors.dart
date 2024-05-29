@@ -17,7 +17,9 @@ class AppColors {
   static const green = Color(0xFF009432);
   static const Color red = Color(0XFFc23616);
 
+  static const Color grayTitle=Color(0XFF50555C);
 
+  static const Color markerLocation=Colors.red;
 
 
   static const gray= Color(0xFF636363);
@@ -33,8 +35,8 @@ class AppColors {
   static Color black4 = HexColor('#1F1F1F');
   static Color greenBold = HexColor('#4CAF50');
 
-
   static const blue = Color(0xFF5DCCFC);
+
   
   static Color getColorBMI(double bmi) {
     if (bmi < 18.5) {
