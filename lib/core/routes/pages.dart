@@ -173,5 +173,6 @@ class Pages {
       page: () => RestaurantPage(),
       binding: RestaurantBinding(),
     ),
+
   ];
 }
