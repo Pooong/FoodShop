@@ -15,12 +15,14 @@ class ItemInforProfile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
+            maxLines: 2,
             textAlign: TextAlign.center,
             quantity.toString(),
             style: const TextStyle(
                 fontWeight: FontWeight.bold, fontSize: AppDimens.textSize14),
           ),
           Text(
+            maxLines: 2,
             textAlign: TextAlign.center,
             title,
             style: const TextStyle(fontSize: AppDimens.textSize18),

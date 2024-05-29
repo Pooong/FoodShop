@@ -7,10 +7,13 @@ import 'package:find_food/features/restaurant/pressentation/controller/restauran
 import 'package:find_food/features/restaurant/pressentation/model/food_model.dart';
 import 'package:find_food/features/restaurant/pressentation/widgets/card_menu_restaurant.dart';
 import 'package:find_food/features/restaurant/pressentation/widgets/edit_modal_menu.dart';
+import 'package:find_food/features/restaurant/pressentation/widgets/icon_button.dart';
 import 'package:find_food/features/restaurant/pressentation/widgets/item_infor_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class RestaurantPage extends GetView<RestaurantController> {
@@ -27,105 +30,122 @@ class RestaurantPage extends GetView<RestaurantController> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          Stack(
-            children: [
-              Stack(clipBehavior: Clip.none, children: [
-                Container(
-                  height: 300,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                          'assets/images/img_banner_profile1.png'), // Đường dẫn đến ảnh trong assets
-                      fit: BoxFit.cover, // Đặt ảnh vừa khít
-                    ),
-                  ),
+          Stack(clipBehavior: Clip.none, children: [
+            Container(
+              height: 300,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/img_banner_profile1.png'),
+                  fit: BoxFit.cover,
                 ),
-                Positioned(
-                  width: 350,
-                  height: 90,
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                      padding: const EdgeInsets.only(left: 140, bottom: 10),
-                      color: Colors.white
-                          .withOpacity(0.7), // Màu nền với độ mờ (opacity)
-                      // padding: const EdgeInsets.only(
-                      //      left: 130), // Thêm padding nếu cần thiết
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
+              ),
+            ),
+            Positioned(
+              width: 350,
+              height: 90,
+              bottom: 0,
+              right: 0,
+              child: Container(
+                  padding: const EdgeInsets.only(left: 140, bottom: 10),
+                  color: Colors.white.withOpacity(0.7),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextWidget(
+                        text: "RESTAURENT",
+                        fontWeight: FontWeight.w700,
+                        size: AppDimens.textSize22,
+                        color: AppColors.primary,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          TextWidget(
-                            text: "RESTAURENT",
-                            fontWeight: FontWeight.w700,
-                            size: AppDimens.textSize22,
-                            color: AppColors.primary,
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .start, // Đảm bảo căn lề trái
+                              children: [
+                                TextWidget(
+                                  size: AppDimens.textSize9,
+                                  text: 'Email: ThanThan@gmail.com',
+                                ),
+                                TextWidget(
+                                  size: AppDimens.textSize9,
+                                  text: 'SDT: 0788836968',
+                                ),
+                              ],
+                            ),
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Flexible(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment
-                                      .start, // Đảm bảo căn lề trái
-                                  children: [
-                                    TextWidget(
-                                      size: AppDimens.textSize9,
-                                      text: 'Email: ThanThan@gmail.com',
-                                    ),
-                                    TextWidget(
-                                      size: AppDimens.textSize9,
-                                      text: 'SDT: 0788836968',
-                                    ),
-                                  ],
-                                ),
+                              Icon(
+                                Icons.facebook,
+                                size: AppDimens.textSize10,
                               ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.facebook,
-                                    size: AppDimens.textSize10,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Icon(
-                                    Icons.facebook,
-                                    size: AppDimens.textSize10,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Icon(
-                                    Icons.facebook,
-                                    size: AppDimens.textSize10,
-                                  ),
-                                ],
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.facebook,
+                                size: AppDimens.textSize10,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.facebook,
+                                size: AppDimens.textSize10,
                               ),
                             ],
-                          )
+                          ),
                         ],
-                      )),
-                ),
-                const Positioned(
-                  bottom: -50,
-                  left: 20,
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.white,
-                    radius: 75,
-                    child: CircleAvatar(
-                      radius: 70,
-                      backgroundImage: AssetImage(
-                        'assets/images/avatar.jpg',
-                      ),
-                    ),
+                      )
+                    ],
+                  )),
+            ),
+            const Positioned(
+              bottom: -50,
+              left: 20,
+              child: CircleAvatar(
+                backgroundColor: AppColors.white,
+                radius: 75,
+                child: CircleAvatar(
+                  radius: 70,
+                  backgroundImage: AssetImage(
+                    'assets/images/avatar.jpg',
                   ),
                 ),
-              ])
-            ],
-          ),
+              ),
+            ),
+            Positioned(
+                top: 20,
+                right: 10,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle, // Hình dạng của nút
+                    color: Color.fromARGB(128, 255, 255, 255),
+                  ),
+                  child: iconButton(
+                    icon: Icons.edit,
+                    onPressed: () {
+                      print("OK");
+                    },
+                  ),
+                )),
+            Positioned(
+              bottom: -50,
+              left: 30,
+              child: iconButton(
+                icon: Icons.edit,
+                onPressed: () {
+                  print("OK");
+                },
+              ),
+            ),
+          ]),
           const Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -164,9 +184,10 @@ class RestaurantPage extends GetView<RestaurantController> {
             ],
           ),
           Container(
-            height: 80,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            height: 100,
+            padding: const EdgeInsets.all(20),
+            margin:
+                const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
             decoration: BoxDecoration(
               color: AppColors.white, // Màu nền
 
@@ -185,14 +206,14 @@ class RestaurantPage extends GetView<RestaurantController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ItemInforProfile(quantity: 130, title: "Reviews"),
-                ItemInforProfile(quantity: 130, title: "Post Relate"),
+                ItemInforProfile(quantity: 130, title: "Post "),
                 ItemInforProfile(quantity: 130, title: "Saved"),
                 ItemInforProfile(quantity: 130, title: "Liked"),
               ],
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
           Container(
             height: 80,
@@ -245,6 +266,78 @@ class RestaurantPage extends GetView<RestaurantController> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: 80,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              color: AppColors.white, // Màu nền
+
+              borderRadius: BorderRadius.circular(5.0), // Góc bo tròn
+              boxShadow: const [
+                // Bóng đổ
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 5.0,
+                  spreadRadius: 1.0,
+                )
+              ],
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                    flex: 1,
+                    child: Icon(
+                      Icons.location_on,
+                      size: 30,
+                      color: Colors.red,
+                    )),
+                Flexible(
+                  flex: 8,
+                  child: TextWidget(
+                      text:
+                          "27A - Đường 30 tháng 4 - Hưng Lợi - Ninh Kiều - Cần Thơ",
+                      size: AppDimens.textSize18),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            // height: 80,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const TextWidget(
+                  text: "Menu",
+                  color: AppColors.red,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    print("Oke");
+                  },
+                  child: const Row(
+                    children: [
+                      TextWidget(text: "Add Food"),
+                      SizedBox(width: 5),
+                      Image(
+                        image: AssetImage('assets/icons/ic_add_foodmenu.png'),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
           const SizedBox(height: 10),
           buildGridOrders()
         ],
@@ -283,7 +376,6 @@ class RestaurantPage extends GetView<RestaurantController> {
             : controller.itemsToShow.value,
 
         itemBuilder: (BuildContext context, int index) {
-          print(index);
           if (index == controller.itemsToShow.value) {
             // print(index);
             return GestureDetector(
@@ -355,10 +447,10 @@ class RestaurantPage extends GetView<RestaurantController> {
   AppBar buildAppBar() {
     return AppBar(
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(5.0), // Độ cao của border
+        preferredSize: const Size.fromHeight(5.0),
         child: Container(
-          color: AppColors.primary, // Màu của border
-          height: 5.0, // Độ dày của border
+          color: AppColors.primary,
+          height: 5.0,
         ),
       ),
       backgroundColor: AppColors.white,
@@ -374,6 +466,13 @@ class RestaurantPage extends GetView<RestaurantController> {
           color: AppColors.primary,
           fontWeight: FontWeight.bold),
       centerTitle: true,
+      actions: [
+        iconButton(
+            icon: Icons.settings,
+            onPressed: () {
+              Get.toNamed('restaurantsetting');
+            })
+      ],
     );
   }
 }

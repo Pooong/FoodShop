@@ -82,29 +82,38 @@ class LoginPage extends GetView<LoginController> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    TextFormField(
-                      controller: controller.passwordController,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.grey,
+                    Obx(() {
+                      return TextFormField(
+                        controller: controller.passwordController,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                              onPressed: controller.toggleIsEyePassword,
+                              icon: Icon(
+                                controller.isEyePassword.value
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              )),
+                          labelText: 'Password',
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                            ),
                           ),
                         ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      },
-                    ),
+                        obscureText: controller.visiblePassword.value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                      );
+                    }),
                     const SizedBox(height: 15),
                     SizedBox(
                       width: double.infinity,

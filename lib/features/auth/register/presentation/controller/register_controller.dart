@@ -17,13 +17,21 @@ class RegisterController extends GetxController {
   RxString msgEmailError = ''.obs;
   RxString msgPasswordError = ''.obs;
   RxString msgConfirmPasswordError = ''.obs;
+  var changIconPassword = false.obs;
+  var showPassword = false.obs;
+
+  void toggleVisiblePassword() {
+    changIconPassword.value = !changIconPassword.value;
+    showPassword.value = !showPassword.value;
+  }
+
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool validateEmail() {
     if (emailController.text.isEmpty) {
-      msgEmailError.value = 'email_cannot_be_empty';
+      msgEmailError.value = 'Email cannot be empty';
       return false;
     } else if (!Validators.validateEmail(emailController.text)) {
-      msgEmailError.value = 'email_invalid';
+      msgEmailError.value = 'Email invalid';
       return false;
     } else {
       msgEmailError.value = '';
@@ -36,11 +44,11 @@ class RegisterController extends GetxController {
       msgPasswordError.value = 'password_cannot_be_empty';
       return false;
     } else if (!Validators.validPassword(passwordController.text)) {
-      msgPasswordError.value = 'password_invalid';
+      msgPasswordError.value = 'Password must be 6-20 characters long';
       return false;
     } else if (confirmPasswordController.text.isNotEmpty &&
         passwordController.text != confirmPasswordController.text) {
-      msgConfirmPasswordError.value = 'passwords_do_not_match';
+      msgConfirmPasswordError.value = 'Passwords_do_not_match';
       return false;
     } else {
       msgPasswordError.value = '';
@@ -50,18 +58,14 @@ class RegisterController extends GetxController {
   }
 
   void register() async {
-    print("==================OK VAO CONTROLLER=====================");
     if (!validateEmail() || !validatePassword()) {
-      print("==================FAILS ROI DO==================");
       return;
     }
-    print("===============PROCESSING===============");
     // DialogsUtils.showAlterLoading();
     final result = await FirebaseAuthentication.signUp(
       email: emailController.text,
       password: passwordController.text,
     );
-    print("===============WAITTINGgggggg===============");
 
     if (result.status == Status.success) {
       UserModel user = UserModel(
@@ -74,12 +78,9 @@ class RegisterController extends GetxController {
           typeDialog: TypeDialog.success,
           onPresss: () async =>
               {await createNewUser(user), Get.offAllNamed("/login")});
-      print("DANG KY THANH CONG!! XIN CHUC MUNG");
     } else {
       Get.back();
       if (result.exp?.code == "email-already-in-use") {
-        print("something_went_wrong");
-
         msgEmailError.value = 'email_already_in_use';
         return;
       }
