@@ -177,6 +177,7 @@ class Pages {
       page: () => RestaurantPage(),
       binding: RestaurantBinding(),
     ),
+
     GetPage(
         name: Routes.restaurantsetting,
         page: () => const RestaurantSettingPage(),
@@ -185,5 +186,6 @@ class Pages {
         name: Routes.changeinfor,
         page: () => RestaurantChangeInfo(),
         binding: RestaurantChangeInfoBinding())
+
   ];
 }

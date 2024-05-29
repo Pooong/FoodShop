@@ -12,7 +12,7 @@ class CommentModel {
     required this.comment,
     required this.author,
   });
-
+  
   CommentModel copyWith({
     String? id,
     double? favorite,
