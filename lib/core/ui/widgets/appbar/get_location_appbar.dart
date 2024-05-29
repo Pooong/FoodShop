@@ -1,5 +1,6 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,22 +11,33 @@ class GetLocationAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading:
-          IconButton(onPressed: () {}, icon: const Icon(Icons.location_on)),
+          IconButton(onPressed: () {Get.back();}, icon: const Icon(Icons.arrow_back_ios)),
       title: const Text(
-        "Set Restaurent Location",
+        AppTextString.fLocationAppbar,
         style: TextStyle(
-            fontSize: AppDimens.textSize26, fontWeight: FontWeight.w500),
+            fontSize: AppDimens.textSize22, fontWeight: FontWeight.w500),
       ),
+      centerTitle: true,
       actions: [
         Container(
-          margin: const EdgeInsets.only(right: 20),
+          margin: EdgeInsets.only(right: Get.width*0.04),
           width: 40,
           height: 40,
           decoration: BoxDecoration(
               color: AppColors.gray2, borderRadius: BorderRadius.circular(100)),
-          child: IconButton(onPressed: () {Get.back();}, icon: const Icon(Icons.close)),
+          child: IconButton(icon:const Icon(Icons.location_on_rounded), onPressed: () {  },),
         )
       ],
+
+      //bottom line
+      bottom: PreferredSize(
+          preferredSize:
+              const Size.fromHeight(2.0), // Adjust the height of the bottom border
+          child: Container(
+            color: AppColors.primary, // Border color
+            height: 2, // Border height
+          ),
+        ),
     );
   }
   

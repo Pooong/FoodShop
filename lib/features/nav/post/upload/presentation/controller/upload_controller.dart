@@ -20,6 +20,7 @@ class UploadController extends GetxController {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
+  Place? placeSelected;
   UserModel? user;
 
   List<String> listPathUrl = [];

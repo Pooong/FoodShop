@@ -1,80 +1,45 @@
-import 'package:get/get.dart';
+import 'dart:convert';
+
+PostModel postModelFromJson(String str) => PostModel.fromJson(json.decode(str));
+
+String postModelToJson(PostModel data) => json.encode(data.toJson());
 
 class PostModel {
-  final String? id;
-  final String title;
-  final String subtitle;
-  final RxInt favoriteCount;
-  final List<String> imageList;
-  final String? restaurantId;
-  final String createAt;
-  final RxBool isBookmarked;
-  final RxBool isFavorited;
+    String createdAt;
+    int favorites;
+    String postId;
+    List<String> imageList;
+    String restaurantId;
+    String description;
+    String title;
 
-  PostModel({
-    this.id,
-    required this.title,
-    required this.subtitle,
-    int favoriteCount = 0,
-    required this.imageList,
-    required this.restaurantId,
-    required this.createAt,
-  })  : favoriteCount = RxInt(favoriteCount),
-        isBookmarked = false.obs,
-        isFavorited = false.obs;
+    PostModel({
+        required this.createdAt,
+        required this.favorites,
+        required this.postId,
+        required this.imageList,
+        required this.restaurantId,
+        required this.description,
+        required this.title,
+    });
 
-  PostModel copyWith({
-    String? id,
-    String? title,
-    String? subtitle,
-    int? favoriteCount,
-    List<String>? imageList,
-    String? restaurantId,
-    String? createAt,
-    RxBool? isBookmarked,
-    RxBool? isFavorited,
-  }) {
-    return PostModel(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      subtitle: subtitle ?? this.subtitle,
-      favoriteCount: favoriteCount ?? this.favoriteCount.value,
-      imageList: imageList ?? this.imageList,
-      restaurantId: restaurantId ?? this.restaurantId,
-      createAt: createAt ?? this.createAt,
+    factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
+        createdAt: json["createdAt"],
+        favorites: json["favorites"],
+        postId: json["postId"],
+        imageList: List<String>.from(json["imageList"].map((x) => x)),
+        restaurantId: json["restaurantId"],
+        description: json["description"],
+        title: json["title"],
     );
-  }
 
-  void toggleFavorite() {
-    isFavorited.value = !isFavorited.value;
-    if (isFavorited.value) {
-      favoriteCount.value += 1;
-    } else {
-      favoriteCount.value -= 1;
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'subtitle': subtitle,
-      'favoriteCount': favoriteCount.value,
-      'imageList': imageList,
-      'restaurantId': restaurantId,
-      'createAt': createAt,
+    Map<String, dynamic> toJson() => {
+        "createdAt": createdAt,
+        "favorites": favorites,
+        "postId": postId,
+        "imageList": List<String>.from(imageList.map((x) => x)),
+        "restaurantId": restaurantId,
+        "description": description,
+        "title": title,
     };
-  }
-
-  static PostModel fromJson(Map<String, dynamic> json) {
-    return PostModel(
-      id: json['id'],
-      title: json['title'],
-      subtitle: json['subtitle'],
-      favoriteCount: json['favoriteCount'],
-      imageList: List<String>.from(json['imageList']),
-      restaurantId: json['restaurantId'],
-      createAt: json['createAt'],
-    );
-  }
 }
