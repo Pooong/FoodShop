@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/widgets/appbar/get_location_appbar.dart';
@@ -7,11 +10,11 @@ import 'package:find_food/features/maps/location/presentation/controller/locatio
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
 class LocationPage extends GetView<LocationController> {
   const LocationPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<LocationController>(
@@ -24,7 +27,7 @@ class LocationPage extends GetView<LocationController> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  searchBox(),
+                  searchBox(controller),
                   Column(
                     children: [
                       Container(),
@@ -71,6 +74,10 @@ class LocationPage extends GetView<LocationController> {
                         Maps(
                             controller.mapController, controller.initialCenter),
                         Positioned(
+                            right: 5,
+                            top: 5,
+                            child: SizedBox(child: buttoCurrentLocation())),
+                        Positioned(
                           bottom: 10,
                           right: 0,
                           child: Column(
@@ -103,6 +110,33 @@ class LocationPage extends GetView<LocationController> {
     );
   }
 
+  ElevatedButton buttoCurrentLocation() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10)),
+      onPressed: () {},
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.location_on,
+            color: AppColors.white,
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          TextWidget(
+            text: "Get Current location",
+            size: AppDimens.textSize14,
+            fontWeight: FontWeight.w500,
+            color: AppColors.white,
+          )
+        ],
+      ),
+    );
+  }
+
   // ignore: non_constant_identifier_names
   Widget Maps(MapController mapController, LatLng center) {
     return FlutterMap(
@@ -115,9 +149,13 @@ class LocationPage extends GetView<LocationController> {
       ),
       children: [
         openStreetMapTileLayer,
-        MarkerLayer(markers: [
+        MarkerLayer(
+          
+          markers: [
+            
           Marker(
             point: controller.initialCenter,
+            
             width: 60,
             height: 90,
             alignment: Alignment.centerLeft,
@@ -131,7 +169,7 @@ class LocationPage extends GetView<LocationController> {
                     children: [
                       controller.labelMark.value
                           ? Positioned(
-                            child: Container(
+                              child: Container(
                                 decoration: BoxDecoration(boxShadow: [
                                   BoxShadow(
                                       color: AppColors.black.withOpacity(.2),
@@ -145,17 +183,16 @@ class LocationPage extends GetView<LocationController> {
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                          )
+                            )
                           : Container(),
-                        
-                          const Positioned(
-                            bottom: 0,
-                            child: Icon(
-                            Icons.location_on,
-                            size: 60,
-                            color: AppColors.markerLocation,
-                                                    ),
-                          ),
+                      const Positioned(
+                        bottom: 0,
+                        child: Icon(
+                          Icons.location_on,
+                          size: 60,
+                          color: AppColors.markerLocation,
+                        ),
+                      ),
                     ],
                   ),
                 )),
@@ -201,7 +238,10 @@ class LocationPage extends GetView<LocationController> {
   }
 
   // Search Box Widget
-  Container searchBox() {
+// Search Box Widget
+  Widget searchBox(LocationController controller) {
+    final TextEditingController searchController = TextEditingController();
+
     return Container(
       margin: const EdgeInsets.only(top: 20, bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -212,15 +252,50 @@ class LocationPage extends GetView<LocationController> {
           color: AppColors.gray.withOpacity(.3),
         ),
       ),
-      child: const TextField(
-        decoration: InputDecoration(
-          hintStyle: TextStyle(fontWeight: FontWeight.w400),
-          border: InputBorder.none,
-          icon: Icon(Icons.search),
-          hintText: "Enter location",
-        ),
+      child: Row(
+        children: [
+          const Icon(Icons.search),
+          const SizedBox(width: 10),
+          Expanded(
+            child: TextField(
+              controller: searchController,
+              decoration: const InputDecoration(
+                hintStyle: TextStyle(fontWeight: FontWeight.w400),
+                border: InputBorder.none,
+                hintText: "Enter location",
+              ),
+              onSubmitted: (value) {
+                _searchLocation(controller, value);
+              },
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  // Function to search for a location and update the map
+  Future<void> _searchLocation(
+      LocationController controller, String query) async {
+    final response = await http.get(
+      Uri.parse(
+          'https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=1'),
+    );
+
+    if (response.statusCode == 200) {
+      final List results = json.decode(response.body);
+      if (results.isNotEmpty) {
+        final double lat = double.parse(results[0]['lat']);
+        final double lon = double.parse(results[0]['lon']);
+        controller.updateMapLocation(LatLng(lat, lon));
+      } else {
+        // Handle no results found
+        print('No results found');
+      }
+    } else {
+      // Handle request failure
+      print('Request failed with status: ${response.statusCode}');
+    }
   }
 
   // Optional Comment Search Widget

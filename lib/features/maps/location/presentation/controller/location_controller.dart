@@ -16,7 +16,7 @@ enum MapAction {
 // Location Controller
 class LocationController extends GetxController with GetSingleTickerProviderStateMixin {
   final MapController mapController = MapController();
-  final LatLng initialCenter = const LatLng(10.0323, 105.7682);
+  LatLng initialCenter = const LatLng(10.0323, 105.7682);
 
   var labelMark=false.obs;
   var currentZoom = 16.0.obs;
@@ -61,6 +61,14 @@ class LocationController extends GetxController with GetSingleTickerProviderStat
   });
   }
 
+    void updateMapLocation(LatLng newCenter) {
+    mapController.move(newCenter, mapController.camera.zoom);
+    initialCenter = newCenter;
+    update();
+
+    print(initialCenter);
+
+  }
 
   void _animatedMove(LatLng destLocation, double destZoom) {
     final latTween = Tween<double>(
