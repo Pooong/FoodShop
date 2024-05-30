@@ -1,24 +1,16 @@
-import 'package:find_food/core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const ProfileAppbar({super.key});
+class SettingInformationAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const SettingInformationAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Profile",),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Get.toNamed(Routes.accountSetting);
-            },
-            icon: const Icon(Icons.settings),
-          ),
-        ],
+        leading: InkWell(
+            onTap: () => Get.back(), child: const Icon(Icons.arrow_back)),
+        title: const Text("Setting Information"),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
