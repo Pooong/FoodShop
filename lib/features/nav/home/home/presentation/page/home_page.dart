@@ -12,9 +12,6 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HomeAppbar(),
-      // body: CustomScrollView(
-      //   slivers: [for (var i = 1; i <= 10; i++) PostsCard()],
-      // ),
       body: GetBuilder<HomeController>(
         id: "fetchPosts",
         builder: (logic) {

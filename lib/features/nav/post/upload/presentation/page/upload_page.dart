@@ -11,8 +11,7 @@ class UploadPage extends GetView<UploadController> {
 
   @override
   Widget build(BuildContext context) {
-    // final controller = Get.put(UploadController());
-
+    
     return Scaffold(
       appBar: const UploadPostAppbar(),
       body: SingleChildScrollView(
@@ -137,6 +136,7 @@ class UploadPage extends GetView<UploadController> {
 
                   // Location Picker
                   InkWell(
+                    // onTap: () => Get.toNamed(Routes.getLoactionPage),
                     onTap: () async {
                       final result = await Get.toNamed(
                         '/getLocationPage',
