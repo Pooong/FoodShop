@@ -4,6 +4,6 @@ import 'package:flutter/material.dart';
 import 'app.dart';
 
 void main() async {
-  appConfig();
-  runApp(const App()); 
+  await appConfig();
+  runApp(const App());
 }

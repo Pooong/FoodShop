@@ -1,5 +1,5 @@
-import 'package:find_food/features/main/presentation/controller/main_controller.dart';
 import 'package:find_food/core/ui/widgets/nav/BottomNavigationBarWidget.dart';
+import 'package:find_food/features/main/presentation/controller/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +11,7 @@ class MainPage extends GetView<MainController> {
     return Scaffold(
       // xay dung appbar biến đổi theo từng trang
       body: Navigator(
-        key: Get.nestedKey(1),
+        key: Get.nestedKey(10),
         initialRoute: "/home",
         onGenerateRoute: controller.onGenerateRoute,
       ),
@@ -19,7 +19,7 @@ class MainPage extends GetView<MainController> {
       bottomNavigationBar: _bottomNavigationBar(),
     );
   }
-  
+
   _bottomNavigationBar() {
     return Obx(
       () => BottomNavigationBarWidget(

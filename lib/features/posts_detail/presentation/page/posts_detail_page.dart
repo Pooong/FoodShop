@@ -16,6 +16,7 @@ class PostsDetailPage extends GetView<PostsDetailController> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
+            
             SizedBox(height: Get.height * 0.77, child: const TopPostsDetail()),
             const CommentBoxWidget(),
           ],

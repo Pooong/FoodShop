@@ -1,14 +1,12 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/features/auth/login/presentation/controller/login_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends GetView<LoginController> {
   LoginPage({super.key});
-  final _formKey = GlobalKey<FormState>();
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +50,7 @@ class LoginPage extends GetView<LoginController> {
               ),
               const SizedBox(height: 20),
               Form(
-                key: _formKey,
+                key: controller.formKey,
                 child: Column(
                   children: <Widget>[
                     TextFormField(
@@ -122,7 +120,7 @@ class LoginPage extends GetView<LoginController> {
                           ),
                         ),
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (controller.formKey.currentState!.validate()) {
                             controller.handleLoginWithEmail();
                           }
                         },

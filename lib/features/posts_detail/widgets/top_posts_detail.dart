@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 
-class TopPostsDetail extends StatelessWidget {
+class TopPostsDetail extends GetView<PostsDetailController> {
   const TopPostsDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final PostsDetailController controller = Get.put(PostsDetailController());
 
     return Scaffold(
       appBar: AppBar(

@@ -19,18 +19,12 @@ import 'package:find_food/features/maps/location/di/location_binding.dart';
 import 'package:find_food/features/maps/location/presentation/page/location_page.dart';
 import 'package:find_food/features/maps/maps/di/maps_binding.dart';
 import 'package:find_food/features/maps/maps/presentation/page/maps_page.dart';
-import 'package:find_food/features/nav/notify/di/notify_binding.dart';
 import 'package:find_food/features/nav/notify/nav/news_notify/di/news_notify_binding.dart';
 import 'package:find_food/features/nav/notify/nav/news_notify/presentation/page/news_notify_page.dart';
 import 'package:find_food/features/nav/notify/nav/notify_setting/di/notify_setting_binding.dart';
 import 'package:find_food/features/nav/notify/nav/notify_setting/presentation/page/notify_setting_page.dart';
 import 'package:find_food/features/nav/notify/nav/social_notify/di/social_notify_binding.dart';
 import 'package:find_food/features/nav/notify/nav/social_notify/presentation/page/social_notify_page.dart';
-import 'package:find_food/features/nav/notify/presentation/page/notify_page.dart';
-import 'package:find_food/features/nav/post/upload/di/upload_binding.dart';
-import 'package:find_food/features/nav/post/upload/presentation/page/upload_page.dart';
-import 'package:find_food/features/nav/profile/di/profile_binding.dart';
-import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
 import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
 import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
 import 'package:find_food/features/restaurant/di/restaurant_binding.dart';
@@ -40,10 +34,17 @@ import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
 
 class Pages {
-  static const initial = Routes.splash;
+  static const initial = Routes.none;
   static const main = Routes.main;
 
   static final routes = [
+    // màng hình chờ loading
+    GetPage(
+      name: Routes.none,
+      page: () => const SplashPage(),
+      binding: SplashBinding(),
+    ),
+
     // trang đăng nhập
     GetPage(
       name: Routes.login,
@@ -65,13 +66,6 @@ class Pages {
       binding: MainBindding(),
     ),
 
-    // màng hình chờ loading
-    GetPage(
-      name: Routes.splash,
-      page: () => const SplashPage(),
-      binding: SplashBinding(),
-    ),
-
     //Trang quên mật khẩu
 
     GetPage(
@@ -81,11 +75,11 @@ class Pages {
     ),
 
     //trang profile
-    GetPage(
-      name: Routes.profile,
-      page: () => const ProfilePage(),
-      binding: ProfileBindding(),
-    ),
+    // GetPage(
+    //   name: Routes.profile,
+    //   page: () => const ProfilePage(),
+    //   binding: ProfileBindding(),
+    // ),
 
     //trang setting account
     GetPage(
@@ -109,11 +103,11 @@ class Pages {
     ),
 
     //trang notifications
-    GetPage(
-      name: Routes.notify,
-      page: () => const NotifyPage(),
-      binding: NotifyBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.notify,
+    //   page: () => const NotifyPage(),
+    //   binding: NotifyBinding(),
+    // ),
 
     //trang social notify
     GetPage(
@@ -139,11 +133,11 @@ class Pages {
     // =====================  ROUTE POST =====================
 
     //màng hình đăng bài viết
-    GetPage(
-      name: Routes.uploadPostPage,
-      page: () => const UploadPage(),
-      binding: UploadBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.uploadPostPage,
+    //   page: () => const UploadPage(),
+    //   binding: UploadBinding(),
+    // ),
 
     // màng hình lấy vị trí cửa hàng trong bài viết
     GetPage(
