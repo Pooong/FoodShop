@@ -7,7 +7,7 @@ class ProfileBindding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => Prefs(), fenix: true);
-    Get.lazyPut(() => ProfileController());
+    Get.lazyPut(() => ProfileController(Get.find()));
     Get.lazyPut(() => GetuserUseCase(Get.find()));
   }
 }

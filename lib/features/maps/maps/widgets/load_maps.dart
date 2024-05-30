@@ -14,6 +14,7 @@ class LoadMaps extends StatefulWidget {
   @override
   State<LoadMaps> createState() => LoadMapsState();
 }
+
 class LoadMapsState extends State<LoadMaps> {
   final Location _locationController = Location();
 
@@ -36,6 +37,12 @@ class LoadMapsState extends State<LoadMaps> {
                 print(Coordinates),
               }),
         });
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the controller when the widget is disposed
+    super.dispose();
   }
 
   @override
@@ -73,15 +80,16 @@ class LoadMapsState extends State<LoadMaps> {
             width: 350,
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:AppColors.primary,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  )
-                ),
+                    backgroundColor: AppColors.primary,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
                 onPressed: getCurrentLocation,
-            
-                child: const Text("Get Current Location",style: TextStyle(color: AppColors.white,fontSize: AppDimens.textSize18),)),
+                child: const Text(
+                  "Get Current Location",
+                  style: TextStyle(
+                      color: AppColors.white, fontSize: AppDimens.textSize18),
+                )),
           ),
         )
       ],
@@ -123,11 +131,11 @@ class LoadMapsState extends State<LoadMaps> {
         .listen((LocationData currentLocation) {
       if (currentLocation.latitude != null &&
           currentLocation.longitude != null) {
-        setState(() {
-          _currentP =
-              LatLng(currentLocation.latitude!, currentLocation.longitude!);
-          _cameraTopPosition(_currentP!);
-        });
+        // setState(() {
+        //   _currentP =
+        //       LatLng(currentLocation.latitude!, currentLocation.longitude!);
+        //   _cameraTopPosition(_currentP!);
+        // });
       }
     });
   }
@@ -162,8 +170,8 @@ class LoadMapsState extends State<LoadMaps> {
   void getCurrentLocation() async {
     geo.Position position = await geo.Geolocator.getCurrentPosition(
         desiredAccuracy: geo.LocationAccuracy.high);
-    setState(() {
-      _currentP = LatLng(position.latitude, position.longitude);
-    });
+    // setState(() {
+    //   _currentP = LatLng(position.latitude, position.longitude);
+    // });
   }
 }

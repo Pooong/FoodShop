@@ -43,5 +43,11 @@ abstract class Routes {
 
   //restaurant page
   static const restaurant = '/restaurant';
-  static const mapDemo ='/mapsDemo';
+  static const createRestaurant = '/createRestaurant';
+
+  static const restaurantsetting = '/restaurantsetting';
+  static const changeinfor = '/changeinfor';
+
+
+
 }

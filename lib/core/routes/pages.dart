@@ -2,6 +2,8 @@ import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/features/account_setting/di/account_setting_binding.dart';
 import 'package:find_food/features/account_setting/nav/change_password/di/change_password_binding.dart';
 import 'package:find_food/features/account_setting/nav/change_password/presentation/page/change_password_page.dart';
+import 'package:find_food/features/account_setting/nav/create_restaurant/di/create_restaurant_binding.dart';
+import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/create_restaurant_page.dart';
 import 'package:find_food/features/account_setting/nav/setting_information/di/setting_information_binding.dart';
 import 'package:find_food/features/account_setting/nav/setting_information/presentation/page/setting_information_page.dart';
 import 'package:find_food/features/account_setting/presentation/page/account_setting_page.dart';
@@ -29,6 +31,10 @@ import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
 import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
 import 'package:find_food/features/restaurant/di/restaurant_binding.dart';
 import 'package:find_food/features/restaurant/pressentation/page/restaurant_page.dart';
+import 'package:find_food/features/restaurant_change_infor.dart/di/restaurant_change_info_binding.dart';
+import 'package:find_food/features/restaurant_change_infor.dart/pressentation/page/restaurant_change_info.dart';
+import 'package:find_food/features/restaurant_setting/di/restaurant_setting_binding.dart';
+import 'package:find_food/features/restaurant_setting/pressentation/page/restaurant_setting_page.dart';
 import 'package:find_food/features/splash/di/splash_binding.dart';
 import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
@@ -74,13 +80,6 @@ class Pages {
       binding: ForgetPasswordBinding(),
     ),
 
-    //trang profile
-    // GetPage(
-    //   name: Routes.profile,
-    //   page: () => const ProfilePage(),
-    //   binding: ProfileBindding(),
-    // ),
-
     //trang setting account
     GetPage(
       name: Routes.accountSetting,
@@ -102,12 +101,12 @@ class Pages {
       binding: ChangePasswordBinding(),
     ),
 
-    //trang notifications
-    // GetPage(
-    //   name: Routes.notify,
-    //   page: () => const NotifyPage(),
-    //   binding: NotifyBinding(),
-    // ),
+    //trang tạo cửa hàng
+    GetPage(
+      name: Routes.createRestaurant,
+      page: () => const CreateRestaurantPage(),
+      binding: CreateRestaurantBinding(),
+    ),
 
     //trang social notify
     GetPage(
@@ -173,6 +172,15 @@ class Pages {
       page: () => RestaurantPage(),
       binding: RestaurantBinding(),
     ),
+
+    GetPage(
+        name: Routes.restaurantsetting,
+        page: () => const RestaurantSettingPage(),
+        binding: RestaurantSettingBinding()),
+    GetPage(
+        name: Routes.changeinfor,
+        page: () => RestaurantChangeInfo(),
+        binding: RestaurantChangeInfoBinding())
 
   ];
 }

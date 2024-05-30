@@ -1,4 +1,7 @@
 import 'package:find_food/core/configs/app_colors.dart';
+import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/ui/widgets/text/text_widget.dart';
+import 'package:find_food/core/ui/widgets/textfield/textfield_widget.dart';
 import 'package:find_food/features/auth/login/presentation/controller/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -79,29 +82,38 @@ class LoginPage extends GetView<LoginController> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    TextFormField(
-                      controller: controller.passwordController,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.grey,
+                    Obx(() {
+                      return TextFormField(
+                        controller: controller.passwordController,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                              onPressed: controller.toggleIsEyePassword,
+                              icon: Icon(
+                                controller.isEyePassword.value
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              )),
+                          labelText: 'Password',
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                            ),
                           ),
                         ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      },
-                    ),
+                        obscureText: controller.visiblePassword.value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                      );
+                    }),
                     const SizedBox(height: 15),
                     SizedBox(
                       width: double.infinity,

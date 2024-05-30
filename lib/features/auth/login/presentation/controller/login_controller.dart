@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firebae_auth/firebase_auth.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
@@ -9,6 +11,7 @@ import 'package:find_food/features/auth/user/domain/use_case/save_user_use_case.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 class LoginController extends GetxController {
   final SaveUserUseCase _saveUserUseCase;
@@ -16,13 +19,20 @@ class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  RxBool isEyePassword = true.obs;
+  // RxBool isEyePassword = true.obs;
+  var isEyePassword = true.obs;
+  var visiblePassword = true.obs;
   RxString emailError = ''.obs;
   RxString passwordError = ''.obs;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   void onInit() {
     super.onInit();
+  }
+
+  void toggleIsEyePassword() {
+    isEyePassword.value = !isEyePassword.value;
+    visiblePassword.value = !visiblePassword.value;
   }
 
   bool _validateEmail() {
@@ -89,19 +99,16 @@ class LoginController extends GetxController {
   // }
   
   void handleLoginWithEmail() async {
-    print("---------------------OK---------------------");
     if (!_validateEmail()) return;
     DialogsUtils.showAlterLoading();
     final result = await FirebaseAuthentication.logIn(
       email: emailController.text,
       password: passwordController.text,
     );
-    print("---------------------PROCESSING---------------------");
 
     Get.back();
     if (result.status == Status.success) {
       User? user = result.data;
-      print("---------------------CASE   1---------------------");
 
       final resultUser = await FirestoreUser.getUser(user!.uid);
       if (resultUser.status == Status.success) {
@@ -117,12 +124,8 @@ class LoginController extends GetxController {
 
         _saveUserUseCase.saveUser(resultUser.data!);
         Get.offAllNamed(Routes.main);
-      } else {
-        print("---------------------CASE   FAILS---------------------");
-        SnackbarUtil.show(resultUser.exp?.message ?? "something_went_wrong");
-      }
+      } else {}
     } else {
-      print("=======================NOOB========================");
       SnackbarUtil.show(result.exp?.message ?? "something_went_wrong");
     }
   }
