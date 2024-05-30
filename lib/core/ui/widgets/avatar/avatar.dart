@@ -1,11 +1,17 @@
 // ignore: camel_case_types
 import 'package:find_food/core/configs/app_colors.dart';
+import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:flutter/material.dart';
 
 class Avatar extends StatelessWidget {
+  final double width;
+  final double height;
+
   const Avatar({
     super.key,
-    required this.authorImg,
+    this.authorImg = AppImagesString.iUserDefault, 
+    required this.width,
+    required this.height,
   });
 
   final String? authorImg;
@@ -14,6 +20,7 @@ class Avatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        color: AppColors.white,
           borderRadius: BorderRadius.circular(100),
           border: Border.all(color: AppColors.white, width: 2),
           boxShadow: [
@@ -26,8 +33,8 @@ class Avatar extends StatelessWidget {
         borderRadius: BorderRadius.circular(10000),
         child: Image.asset(
           authorImg!,
-          width: 45,
-          height: 45,
+          width: width,
+          height: height,
           fit: BoxFit.cover,
         ),
       ),

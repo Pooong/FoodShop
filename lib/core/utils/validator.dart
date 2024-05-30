@@ -8,7 +8,8 @@ class Validators {
   }
 
   static validPassword(String password) {
-    String pattern = r'^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,20}$';
+    // String pattern = r'^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,20}$';
+    String pattern = r'^.{6,20}$';
     RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(password);
   }

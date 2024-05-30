@@ -1,12 +1,19 @@
+import 'dart:ui';
+
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/restaurant/pressentation/controller/restaurant_controller.dart';
 import 'package:find_food/features/restaurant/pressentation/model/food_model.dart';
+import 'package:find_food/features/restaurant/pressentation/widgets/card_menu_restaurant.dart';
+import 'package:find_food/features/restaurant/pressentation/widgets/edit_modal_menu.dart';
+import 'package:find_food/features/restaurant/pressentation/widgets/icon_button.dart';
 import 'package:find_food/features/restaurant/pressentation/widgets/item_infor_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class RestaurantPage extends GetView<RestaurantController> {
@@ -23,116 +30,131 @@ class RestaurantPage extends GetView<RestaurantController> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          Stack(
-            children: [
-              Stack(clipBehavior: Clip.none, children: [
-                Container(
-                  height: 300,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                          'assets/images/img_banner_profile1.png'), // Đường dẫn đến ảnh trong assets
-                      fit: BoxFit.cover, // Đặt ảnh vừa khít
-                    ),
-                  ),
+          Stack(clipBehavior: Clip.none, children: [
+            Container(
+              height: 300,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/img_banner_profile1.png'),
+                  fit: BoxFit.cover,
                 ),
-                Positioned(
-                  width: 350,
-                  height: 90,
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                      padding: const EdgeInsets.only(left: 140, bottom: 10),
-                      color: Colors.white
-                          .withOpacity(0.7), // Màu nền với độ mờ (opacity)
-                      // padding: const EdgeInsets.only(
-                      //      left: 130), // Thêm padding nếu cần thiết
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
+              ),
+            ),
+            Positioned(
+              width: 350,
+              height: 90,
+              bottom: 0,
+              right: 0,
+              child: Container(
+                  padding: const EdgeInsets.only(left: 140, bottom: 10),
+                  color: Colors.white.withOpacity(0.7),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextWidget(
+                        text: "RESTAURENT",
+                        fontWeight: FontWeight.w700,
+                        size: AppDimens.textSize22,
+                        color: AppColors.primary,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          TextWidget(
-                            text: "RESTAURENT",
-                            fontWeight: FontWeight.w700,
-                            size: AppDimens.textSize22,
-                            color: AppColors.primary,
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .start, // Đảm bảo căn lề trái
+                              children: [
+                                TextWidget(
+                                  size: AppDimens.textSize9,
+                                  text: 'Email: ThanThan@gmail.com',
+                                ),
+                                TextWidget(
+                                  size: AppDimens.textSize9,
+                                  text: 'SDT: 0788836968',
+                                ),
+                              ],
+                            ),
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Flexible(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment
-                                      .start, // Đảm bảo căn lề trái
-                                  children: [
-                                    TextWidget(
-                                      size: AppDimens.textSize9,
-                                      text: 'Email: ThanThan@gmail.com',
-                                    ),
-                                    TextWidget(
-                                      size: AppDimens.textSize9,
-                                      text: 'SDT: 0788836968',
-                                    ),
-                                  ],
-                                ),
+                              Icon(
+                                Icons.facebook,
+                                size: AppDimens.textSize10,
                               ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.facebook,
-                                    size: AppDimens.textSize10,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Icon(
-                                    Icons.facebook,
-                                    size: AppDimens.textSize10,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Icon(
-                                    Icons.facebook,
-                                    size: AppDimens.textSize10,
-                                  ),
-                                ],
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.facebook,
+                                size: AppDimens.textSize10,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.facebook,
+                                size: AppDimens.textSize10,
                               ),
                             ],
-                          )
+                          ),
                         ],
-                      )),
-                ),
-                const Positioned(
-                  bottom: -50,
-                  left: 20,
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.white,
-                    radius: 75,
-                    child: CircleAvatar(
-                      radius: 70,
-                      backgroundImage: AssetImage(
-                        'assets/images/avatar.jpg',
-                      ),
-                    ),
+                      )
+                    ],
+                  )),
+            ),
+            const Positioned(
+              bottom: -50,
+              left: 20,
+              child: CircleAvatar(
+                backgroundColor: AppColors.white,
+                radius: 75,
+                child: CircleAvatar(
+                  radius: 70,
+                  backgroundImage: AssetImage(
+                    'assets/images/avatar.jpg',
                   ),
                 ),
-              ])
-            ],
-          ),
+              ),
+            ),
+            Positioned(
+                top: 20,
+                right: 10,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle, // Hình dạng của nút
+                    color: Color.fromARGB(128, 255, 255, 255),
+                  ),
+                  child: iconButton(
+                    icon: Icons.edit,
+                    onPressed: () {
+                      print("OK");
+                    },
+                  ),
+                )),
+            Positioned(
+              bottom: -50,
+              left: 30,
+              child: iconButton(
+                icon: Icons.edit,
+                onPressed: () {
+                  print("OK");
+                },
+              ),
+            ),
+          ]),
           const Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    "5.0",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: AppDimens.textSize42),
+                  TextWidget(
+                    text: "5.0",
+                    size: AppDimens.textSize32,
                   ),
                   SizedBox(
                       width: 5.0), // Add spacing between elements (optional)
@@ -152,16 +174,46 @@ class RestaurantPage extends GetView<RestaurantController> {
                   ),
                   SizedBox(
                       width: 5.0), // Add spacing between elements (optional)
-                  Text(
-                    "(300)",
-                    style: TextStyle(
-                      fontSize: AppDimens.textSize10,
-                      color: AppColors.black,
-                    ),
+                  TextWidget(
+                    text: "(300)",
+                    size: AppDimens.textSize14,
                   ),
+                  SizedBox(width: 15.0),
                 ],
               ),
             ],
+          ),
+          Container(
+            height: 100,
+            padding: const EdgeInsets.all(20),
+            margin:
+                const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+            decoration: BoxDecoration(
+              color: AppColors.white, // Màu nền
+
+              borderRadius: BorderRadius.circular(5.0), // Góc bo tròn
+              boxShadow: const [
+                // Bóng đổ
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 5.0,
+                  spreadRadius: 1.0,
+                )
+              ],
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ItemInforProfile(quantity: 130, title: "Reviews"),
+                ItemInforProfile(quantity: 130, title: "Post "),
+                ItemInforProfile(quantity: 130, title: "Saved"),
+                ItemInforProfile(quantity: 130, title: "Liked"),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Container(
             height: 80,
@@ -184,10 +236,33 @@ class RestaurantPage extends GetView<RestaurantController> {
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ItemInforProfile(quantity: 130, title: "Reviews"),
-                ItemInforProfile(quantity: 130, title: "Post Relate"),
-                ItemInforProfile(quantity: 130, title: "Saved"),
-                ItemInforProfile(quantity: 130, title: "Liked"),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextWidget(
+                      text: "OPENING",
+                      fontWeight: FontWeight.bold,
+                      size: AppDimens.textSize18,
+                    ),
+                    TextWidget(text: "7:00 - 23:00", size: AppDimens.textSize18)
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.phone,
+                      color: AppColors.black,
+                      size: 25,
+                    ),
+                    TextWidget(
+                      text: "Contact",
+                      color: AppColors.primary,
+                    )
+                  ],
+                ),
               ],
             ),
           ),
@@ -215,39 +290,51 @@ class RestaurantPage extends GetView<RestaurantController> {
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "OPENING",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: AppDimens.textSize18),
-                    ),
-                    Text(
-                      "7:00 - 23:00",
-                      style: TextStyle(fontSize: AppDimens.textSize18),
-                    )
-                  ],
+                Flexible(
+                    flex: 1,
+                    child: Icon(
+                      Icons.location_on,
+                      size: 30,
+                      color: Colors.red,
+                    )),
+                Flexible(
+                  flex: 8,
+                  child: TextWidget(
+                      text:
+                          "27A - Đường 30 tháng 4 - Hưng Lợi - Ninh Kiều - Cần Thơ",
+                      size: AppDimens.textSize18),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.phone,
-                      color: AppColors.black,
-                      size: 25,
-                    ),
-                    Text(
-                      "Contact",
-                      style: TextStyle(
-                          fontSize: AppDimens.textSize18,
-                          color: AppColors.primary),
-                    )
-                  ],
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            // height: 80,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const TextWidget(
+                  text: "Menu",
+                  color: AppColors.red,
                 ),
+                GestureDetector(
+                  onTap: () {
+                    print("Oke");
+                  },
+                  child: const Row(
+                    children: [
+                      TextWidget(text: "Add Food"),
+                      SizedBox(width: 5),
+                      Image(
+                        image: AssetImage('assets/icons/ic_add_foodmenu.png'),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -258,90 +345,112 @@ class RestaurantPage extends GetView<RestaurantController> {
     );
   }
 
-  GridView buildGridOrders() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemCount: FoodModel.menu.length,
-      itemBuilder: (BuildContext context, int index) {
-        final foodmenu = FoodModel.menu[index];
+  // GridView buildGridOrders() {
+  //   return GridView.builder(
+  //     shrinkWrap: true,
+  //     physics: const NeverScrollableScrollPhysics(),
+  //     padding: const EdgeInsets.symmetric(horizontal: 20),
+  //     itemCount: FoodModel.menu.length,
+  //     itemBuilder: (BuildContext context, int index) {
+  //       final foodmenu = FoodModel.menu[index];
+  //       return CardMenuRestaurant(
+  //         img: foodmenu.imageFood,
+  //         foodname: foodmenu.foodName,
+  //         pricefood: foodmenu.priceFood,
+  //       );
+  //     },
+  //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //         crossAxisCount: 2, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
+  //   );
+  // }
 
+  Widget buildGridOrders() {
+    return Obx(() {
+      return GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        // itemCount: controller.menu.length,
+        itemCount: controller.itemsToShow.value <= controller.menu.length
+            ? controller.itemsToShow.value + 1
+            : controller.itemsToShow.value,
 
-
-        return Card(
-          // Set the shape of the card using a rounded rectangle border with a 8 pixel radius
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          // Set the clip behavior of the card
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          // Define the child widgets of the card
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Flexible(
-                child: Image(
-                  image: AssetImage(foodmenu.imageFood),
-                  height: 160,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+        itemBuilder: (BuildContext context, int index) {
+          if (index == controller.itemsToShow.value) {
+            // print(index);
+            return GestureDetector(
+              onTap: controller.seeMore,
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: TextWidget(
+                  textAlign: TextAlign.start,
+                  text: "See More",
+                  color: AppColors.blue,
+                  size: AppDimens.textSize18,
                 ),
               ),
+            );
+          } else {
+            final foodMenu = controller.menu[index];
+            // print(index);
 
-              // Add a container with padding that contains the card's title, text, and buttons
-              Container(
-                decoration: const BoxDecoration(
-                    border: Border(
-                  top: BorderSide(color: AppColors.primary, width: 5.0),
-                )),
-                padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // Display the card's title using a font size of 24 and a dark grey color
-                    Text(
-                      foodmenu.foodName,
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontSize: AppDimens.textSize18,
-                        color: Colors.grey[800],
-                      ),
+            return GestureDetector(
+              onTap: () {
+                controller.inforCard(foodMenu);
+                // print(controller.menu[index].foodName);
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
                     ),
-                    // Add a space between the title and the text
-                    Container(height: 10),
-                    // Display the card's text using a font size of 15 and a light grey color
-                    Text(
-                      "Price: \$${foodmenu.priceFood}",
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontSize: AppDimens.textSize14,
-                        color: Colors.grey[700],
+                  ),
+                  builder: (BuildContext context) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
-                    ),
-                    // Add a row with two buttons spaced apart and aligned to the right side of the card
-                  ],
-                ),
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(16.0),
+                              child:
+                                  EditFoodModal(food: foodMenu, index: index),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              child: CardMenuRestaurant(
+                img: foodMenu.imageFood,
+                foodname: foodMenu.foodName,
+                pricefood: foodMenu.priceFood,
               ),
-              // Add a small space between the card and the next widget
-              const SizedBox(height: 5),
-            ],
-          ),
-        );
-      },
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
-    );
+            );
+          }
+        },
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 4.0,
+          mainAxisSpacing: 4.0,
+        ),
+      );
+    });
   }
 
   AppBar buildAppBar() {
     return AppBar(
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(5.0), // Độ cao của border
+        preferredSize: const Size.fromHeight(5.0),
         child: Container(
-          color: AppColors.primary, // Màu của border
-          height: 5.0, // Độ dày của border
+          color: AppColors.primary,
+          height: 5.0,
         ),
       ),
       backgroundColor: AppColors.white,
@@ -352,11 +461,18 @@ class RestaurantPage extends GetView<RestaurantController> {
           Get.back();
         },
       ),
-      title: const Text(
-        "RESTAURANT",
-        style: TextStyle(color: AppColors.primary),
-      ),
+      title: const TextWidget(
+          text: 'RESTAURANT',
+          color: AppColors.primary,
+          fontWeight: FontWeight.bold),
       centerTitle: true,
+      actions: [
+        iconButton(
+            icon: Icons.settings,
+            onPressed: () {
+              Get.toNamed('restaurantsetting');
+            })
+      ],
     );
   }
 }
