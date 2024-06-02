@@ -32,20 +32,24 @@ class CardRestaurant extends GetView<LocationRestaurantController> {
                 ),
               ),
               const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    setrestaurant.name,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    setrestaurant.address,
-                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      setrestaurant.name,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      setrestaurant.address,
+                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
-              const Spacer(),
+              const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {
                   // Xử lý sự kiện khi icon được nhấn

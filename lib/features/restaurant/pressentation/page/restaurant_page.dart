@@ -36,7 +36,7 @@ class RestaurantPage extends GetView<RestaurantController> {
             getWallpapper(),
             Positioned(
               width: Get.width * 0.88,
-              height: Get.height * 0.1,
+              // height: Get.height * 0.1,
               bottom: 0,
               right: 0,
               child: Container(
@@ -44,7 +44,7 @@ class RestaurantPage extends GetView<RestaurantController> {
                   color: Colors.white.withOpacity(0.7),
                   child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    // mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextWidget(
                         text: "RESTAURANT",
@@ -99,10 +99,22 @@ class RestaurantPage extends GetView<RestaurantController> {
                     ],
                   )),
             ),
-            const Positioned(
+             Positioned(
               bottom: -50,
               left: 20,
-              child: getAvatar(),
+              child: Stack(
+                children: [
+                getAvatar(),
+                  Positioned(
+                    bottom: 0,
+                    child: iconButton(
+                    icon: Icons.edit,
+                    onPressed: () {
+                      controller.selectImageAvatarGallery();
+                    },
+                  ), )
+                ],
+              ),
             ),
             Positioned(
                 top: 20,
@@ -118,21 +130,16 @@ class RestaurantPage extends GetView<RestaurantController> {
                     },
                   ),
                 )),
-          ]),
+              ]),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const SizedBox(
                 width: 40,
               ),
-              iconButton(
-                icon: Icons.edit,
-                onPressed: () {
-                  controller.selectImageAvatarGallery();
-                },
-              ),
+
               const Spacer(),
-              const Row(
+              const Row (
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextWidget(
