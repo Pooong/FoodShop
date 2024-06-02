@@ -135,6 +135,7 @@ class DialogsUtils {
     required String message,
     required TypeDialog typeDialog,
     VoidCallback? onPresss,
+    
   }) {
     Get.dialog(
       AlertDialog(
@@ -310,7 +311,7 @@ class DialogsUtils {
                       shape: BoxShape.circle,
                       color: AppColors.greenBold,
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.check,
                       color: Colors.white,
                     ),

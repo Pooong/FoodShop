@@ -1,3 +1,4 @@
+import 'package:find_food/core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
     
@@ -12,7 +13,7 @@ class NotifyAppbar extends StatelessWidget implements PreferredSizeWidget{
         actions: [
           IconButton(
             onPressed: () {
-              Get.toNamed("/notifySetting");
+              Get.toNamed(Routes.notifySetting);
             },
             icon: const Icon(Icons.edit_notifications),
           ),

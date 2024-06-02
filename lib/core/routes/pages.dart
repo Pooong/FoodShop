@@ -2,6 +2,8 @@ import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/features/account_setting/di/account_setting_binding.dart';
 import 'package:find_food/features/account_setting/nav/change_password/di/change_password_binding.dart';
 import 'package:find_food/features/account_setting/nav/change_password/presentation/page/change_password_page.dart';
+import 'package:find_food/features/account_setting/nav/create_restaurant/di/create_restaurant_binding.dart';
+import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/create_restaurant_page.dart';
 import 'package:find_food/features/account_setting/nav/setting_information/di/setting_information_binding.dart';
 import 'package:find_food/features/account_setting/nav/setting_information/presentation/page/setting_information_page.dart';
 import 'package:find_food/features/account_setting/presentation/page/account_setting_page.dart';
@@ -81,13 +83,6 @@ class Pages {
       binding: ForgetPasswordBinding(),
     ),
 
-    //trang profile
-    // GetPage(
-    //   name: Routes.profile,
-    //   page: () => const ProfilePage(),
-    //   binding: ProfileBindding(),
-    // ),
-
     //trang setting account
     GetPage(
       name: Routes.accountSetting,
@@ -109,12 +104,12 @@ class Pages {
       binding: ChangePasswordBinding(),
     ),
 
-    //trang notifications
-    // GetPage(
-    //   name: Routes.notify,
-    //   page: () => const NotifyPage(),
-    //   binding: NotifyBinding(),
-    // ),
+    //trang tạo cửa hàng
+    GetPage(
+      name: Routes.createRestaurant,
+      page: () => const CreateRestaurantPage(),
+      binding: CreateRestaurantBinding(),
+    ),
 
     //trang social notify
     GetPage(

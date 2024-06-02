@@ -1,16 +1,18 @@
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/core/ui/widgets/appbar/get_location_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
+import 'package:find_food/features/maps/location/models/place_map.dart';
 import 'package:find_food/features/maps/location/presentation/controller/location_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LocationPage extends GetView<LocationController> {
   const LocationPage({super.key});
@@ -24,82 +26,129 @@ class LocationPage extends GetView<LocationController> {
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
+              child: Stack(
                 children: [
-                  searchBox(controller),
                   Column(
                     children: [
-                      Container(),
+                      Container(
+                        margin: EdgeInsets.only(top: Get.height * .1),
+                        width: Get.width,
+                        height: Get.height * .65,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: AppColors.gray.withOpacity(.5),
+                          ),
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: Container(
+                                width: 180,
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: AppColors.primary,
+                                ),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.location_on_rounded,
+                                      color: AppColors.white,
+                                    ),
+                                    TextWidget(
+                                      text: "Current location",
+                                      size: AppDimens.textSize15,
+                                      color: AppColors.white,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Maps(controller.mapController,
+                                controller.initialCenter),
+                            Positioned(
+                                right: 5,
+                                top: 5,
+                                child: SizedBox(child: buttoCurrentLocation())),
+                            Positioned(
+                              bottom: 10,
+                              right: 0,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  buttonControllerSizeMaps(
+                                      controller, MapAction.resetZoom),
+                                  buttonControllerSizeMaps(
+                                      controller, MapAction.zoomIn),
+                                  buttonControllerSizeMaps(
+                                      controller, MapAction.zoomOut),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      ButtonWidget(
+                        ontap: () {
+                          if (controller.resutlPlaceSearch.allow()) {
+                            Get.back(result: controller.resutlPlaceSearch);
+                          } else {
+                            SnackbarUtil.show("Please select location");
+                          }
+                        },
+                        text: "SAVE LOCATION",
+                      ),
+                      const SizedBox(height: 20),
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: Get.height * .03),
-                    width: Get.width,
-                    height: Get.height * .75,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: AppColors.gray.withOpacity(.5),
+                  Positioned(
+                      child: Column(
+                    children: [
+                      searchBox(controller),
+                      const SizedBox(
+                        height: 5,
                       ),
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          top: 10,
-                          right: 10,
+                      GetBuilder<LocationController>(
+                        id: "fetchSearchComment",
+                        builder: (_) => Column(
+                          children: [
+                            if (controller.listLocationName.isNotEmpty)
+                              for (var i = 0;
+                                  i < controller.listLocationName.length;
+                                  i++)
+                                commentSearch(controller.listLocationName[i]),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Obx(() {
+                      if (controller.isLoading.value) {
+                        return Center(
                           child: Container(
-                            width: 180,
-                            padding: const EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: AppColors.primary,
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.location_on_rounded,
-                                  color: AppColors.white,
-                                ),
-                                TextWidget(
-                                  text: "Current location",
-                                  size: AppDimens.textSize15,
-                                  color: AppColors.white,
-                                ),
-                              ],
-                            ),
+                                color: AppColors.primary.withOpacity(.6),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: LoadingAnimationWidget.staggeredDotsWave(
+                                color: AppColors.white, size: 90),
                           ),
-                        ),
-                        Maps(
-                            controller.mapController, controller.initialCenter),
-                        Positioned(
-                            right: 5,
-                            top: 5,
-                            child: SizedBox(child: buttoCurrentLocation())),
-                        Positioned(
-                          bottom: 10,
-                          right: 0,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              buttonControllerSizeMaps(
-                                  controller, MapAction.resetZoom),
-                              buttonControllerSizeMaps(
-                                  controller, MapAction.zoomIn),
-                              buttonControllerSizeMaps(
-                                  controller, MapAction.zoomOut),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ButtonWidget(
-                    ontap: () {},
-                    text: "SAVE LOCATION",
-                  ),
-                  const SizedBox(height: 20),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    }),
+                  )
                 ],
               ),
             ),
@@ -114,7 +163,9 @@ class LocationPage extends GetView<LocationController> {
       style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10)),
-      onPressed: () {},
+      onPressed: () {
+        controller.getCurrentLocation();
+      },
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -138,6 +189,7 @@ class LocationPage extends GetView<LocationController> {
 
   // ignore: non_constant_identifier_names
   Widget Maps(MapController mapController, LatLng center) {
+    // Define the bounds for Vietnam
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
@@ -148,15 +200,11 @@ class LocationPage extends GetView<LocationController> {
       ),
       children: [
         openStreetMapTileLayer,
-        MarkerLayer(
-          
-          markers: [
-            
+        MarkerLayer(markers: [
           Marker(
             point: controller.initialCenter,
-            
             width: 60,
-            height: 90,
+            height: 100,
             alignment: Alignment.centerLeft,
             child: GestureDetector(
                 onTap: () {
@@ -166,24 +214,6 @@ class LocationPage extends GetView<LocationController> {
                   id: "fetchMarkerLabel",
                   builder: (_) => Stack(
                     children: [
-                      controller.labelMark.value
-                          ? Positioned(
-                              child: Container(
-                                decoration: BoxDecoration(boxShadow: [
-                                  BoxShadow(
-                                      color: AppColors.black.withOpacity(.2),
-                                      blurRadius: 3)
-                                ], color: AppColors.white),
-                                height: 30,
-                                child: const TextWidget(
-                                  text: "Can Tho University",
-                                  fontWeight: FontWeight.w500,
-                                  size: AppDimens.textSize10,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            )
-                          : Container(),
                       const Positioned(
                         bottom: 0,
                         child: Icon(
@@ -192,6 +222,25 @@ class LocationPage extends GetView<LocationController> {
                           color: AppColors.markerLocation,
                         ),
                       ),
+                      controller.labelMark.value
+                          ? Positioned(
+                              child: Container(
+                                decoration: BoxDecoration(boxShadow: [
+                                  BoxShadow(
+                                      color: AppColors.black.withOpacity(.2),
+                                      blurRadius: 3)
+                                ], color: AppColors.white),
+                                child: TextWidget(
+                                  text: controller
+                                          .resutlPlaceSearch.displayName ??
+                                      "Can't display location name",
+                                  fontWeight: FontWeight.w500,
+                                  size: AppDimens.textSize10,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                 )),
@@ -219,7 +268,6 @@ class LocationPage extends GetView<LocationController> {
       default:
         iconData = Icons.location_searching;
     }
-
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
@@ -236,13 +284,10 @@ class LocationPage extends GetView<LocationController> {
     );
   }
 
-  // Search Box Widget
 // Search Box Widget
   Widget searchBox(LocationController controller) {
-    final TextEditingController searchController = TextEditingController();
-
     return Container(
-      margin: const EdgeInsets.only(top: 20, bottom: 10),
+      margin: const EdgeInsets.only(top: 15),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: AppColors.gray2.withOpacity(.5),
@@ -257,14 +302,27 @@ class LocationPage extends GetView<LocationController> {
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
-              controller: searchController,
+              controller: controller.searchController,
               decoration: const InputDecoration(
                 hintStyle: TextStyle(fontWeight: FontWeight.w400),
                 border: InputBorder.none,
                 hintText: "Enter location",
               ),
+              onChanged: (value) {
+                controller.debounce?.cancel();
+                controller.debounce = Timer(
+                  const Duration(milliseconds: 500),
+                  () {
+                    if (!controller.isSubmit) {
+                      controller.commentSearch(
+                          controller, controller.searchController.text);
+                    }
+                  },
+                );
+              },
               onSubmitted: (value) {
-                _searchLocation(controller, value);
+                controller.isSubmit = true;
+                controller.searchLocation(controller, value);
               },
             ),
           ),
@@ -273,32 +331,10 @@ class LocationPage extends GetView<LocationController> {
     );
   }
 
-  // Function to search for a location and update the map
-  Future<void> _searchLocation(
-      LocationController controller, String query) async {
-    final response = await http.get(
-      Uri.parse(
-          'https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=1'),
-    );
-
-    if (response.statusCode == 200) {
-      final List results = json.decode(response.body);
-      if (results.isNotEmpty) {
-        final double lat = double.parse(results[0]['lat']);
-        final double lon = double.parse(results[0]['lon']);
-        controller.updateMapLocation(LatLng(lat, lon));
-      } else {
-        // Handle no results found
-        print('No results found');
-      }
-    } else {
-      // Handle request failure
-      print('Request failed with status: ${response.statusCode}');
-    }
-  }
-
   // Optional Comment Search Widget
-  Container commentSearch() {
+  Container commentSearch(dynamic locationName) {
+    // goi model cua place
+    PlaceMap place = PlaceMap.fromJson(locationName);
     return Container(
       width: Get.width,
       padding: const EdgeInsets.all(10),
@@ -309,24 +345,21 @@ class LocationPage extends GetView<LocationController> {
           BoxShadow(
             color: AppColors.black.withOpacity(0.1),
             spreadRadius: 0,
-            blurRadius: 3,
+            blurRadius: 2,
           ),
         ],
       ),
-      child: const TextWidget(
-        text: "location - location - location - location ",
-        size: AppDimens.textSize14,
-        color: AppColors.gray,
+      child: InkWell(
+        onTap: () {
+          LatLng location = LatLng(place.lat ?? 0.0, place.lon ?? 0.0);
+          controller.updateMapLocation(location, dataLocaiton: locationName);
+        },
+        child: TextWidget(
+          text: place.displayName.toString(),
+          size: AppDimens.textSize14,
+          color: AppColors.gray,
+        ),
       ),
-    );
-  }
-
-  // Line Between Widget
-  Container lineBetween() {
-    return Container(
-      height: 1,
-      width: double.infinity,
-      color: AppColors.gray.withOpacity(.4),
     );
   }
 }
