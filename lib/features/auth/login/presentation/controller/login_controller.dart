@@ -97,6 +97,7 @@ class LoginController extends GetxController {
   //     }
   //   }
   // }
+  
   void handleLoginWithEmail() async {
     if (!_validateEmail()) return;
     DialogsUtils.showAlterLoading();

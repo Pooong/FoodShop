@@ -20,7 +20,7 @@ class iconButton extends StatelessWidget {
       child: IconButton(
         iconSize: 30,
         icon: Icon(icon),
-        onPressed: onPressed,
+        onPressed: () => onPressed(),
       ),
     );
   }

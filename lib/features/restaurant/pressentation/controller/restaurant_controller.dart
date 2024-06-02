@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:find_food/features/restaurant/pressentation/model/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RestaurantController extends GetxController {
   final TextEditingController imageController = TextEditingController();
@@ -10,6 +13,28 @@ class RestaurantController extends GetxController {
   var menu = FoodModel.menu.obs;
   var itemsToShow = 4.obs;
   var itemHide = false.obs;
+
+  final picker = ImagePicker();
+  File? imgAvatar;
+  File? imgWallpapper;
+
+  Future selectImageAvatarGallery() async {
+    final pickFileImg =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    if (pickFileImg != null) {
+      imgAvatar = File(pickFileImg.path);
+      update(['updateAvatar']);
+    }
+  }
+
+  Future selectImageWallpaper() async {
+    final pickFileImg =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    if (pickFileImg != null) {
+      imgWallpapper = File(pickFileImg.path);
+      update(['updateWallpaper']);
+    }
+  }
 
   void updateFood(int index, FoodModel updatedFood) {
     var updatedMenu = List<FoodModel>.from(menu);

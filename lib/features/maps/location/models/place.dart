@@ -28,7 +28,7 @@ class Place {
   });
 
   factory Place.fromPlacemarkAndLocation(
-      Placemark placemark, Location location) {
+      Placemark placemark, Location location) { // coi ==============================================>
     return Place(
       name: placemark.name,
       street: placemark.street,
@@ -39,6 +39,8 @@ class Place {
       postalCode: placemark.postalCode,
       country: placemark.country,
       isoCountryCode: placemark.isoCountryCode,
+
+      
       latitude: location.latitude,
       longitude: location.longitude,
     );

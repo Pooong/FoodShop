@@ -57,6 +57,7 @@ class ProfileController extends GetxController {
     currentIndex.value = index;
   }
 
+  
   List<Widget> getPages() {
     return [
       ProfileListPage(),
