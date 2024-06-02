@@ -1,3 +1,4 @@
+import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,12 @@ class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           IconButton(
             onPressed: () {
+              Get.toNamed(Routes.restaurant);
+            },
+            icon: const Icon(Icons.store_mall_directory_rounded),
+          ),
+          IconButton(
+            onPressed: () {
               Get.toNamed(Routes.accountSetting);
             },
             icon: const Icon(Icons.settings),
@@ -23,8 +30,8 @@ class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(
-            color: Colors.grey,
-            height: 0.5,
+            color: AppColors.primary,
+            height: 2.0,
           ),
         ),
       ),
