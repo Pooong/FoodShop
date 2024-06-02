@@ -43,6 +43,7 @@ abstract class Routes {
 
   //restaurant page
   static const restaurant = '/restaurant';
+  static const createRestaurant = '/createRestaurant';
 
   static const restaurantsetting = '/restaurantsetting';
   static const changeinfor = '/changeinfor';

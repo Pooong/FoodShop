@@ -4,6 +4,7 @@ import 'package:find_food/features/nav/home/home/presentation/page/home_page.dar
 import 'package:find_food/features/nav/notify/presentation/page/notify_page.dart';
 import 'package:find_food/features/nav/post/upload/di/upload_binding.dart';
 import 'package:find_food/features/nav/post/upload/presentation/page/upload_page.dart';
+import 'package:find_food/features/nav/profile/di/profile_binding.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -62,7 +63,7 @@ class MainController extends GetxController {
       return GetPageRoute(
         settings: settings,
         page: () => const ProfilePage(),
-        // binding: ProfileBindding(),
+        binding: ProfileBindding(),
         transition: Transition.fadeIn,
       );
     }

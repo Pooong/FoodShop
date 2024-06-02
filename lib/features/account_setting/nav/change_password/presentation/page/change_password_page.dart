@@ -7,7 +7,6 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
 
   @override
   Widget build(BuildContext context) {
-     final ChangePasswordController controller = Get.put(ChangePasswordController());
     return Scaffold(
       appBar: AppBar(
         title: const Text("Change Password"),
