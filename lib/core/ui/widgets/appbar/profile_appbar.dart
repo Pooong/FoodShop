@@ -16,6 +16,12 @@ class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           IconButton(
             onPressed: () {
+              Get.toNamed(Routes.restaurant);
+            },
+            icon: const Icon(Icons.store_mall_directory_rounded),
+          ),
+          IconButton(
+            onPressed: () {
               Get.toNamed(Routes.accountSetting);
             },
             icon: const Icon(Icons.settings),

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends GetView<ProfileController> {
-  const ProfilePage({super.key});
+  const ProfilePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,28 +17,32 @@ class ProfilePage extends GetView<ProfileController> {
   }
 
   Widget buildProfileBodyPage() {
-    return Column(
-      children: <Widget>[
-        _buildUserInfo(),
-        const SizedBox(
-          height: 10.0,
-        ),
-        Obx(() => NavControllList(
-              currentIndex: controller.currentIndex.value,
-              onPageChanged: (index) {
-                controller.onChangeNavList(index);
-              },
-            )),
-        Expanded(
-          child: PageView(
-            controller: controller.pageController,
-            onPageChanged: (index) {
-              controller.onChangePage(index);
-            },
-            children: controller.getPages(),
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          _buildUserInfo(),
+          const SizedBox(
+            height: 10.0,
           ),
-        )
-      ],
+          Obx(() => NavControllList(
+                currentIndex: controller.currentIndex.value,
+                onPageChanged: (index) {
+                  controller.onChangeNavList(index);
+                },
+              )),
+          SizedBox(
+            height: Get.height * 0.6,
+            width: double.infinity,
+            child: PageView(
+              controller: controller.pageController,
+              onPageChanged: (index) {
+                controller.onChangePage(index);
+              },
+              children: controller.getPages(),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -48,61 +52,73 @@ class ProfilePage extends GetView<ProfileController> {
       child: Stack(
         children: [
           _buildBackground(),
-          _buildAvatar_Name(),
+          _buildAvatarAndName(),
         ],
       ),
     );
   }
 
-  Container _buildBackground() {
-    return Container(
-          height: Get.height * 0.24,
-          width: double.infinity,
-          foregroundDecoration: const BoxDecoration(
-            color: AppColors.white,
-            image: DecorationImage(
-              image: AssetImage('assets/images/img_banner_profile1.png'),
-              fit: BoxFit.cover,
-            ),
+  Widget _buildBackground() {
+    return GestureDetector(
+      onTap: () {
+        controller.selectImageBackground();
+      },
+      child: Container(
+        height: Get.height * 0.24,
+        width: double.infinity,
+        foregroundDecoration: BoxDecoration(
+          color: AppColors.white,
+          image: DecorationImage(
+            image: controller.imgBackground == null
+                ? const AssetImage('assets/images/img_banner_profile1.png')
+                : FileImage(controller.imgBackground!) as ImageProvider,
+            fit: BoxFit.cover,
           ),
-        );
+        ),
+      ),
+    );
   }
 
-  Center _buildAvatar_Name() {
-    return const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              PhysicalModel(
-                color: Colors.transparent,
-                shape: BoxShape.circle,
-                elevation: 10.0,
-                shadowColor: Colors.black54,
+  Widget _buildAvatarAndName() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          GestureDetector(
+            onTap: () {
+              controller.selectImageAvatar();
+            },
+            child: PhysicalModel(
+              color: Colors.transparent,
+              shape: BoxShape.circle,
+              elevation: 10.0,
+              shadowColor: Colors.black54,
+              child: CircleAvatar(
+                backgroundColor: AppColors.white,
+                radius: 55,
                 child: CircleAvatar(
-                  backgroundColor: AppColors.white,
-                  radius: 55,
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage(
-                      'assets/images/avatar.jpg',
-                    ),
-                  ),
+                  radius: 50,
+                  backgroundImage: controller.imgAvatar == null
+                      ? const AssetImage('assets/images/avatar.jpg')
+                      : FileImage(controller.imgAvatar!) as ImageProvider,
                 ),
               ),
-              SizedBox(height: 10.0),
-              Text(
-                "User name",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              )
-            ],
+            ),
           ),
-        );
+          const SizedBox(height: 10.0),
+          const Text(
+            "User name",
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
+            height: 10.0,
+          )
+        ],
+      ),
+    );
   }
 }
