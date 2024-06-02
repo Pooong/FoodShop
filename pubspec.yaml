@@ -85,7 +85,11 @@ dependencies:
   google_maps_flutter: ^2.6.1
 
 
-  open_street_map_search_and_pick: ^0.1.1
+  # open_street_map_search_and_pick: ^0.1.1
+
+  fluttertoast: ^8.2.5
+  delightful_toast: ^1.1.0
+  
   
   latlng: ^2.0.7
   

@@ -3,15 +3,15 @@ class PlaceMap {
   final String? licence;
   final String? osmType;
   final int? osmId;
-  final double? lat;
-  final double? lon;
+  double? lat;
+  double? lon;
   final String? className;
   final String? type;
   final int? placeRank;
   final double? importance;
   final String? addressType;
   final String? name;
-  final String? displayName;
+  String? displayName;
   final List<double>? boundingBox;
 
   PlaceMap({
@@ -71,4 +71,9 @@ class PlaceMap {
       'boundingbox': boundingBox?.map((item) => item.toString()).toList(),
     };
   }
+
+  bool allow(){
+    return (displayName!=null && lat !=null && lon!= null);
+  }
+
 }

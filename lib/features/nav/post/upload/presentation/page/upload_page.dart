@@ -9,7 +9,6 @@ import 'package:find_food/features/nav/post/upload/presentation/controller/uploa
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 //streamCotroller, StreamBuilder
 
 class UploadPage extends GetView<UploadController> {
@@ -19,46 +18,49 @@ class UploadPage extends GetView<UploadController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const UploadPostAppbar(),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 40),
+              child: GetBuilder<UploadController>(
+                id: "clearData",
+                builder: (logic) {
+                  return Column(
+                    children: [
+                      // Image Picker
+                      imagesBox(),
+                      // Title Field
+                      titleBox(),
+                      // Description Field
+                      descriptionBox(),
+                      const SizedBox(height: 20),
+                      // Location Picker
+                      getLocation(title: "Custom location"),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // getLocation(title: "Access restaurant location"),
+                      // const SizedBox(height: 30),
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20,right: 20,bottom: 40),
-          child: GetBuilder<UploadController>(
-            id: "clearData",
-            builder: (logic) {
-              return Column(
-                children: [
-                  // Image Picker
-                  imagesBox(),
-                  // Title Field
-                  titleBox(),
-                  // Description Field
-                  descriptionBox(),
-                  const SizedBox(height: 20),
-                  // Location Picker
-                  getLocation(title: "Custom location"),
-                  const SizedBox(height: 20,),
-                  getLocation(title: "Access restaurant location"),
-                  const SizedBox(height: 30),
-
-                  // Upload Button
-                  ButtonWidget(
-                    ontap: () {
-                      controller.uploadPost();
-                    },
-                    text: "UPLOAD POSTS",
-                    fontWeight: FontWeight.w400,
-                  ),
-
-                ],
-              );
-            },
+                      // Upload Button
+                      ButtonWidget(
+                        ontap: () {
+                          controller.uploadPost();
+                        },
+                        text: "UPLOAD POSTS",
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
-
 
   Column imagesBox() {
     return Column(
@@ -104,7 +106,9 @@ class UploadPage extends GetView<UploadController> {
           child: Obx(
             () => Container(
               width: double.infinity,
-              margin: !controller.check_list_empty() ? const EdgeInsets.only(top: 10):null,
+              margin: !controller.check_list_empty()
+                  ? const EdgeInsets.only(top: 10)
+                  : null,
               height: controller.check_list_empty() ? 180 : 40,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -119,7 +123,11 @@ class UploadPage extends GetView<UploadController> {
                       Icons.add_photo_alternate,
                       size: 120,
                     )
-                  : const Icon(Icons.add, size: 30,color: AppColors.primary,),
+                  : const Icon(
+                      Icons.add,
+                      size: 30,
+                      color: AppColors.primary,
+                    ),
             ),
           ),
         ),
@@ -162,47 +170,70 @@ class UploadPage extends GetView<UploadController> {
             controller: controller.descriptionController,
             maxLines: null,
             decoration: const InputDecoration(
-              hintText: 'Enter description post',
-              border: InputBorder.none,
-              hintStyle: TextStyle(fontWeight: FontWeight.w400)
-            ),
+                hintText: 'Enter description post',
+                border: InputBorder.none,
+                hintStyle: TextStyle(fontWeight: FontWeight.w400)),
           ),
         ),
       ],
     );
   }
 
-  InkWell getLocation({String title="No caption?"}) {
+  InkWell getLocation({String title = "No caption?"}) {
     return InkWell(
-      onTap: () async {
-        final result = await Get.toNamed(
-          '/getLocationPage',
-          arguments: controller.placeSelected,
-        );
-        if (result != null) {
-          controller.placeSelected = result;
-        }
-      },
-    
-      child:Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-        Row(
+        onTap: () async {
+          final result = await Get.toNamed(
+            '/getLocationPage',
+            arguments: controller.placeSelected,
+          );
+          if (result != null) {
+            controller.placeSelected = result;
+            controller.nameLocationDisplay.value =
+                controller.placeSelected.displayName ?? "";
+          }
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Icon(Icons.location_on_rounded,color: AppColors.yellow,),
-            const SizedBox(width: 10,),
-            TextWidget(text: title,fontWeight: FontWeight.w500,),
+            Row(
+              children: [
+                const Icon(
+                  Icons.location_on_rounded,
+                  color: AppColors.yellow,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                SizedBox(
+                  width: Get.width * .7,
+                  child: Obx(() {
+                    return TextWidget(
+                      text: controller.nameLocationDisplay.value.isNotEmpty
+                          ? controller.nameLocationDisplay.value
+                          : title,
+                      fontWeight: FontWeight.w500,
+                    );
+                  }),
+                ),
+              ],
+            ),
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: AppColors.primary,
+            )
           ],
-        ),
-        const Icon(Icons.arrow_forward_ios,color: AppColors.primary,)
-      ],)
-    );
+        ));
   }
 
   Container titleField({String title = "Please enter title"}) {
     return Container(
-      margin: const EdgeInsets.only(top: 20,bottom:10 ),
-      child: TextWidget(text: title,fontWeight: FontWeight.w300,color: AppColors.grayTitle, size: AppDimens.textSize16,),
+      margin: const EdgeInsets.only(top: 20, bottom: 10),
+      child: TextWidget(
+        text: title,
+        fontWeight: FontWeight.w300,
+        color: AppColors.grayTitle,
+        size: AppDimens.textSize16,
+      ),
     );
   }
 }

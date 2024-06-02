@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:find_food/core/ui/snackbar/snackbar.dart';
+import 'package:find_food/features/maps/location/models/place_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,7 +12,7 @@ import 'package:http/http.dart' as http;
 
 enum MapAction {
   zoomIn,
-  zoomOut,
+  zoomOut,  
   resetZoom,
 }
 
@@ -24,17 +26,16 @@ class LocationController extends GetxController
   TextEditingController searchController = TextEditingController();
 
   bool isSubmit = false;
-
   var labelMark = false.obs;
-
   var currentZoom = 16.0.obs;
+  var isLoading = false.obs; // Add this variable to track loading state
 
-  // var nameDisPlaceMarked
-  Timer? debounce;
+  Timer? debounce;  
 
   var listLocationName = <dynamic>[];
 
-  var tempValueSearch = [];
+  late PlaceMap resutlPlaceSearch=PlaceMap();
+
 
   late AnimationController animationController;
 
@@ -45,6 +46,10 @@ class LocationController extends GetxController
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
+  }
+
+  void setLoading(bool value) {
+    isLoading.value = value;
   }
 
   // ============= CONTROL ZOOM-IN, ZOOM-OUT AND RETURN TO MARKER
@@ -76,12 +81,44 @@ class LocationController extends GetxController
     });
   }
 
+  // check khu vuc trong phạm vi việt nam
+  bool isWithinBounds(double latitude, double longitude) {
+    return latitude >= 8.1790665 &&
+        latitude <= 23.393395 &&
+        longitude >= 102.14441 &&
+        longitude <= 109.464202;
+  }
+
+
+
   //================= MOVE MARKER TO NEW LOCATION AND UPDATE MAP ====================================
-  void updateMapLocation(LatLng newCenter) async {
-    mapController.move(newCenter, mapController.camera.zoom);
-    initialCenter = newCenter;
-    update();
-    resetSearch();
+  void updateMapLocation(LatLng newCenter, {dynamic dataLocaiton}) {
+    if (dataLocaiton != null) {
+      try {
+        PlaceMap place = PlaceMap.fromJson(dataLocaiton);
+        // Check if the location is within the boundaries of Vietnam
+        if (isWithinBounds(newCenter.latitude, newCenter.longitude)) {
+          mapController.move(newCenter, mapController.camera.zoom);
+          initialCenter = newCenter;
+          resutlPlaceSearch = place;
+          update();
+          resetSearch();
+        } else {  
+          SnackbarUtil.show("Errors outside the scope of search");
+        }
+      } catch (e) {
+        print('Data location is invalid: $e');
+      }
+    } else {
+      mapController.move(newCenter, mapController.camera.zoom);
+      initialCenter = newCenter;
+      resutlPlaceSearch = PlaceMap();
+      resutlPlaceSearch.displayName='Your current location';
+      resutlPlaceSearch.lat=initialCenter.latitude;
+      resutlPlaceSearch.lon=initialCenter.longitude;
+      update();
+      resetSearch();
+    } 
   }
 
   //======================  REST SEARCH ======================================
@@ -94,23 +131,27 @@ class LocationController extends GetxController
 
   //=====================  GET CURRENT LOCATION FUNCTION ===================================
   Future<void> getCurrentLocation() async {
+    setLoading(true);
     bool serviceEnabled;
     LocationPermission permission;
-    // Test if location services are enabled.
+
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled, don't continue
+      setLoading(false);
       return Future.error('Location services are disabled.');
     }
+
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
+        setLoading(false);
         return Future.error('Location permissions are denied');
       }
     }
+
     if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
+      setLoading(false);
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
@@ -118,51 +159,55 @@ class LocationController extends GetxController
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     LatLng currentLocation = LatLng(position.latitude, position.longitude);
-    
+    setLoading(false);
+    resutlPlaceSearch.displayName="your current Locaiton";
     updateMapLocation(currentLocation);
   }
 
   // =========================== SEARCH FUNCTION ===============================
   Future<void> searchLocation(
       LocationController controller, String query) async {
+    setLoading(true);
     final response = await http.get(
       Uri.parse(
           'https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=1'),
     );
-
     if (response.statusCode == 200) {
       final List results = json.decode(response.body);
       if (results.isNotEmpty) {
-        final double lat = double.parse(results[0]['lat']);
-        final double lon = double.parse(results[0]['lon']);
-        tempValueSearch = results;
-        updateMapLocation(LatLng(lat, lon));
-      } else {
-        //NOI DUNG KHONG TON TAI
+        // Check if the location is within the boundaries of Vietnam
+        LatLng latLng = LatLng(
+            double.parse(results[0]['lat']), double.parse(results[0]['lon']));
+        updateMapLocation(latLng, dataLocaiton: results[0]);
       }
-    } else {}
+    }
+    setLoading(false);
   }
 
   //==================== COMMENT SEARCH FUNCITON ==========================
   Future<void> commentSearch(
       LocationController controller, String query) async {
+    setLoading(true);
     final response = await http.get(
       Uri.parse(
           'https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=1'),
     );
     if (response.statusCode == 200) {
       final List<dynamic> results = json.decode(response.body);
+
       if (results.isNotEmpty) {
-        tempValueSearch = results;
-        listLocationName = results;
-        update(['fetchSearchComment']);
+        PlaceMap place = PlaceMap.fromJson(results[0]);
+        if (isWithinBounds(place.lat ?? 0.0, place.lon ?? 0.0)) {
+          listLocationName = results;
+        }else{
+          listLocationName=[];
+        }
       } else {
         listLocationName = [];
-        update(['fetchSearchComment']);
       }
-    } else {
-      // Handle request failure
+      update(['fetchSearchComment']);
     }
+    setLoading(false);
   }
 
   //=============================== ANIMATION MOVE ============================

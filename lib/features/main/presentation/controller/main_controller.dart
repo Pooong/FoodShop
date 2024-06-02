@@ -19,6 +19,8 @@ class MainController extends GetxController {
     '/profile'
   ];
 
+  var isLoading=false.obs;
+  
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     if (settings.name == '/home') {
       return GetPageRoute(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/core/ui/widgets/appbar/get_location_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
@@ -10,12 +11,11 @@ import 'package:find_food/features/maps/location/presentation/controller/locatio
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
-
 import 'package:latlong2/latlong.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LocationPage extends GetView<LocationController> {
   const LocationPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<LocationController>(
@@ -33,7 +33,7 @@ class LocationPage extends GetView<LocationController> {
                       Container(
                         margin: EdgeInsets.only(top: Get.height * .1),
                         width: Get.width,
-                        height: Get.height * .75,
+                        height: Get.height * .65,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(
@@ -92,9 +92,15 @@ class LocationPage extends GetView<LocationController> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 15),
                       ButtonWidget(
-                        ontap: () {},
+                        ontap: () {
+                          if (controller.resutlPlaceSearch.allow()) {
+                            Get.back(result: controller.resutlPlaceSearch);
+                          } else {
+                            SnackbarUtil.show("Please select location");
+                          }
+                        },
                         text: "SAVE LOCATION",
                       ),
                       const SizedBox(height: 20),
@@ -121,6 +127,28 @@ class LocationPage extends GetView<LocationController> {
                       ),
                     ],
                   )),
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Obx(() {
+                      if (controller.isLoading.value) {
+                        return Center(
+                          child: Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                                color: AppColors.primary.withOpacity(.6),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: LoadingAnimationWidget.staggeredDotsWave(
+                                color: AppColors.white, size: 90),
+                          ),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    }),
+                  )
                 ],
               ),
             ),
@@ -161,9 +189,7 @@ class LocationPage extends GetView<LocationController> {
 
   // ignore: non_constant_identifier_names
   Widget Maps(MapController mapController, LatLng center) {
-
-    PlaceMap place = controller.tempValueSearch.isNotEmpty ? PlaceMap.fromJson(controller.tempValueSearch[0]) : PlaceMap();
-
+    // Define the bounds for Vietnam
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
@@ -205,7 +231,9 @@ class LocationPage extends GetView<LocationController> {
                                       blurRadius: 3)
                                 ], color: AppColors.white),
                                 child: TextWidget(
-                                  text:place.displayName ?? "can't display location name",
+                                  text: controller
+                                          .resutlPlaceSearch.displayName ??
+                                      "Can't display location name",
                                   fontWeight: FontWeight.w500,
                                   size: AppDimens.textSize10,
                                   textAlign: TextAlign.center,
@@ -227,7 +255,6 @@ class LocationPage extends GetView<LocationController> {
         userAgentPackageName: 'com.example.app',
       );
 
-
   ElevatedButton buttonControllerSizeMaps(
       LocationController controller, MapAction action) {
     IconData iconData;
@@ -241,7 +268,6 @@ class LocationPage extends GetView<LocationController> {
       default:
         iconData = Icons.location_searching;
     }
-
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
@@ -326,8 +352,7 @@ class LocationPage extends GetView<LocationController> {
       child: InkWell(
         onTap: () {
           LatLng location = LatLng(place.lat ?? 0.0, place.lon ?? 0.0);
-          controller.updateMapLocation(location);
-          controller.resetSearch();
+          controller.updateMapLocation(location, dataLocaiton: locationName);
         },
         child: TextWidget(
           text: place.displayName.toString(),
