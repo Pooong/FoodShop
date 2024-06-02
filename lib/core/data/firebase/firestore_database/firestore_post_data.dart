@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirestorePostData {
   static final _fireStorePostCollection =
       FirebaseFirestore.instance.collection('posts');
-
+      
   static Future<Result<PostDataModel>> savedPost(
       {required PostDataModel postDataModel, required String userId}) async {
     try {
@@ -57,6 +57,7 @@ class FirestorePostData {
       return Result.error(e);
     }
   }
+
 
   static Future<Result<bool>> updatePost(PostDataModel postDataModel) async {
     try {

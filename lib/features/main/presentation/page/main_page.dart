@@ -1,3 +1,4 @@
+import 'package:find_food/core/ui/widgets/loading/LoadingFull.dart';
 import 'package:find_food/core/ui/widgets/nav/BottomNavigationBarWidget.dart';
 import 'package:find_food/features/main/presentation/controller/main_controller.dart';
 import 'package:flutter/material.dart';
@@ -10,24 +11,33 @@ class MainPage extends GetView<MainController> {
   Widget build(BuildContext context) {
     return Scaffold(
       // xay dung appbar biến đổi theo từng trang
-      body: Navigator(
-        key: Get.nestedKey(10),
-        initialRoute: "/home",
-        onGenerateRoute: controller.onGenerateRoute,
+      body: Stack(
+        children: [
+          Navigator(
+            key: Get.nestedKey(10),
+            initialRoute: "/home",
+            onGenerateRoute: controller.onGenerateRoute,
+          ),
+          Obx(() {
+            return controller.isLoading.value
+                ? const LoadingFull()
+                : const SizedBox();
+          }),
+        ],
       ),
-
-      bottomNavigationBar: _bottomNavigationBar(),
+      bottomNavigationBar: Obx(()=>_bottomNavigationBar(controller.isLoading.value)) ,
     );
   }
-
-  _bottomNavigationBar() {
-    return Obx(
-      () => BottomNavigationBarWidget(
+  
+  _bottomNavigationBar(bool hidden) {
+    return Obx(() {
+      return BottomNavigationBarWidget(
         currentIndex: controller.currentIndex.value,
         onPageChanged: (index) {
-          controller.onChangeItemBottomBar(index);
+          if(!hidden)controller.onChangeItemBottomBar(index);
         },
-      ),
-    );
+        allowSelect: !hidden,
+      );
+    });
   }
 }

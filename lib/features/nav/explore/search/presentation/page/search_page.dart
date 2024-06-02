@@ -23,6 +23,9 @@ class SearchPage extends GetView<SearchController> {
               ElevatedButton(
                   onPressed: () => Get.toNamed(Routes.restaurant),
                   child: Text("to retaurant")),
+              ElevatedButton(
+                  onPressed: () => Get.toNamed('setrestaurant'),
+                  child: Text("to setrestaurant")),
 
               /// list san pham 1
               Column(

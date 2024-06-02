@@ -7,9 +7,7 @@ class PostsDetailBinding extends Bindings{
   @override
   void dependencies() {
     Get.lazyPut(() => Prefs(), fenix: true);
-
-    Get.lazyPut(()=>PostsDetailController());
-    
+    Get.lazyPut(() => PostsDetailController(), fenix: true);
   }
 
 }

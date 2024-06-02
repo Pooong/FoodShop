@@ -6,25 +6,34 @@ import 'package:find_food/core/data/firebase/firestore_database/firestore_post_d
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
-import 'package:find_food/features/maps/location/models/place.dart';
+import 'package:find_food/features/main/presentation/controller/main_controller.dart';
+import 'package:find_food/features/maps/location/models/place_map.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class UploadController extends GetxController {
+  final MainController _mainController = Get.find();
+
   final GetuserUseCase _getuserUseCase;
   UploadController(this._getuserUseCase);
   var selectedImages = <File>[].obs;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
-  Place? placeSelected;
+  PlaceMap placeSelected = PlaceMap();
+
   UserModel? user;
 
+  bool attchLocation = false;
+
+  var nameLocationDisplay = "".obs;
+
   List<String> listPathUrl = [];
-  
+
   @override
   void onInit() async {
     user = await _getuserUseCase.getUser();
@@ -40,6 +49,7 @@ class UploadController extends GetxController {
   }
 
   savePost() async {
+    _mainController.isLoading.value = true;
     if (listPathUrl.isEmpty) {
       for (var file in selectedImages) {
         String? pathUrl = await uploadFile(imageFile: file);
@@ -51,26 +61,30 @@ class UploadController extends GetxController {
 
     final post = PostDataModel(
       title: titleController.text,
-      subtitle:descriptionController.text,
+      subtitle: descriptionController.text,
       favoriteCount: 10,
       imageList: listPathUrl,
       restaurantId: 'restaurant1',
-      createAt:  DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      createAt: DateFormat('dd/MM/yyyy').format(DateTime.now()),
       isBookmarked: true,
       isFavorited: true,
-      latitude: 37.7749,
-      longitude: -122.4194,
+      latitude: placeSelected.lat ?? 0.0,
+      longitude: placeSelected.lon ?? 0.0,
     );
     final result = await FirestorePostData.savedPost(
         postDataModel: post, userId: user!.uid);
     if (result.status == Status.success) {
       listPathUrl.clear();
       selectedImages.clear();
-      update(['clearData']);
+      titleController.text = "";
+      descriptionController.text = "";
+      nameLocationDisplay.value = "";
+      update();
       SnackbarUtil.show("Add post success".tr);
     } else {
       SnackbarUtil.show("Add post error".tr);
     }
+    _mainController.isLoading.value = false;
   }
 
   // ignore: non_constant_identifier_names
@@ -81,9 +95,7 @@ class UploadController extends GetxController {
   Future<String?> uploadFile({required File imageFile}) async {
     String? pathUrl;
     final result = await FirebaseStorageData.uploadImage(
-        imageFile: imageFile,
-        userId: user!.uid,
-        collection: "post_images");
+        imageFile: imageFile, userId: user!.uid, collection: "post_images");
     if (result.status == Status.success) {
       pathUrl = result.data ?? "";
     } else {
@@ -97,9 +109,30 @@ class UploadController extends GetxController {
   }
 
   void uploadPost() {
-    savePost();
+    if (selectedImages.isEmpty) {
+      Fluttertoast.showToast(msg: "Please select an image for the posts");
+      return;
+    }
+    if (titleController.text == "") {
+      Fluttertoast.showToast(msg: "Titile Can't be empty");
+      return;
+    }
 
-    // Implement your upload logic here
-    // You can use titleController.text, descriptionController.text, and selectedImages
+    if (descriptionController.text == "") {
+      Fluttertoast.showToast(msg: "Description Can't be empty");
+      return;
+    }
+
+    // if(!attchLocation){
+    //   DialogsUtils.showAlertDialog(title: "Unattached location", message: "Do you want to continue ?", typeDialog: TypeDialog.warning);
+    //   return;
+    // }
+
+    if (!placeSelected.allow()) {
+      Fluttertoast.showToast(msg: "Please select address");
+      return;
+    }
+
+    savePost();
   }
 }

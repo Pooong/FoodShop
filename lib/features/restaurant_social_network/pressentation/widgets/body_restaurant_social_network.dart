@@ -1,27 +1,9 @@
-import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
-import 'package:find_food/core/ui/widgets/textfield/custom_textfield_widget.dart';
-import 'package:find_food/features/restaurant_change_infor.dart/pressentation/controller/restaurant_change_info_controller.dart';
-import 'package:find_food/features/restaurant_change_infor.dart/pressentation/widgets/appbar_restaurant_changeinfor.dart';
-import 'package:find_food/features/restaurant_change_infor.dart/pressentation/widgets/data_time_input.dart';
 import 'package:find_food/features/restaurant_change_infor.dart/pressentation/widgets/textform_input.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class RestaurantChangeInfo extends GetView<RestaurantChangeInfoController> {
-  const RestaurantChangeInfo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BuildAppbarRestaurantChangeInfor(),
-      body: BuildBodyRestaurantChangeInfor(),
-    );
-  }
-}
-
-class BuildBodyRestaurantChangeInfor extends StatelessWidget {
-  const BuildBodyRestaurantChangeInfor({
+class BuildBodyRestaurantSocialNetWork extends StatelessWidget {
+  const BuildBodyRestaurantSocialNetWork({
     super.key,
   });
 
@@ -41,18 +23,17 @@ class BuildBodyRestaurantChangeInfor extends StatelessWidget {
                 height: 20,
               ),
               const textFormInput(
-                label: 'Email Address',
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              const textFormInput(
-                label: 'Phone Number',
+                label: 'TikTok',
               ),
               const SizedBox(
                 height: 20,
               ),
-              DateTimeInput(),
+              const textFormInput(
+                label: 'Twitter',
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               const SizedBox(
                 height: 20,
               ),

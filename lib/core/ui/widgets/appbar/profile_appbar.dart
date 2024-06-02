@@ -11,7 +11,8 @@ class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Profile",),
+          "Profile",
+        ),
         actions: [
           IconButton(
             onPressed: () {

@@ -3,15 +3,18 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class BottomNavigationBarWidget extends StatelessWidget {
   final int currentIndex;
   final Function(int) onPageChanged;
+  bool allowSelect=true;
 
-  const BottomNavigationBarWidget(
+  BottomNavigationBarWidget(
     {
       super.key, 
       required this.currentIndex,
-      required this.onPageChanged
+      required this.onPageChanged,
+      this.allowSelect=true
     });
 
 
@@ -20,15 +23,16 @@ class BottomNavigationBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
       animationCurve: Curves.easeInOut,
-      animationDuration: const Duration(milliseconds: 300),
+
+      animationDuration: allowSelect ? const Duration(milliseconds: 300) :const Duration(milliseconds: 9999999),
       color: AppColors.primary,
       height: 70,
       backgroundColor: Colors.transparent, // Sử dụng màu trong suốt
       index: currentIndex,
       
-      onTap: (index) {
+      onTap:allowSelect? (index) {
         onPageChanged(index);
-      },
+      }:null,
 
       items: const [
         Icon(
