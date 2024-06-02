@@ -2,7 +2,6 @@ import 'dart:ffi';
 
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/appbar/upload_post_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
@@ -19,42 +18,46 @@ class UploadPage extends GetView<UploadController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const UploadPostAppbar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 40),
-          child: GetBuilder<UploadController>(
-            id: "clearData",
-            builder: (logic) {
-              return Column(
-                children: [
-                  // Image Picker
-                  imagesBox(),
-                  // Title Field
-                  titleBox(),
-                  // Description Field
-                  descriptionBox(),
-                  const SizedBox(height: 20),
-                  // Location Picker
-                  getLocation(title: "Custom location"),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  getLocation(title: "Access restaurant location"),
-                  const SizedBox(height: 30),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 40),
+              child: GetBuilder<UploadController>(
+                id: "clearData",
+                builder: (logic) {
+                  return Column(
+                    children: [
+                      // Image Picker
+                      imagesBox(),
+                      // Title Field
+                      titleBox(),
+                      // Description Field
+                      descriptionBox(),
+                      const SizedBox(height: 20),
+                      // Location Picker
+                      getLocation(title: "Custom location"),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // getLocation(title: "Access restaurant location"),
+                      // const SizedBox(height: 30),
 
-                  // Upload Button
-                  ButtonWidget(
-                    ontap: () {
-                      controller.uploadPost();
-                    },
-                    text: "UPLOAD POSTS",
-                    fontWeight: FontWeight.w400,
-                  ),
-                ],
-              );
-            },
+                      // Upload Button
+                      ButtonWidget(
+                        ontap: () {
+                          controller.uploadPost();
+                        },
+                        text: "UPLOAD POSTS",
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -185,6 +188,8 @@ class UploadPage extends GetView<UploadController> {
           );
           if (result != null) {
             controller.placeSelected = result;
+            controller.nameLocationDisplay.value =
+                controller.placeSelected.displayName ?? "";
           }
         },
         child: Row(
@@ -199,9 +204,16 @@ class UploadPage extends GetView<UploadController> {
                 const SizedBox(
                   width: 10,
                 ),
-                TextWidget(
-                  text: title,
-                  fontWeight: FontWeight.w500,
+                SizedBox(
+                  width: Get.width * .7,
+                  child: Obx(() {
+                    return TextWidget(
+                      text: controller.nameLocationDisplay.value.isNotEmpty
+                          ? controller.nameLocationDisplay.value
+                          : title,
+                      fontWeight: FontWeight.w500,
+                    );
+                  }),
                 ),
               ],
             ),

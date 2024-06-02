@@ -1,4 +1,5 @@
 import 'package:find_food/core/configs/app_colors.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,12 +12,11 @@ class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget {
       appBar: AppBar(
         title: const Text(
           "Profile",
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 30),
         ),
         actions: [
           IconButton(
             onPressed: () {
-              Get.toNamed("/accountSetting");
+              Get.toNamed(Routes.accountSetting);
             },
             icon: const Icon(Icons.settings),
           ),

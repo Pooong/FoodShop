@@ -67,4 +67,8 @@ class RestaurantController extends GetxController {
     itemsToShow.value = 4;
     itemHide.value = false;
   }
+
+  void clearSearch() {}
+
+  void onSearchItemTap(name) {}
 }

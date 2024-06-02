@@ -2,6 +2,8 @@ import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/features/account_setting/di/account_setting_binding.dart';
 import 'package:find_food/features/account_setting/nav/change_password/di/change_password_binding.dart';
 import 'package:find_food/features/account_setting/nav/change_password/presentation/page/change_password_page.dart';
+import 'package:find_food/features/account_setting/nav/create_restaurant/di/create_restaurant_binding.dart';
+import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/create_restaurant_page.dart';
 import 'package:find_food/features/account_setting/nav/setting_information/di/setting_information_binding.dart';
 import 'package:find_food/features/account_setting/nav/setting_information/presentation/page/setting_information_page.dart';
 import 'package:find_food/features/account_setting/presentation/page/account_setting_page.dart';
@@ -13,6 +15,8 @@ import 'package:find_food/features/auth/register/di/register_binding.dart';
 import 'package:find_food/features/auth/register/presentation/page/register_page.dart';
 import 'package:find_food/features/find_post/result_search/di/resutl_search_binding.dart';
 import 'package:find_food/features/find_post/result_search/presentation/page/result_search_page.dart';
+import 'package:find_food/features/location_restaurant/di/location_restaurant_binding.dart';
+import 'package:find_food/features/location_restaurant/presentation/page/location_restaurant_page.dart';
 import 'package:find_food/features/main/di/main_binding.dart';
 import 'package:find_food/features/main/presentation/page/main_page.dart';
 import 'package:find_food/features/maps/location/di/location_binding.dart';
@@ -28,6 +32,7 @@ import 'package:find_food/features/nav/notify/nav/social_notify/presentation/pag
 import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
 import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
 import 'package:find_food/features/restaurant/di/restaurant_binding.dart';
+import 'package:find_food/features/restaurant/pressentation/model/restaurant_model.dart';
 import 'package:find_food/features/restaurant/pressentation/page/restaurant_page.dart';
 import 'package:find_food/features/restaurant_change_infor.dart/di/restaurant_change_info_binding.dart';
 import 'package:find_food/features/restaurant_change_infor.dart/pressentation/page/restaurant_change_info.dart';
@@ -80,13 +85,6 @@ class Pages {
       binding: ForgetPasswordBinding(),
     ),
 
-    //trang profile
-    // GetPage(
-    //   name: Routes.profile,
-    //   page: () => const ProfilePage(),
-    //   binding: ProfileBindding(),
-    // ),
-
     //trang setting account
     GetPage(
       name: Routes.accountSetting,
@@ -108,12 +106,12 @@ class Pages {
       binding: ChangePasswordBinding(),
     ),
 
-    //trang notifications
-    // GetPage(
-    //   name: Routes.notify,
-    //   page: () => const NotifyPage(),
-    //   binding: NotifyBinding(),
-    // ),
+    //trang tạo cửa hàng
+    GetPage(
+      name: Routes.createRestaurant,
+      page: () => const CreateRestaurantPage(),
+      binding: CreateRestaurantBinding(),
+    ),
 
     //trang social notify
     GetPage(
@@ -179,6 +177,7 @@ class Pages {
       page: () => RestaurantPage(),
       binding: RestaurantBinding(),
     ),
+
     GetPage(
         name: Routes.restaurantsetting,
         page: () => const RestaurantSettingPage(),
@@ -187,6 +186,10 @@ class Pages {
         name: Routes.changeinfor,
         page: () => RestaurantChangeInfo(),
         binding: RestaurantChangeInfoBinding()),
+    GetPage(
+        name: Routes.setrestaurant,
+        page: () => LocationRestaurantPage(),
+        binding: LocationRestaurantBinding()),
     GetPage(
         name: Routes.addlink,
         page: () => RestaurantSocialNetwork(),
