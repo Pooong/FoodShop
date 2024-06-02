@@ -35,7 +35,7 @@ class TopPostsDetail extends GetView<PostsDetailController> {
           ],
         ),
         actions: [
-
+          
           Obx(   
             () => IconButton(
               onPressed: controller.toggleBookmarkStatus,
@@ -105,14 +105,13 @@ class TopPostsDetail extends GetView<PostsDetailController> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 16.0),
                                             gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                                const SliverGridDelegateWithFixedCrossAxisCount( // xác định số lượng cột
                                               crossAxisCount: 4,
                                               crossAxisSpacing: 10.0,
                                               mainAxisSpacing: 10.0,
                                             ),
                                             itemCount:
-                                                controller.smallImages.length >
-                                                        4
+                                                controller.smallImages.length > 4
                                                     ? 4
                                                     : controller
                                                         .smallImages.length,

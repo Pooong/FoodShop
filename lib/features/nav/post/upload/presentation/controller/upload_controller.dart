@@ -139,4 +139,9 @@ class UploadController extends GetxController {
 
     savePost();
   }
+  
+  
+
+
+  
 }
