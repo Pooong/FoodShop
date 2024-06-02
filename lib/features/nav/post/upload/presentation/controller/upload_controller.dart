@@ -102,4 +102,9 @@ class UploadController extends GetxController {
     // Implement your upload logic here
     // You can use titleController.text, descriptionController.text, and selectedImages
   }
+  
+  
+
+
+  
 }

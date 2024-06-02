@@ -11,6 +11,12 @@ class RestaurantController extends GetxController {
   var itemsToShow = 4.obs;
   var itemHide = false.obs;
 
+  get searchController => null;
+
+  get searchFocusNode => null;
+
+  get filterItems => null;
+
   void updateFood(int index, FoodModel updatedFood) {
     var updatedMenu = List<FoodModel>.from(menu);
     updatedMenu[index] = updatedFood;
@@ -42,4 +48,8 @@ class RestaurantController extends GetxController {
     itemsToShow.value = 4;
     itemHide.value = false;
   }
+
+  void clearSearch() {}
+
+  void onSearchItemTap(name) {}
 }
