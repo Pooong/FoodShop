@@ -24,24 +24,22 @@ class UploadController extends GetxController {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
-  PlaceMap placeSelected= PlaceMap();
+  PlaceMap placeSelected = PlaceMap();
 
   UserModel? user;
 
-  bool attchLocation=false;
+  bool attchLocation = false;
 
-  var nameLocationDisplay="".obs;
-
+  var nameLocationDisplay = "".obs;
 
   List<String> listPathUrl = [];
-  
+
   @override
   void onInit() async {
     user = await _getuserUseCase.getUser();
     super.onInit();
   }
 
-  
   Future<void> pickImages() async {
     final picker = ImagePicker();
     final pickedImages = await picker.pickMultiImage();
@@ -51,7 +49,7 @@ class UploadController extends GetxController {
   }
 
   savePost() async {
-    _mainController.isLoading.value=true;
+    _mainController.isLoading.value = true;
     if (listPathUrl.isEmpty) {
       for (var file in selectedImages) {
         String? pathUrl = await uploadFile(imageFile: file);
@@ -63,30 +61,30 @@ class UploadController extends GetxController {
 
     final post = PostDataModel(
       title: titleController.text,
-      subtitle:descriptionController.text,
+      subtitle: descriptionController.text,
       favoriteCount: 10,
       imageList: listPathUrl,
       restaurantId: 'restaurant1',
-      createAt:  DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      createAt: DateFormat('dd/MM/yyyy').format(DateTime.now()),
       isBookmarked: true,
       isFavorited: true,
-      latitude: placeSelected.lat??0.0,
-      longitude:placeSelected.lon??0.0,
+      latitude: placeSelected.lat ?? 0.0,
+      longitude: placeSelected.lon ?? 0.0,
     );
     final result = await FirestorePostData.savedPost(
         postDataModel: post, userId: user!.uid);
     if (result.status == Status.success) {
       listPathUrl.clear();
       selectedImages.clear();
-      titleController.text="";
-      descriptionController.text="";
-      nameLocationDisplay.value="";
+      titleController.text = "";
+      descriptionController.text = "";
+      nameLocationDisplay.value = "";
       update();
       SnackbarUtil.show("Add post success".tr);
     } else {
       SnackbarUtil.show("Add post error".tr);
     }
-    _mainController.isLoading.value=false;
+    _mainController.isLoading.value = false;
   }
 
   // ignore: non_constant_identifier_names
@@ -97,9 +95,7 @@ class UploadController extends GetxController {
   Future<String?> uploadFile({required File imageFile}) async {
     String? pathUrl;
     final result = await FirebaseStorageData.uploadImage(
-        imageFile: imageFile,
-        userId: user!.uid,
-        collection: "post_images");
+        imageFile: imageFile, userId: user!.uid, collection: "post_images");
     if (result.status == Status.success) {
       pathUrl = result.data ?? "";
     } else {
@@ -113,35 +109,30 @@ class UploadController extends GetxController {
   }
 
   void uploadPost() {
-    if(selectedImages.isEmpty){
-       Fluttertoast.showToast(msg: "Please select an image for the posts");
-        return;
+    if (selectedImages.isEmpty) {
+      Fluttertoast.showToast(msg: "Please select an image for the posts");
+      return;
     }
-    if(titleController.text==""){
-        Fluttertoast.showToast(msg: "Titile Can't be empty");
-        return;
+    if (titleController.text == "") {
+      Fluttertoast.showToast(msg: "Titile Can't be empty");
+      return;
     }
 
-    if(descriptionController.text==""){
+    if (descriptionController.text == "") {
       Fluttertoast.showToast(msg: "Description Can't be empty");
-        return;
+      return;
     }
 
     // if(!attchLocation){
     //   DialogsUtils.showAlertDialog(title: "Unattached location", message: "Do you want to continue ?", typeDialog: TypeDialog.warning);
-    //   return;  
+    //   return;
     // }
 
-    if(!placeSelected.allow()){
+    if (!placeSelected.allow()) {
       Fluttertoast.showToast(msg: "Please select address");
-        return;
+      return;
     }
 
     savePost();
   }
-  
-  
-
-
-  
 }
