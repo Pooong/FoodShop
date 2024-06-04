@@ -22,7 +22,6 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget buildListPost() {
-    print("rebuild home");
     return controller.listPost.isNotEmpty
         ? ListView.builder(
             shrinkWrap: true,
