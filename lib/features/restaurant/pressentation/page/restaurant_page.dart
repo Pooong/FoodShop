@@ -99,20 +99,21 @@ class RestaurantPage extends GetView<RestaurantController> {
                     ],
                   )),
             ),
-             Positioned(
+            Positioned(
               bottom: -50,
               left: 20,
               child: Stack(
                 children: [
-                getAvatar(),
+                  getAvatar(),
                   Positioned(
                     bottom: 0,
                     child: iconButton(
-                    icon: Icons.edit,
-                    onPressed: () {
-                      controller.selectImageAvatarGallery();
-                    },
-                  ), )
+                      icon: Icons.edit,
+                      onPressed: () {
+                        controller.selectImageAvatarGallery();
+                      },
+                    ),
+                  )
                 ],
               ),
             ),
@@ -130,16 +131,15 @@ class RestaurantPage extends GetView<RestaurantController> {
                     },
                   ),
                 )),
-              ]),
+          ]),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const SizedBox(
                 width: 40,
               ),
-
               const Spacer(),
-              const Row (
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextWidget(
