@@ -1,9 +1,9 @@
-import 'package:find_food/features/nav/notify/nav/social_notify/presentation/controller/social_notify_controller.dart';
+import 'package:find_food/features/nav/notify/presentation/controller/notify_controller.dart';
 //import 'package:find_food/features/nav/notify/presentation/widgets/notify_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SocialNotifyPage extends GetView<SocialNotifyController> {
+class SocialNotifyPage extends GetView<NotifyController> {
   SocialNotifyPage({super.key});
   final DateTime currentDate = DateTime.now();
 

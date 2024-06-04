@@ -1,8 +1,9 @@
-//import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
-//import 'package:get/get.dart';
+import 'package:get/get.dart';
 
 class FinishCreateRestaurantPage extends StatelessWidget {
   const FinishCreateRestaurantPage({super.key});
@@ -20,16 +21,16 @@ class FinishCreateRestaurantPage extends StatelessWidget {
             size: 60,
           ),
           const SizedBox(height: 10.0),
-          titleField(title: "Your restaurant has been created"),
+          titleField(title: AppTextString.fCreateRestaurantTitle),
           const SizedBox(height: 10.0),
-          subtitleField(title: "Now you can create your menu and start selling your food.\nGood luck!"),
+          subtitleField(title: AppTextString.fCreateRestaurantSubtitle),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
             child: ButtonWidget(
               ontap: () {
-                //Get.offNamed(Routes.profile);
+                // Get.toNamed(Routes.main);
               },
-              text: "COMPLETE",
+              text: AppTextString.fComplete,
               fontWeight: FontWeight.bold,
             ),
           ),

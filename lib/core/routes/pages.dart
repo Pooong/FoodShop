@@ -23,16 +23,11 @@ import 'package:find_food/features/maps/location/di/location_binding.dart';
 import 'package:find_food/features/maps/location/presentation/page/location_page.dart';
 import 'package:find_food/features/maps/maps/di/maps_binding.dart';
 import 'package:find_food/features/maps/maps/presentation/page/maps_page.dart';
-import 'package:find_food/features/nav/notify/nav/news_notify/di/news_notify_binding.dart';
-import 'package:find_food/features/nav/notify/nav/news_notify/presentation/page/news_notify_page.dart';
-import 'package:find_food/features/nav/notify/nav/notify_setting/di/notify_setting_binding.dart';
-import 'package:find_food/features/nav/notify/nav/notify_setting/presentation/page/notify_setting_page.dart';
-import 'package:find_food/features/nav/notify/nav/social_notify/di/social_notify_binding.dart';
-import 'package:find_food/features/nav/notify/nav/social_notify/presentation/page/social_notify_page.dart';
+import 'package:find_food/features/nav/notify/di/notify_binding.dart';
+import 'package:find_food/features/nav/notify/presentation/page/notify_setting_page.dart';
 import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
 import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
 import 'package:find_food/features/restaurant/di/restaurant_binding.dart';
-import 'package:find_food/features/restaurant/pressentation/model/restaurant_model.dart';
 import 'package:find_food/features/restaurant/pressentation/page/restaurant_page.dart';
 import 'package:find_food/features/restaurant_change_infor.dart/di/restaurant_change_info_binding.dart';
 import 'package:find_food/features/restaurant_change_infor.dart/pressentation/page/restaurant_change_info.dart';
@@ -113,25 +108,11 @@ class Pages {
       binding: CreateRestaurantBinding(),
     ),
 
-    //trang social notify
-    GetPage(
-      name: Routes.socialNotify,
-      page: () => SocialNotifyPage(),
-      binding: SocialNotifyBinding(),
-    ),
-
-    //trang news notify
-    GetPage(
-      name: Routes.newsNotify,
-      page: () => NewsNotifyPage(),
-      binding: NewsNotifyBinding(),
-    ),
-
     //trang Notify Settings
     GetPage(
       name: Routes.notifySetting,
       page: () => const NotifySettingPage(),
-      binding: NotifySettingBinding(),
+      binding: NotifyBinding(),
     ),
 
     // =====================  ROUTE POST =====================

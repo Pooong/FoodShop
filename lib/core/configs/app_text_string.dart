@@ -11,8 +11,14 @@ class AppTextString {
   //appbar
   static const String fUploadAppbar ="UPLOAD POSTS";
   static const String fLocationAppbar ="SET LOCATION";
+
   //Posts
   static const String fOpen ="Opening";
   static const String fclose="Closed";
   
+  //profile
+  static const String fProfileTitle = "Profile";
+  static const String fComplete = "COMPLETE";
+  static const String fCreateRestaurantTitle = "Your restaurant has been created";
+  static const String fCreateRestaurantSubtitle = "Now you can create your menu and start selling your food.\nGood luck!";
 }
