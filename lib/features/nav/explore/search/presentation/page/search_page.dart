@@ -1,14 +1,17 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/appbar/explore_appbar.dart';
+import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/card/explore_food_card.dart';
-import 'package:find_food/core/ui/widgets/card/food_card.dart';
+import 'package:find_food/core/ui/widgets/card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
+import 'package:find_food/features/nav/explore/search/presentation/controller/search_controller.dart';
+import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SearchPage extends GetView<SearchController> {
+class SearchPage extends GetView<ExploreController> {
   const SearchPage({super.key});
 
   @override
@@ -20,14 +23,6 @@ class SearchPage extends GetView<SearchController> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              ElevatedButton(
-                  onPressed: () => Get.toNamed(Routes.restaurant),
-                  child: Text("to retaurant")),
-              ElevatedButton(
-                  onPressed: () => Get.toNamed('setrestaurant'),
-                  child: Text("to setrestaurant")),
-
-              /// list san pham 1
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -107,31 +102,13 @@ class SearchPage extends GetView<SearchController> {
                     size: AppDimens.textSize22,
                     fontWeight: FontWeight.w500,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount:
-                          2, // You can adjust the number of columns here
-                      crossAxisSpacing: 10.0,
-                      mainAxisSpacing: 10.0,
-                    ),
-                    itemCount:
-                        20, // Replace yourItemCount with the actual number of items
-                    itemBuilder: (BuildContext context, int index) {
-                      // Replace FoodCard with your custom widget
-                      return FoodCard(
-                        imageUrl:
-                            'assets/images/home.png', // Replace with actual image URL
-                        rating: 5, // Replace with actual rating
-                        reviews: 23, // Replace with actual review count
-                        distance: 1.2, // Replace with actual distance
-                        title:
-                            'this is title poaaaaaaaaassssssssssssssssaaaaast  ${index + 1}', // Replace with actual title
-                      );
+                  GetBuilder<ExploreController>(
+                    id: "fetchPosts",
+                    builder: (logic) {
+                      return buildListPost();
                     },
                   ),
                 ],
@@ -141,5 +118,19 @@ class SearchPage extends GetView<SearchController> {
         ),
       ),
     );
+  }
+
+  Widget buildListPost() {
+    return controller.listPost.isNotEmpty
+        ? ListView.builder(
+            shrinkWrap: true,
+            itemCount: controller.listPost.length,
+            itemBuilder: (_, index) {
+              PostDataModel postDataModel = controller.listPost[index];
+              return PostsCard(
+                postDataModel: postDataModel,
+              );
+            })
+        : const SizedBox.shrink();
   }
 }
