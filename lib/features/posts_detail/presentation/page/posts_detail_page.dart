@@ -18,10 +18,9 @@ class PostsDetailPage extends GetView<PostsDetailController> {
             child: Column(
               children: [
                 SizedBox(
-                  height: Get.height * 0.77,
+                  height: Get.height * 0.84,
                   child: const TopPostsDetail(),
                 ),
-
                 const CommentBoxWidget(),
               ],
             ),

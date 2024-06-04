@@ -23,7 +23,7 @@ class PostsCard extends StatelessWidget {
   PostsCard(
       {super.key,
       this.title = AppTextString.fCardTitleDefault,
-      this.imageUrl = AppImagesString.iPostsDefault ,
+      this.imageUrl = AppImagesString.iPostsDefault,
       this.rate = 4.5,
       this.customerRated = 20,
       this.distance = 0.0,
@@ -35,7 +35,6 @@ class PostsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const EdgeInsets padding = EdgeInsets.all(10);
     const double starIconSize = AppDimens.textSize22;
-
 
     return Container(
       margin: padding,
@@ -57,32 +56,31 @@ class PostsCard extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
             child: InkWell(
-              onTap: () => Get.toNamed(Routes.postsDetail),
-              child:postDataModel.imageList !=null &&
-              postDataModel.imageList!.isNotEmpty ?
-               Image.network(
-                postDataModel.imageList!.first,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ):
-              Image.asset(
-                imageUrl,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.contain,
-              )
-              ,
+              onTap: () {
+                Get.toNamed(Routes.postsDetail, arguments: postDataModel);
+              },
+              child: postDataModel.imageList != null &&
+                      postDataModel.imageList!.isNotEmpty
+                  ? Image.network(
+                      postDataModel.imageList!.first,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      imageUrl,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.contain,
+                    ),
             ),
           ),
           Container(
-            height:1,
-            decoration: BoxDecoration(
+            height: 1,
+            decoration: const BoxDecoration(
               color: AppColors.primary,
             ),
           ),
-
-
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(
@@ -112,11 +110,11 @@ class PostsCard extends StatelessWidget {
                               fontSize: starIconSize, color: Colors.black),
                         ),
                         const SizedBox(width: 5),
-                        Row(
-                          children: [...Rating.RenderStar(star: rate,sizeStar: starIconSize)]
-                        ),
+                        Row(children: [
+                          ...Rating.RenderStar(
+                              star: rate, sizeStar: starIconSize)
+                        ]),
                         const SizedBox(width: 5),
-                        
                         TextWidget(
                           text: "($customerRated)",
                           size: AppDimens.textSize14,
