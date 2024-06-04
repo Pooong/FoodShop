@@ -3,6 +3,7 @@ import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/icons/rating.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';

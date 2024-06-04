@@ -26,11 +26,11 @@ SingleChildScrollView buildCreateRestaurantBody() {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
+          children: [
             textFormFieldList(),
             ButtonWidget(
                   ontap: () {
-                   Get.to(LicenseIdentifyPage());
+                   Get.to(() => LicenseIdentifyPage());
                   },
                   text: "CONTINUE",
                   fontWeight: FontWeight.bold,

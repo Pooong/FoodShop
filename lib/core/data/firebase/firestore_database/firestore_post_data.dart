@@ -58,6 +58,43 @@ class FirestorePostData {
     }
   }
 
+  static Future<Result<List<PostDataModel>>> searchPosts(String query) async {
+  try {
+    // Assuming you're searching in a field named 'title'
+    QuerySnapshot querySnapshot = await _fireStorePostCollection
+        .where('title', isGreaterThanOrEqualTo: query)
+        .where('title', isLessThanOrEqualTo: query + '\uf8ff')
+        .get();
+
+    List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return PostDataModel.fromJson(data);
+    }).toList();
+
+    return Result.success(activityList);
+  } on FirebaseException catch (e) {
+    return Result.error(e);
+  }
+}
+
+
+  static Future<Result<List<PostDataModel>>> getListPostRelate({int limit = 10}) async {
+  try {
+    QuerySnapshot querySnapshot = await _fireStorePostCollection
+        .limit(limit) // Apply the limit here
+        .get();
+
+    List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return PostDataModel.fromJson(data);
+    }).toList();
+
+    return Result.success(activityList);
+  } on FirebaseException catch (e) {
+    return Result.error(e);
+  }
+}
+
 
   static Future<Result<bool>> updatePost(PostDataModel postDataModel) async {
     try {

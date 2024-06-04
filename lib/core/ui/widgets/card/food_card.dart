@@ -27,7 +27,7 @@ class FoodCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Flexible(
+          Expanded(
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15.0),
@@ -41,7 +41,7 @@ class FoodCard extends StatelessWidget {
               ),
             ),
           ),
-          Flexible(
+          Expanded(
               child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -68,26 +68,29 @@ class FoodCard extends StatelessWidget {
                         color: Colors.grey,
                       ),
                     ),
-                    Spacer(),
-                    Text(
-                      '$distance km',
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.grey,
+                    SizedBox(width: 4.0),
+                    Expanded(
+                      child: Text(
+                        '$distance km',
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.grey,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        maxLines: 1,
                       ),
                     ),
                   ],
                 ),
-                Flexible(
-                    child: Text(
-                  title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ))
+                Text(
+                                  title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+                                  ),
+                                )
               ],
             ),
           ))

@@ -38,6 +38,8 @@ import 'package:find_food/features/restaurant_change_infor.dart/di/restaurant_ch
 import 'package:find_food/features/restaurant_change_infor.dart/pressentation/page/restaurant_change_info.dart';
 import 'package:find_food/features/restaurant_setting/di/restaurant_setting_binding.dart';
 import 'package:find_food/features/restaurant_setting/pressentation/page/restaurant_setting_page.dart';
+import 'package:find_food/features/restaurant_social_network/di/restaurant_social_network_binding.dart';
+import 'package:find_food/features/restaurant_social_network/pressentation/page/restaurant_social_network.dart';
 import 'package:find_food/features/splash/di/splash_binding.dart';
 import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
@@ -187,6 +189,10 @@ class Pages {
     GetPage(
         name: Routes.setrestaurant,
         page: () => LocationRestaurantPage(),
-        binding: LocationRestaurantBinding())
+        binding: LocationRestaurantBinding()),
+    GetPage(
+        name: Routes.addlink,
+        page: () => RestaurantSocialNetwork(),
+        binding: RestaurantSocialNetworkBinding())
   ];
 }

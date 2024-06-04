@@ -1,14 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-
-// class PostsDetailController extends GetxController {
-
-//       Route? onGenerateRoute(Route setting){
-
-//         return null;
-//       }
-
-// }
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
@@ -50,8 +39,6 @@ class PostsDetailController extends GetxController {
   }
 
   void uploadComment() async {
-    print("hhhhhhhhhhhhhhhhhhhhhhhhhabs");
-
     final comment = CommentModel(
       author: userComment!,
       comment: commentController.text,
@@ -60,12 +47,14 @@ class PostsDetailController extends GetxController {
       createdAt: DateTime.now().toString(),
     );
     final result = await FirestoreComment.createComment(comment);
+
     if (result.status == Status.success) {
-      update();
       SnackbarUtil.show("Add comments success".tr);
     } else {
       SnackbarUtil.show("Add comments error".tr);
     }
+    commentController.text = "";
+    update();
   }
 
   final PageController mainPageController = PageController();

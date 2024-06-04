@@ -1,10 +1,9 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
+import 'package:find_food/core/ui/widgets/card/comments_card.dart';
 import 'package:find_food/features/model/comment_model.dart';
-import 'package:find_food/features/model/commentsData.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
-import 'package:find_food/features/posts_detail/widgets/comment_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -38,10 +37,11 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
                 itemBuilder: (context, index) {
                   // reder list
                   CommentModel dataComments = controller.listComments[index];
-
-                  // return CommentCardWidget(
-                  //   commentModel: dataComments,
-                  // );
+                  return CommentsCard(
+                    comment: dataComments.comment ?? "comment empty !!!",
+                    toggleActive: () {},
+                    active: false,
+                  );
                 },
               ),
             ),
@@ -71,7 +71,7 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
                             )),
                         child: TextField(
                           controller: controller.commentController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: "Enter your comment",
                               hintStyle: TextStyle(color: AppColors.grey)),

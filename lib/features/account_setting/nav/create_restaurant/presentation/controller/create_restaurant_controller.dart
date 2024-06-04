@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/finish_create_restaurant.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/images_identify_page.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/license_identify_page.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
@@ -17,11 +18,13 @@ class CreateRestaurantController extends GetxController {
     return [
       LicenseIdentifyPage(),
       ImagesIdentifyPage(),
+      FinishCreateRestaurantPage(),
     ];
   }
 
   final GetuserUseCase _getuserUseCase;
   CreateRestaurantController(this._getuserUseCase);
+
   var selectedImages = <File>[].obs;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -50,4 +53,32 @@ class CreateRestaurantController extends GetxController {
     selectedImages.remove(image);
   }
 
+// pick single image
+  var backgroundImage = Rxn<File>();
+  var logoImage = Rxn<File>();
+
+  final ImagePicker _picker = ImagePicker();
+
+  void pickImage(bool isLogo) async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      if (isLogo) {
+        logoImage.value = File(pickedFile.path);
+      } else {
+        backgroundImage.value = File(pickedFile.path);
+      }
+    }
+  }
+
+  void removeSingleImage(bool isLogo) {
+    if (isLogo) {
+      logoImage.value = null;
+    } else {
+      backgroundImage.value = null;
+    }
+  }
+
+  bool isImageEmpty(bool isLogo) {
+    return isLogo ? logoImage.value == null : backgroundImage.value == null;
+  }
 }

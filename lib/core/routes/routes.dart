@@ -49,5 +49,5 @@ abstract class Routes {
   static const changeinfor = '/changeinfor';
   static const setrestaurant = '/setrestaurant';
 
-
+  static const addlink = '/addlink';
 }

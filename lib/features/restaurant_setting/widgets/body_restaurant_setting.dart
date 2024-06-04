@@ -125,7 +125,9 @@ class BuildBodyRestaurantSetting extends StatelessWidget {
             iconData: Icons.facebook,
             textTitle: "Add Social Network Account",
             subTitle: "Facebook, Instagram, etc",
-            ontap: () {},
+            ontap: () {
+              Get.toNamed('addlink');
+            },
           ),
           NavigatorRestaurantSetting(
             iconData: Icons.lock_clock,

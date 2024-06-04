@@ -1,3 +1,4 @@
+import 'package:find_food/core/configs/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -73,8 +74,8 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             Container(
-              height: 1, // Height of the red line
-              color: const Color.fromARGB(113, 232, 38, 38), // Set the color of the line
+              height: 2.0, // Height of the red line
+              color: AppColors.primary, // Set the color of the line
             ),
           ],
         ),
