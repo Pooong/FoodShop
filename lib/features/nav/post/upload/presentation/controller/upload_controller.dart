@@ -16,21 +16,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class UploadController extends GetxController {
-
   final MainController _mainController = Get.find();
 
   final GetuserUseCase _getuserUseCase;
-  
+
   UploadController(this._getuserUseCase);
-  
+
   var selectedImages = <File>[].obs;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
   PlaceMap placeSelected = PlaceMap();
 
-  UserModel? user; 
-
+  UserModel? user;
 
   bool attchLocation = false;
 

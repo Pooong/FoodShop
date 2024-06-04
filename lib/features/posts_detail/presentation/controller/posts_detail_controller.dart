@@ -1,24 +1,62 @@
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-    
-// class PostsDetailController extends GetxController {
-
-//       Route? onGenerateRoute(Route setting){
-        
-//         return null;
-//       }
-  
-
-
-
-// }
+import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
+import 'package:find_food/core/ui/snackbar/snackbar.dart';
+import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
+import 'package:find_food/features/auth/user/model/user_model.dart';
+import 'package:find_food/features/model/comment_model.dart';
+import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:find_food/features/model/commentsData.dart';
 
 class PostsDetailController extends GetxController {
+  final GetuserUseCase _getuserUseCase;
+  PostsDetailController(this._getuserUseCase);
+  UserModel? userComment;
+  List<CommentModel> listComments = [];
+  PostDataModel? postDataModel;
+  final dataAgument = Get.arguments;
+  final commentController = TextEditingController();
+  @override
+  void onInit() async {
+    userComment = await _getuserUseCase.getUser();
+    if (dataAgument is PostDataModel) {
+      postDataModel = dataAgument;
+      getComments();
+    }
 
-  
+    // super.onInit();
+  }
+
+  void getComments() async {
+    final result = await FirestoreComment.getListComments(postDataModel!.id!);
+    if (result.status == Status.success) {
+      listComments = result.data!;
+      update(["fetchComment"]);
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+  }
+
+  void uploadComment() async {
+    final comment = CommentModel(
+      author: userComment!,
+      comment: commentController.text,
+      favorite: 0,
+      idPost: postDataModel!.id!,
+      createdAt: DateTime.now().toString(),
+    );
+    final result = await FirestoreComment.createComment(comment);
+
+    if (result.status == Status.success) {
+      SnackbarUtil.show("Add comments success".tr);
+    } else {
+      SnackbarUtil.show("Add comments error".tr);
+    }
+    commentController.text = "";
+    update();
+  }
+
   final PageController mainPageController = PageController();
   final List<String> mainImages = [
     'assets/images/food1.png',
@@ -105,17 +143,17 @@ class PostsDetailController extends GetxController {
     mainPageController.dispose();
     super.onClose();
   }
+
   Route? onGenerateRoute(Route setting) {
     return null;
   }
 
-
   void updateComment(int index) {
+    CommentData.commentDataList[index - 1]['isActive'] =
+        !CommentData.commentDataList[index - 1]['isActive'];
 
-    CommentData.commentDataList[index-1]['isActive'] =!CommentData.commentDataList[index-1]['isActive'];
-    
     update(["fetchComment"]);
   }
 
-  bool hiddenStar(double star) => star ==0.0;
+  bool hiddenStar(double star) => star == 0.0;
 }

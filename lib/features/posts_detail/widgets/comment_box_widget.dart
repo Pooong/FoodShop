@@ -1,16 +1,15 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
-import 'package:find_food/features/model/commentsData.dart';
+import 'package:find_food/core/ui/widgets/card/comments_card.dart';
+import 'package:find_food/features/model/comment_model.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
-import 'package:find_food/features/posts_detail/widgets/comment_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class CommentBoxWidget extends GetWidget<PostsDetailController> {
   const CommentBoxWidget({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     var rate = 4.0;
@@ -34,35 +33,26 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
               height: Get.height * 0.6,
               child: ListView.builder(
                 padding: const EdgeInsets.only(bottom: 10),
-                itemCount: CommentData.commentDataList.length,
+                itemCount: controller.listComments.length,
                 itemBuilder: (context, index) {
-
                   // reder list
-                  var data = CommentData.commentDataList[index];
-
-                  return CommentCardWidget(
-                    id: data['id'],
-                    authorImg: data['authorImg'],
-                    authorName: data['authorName'],
-                    favorite: data['favorite'],
-                    comment: data['comment'],
-                    toggleActive: () {
-                      controller.updateComment(data['id']);
-                    },
-                    active: data['isActive'],
+                  CommentModel dataComments = controller.listComments[index];
+                  return CommentsCard(
+                    comment: dataComments.comment ?? "comment empty !!!",
+                    toggleActive: () {},
+                    active: false,
                   );
                 },
               ),
             ),
           ),
 
-          
           // comment input
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: const BoxDecoration(
               color: AppColors.gray2,
-            ), 
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -79,8 +69,9 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
                             border: Border.all(
                               color: AppColors.gray.withOpacity(.6),
                             )),
-                        child: const TextField(
-                          decoration: InputDecoration(
+                        child: TextField(
+                          controller: controller.commentController,
+                          decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: "Enter your comment",
                               hintStyle: TextStyle(color: AppColors.grey)),
@@ -111,11 +102,12 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
                     ),
                   ],
                 )),
-
                 InkWell(
-                    onTap: () {}, child: Image.asset('assets/images/send.png'))
+                    onTap: () {
+                      controller.uploadComment();
+                    },
+                    child: Image.asset('assets/images/send.png'))
               ],
-              
             ),
           )
         ],
