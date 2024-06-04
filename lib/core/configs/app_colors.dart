@@ -29,7 +29,7 @@ class AppColors {
      
   static const transparent = Colors.transparent;
   static const error = Color(0xFFF83758);
-  static const colorPink = Color(0xFF9FA8DA);
+  static const colorPink = Color(0xFFF83758);
   static Color colorPink2 = HexColor('#b20088');
   static Color colorPink3 = HexColor('#f5ecef');
   static Color black4 = HexColor('#1F1F1F');

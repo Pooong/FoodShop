@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/ui/widgets/appbar/restaurant_appbar.dart';
+import 'package:find_food/core/ui/widgets/avatar/upload_avatar.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/restaurant/pressentation/controller/restaurant_controller.dart';
 import 'package:find_food/features/restaurant/pressentation/model/food_model.dart';
@@ -21,7 +23,7 @@ class RestaurantPage extends GetView<RestaurantController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
+      appBar: const RestaurantAppbar(),
       body: buildBody(),
     );
   }
@@ -31,19 +33,10 @@ class RestaurantPage extends GetView<RestaurantController> {
       child: Column(
         children: <Widget>[
           Stack(clipBehavior: Clip.none, children: [
-            Container(
-              height: 300,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/img_banner_profile1.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+            getWallpapper(),
             Positioned(
-              width: 350,
-              height: 90,
+              width: Get.width * 0.88,
+              // height: Get.height * 0.1,
               bottom: 0,
               right: 0,
               child: Container(
@@ -51,10 +44,10 @@ class RestaurantPage extends GetView<RestaurantController> {
                   color: Colors.white.withOpacity(0.7),
                   child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    // mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextWidget(
-                        text: "RESTAURENT",
+                        text: "RESTAURANT",
                         fontWeight: FontWeight.w700,
                         size: AppDimens.textSize22,
                         color: AppColors.primary,
@@ -106,18 +99,22 @@ class RestaurantPage extends GetView<RestaurantController> {
                     ],
                   )),
             ),
-            const Positioned(
+            Positioned(
               bottom: -50,
               left: 20,
-              child: CircleAvatar(
-                backgroundColor: AppColors.white,
-                radius: 75,
-                child: CircleAvatar(
-                  radius: 70,
-                  backgroundImage: AssetImage(
-                    'assets/images/avatar.jpg',
-                  ),
-                ),
+              child: Stack(
+                children: [
+                  getAvatar(),
+                  Positioned(
+                    bottom: 0,
+                    child: iconButton(
+                      icon: Icons.edit,
+                      onPressed: () {
+                        controller.selectImageAvatarGallery();
+                      },
+                    ),
+                  )
+                ],
               ),
             ),
             Positioned(
@@ -126,30 +123,23 @@ class RestaurantPage extends GetView<RestaurantController> {
                 child: Container(
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle, // Hình dạng của nút
-                    color: Color.fromARGB(128, 255, 255, 255),
                   ),
                   child: iconButton(
                     icon: Icons.edit,
                     onPressed: () {
-                      print("OK");
+                      controller.selectImageWallpaper();
                     },
                   ),
                 )),
-            Positioned(
-              bottom: -50,
-              left: 30,
-              child: iconButton(
-                icon: Icons.edit,
-                onPressed: () {
-                  print("OK");
-                },
-              ),
-            ),
           ]),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Row(
+              const SizedBox(
+                width: 40,
+              ),
+              const Spacer(),
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextWidget(
@@ -345,24 +335,43 @@ class RestaurantPage extends GetView<RestaurantController> {
     );
   }
 
-  // GridView buildGridOrders() {
-  //   return GridView.builder(
-  //     shrinkWrap: true,
-  //     physics: const NeverScrollableScrollPhysics(),
-  //     padding: const EdgeInsets.symmetric(horizontal: 20),
-  //     itemCount: FoodModel.menu.length,
-  //     itemBuilder: (BuildContext context, int index) {
-  //       final foodmenu = FoodModel.menu[index];
-  //       return CardMenuRestaurant(
-  //         img: foodmenu.imageFood,
-  //         foodname: foodmenu.foodName,
-  //         pricefood: foodmenu.priceFood,
+  // Widget getAvatar() {
+  //   return GetBuilder<RestaurantController>(
+  //     id: "updateAvatar",
+  //     builder: (id) {
+  //       return CircleAvatar(
+  //         backgroundColor: AppColors.white,
+  //         radius: 75,
+  //         child: CircleAvatar(
+  //           radius: 70,
+  //           backgroundImage: controller.imgAvatar == null
+  //               ? AssetImage('assets/images/avatar.jpg')
+  //               : FileImage(controller.imgAvatar!) as ImageProvider,
+  //         ),
   //       );
   //     },
-  //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //         crossAxisCount: 2, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
   //   );
   // }
+
+  Widget getWallpapper() {
+    return GetBuilder<RestaurantController>(
+      id: "updateWallpaper",
+      builder: (id) {
+        return Container(
+          height: 300,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: controller.imgWallpapper == null
+                  ? const AssetImage('assets/images/avatar.jpg')
+                  : FileImage(controller.imgWallpapper!) as ImageProvider,
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   Widget buildGridOrders() {
     return Obx(() {
@@ -444,35 +453,35 @@ class RestaurantPage extends GetView<RestaurantController> {
     });
   }
 
-  AppBar buildAppBar() {
-    return AppBar(
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(5.0),
-        child: Container(
-          color: AppColors.primary,
-          height: 5.0,
-        ),
-      ),
-      backgroundColor: AppColors.white,
-      leading: IconButton(
-        color: AppColors.primary,
-        icon: const Icon(Icons.arrow_back_ios),
-        onPressed: () {
-          Get.back();
-        },
-      ),
-      title: const TextWidget(
-          text: 'RESTAURANT',
-          color: AppColors.primary,
-          fontWeight: FontWeight.bold),
-      centerTitle: true,
-      actions: [
-        iconButton(
-            icon: Icons.settings,
-            onPressed: () {
-              Get.toNamed('restaurantsetting');
-            })
-      ],
-    );
-  }
+  // AppBar buildAppBar() {
+  //   return AppBar(
+  //     bottom: PreferredSize(
+  //       preferredSize: const Size.fromHeight(5.0),
+  //       child: Container(
+  //         color: AppColors.primary,
+  //         height: 5.0,
+  //       ),
+  //     ),
+  //     backgroundColor: AppColors.white,
+  //     leading: IconButton(
+  //       color: AppColors.primary,
+  //       icon: const Icon(Icons.arrow_back_ios),
+  //       onPressed: () {
+  //         Get.back();
+  //       },
+  //     ),
+  //     title: const TextWidget(
+  //         text: 'RESTAURANT',
+  //         color: AppColors.primary,
+  //         fontWeight: FontWeight.bold),
+  //     centerTitle: true,
+  //     actions: [
+  //       iconButton(
+  //           icon: Icons.settings,
+  //           onPressed: () {
+  //             Get.toNamed('restaurantsetting');
+  //           })
+  //     ],
+  //   );
+  // }
 }

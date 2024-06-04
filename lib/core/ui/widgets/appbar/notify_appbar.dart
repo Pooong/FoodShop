@@ -1,3 +1,4 @@
+import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,8 +24,8 @@ class NotifyAppbar extends StatelessWidget implements PreferredSizeWidget{
           preferredSize:
               const Size.fromHeight(1.0), 
           child: Container(
-            color: Colors.grey,
-            height: 0.5, 
+            color: AppColors.primary,
+            height: 2.0,
           ),
         ),
       ),

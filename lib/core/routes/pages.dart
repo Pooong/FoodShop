@@ -15,6 +15,8 @@ import 'package:find_food/features/auth/register/di/register_binding.dart';
 import 'package:find_food/features/auth/register/presentation/page/register_page.dart';
 import 'package:find_food/features/find_post/result_search/di/resutl_search_binding.dart';
 import 'package:find_food/features/find_post/result_search/presentation/page/result_search_page.dart';
+import 'package:find_food/features/location_restaurant/di/location_restaurant_binding.dart';
+import 'package:find_food/features/location_restaurant/presentation/page/location_restaurant_page.dart';
 import 'package:find_food/features/main/di/main_binding.dart';
 import 'package:find_food/features/main/presentation/page/main_page.dart';
 import 'package:find_food/features/maps/location/di/location_binding.dart';
@@ -30,11 +32,14 @@ import 'package:find_food/features/nav/notify/nav/social_notify/presentation/pag
 import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
 import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
 import 'package:find_food/features/restaurant/di/restaurant_binding.dart';
+import 'package:find_food/features/restaurant/pressentation/model/restaurant_model.dart';
 import 'package:find_food/features/restaurant/pressentation/page/restaurant_page.dart';
 import 'package:find_food/features/restaurant_change_infor.dart/di/restaurant_change_info_binding.dart';
 import 'package:find_food/features/restaurant_change_infor.dart/pressentation/page/restaurant_change_info.dart';
 import 'package:find_food/features/restaurant_setting/di/restaurant_setting_binding.dart';
 import 'package:find_food/features/restaurant_setting/pressentation/page/restaurant_setting_page.dart';
+import 'package:find_food/features/restaurant_social_network/di/restaurant_social_network_binding.dart';
+import 'package:find_food/features/restaurant_social_network/pressentation/page/restaurant_social_network.dart';
 import 'package:find_food/features/splash/di/splash_binding.dart';
 import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
@@ -180,7 +185,14 @@ class Pages {
     GetPage(
         name: Routes.changeinfor,
         page: () => RestaurantChangeInfo(),
-        binding: RestaurantChangeInfoBinding())
-
+        binding: RestaurantChangeInfoBinding()),
+    GetPage(
+        name: Routes.setrestaurant,
+        page: () => LocationRestaurantPage(),
+        binding: LocationRestaurantBinding()),
+    GetPage(
+        name: Routes.addlink,
+        page: () => RestaurantSocialNetwork(),
+        binding: RestaurantSocialNetworkBinding())
   ];
 }

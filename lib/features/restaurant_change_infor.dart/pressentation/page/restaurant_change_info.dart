@@ -15,43 +15,54 @@ class RestaurantChangeInfo extends GetView<RestaurantChangeInfoController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BuildAppbarRestaurantChangeInfor(),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Form(
-                child: Column(
-              children: [
-                const textFormInput(
-                  label: 'Facebook',
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                const textFormInput(
-                  label: 'Email Address',
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                const textFormInput(
-                  label: 'Phone Number',
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                DateTimeInput(),
-                const SizedBox(
-                  height: 20,
-                ),
-                ButtonWidget(
-                  ontap: () {},
-                  text: 'Change Settings',
-                )
-              ],
-            ))
-          ],
-        ),
+      body: BuildBodyRestaurantChangeInfor(),
+    );
+  }
+}
+
+class BuildBodyRestaurantChangeInfor extends StatelessWidget {
+  const BuildBodyRestaurantChangeInfor({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Form(
+              child: Column(
+            children: [
+              const textFormInput(
+                label: 'Facebook',
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              const textFormInput(
+                label: 'Email Address',
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              const textFormInput(
+                label: 'Phone Number',
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              DateTimeInput(),
+              const SizedBox(
+                height: 20,
+              ),
+              ButtonWidget(
+                ontap: () {},
+                text: 'Change Settings',
+              )
+            ],
+          ))
+        ],
       ),
     );
   }

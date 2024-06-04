@@ -1,3 +1,4 @@
+import 'package:find_food/core/configs/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,8 +16,8 @@ class SettingInformationAppBar extends StatelessWidget implements PreferredSizeW
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(
-            color: Colors.grey,
-            height: 0.5,
+            color: AppColors.primary,
+            height: 2.0,
           ),
         ),
       ),

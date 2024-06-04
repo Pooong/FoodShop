@@ -161,7 +161,7 @@ class CommentCardWidget extends StatelessWidget {
           top: avatarWithTop,
           child: Column(
             children: [
-              const Avatar(width: 50, height: 50),
+              const Avatar(radius: 50, authorImg: AppImagesString.iUserDefault),
               const SizedBox(
                 height: 15,
               ),
