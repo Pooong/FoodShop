@@ -1,8 +1,8 @@
-import 'package:find_food/features/nav/notify/nav/news_notify/presentation/controller/news_notify_controller.dart';
+import 'package:find_food/features/nav/notify/presentation/controller/notify_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class NewsNotifyPage extends GetView<NewsNotifyController> {
+class NewsNotifyPage extends GetView<NotifyController> {
   NewsNotifyPage({super.key});
   final DateTime currentDate = DateTime.now();
 
