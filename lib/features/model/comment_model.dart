@@ -7,6 +7,7 @@ class CommentModel {
   UserModel author;
   String? idPost;
   String? createdAt;
+  bool? isFavoriteComments;
 
   CommentModel({
     this.idComment,
@@ -15,6 +16,7 @@ class CommentModel {
     required this.author,
     this.idPost,
     this.createdAt,
+    required this.isFavoriteComments,
   });
 
   Map<String, dynamic> toJson() {
@@ -24,6 +26,7 @@ class CommentModel {
       'author': author.toJson(),
       'idPost': idPost,
       'createdAt': createdAt,
+      'isFavoriteComments': isFavoriteComments,
     };
   }
 
@@ -35,6 +38,7 @@ class CommentModel {
       author: UserModel.fromJson(json['author']),
       idPost: json['idPost'],
       createdAt: json['createdAt'],
+      isFavoriteComments: json['isFavoriteComments'],
     );
   }
 }

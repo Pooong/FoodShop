@@ -39,8 +39,11 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
                   CommentModel dataComments = controller.listComments[index];
                   return CommentsCard(
                     comment: dataComments.comment ?? "comment empty !!!",
-                    toggleActive: () {},
-                    active: false,
+                    toggleActive: () {
+                      print(dataComments.isFavoriteComments);
+                      controller.toggleFavoriteComments(dataComments);
+                    },
+                    active: dataComments.isFavoriteComments ?? false,
                   );
                 },
               ),

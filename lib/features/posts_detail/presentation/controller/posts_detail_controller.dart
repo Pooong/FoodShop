@@ -29,7 +29,8 @@ class PostsDetailController extends GetxController {
   }
 
   void getComments() async {
-    final result = await FirestoreComment.getListComments(postDataModel!.id!);
+    final result = await FirestoreComment.getListComments();
+    // final result = await FirestoreComment.getListComments(postDataModel!.id!);
     if (result.status == Status.success) {
       listComments = result.data!;
       update(["fetchComment"]);
@@ -45,7 +46,9 @@ class PostsDetailController extends GetxController {
       favorite: 0,
       idPost: postDataModel!.id!,
       createdAt: DateTime.now().toString(),
+      isFavoriteComments: false,
     );
+
     final result = await FirestoreComment.createComment(comment);
 
     if (result.status == Status.success) {
@@ -78,7 +81,7 @@ class PostsDetailController extends GetxController {
 
   var isFavorite = false.obs;
   var isBookmark = false.obs;
-
+  var isFavoriteComments = false.obs;
   void previousImage() {
     if (mainPageController.page!.toInt() > 0) {
       mainPageController.previousPage(
@@ -95,6 +98,11 @@ class PostsDetailController extends GetxController {
         curve: Curves.ease,
       );
     }
+  }
+
+  void toggleFavoriteComments(CommentModel comment) {
+    comment.isFavoriteComments = !comment.isFavoriteComments!;
+    update(["fetchComment"]);
   }
 
   void toggleFavoriteStatus() {
