@@ -12,8 +12,6 @@ class ResultSearchPage extends GetView<ResultSearchController> {
 
   @override
   Widget build(BuildContext context) {
-    var value = Get.arguments ?? "";
-
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(90),
@@ -56,7 +54,7 @@ class ResultSearchPage extends GetView<ResultSearchController> {
                         child: SizedBox(
                           width: 280,
                           child: Text(
-                            value,
+                            controller.valueSearch,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),

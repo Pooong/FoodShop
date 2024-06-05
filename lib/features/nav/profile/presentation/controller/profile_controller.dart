@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+
 class ProfileController extends GetxController {
   final GetuserUseCase _getuserUseCase;
   ProfileController(this._getuserUseCase);
@@ -62,4 +63,5 @@ class ProfileController extends GetxController {
       update(['updateBackground']);
     }
   }
+  
 }

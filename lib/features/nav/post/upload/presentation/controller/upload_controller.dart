@@ -96,6 +96,7 @@ class UploadController extends GetxController {
     return selectedImages.isEmpty;
   }
 
+  
   Future<String?> uploadFile({required File imageFile}) async {
     String? pathUrl;
     final result = await FirebaseStorageData.uploadImage(

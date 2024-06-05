@@ -89,7 +89,8 @@ dependencies:
 
   fluttertoast: ^8.2.5
   delightful_toast: ^1.1.0
-  
+  collection: ^1.18.0
+  unorm_dart: ^0.3.0
   
   latlng: ^2.0.7
   

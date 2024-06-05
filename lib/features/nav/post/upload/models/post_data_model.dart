@@ -27,6 +27,37 @@ class PostDataModel {
     this.longitude,
   });
 
+  // Define the copyWith method
+  PostDataModel copyWith({
+    String? id,
+    String? userId,
+    String? title,
+    String? subtitle,
+    int? favoriteCount,
+    List<String>? imageList,
+    String? restaurantId,
+    String? createAt,
+    bool? isBookmarked,
+    bool? isFavorited,
+    double? latitude,
+    double? longitude,
+  }) {
+    return PostDataModel(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      title: title ?? this.title,
+      subtitle: subtitle ?? this.subtitle,
+      favoriteCount: favoriteCount ?? this.favoriteCount,
+      imageList: imageList ?? this.imageList,
+      restaurantId: restaurantId ?? this.restaurantId,
+      createAt: createAt ?? this.createAt,
+      isBookmarked: isBookmarked ?? this.isBookmarked,
+      isFavorited: isFavorited ?? this.isFavorited,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+    );
+  }
+
   factory PostDataModel.fromJson(Map<String, dynamic> json) => PostDataModel(
         id: json["id"],
         userId: json["userId"],
@@ -35,7 +66,7 @@ class PostDataModel {
         favoriteCount: json["favoriteCount"],
         imageList: json["imageList"] == null
             ? []
-            : List<String>.from(json["imageList"]!.map((x) => x)),
+            : List<String>.from(json["imageList"].map((x) => x)),
         restaurantId: json["restaurantId"],
         createAt: json["createAt"],
         isBookmarked: json["isBookmarked"],
