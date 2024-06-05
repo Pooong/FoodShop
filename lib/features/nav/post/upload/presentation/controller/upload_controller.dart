@@ -67,7 +67,7 @@ class UploadController extends GetxController {
       favoriteCount: 10,
       imageList: listPathUrl,
       restaurantId: 'restaurant1',
-      createAt: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      createAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now()),
       isBookmarked: true,
       isFavorited: true,
       latitude: placeSelected.lat ?? 0.0,
