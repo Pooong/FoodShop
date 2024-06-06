@@ -50,7 +50,7 @@ class Pages {
       page: () => const SplashPage(),
       binding: SplashBinding(),
     ),
-    
+
     // trang đăng nhập
     GetPage(
       name: Routes.login,
