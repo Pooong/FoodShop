@@ -1,16 +1,19 @@
-import 'package:find_food/features/nav/notify/nav/notify_setting/presentation/controller/notify_setting_controller.dart';
+
+import 'package:find_food/features/nav/notify/presentation/controller/notify_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class NotifySettingPage extends GetView<NotifySettingController> {
+class NotifySettingPage extends GetView<NotifyController> {
   const NotifySettingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NotifySettingController());
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(onTap: ()=> Get.back(),child: Icon(Icons.arrow_back)),
+        leading: InkWell(
+          onTap: ()=> Get.back(),
+          child: Icon(Icons.arrow_back)
+        ),
         title: const Text("Notification setting"),
         centerTitle: true,
         bottom: PreferredSize(

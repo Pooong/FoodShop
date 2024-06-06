@@ -1,4 +1,5 @@
 import 'package:find_food/core/configs/app_colors.dart';
+import 'package:find_food/core/configs/app_constants.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -7,7 +8,9 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+      appBar: 
+      
+      PreferredSize(
         preferredSize: const Size.fromHeight(
             kToolbarHeight + 2), // Increase height for the red line
         child: Column(
@@ -38,21 +41,21 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
                         position: position,
                         items: [
                           const PopupMenuItem<String>(
-                            value: 'Lựa chọn 1',
-                            child: Text('Lựa chọn 1'),
+                            value: AppConstants.SelectOption_1,
+                            child: Text('Nearest'),
                           ),
                           const PopupMenuItem<String>(
-                            value: 'Lựa chọn 2',
-                            child: Text('Lựa chọn 2'),
+                            value: AppConstants.SelectOption_2,
+                            child: Text('Favorite'),
                           ),
                           const PopupMenuItem<String>(
-                            value: 'Lựa chọn 3',
-                            child: Text('Lựa chọn 3'),
+                            value: AppConstants.SelectOption_3,
+                            child: Text('Best'),
                           ),
                         ],color: Colors.white.withOpacity(0.8),
                       ).then((value) {
                         if (value != null) {
-                          // Handle the selected value
+                          
                           print('Selected: $value');
                         }
                       });

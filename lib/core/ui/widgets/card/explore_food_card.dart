@@ -2,8 +2,8 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
+import 'package:find_food/core/services/images_service.dart';
 import 'package:flutter/material.dart';
-
 
 class ExploreFoodCard extends StatelessWidget {
   final String title;
@@ -12,14 +12,14 @@ class ExploreFoodCard extends StatelessWidget {
   final int customerRating;
   final double distance;
 
-  const ExploreFoodCard(
-      {super.key,
-      this.title = "posts no title plase add your's title",
-      this.imageUrl = AppImagesString.iCardDefault,
-      this.rating = 5.0,
-      this.customerRating = 100,
-      this.distance = 2.0,
-      });
+  const ExploreFoodCard({
+    super.key,
+    required this.title,
+    required this.imageUrl,
+    required this.rating,
+    required this.customerRating,
+    required this.distance
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +40,36 @@ class ExploreFoodCard extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Positioned(
-              child: Image.asset(
-            imageUrl,
-            fit: BoxFit.cover,  
-          )),
+            child: FutureBuilder<bool>(
+              future: () async {
+                try {
+                  return await ImagesService.doesImageLinkExist(imageUrl);
+                } catch (e) {
+                  print('Error occurred while checking image link: $e');
+                  return false;
+                }
+              }(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else {
+                  // Trạng thái đã có kết quả
+                  if (snapshot.hasError) {
+                    // Nếu có lỗi hoặc không tìm thấy hình ảnh, hiển thị hình ảnh mặc định
+                    return Image.asset(
+                      AppImagesString.iCardDefault,
+                      fit: BoxFit.cover,
+                    );
+                  } else {
+                    return Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                    );
+                  }
+                }
+              },
+            ),
+          ),
           Positioned(
               bottom: 0,
               left: 0,
@@ -84,7 +110,7 @@ class ExploreFoodCard extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                               Text(
+                              Text(
                                 "$rating",
                                 style: const TextStyle(
                                     color: AppColors.white,
