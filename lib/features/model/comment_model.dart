@@ -1,47 +1,44 @@
 import 'package:find_food/features/auth/user/model/user_model.dart';
 
 class CommentModel {
-  final String? id;
-  final double favorite;
-  final String comment;
-  final UserModel author;
+  String? idComment;
+  int? favorite;
+  String? comment;
+  UserModel author;
+  String? idPost;
+  String? createdAt;
+  bool? isFavoriteComments;
 
   CommentModel({
-    this.id,
-    required this.favorite,
-    required this.comment,
+    this.idComment,
+    this.favorite,
+    this.comment,
     required this.author,
+    this.idPost,
+    this.createdAt,
+    required this.isFavoriteComments,
   });
-  
-  CommentModel copyWith({
-    String? id,
-    double? favorite,
-    String? comment,
-    double? rate,
-    UserModel? author,
-  }) {
-    return CommentModel(
-      id: id ?? this.id,
-      favorite: favorite ?? this.favorite,
-      comment: comment ?? this.comment,
-      author: author ?? this.author,
-    );
-  }
 
   Map<String, dynamic> toJson() {
     return {
       'favorite': favorite,
       'comment': comment,
       'author': author.toJson(),
+      'idPost': idPost,
+      'createdAt': createdAt,
+      'isFavoriteComments': isFavoriteComments,
     };
   }
 
   static CommentModel fromJson(Map<String, dynamic> json) {
     return CommentModel(
-      id: json['id'],
+      idComment: json['idComment'],
       favorite: json['favorite'],
       comment: json['comment'],
       author: UserModel.fromJson(json['author']),
+      idPost: json['idPost'],
+      createdAt: json['createdAt'],
+      isFavoriteComments: json['isFavoriteComments'],
     );
   }
 }

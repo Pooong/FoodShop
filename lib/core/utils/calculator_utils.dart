@@ -1,7 +1,7 @@
 import 'dart:math';
 
 class CalculatorUtils {
-  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+  static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     const double earthRadius = 6371; // Bán kính trái đất, đơn vị kilometer
 
     // Kiểm tra nếu hai điểm có cùng tọa độ
@@ -33,7 +33,7 @@ class CalculatorUtils {
   }
 
 // Hàm chuyển đổi từ độ sang radian
-  double _degreesToRadians(double degrees) {
+ static double _degreesToRadians(double degrees) {
     return degrees * (pi / 180);
   }
 }

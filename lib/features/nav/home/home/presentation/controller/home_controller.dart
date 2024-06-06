@@ -7,6 +7,7 @@ import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
+
   final GetuserUseCase _getuserUseCase;
 
   HomeController(this._getuserUseCase);
@@ -14,6 +15,7 @@ class HomeController extends GetxController {
   List<PostDataModel> listPost = [];
 
   UserModel? user;
+
 
   @override
   void onInit() async {

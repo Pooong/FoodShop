@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 
 class SearchPage extends GetView<ExploreController> {
   const SearchPage({super.key});
+  
 
   @override
   Widget build(BuildContext context) {

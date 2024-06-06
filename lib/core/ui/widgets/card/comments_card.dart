@@ -1,32 +1,34 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
-import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/icons/rating.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// ignore: must_be_immutable
-class CommentCardWidget extends StatelessWidget {
-  final int id;
-  final String? authorImg;
-  final String? authorName;
-  final int? favorite;
-  final String? comment;
+class CommentsCard extends StatelessWidget {
+  final String idComment;
+  final int favorite;
+  final String comment;
+  final String authorAvatar;
+  final String authorName;
   final double? star;
+  final String idPost;
+  final String createdAt;
   final VoidCallback toggleActive;
   final bool active;
 
-  const CommentCardWidget({
+  const CommentsCard({
     super.key,
-    required this.id,
-    this.authorImg = AppImagesString.iUserDefault,
-    this.authorName = AppTextString.fUserDefault,
-    this.favorite = 10,
-    this.comment = AppTextString.fCommentDefault,
+    this.idComment = "",
+    this.favorite = 0,
+    this.comment = "",
+    this.authorAvatar = AppImagesString.iUserDefault,
+    this.authorName = "User Name",
     this.star = 0.0,
+    this.idPost = "",
+    this.createdAt = "2 ago",
     required this.toggleActive,
     required this.active,
   });
@@ -34,20 +36,18 @@ class CommentCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double avatarWithLeft = 15.0;
-    double avatarWithTop = 5.0;
+    double avatarWithTop = 15.0;
     double spaceSideLeft = 55.0;
 
-    double mimHeightCommentCard = Get.height * 0.12;
+    double mimHeightCommentCard = Get.height * 0.14;
 
     bool hiddenStart = star == 0.0;
-
-    String timePosts = "3h";
 
     return Stack(
       children: [
         Container(
           constraints: BoxConstraints(minHeight: mimHeightCommentCard),
-          margin: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
+          margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: AppColors.white,
               boxShadow: [
@@ -84,17 +84,16 @@ class CommentCardWidget extends StatelessWidget {
                           ),
                         ),
                         Container(
-                            margin: const EdgeInsets.only(right: 20),
-                            child: InkWell(
-                              onTap: toggleActive,
-                              child: Icon(
-                                !active
-                                    ? Icons.favorite_outline
-                                    : Icons.favorite_outlined,
-                                size: AppDimens.textSize16,
-                                color: active ? AppColors.red : null,
-                              ),
-                            ))
+                          margin: const EdgeInsets.only(right: 20),
+                          child: InkWell(
+                            onTap: toggleActive,
+                            child: Icon(
+                              active ? Icons.favorite : Icons.favorite_border,
+                              size: AppDimens.textSize18,
+                              color: active ? AppColors.red : null,
+                            ),
+                          ),
+                        )
                       ],
                     )
                   : const Row(),
@@ -114,7 +113,7 @@ class CommentCardWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextWidget(
-                                text: authorName!,
+                                text: authorName,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black.withOpacity(.7),
                               ),
@@ -142,7 +141,7 @@ class CommentCardWidget extends StatelessWidget {
 
                           // main comment
                           TextWidget(
-                            text: comment!,
+                            text: comment,
                             size: AppDimens.textSize14,
                           )
                         ],
@@ -166,10 +165,11 @@ class CommentCardWidget extends StatelessWidget {
                 height: 15,
               ),
               TextWidget(
-                text: "$timePosts ago",
+                text: createdAt,
                 size: AppDimens.textSize10,
                 color: AppColors.primary,
-              )
+              ),
+              // TextWidget(text: favorite.toString()),
             ],
           ),
         ),

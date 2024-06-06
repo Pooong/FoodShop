@@ -9,6 +9,7 @@ class AccountSettingBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(() => Prefs(), fenix: true);
     Get.lazyPut(() => AccountSettingController(Get.find(),Get.find()));
+    Get.lazyPut(() => GetLocationCase(Get.find()));
     Get.lazyPut(() => SaveLoactionCase(Get.find()));
   }
 }
