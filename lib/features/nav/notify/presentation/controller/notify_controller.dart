@@ -6,4 +6,7 @@ class NotifyController extends GetxController {
   void selectTab(String tab) {
     selectedTab.value = tab;
   }
+
+  var switchValue1 = false.obs;
+  var switchValue2 = false.obs;
 }

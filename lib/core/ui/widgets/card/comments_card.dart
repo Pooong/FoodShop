@@ -38,7 +38,7 @@ class CommentsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double avatarWithLeft = 15.0;
-    double avatarWithTop = 5.0;
+    double avatarWithTop = 15.0;
     double spaceSideLeft = 55.0;
 
     double mimHeightCommentCard = Get.height * 0.14;
@@ -49,7 +49,7 @@ class CommentsCard extends StatelessWidget {
       children: [
         Container(
           constraints: BoxConstraints(minHeight: mimHeightCommentCard),
-          margin: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
+          margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: AppColors.white,
               boxShadow: [

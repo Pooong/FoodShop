@@ -1,4 +1,5 @@
 import 'package:find_food/core/configs/app_colors.dart';
+import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/appbar/profile_appbar.dart';
 import 'package:find_food/features/nav/profile/presentation/controller/profile_controller.dart';
 import 'package:find_food/features/nav/profile/presentation/widgets/nav_controll_list.dart';
@@ -7,7 +8,7 @@ import 'package:get/get.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   const ProfilePage({Key? key});
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +71,7 @@ class ProfilePage extends GetView<ProfileController> {
           color: AppColors.white,
           image: DecorationImage(
             image: controller.imgBackground == null
-                ? const AssetImage('assets/images/img_banner_profile1.png')
+                ? const AssetImage(AppImagesString.iBackgroundUserDefault)
                 : FileImage(controller.imgBackground!) as ImageProvider,
             fit: BoxFit.cover,
           ),
@@ -99,7 +100,7 @@ class ProfilePage extends GetView<ProfileController> {
                 child: CircleAvatar(
                   radius: 50,
                   backgroundImage: controller.imgAvatar == null
-                      ? const AssetImage('assets/images/avatar.jpg')
+                      ? const AssetImage(AppImagesString.iUserDefault)
                       : FileImage(controller.imgAvatar!) as ImageProvider,
                 ),
               ),
@@ -107,8 +108,8 @@ class ProfilePage extends GetView<ProfileController> {
           ),
           const SizedBox(height: 10.0),
           const Text(
-            "User name",
-            style: TextStyle(
+            "displayName",
+            style: const TextStyle(
               fontSize: 20,
               color: Colors.black,
               fontWeight: FontWeight.bold,

@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirestorePostData {
   static final _fireStorePostCollection =
       FirebaseFirestore.instance.collection('posts');
-      
+
   static Future<Result<PostDataModel>> savedPost(
       {required PostDataModel postDataModel, required String userId}) async {
     try {
@@ -22,9 +22,8 @@ class FirestorePostData {
     }
   }
 
-
-
-  static Future<Result<List<PostDataModel>>> getListPostOfUser(String userId) async {
+  static Future<Result<List<PostDataModel>>> getListPostOfUser(
+      String userId) async {
     try {
       QuerySnapshot querySnapshot = await _fireStorePostCollection
           .where('userId', isEqualTo: userId)
@@ -41,10 +40,26 @@ class FirestorePostData {
     }
   }
 
-  
   static Future<Result<List<PostDataModel>>> getListPost() async {
     try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection.get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<List<PostDataModel>>> getListPostRelate(
+      {int limit = 10}) async {
+    try {
       QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .limit(limit) // Apply the limit here
           .get();
 
       List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
@@ -58,42 +73,62 @@ class FirestorePostData {
     }
   }
 
-  static Future<Result<List<PostDataModel>>> searchPosts(String query) async {
-  try {
-    // Assuming you're searching in a field named 'title'
-    QuerySnapshot querySnapshot = await _fireStorePostCollection
-        .where('title', isGreaterThanOrEqualTo: query)
-        .where('title', isLessThanOrEqualTo: query + '\uf8ff')
-        .get();
+  static Future<Result<List<PostDataModel>>> getListPostArea(
+      {int limit = 10}) async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .limit(limit) // Apply the limit here
+          .get();
 
-    List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      return PostDataModel.fromJson(data);
-    }).toList();
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
 
-    return Result.success(activityList);
-  } on FirebaseException catch (e) {
-    return Result.error(e);
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
   }
-}
 
+  static Future<Result<List<PostDataModel>>> getListPostFavorite(
+      {int limit = 10}) async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .limit(limit) // Apply the limit here
+          .get();
 
-  static Future<Result<List<PostDataModel>>> getListPostRelate({int limit = 10}) async {
-  try {
-    QuerySnapshot querySnapshot = await _fireStorePostCollection
-        .limit(limit) // Apply the limit here
-        .get();
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
 
-    List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      return PostDataModel.fromJson(data);
-    }).toList();
-
-    return Result.success(activityList);
-  } on FirebaseException catch (e) {
-    return Result.error(e);
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
   }
-}
+
+
+   static Future<Result<List<PostDataModel>>> searchPosts(String query) async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .where('title', isGreaterThanOrEqualTo: query)
+          .where('title', isLessThanOrEqualTo: query + '\uf8ff')
+          .get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+
 
 
   static Future<Result<bool>> updatePost(PostDataModel postDataModel) async {
