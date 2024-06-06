@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/ui/widgets/card/posts_card.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomePage extends GetView<HomeController> {
-
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
@@ -88,7 +88,7 @@ class HomePage extends GetView<HomeController> {
       body: GetBuilder<HomeController>(
         id: "fetchPosts",
         builder: (logic) {
-          return buildListPost();
+          return buildListPostStream();
         },
       ),
     );
@@ -106,5 +106,41 @@ class HomePage extends GetView<HomeController> {
               );
             })
         : const SizedBox.shrink();
+  }
+
+  Widget buildListPostStream() {
+    return StreamBuilder<List<DocumentSnapshot>>(
+      stream: controller.listenToPostsRealTime(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting ||
+            snapshot.connectionState == ConnectionState.none) {
+          return snapshot.hasData
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Center(
+                  child: Text("No data"),
+                );
+        } else {
+          if (snapshot.hasData) {
+            final postDocs = snapshot.data!;
+            return ListView.builder(
+              controller: controller.scrollController,
+              // reverse: true,
+              itemBuilder: (ctx, i) {
+                PostDataModel postDataModel =
+                    PostDataModel.fromDocumentSnapshot(postDocs[i]);
+                return PostsCard(
+                  postDataModel: postDataModel,
+                );
+              },
+              itemCount: postDocs.length,
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        }
+      },
+    );
   }
 }

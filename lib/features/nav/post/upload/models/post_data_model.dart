@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PostDataModel {
   String? id;
   String? userId;
@@ -74,7 +76,26 @@ class PostDataModel {
         latitude: json["latitude"]?.toDouble(),
         longitude: json["longitude"]?.toDouble(),
       );
-
+// Chuyển đổi từ DocumentSnapshot sang PostModel
+  factory PostDataModel.fromDocumentSnapshot(DocumentSnapshot doc) {
+    Map<String, dynamic> json = doc.data()! as Map<String, dynamic>;
+    return PostDataModel(
+      id: json["id"],
+      userId: json["userId"],
+      title: json["title"],
+      subtitle: json["subtitle"],
+      favoriteCount: json["favoriteCount"],
+      imageList: json["imageList"] == null
+          ? []
+          : List<String>.from(json["imageList"]!.map((x) => x)),
+      restaurantId: json["restaurantId"],
+      createAt: json["createAt"],
+      isBookmarked: json["isBookmarked"],
+      isFavorited: json["isFavorited"],
+      latitude: json["latitude"]?.toDouble(),
+      longitude: json["longitude"]?.toDouble(),
+    );
+  }
   Map<String, dynamic> toJson() => {
         "id": id,
         "userId": userId,
