@@ -4,11 +4,8 @@ import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/services/images_service.dart';
 
 class Avatar extends StatelessWidget {
-
-
   final double radius;
   final String authorImg;
-
   const Avatar({
     super.key,
     required this.authorImg ,

@@ -14,6 +14,7 @@ class GetuserUseCase {
     if (tokenJson.isEmpty) {
       return null;
     }
+  
     return UserModel.fromJson(json.decode(tokenJson));
   }
 }

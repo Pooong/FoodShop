@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
+
   final GetuserUseCase _getuserUseCase;
 
   HomeController(this._getuserUseCase);
@@ -24,6 +25,7 @@ class HomeController extends GetxController {
   int pageLimit = 2;
   DocumentSnapshot? _lastDocument;
   bool _hasMoreData = true;
+
 
   @override
   void onInit() async {

@@ -16,6 +16,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LocationPage extends GetView<LocationController> {
   const LocationPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<LocationController>(
@@ -283,6 +284,7 @@ class LocationPage extends GetView<LocationController> {
       ),
     );
   }
+
 
 // Search Box Widget
   Widget searchBox(LocationController controller) {

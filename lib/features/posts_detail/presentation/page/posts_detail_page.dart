@@ -10,18 +10,16 @@ class PostsDetailPage extends GetView<PostsDetailController> {
   const PostsDetailPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: const AppbaPostsDetails(),
+    return const Scaffold(
+        appBar: AppbaPostsDetails(),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               children: [
-                SizedBox(
-                  height: Get.height * 0.84,
-                  child: const TopPostsDetail(),
-                ),
-                const CommentBoxWidget()
+                TopPostsDetail(),
+                SizedBox(height: 20,),
+                CommentBoxWidget()
               ],
             ),
           ),

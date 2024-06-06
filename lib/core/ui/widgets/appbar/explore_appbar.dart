@@ -4,16 +4,16 @@ import 'package:find_food/core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
     
+// ignore: must_be_immutable
 class ExploreAppbar extends StatelessWidget  implements PreferredSizeWidget {
 
-  const ExploreAppbar({ super.key });
+  const ExploreAppbar({ super.key});
   
   @override
   Widget build(BuildContext context) {
     final TextEditingController controller = TextEditingController();
     void handleSearch(String value){
       Get.toNamed(Routes.resultSearch,arguments: value);
-      // Get.toNamed(Routes.resultSearch);
     } 
 
     return PreferredSize(

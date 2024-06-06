@@ -40,7 +40,7 @@ import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
 
 class Pages {
-  static const initial = Routes.none;
+  static const initial = Routes.none; 
   static const main = Routes.main;
 
   static final routes = [
