@@ -1,6 +1,4 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/core/ui/widgets/card/comments_card.dart';
 import 'package:find_food/features/model/comment_model.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
@@ -12,7 +10,6 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    var rate = 4.0;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -57,49 +54,44 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
               color: AppColors.gray2,
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                     child: Stack(
                   children: [
                     Container(
-                        padding: const EdgeInsets.only(
-                          left: 10,
-                        ),
-                        margin: const EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: AppColors.gray.withOpacity(.6),
-                            )),
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                      ),
+                      margin: const EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: AppColors.gray.withOpacity(.6),
+                          )),
+                      child: SizedBox(
+                        width: Get.width * .65,
                         child: TextField(
                           controller: controller.commentController,
+                          maxLines: null,
                           decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: "Enter your comment",
                               hintStyle: TextStyle(color: AppColors.grey)),
-                        )),
+                        ),
+                      ),
+                    ),
                     Positioned(
-                      top: 0,
-                      bottom: 0,
-                      right: 15,
+                      top: 10,
+                      right: 0,
                       child: InkWell(
-                        onTap: () => {
-                          DialogsUtils.showRatingDialog(
-                            initialRating: rate,
-                            onRatingUpdate: (rating) {
-                              rate = rating;
-                            },
-                            onSubmit: () {
-                              print("Rating submitted");
-                              // Handle submit action
-                            },
-                          ),
-                        },
-                        child: const Icon(
-                          Icons.star_rounded,
-                          size: AppDimens.textSize42,
-                          color: AppColors.yellow,
+                        child: GestureDetector(
+                          onTap: () {
+                            controller.pickImages();
+                          },
+                          child: Image.asset('assets/images/addphoto.png',
+                              width: 50, height: 40),
                         ),
                       ),
                     ),
@@ -109,7 +101,9 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
                     onTap: () {
                       controller.uploadComment();
                     },
-                    child: Image.asset('assets/images/send.png'))
+                    child: Container(
+                        margin: const EdgeInsets.only(top: 5),
+                        child: Image.asset('assets/images/send.png')))
               ],
             ),
           )

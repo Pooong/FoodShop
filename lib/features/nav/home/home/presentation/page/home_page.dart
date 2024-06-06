@@ -57,16 +57,16 @@ class HomePage extends GetView<HomeController> {
               controller: controller.scrollController,
               // reverse: true,
               itemBuilder: (ctx, i) {
-                PostDataModel postDataModel =
-                    PostDataModel.fromDocumentSnapshot(postDocs[i]);
+                PostDataModel postDataModel = PostDataModel.fromDocumentSnapshot(postDocs[i]);
                 return PostsCard(
+                  restaurantTag: i%2==0,
                   postDataModel: postDataModel,
                 );
               },
               itemCount: postDocs.length,
             );
           } else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         }
       },

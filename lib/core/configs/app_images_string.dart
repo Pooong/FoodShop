@@ -6,6 +6,7 @@ class AppImagesString {
   static const String iUserDefault ="assets/images/defaults/user.png";
   static const String iLogo ="assets/images/logo_full.png";
   static const String iBackgroundUserDefault ="assets/images/defaults/background.jpg";
+  static const String iBannerCategorySearch ="assets/images/banner_category.jpg";
   static const String iFood1 = "assets/images/food1.png";
   static const String iFood2 = "assets/images/food2.png";
   static const String iFood3 = "assets/images/food3.png";

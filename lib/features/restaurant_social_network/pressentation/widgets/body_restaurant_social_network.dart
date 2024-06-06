@@ -1,5 +1,5 @@
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
-import 'package:find_food/features/restaurant_change_infor.dart/pressentation/widgets/textform_input.dart';
+import 'package:find_food/features/restaurant_change_infor/pressentation/widgets/textform_input.dart';
 import 'package:flutter/material.dart';
 
 class BuildBodyRestaurantSocialNetWork extends StatelessWidget {

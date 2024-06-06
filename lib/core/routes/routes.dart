@@ -52,4 +52,5 @@ abstract class Routes {
   static const addlink = '/addlink';
 
   static const categorySearch='/categorySearch';
+  static const createmenu = '/createmenu';
 }

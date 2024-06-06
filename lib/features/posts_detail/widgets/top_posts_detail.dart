@@ -11,6 +11,7 @@ bool isVisible = true;
 
 class TopPostsDetail extends GetView<PostsDetailController> {
   const TopPostsDetail({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,7 +21,10 @@ class TopPostsDetail extends GetView<PostsDetailController> {
           child: Row(
             children: [
               const SizedBox(width: 16),
-              const Avatar(authorImg: AppImagesString.iUserDefault, radius: 50),
+              const CircleAvatar(
+                radius: AppDimens.textSize28,
+                backgroundImage: AssetImage('assets/images/author.jpg'),
+              ),
               const SizedBox(width: 16),
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -362,54 +366,54 @@ class TopPostsDetail extends GetView<PostsDetailController> {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  width: Get.width,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          spreadRadius: 2.0,
-                          blurRadius: 2.0,
-                          offset: const Offset(0, 1),
-                        )
-                      ]),
-                  child: const Column(
-                    children: [
-                      // if (isVisible)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Restaurant Name',
-                            style: TextStyle(
-                                fontSize: AppDimens.textSize14,
-                                color: AppColors.black),
-                          ),
-                          // SizedBox(width: 40),
-                          Spacer(),
-                          Row(
-                            children: [
-                              Text(
-                                'To restaurant',
-                                style: TextStyle(
-                                  fontSize: AppDimens.textSize14,
-                                  color: AppColors.red,
-                                ),
-                              ),
-                              Icon(
-                                Icons.chevron_right,
-                                color: AppColors.red,
+                    width: Get.width,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: 2.0,
+                            blurRadius: 2.0,
+                            offset: const Offset(0, 1),
+                          )
+                        ]),
+                    child: Column(
+                      children: [
+                        isVisible
+                            ? const Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Restaurant Name',
+                                    style: TextStyle(
+                                        fontSize: AppDimens.textSize14,
+                                        color: AppColors.black),
+                                  ),
+                                  // SizedBox(width: 120),
+                                  Spacer(),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'To restaurant',
+                                        style: TextStyle(
+                                          fontSize: AppDimens.textSize14,
+                                          color: AppColors.red,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: AppColors.red,
+                                      )
+                                    ],
+                                  ),
+                                ],
                               )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                            : Container(), // Or SizedBox.shrink() if you prefer
+                      ],
+                    )),
               ],
             ),
           ],

@@ -1,3 +1,5 @@
+import 'package:find_food/core/configs/app_colors.dart';
+import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/find_post/category/presentation/controller/category_controller.dart';
@@ -39,13 +41,48 @@ class CategoryPage extends GetView<CategoryController> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
-            constraints: BoxConstraints(maxHeight: Get.height * .13),
-            child: Image.asset(
-              AppImagesString.iBackgroundUserDefault,
-              width: Get.width,
-              fit: BoxFit.cover,
-            ),
+          Stack(
+            children: [
+              Container(
+                constraints: BoxConstraints(maxHeight: Get.height * .13),
+                child: Image.asset(
+                  AppImagesString.iBannerCategorySearch,
+                  width: Get.width,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.black.withOpacity(.9),
+                        AppColors.black.withOpacity(0),
+                      ],
+                      begin: Alignment
+                          .bottomCenter, // Bắt đầu từ góc dưới bên trái
+                      end: Alignment.topCenter, // Kết thúc ở góc trên bên phải
+                    ),
+                  ),
+                ),
+              ),
+              const Positioned(
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                      child: TextWidget(
+                    text: "ENJOYMENT TIME ",
+                    color: AppColors.white,
+                    fontWeight: FontWeight.w500,
+                    size: AppDimens.textSize26,
+                  )))
+            ],
           ),
           Obx(
             () => NavControllList(
