@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
@@ -8,6 +11,7 @@ import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:find_food/features/model/commentsData.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PostsDetailController extends GetxController {
   final GetuserUseCase _getuserUseCase;
@@ -47,11 +51,14 @@ class PostsDetailController extends GetxController {
       idPost: postDataModel!.id!,
       createdAt: DateTime.now().toString(),
       isFavoriteComments: false,
+      // imageList: listPathUrl,
     );
 
     final result = await FirestoreComment.createComment(comment);
 
     if (result.status == Status.success) {
+      listComments.insert(0, comment); // Thêm bình luận mới vào đầu danh sách
+      update(["fetchComment"]); // Cập nhật giao diện cho phần bình luận
       SnackbarUtil.show("Add comments success".tr);
     } else {
       SnackbarUtil.show("Add comments error".tr);
@@ -164,4 +171,35 @@ class PostsDetailController extends GetxController {
   }
 
   bool hiddenStar(double star) => star == 0.0;
+
+  //up hinh anh comment
+
+  List<String> listPathUrl = [];
+  var selectedImages = <File>[].obs;
+
+  UserModel? user;
+
+  Future<void> pickImages() async {
+    final picker = ImagePicker();
+    final pickedImages = await picker.pickMultiImage();
+
+    selectedImages
+        .addAll(pickedImages.map((image) => File(image.path)).toList());
+  }
+
+  Future<String?> uploadFile({required File imageFile}) async {
+    String? pathUrl;
+    final result = await FirebaseStorageData.uploadImage(
+        imageFile: imageFile, userId: user!.uid, collection: "post_images");
+    if (result.status == Status.success) {
+      pathUrl = result.data ?? "";
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+    return pathUrl;
+  }
+
+  void removeImage(File image) {
+    selectedImages.remove(image);
+  }
 }
