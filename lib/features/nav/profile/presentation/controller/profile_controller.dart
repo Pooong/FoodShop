@@ -82,6 +82,4 @@ class ProfileController extends GetxController {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
   }
-
-  
 }
