@@ -1,6 +1,4 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/core/ui/widgets/card/comments_card.dart';
 import 'package:find_food/features/model/comment_model.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
@@ -84,22 +82,12 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
                       bottom: 0,
                       right: 15,
                       child: InkWell(
-                        onTap: () => {
-                          DialogsUtils.showRatingDialog(
-                            initialRating: rate,
-                            onRatingUpdate: (rating) {
-                              rate = rating;
-                            },
-                            onSubmit: () {
-                              print("Rating submitted");
-                              // Handle submit action
-                            },
-                          ),
-                        },
-                        child: const Icon(
-                          Icons.star_rounded,
-                          size: AppDimens.textSize42,
-                          color: AppColors.yellow,
+                        child: GestureDetector(
+                          onTap: () {
+                            controller.pickImages();
+                          },
+                          child: Image.asset('assets/images/addphoto.png',
+                              width: 40, height: 10),
                         ),
                       ),
                     ),
