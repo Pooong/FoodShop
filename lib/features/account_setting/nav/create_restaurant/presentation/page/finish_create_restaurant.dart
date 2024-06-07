@@ -1,9 +1,7 @@
-import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class FinishCreateRestaurantPage extends StatelessWidget {
   const FinishCreateRestaurantPage({super.key});

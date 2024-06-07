@@ -33,12 +33,12 @@ class LicenseIdentifyPage extends GetView<CreateRestaurantController> {
                       height: 5.0,
                     ),
                     titleField(title: "LICENSE RESTAURANT"),
-                    UploadImage(),
+                    const UploadImage(),
                     const SizedBox(
                       height: 20.0,
                     ),
                     titleField(title: "LICENSE OWNER"),
-                    UploadImage(),
+                    const UploadImage(),
                     const SizedBox(
                       height: 20.0,
                     ),
