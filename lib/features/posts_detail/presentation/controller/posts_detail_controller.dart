@@ -22,21 +22,23 @@ class PostsDetailController extends GetxController {
   PostDataModel? postDataModel;
   final dataAgument = Get.arguments;
   final commentController = TextEditingController();
+
+
   @override
   void onInit() async {
     super.onInit();
     userComment = await _getuserUseCase.getUser();
+
     if (dataAgument is PostDataModel) {
       postDataModel = dataAgument;
       getComments();
     }
-
-    // super.onInit();
+    print(dataAgument.id);
   }
 
   void getComments() async {
-    final result = await FirestoreComment.getListComments();
-    // final result = await FirestoreComment.getListComments(postDataModel!.id!);
+    // final result = await FirestoreComment.getListComments();
+    final result = await FirestoreComment.getListComments(dataAgument!.id!);
     if (result.status == Status.success) {
       listComments = result.data!;
       update(["fetchComment"]);
@@ -70,6 +72,7 @@ class PostsDetailController extends GetxController {
   }
 
   final PageController mainPageController = PageController();
+
   final List<String> mainImages = [
     'assets/images/food1.png',
     'assets/images/food2.png',

@@ -22,10 +22,10 @@ class FirestoreComment {
     }
   }
 
-  static Future<Result<List<CommentModel>>> getListComments() async {
+  static Future<Result<List<CommentModel>>> getListComments(String postId) async {
     try {
       QuerySnapshot querySnapshot = await _fireStoreUserCollection
-          // .where('idPost', isEqualTo: postId)
+          .where('idPost', isEqualTo: postId)
           .get();
 
       List<CommentModel> activityList = querySnapshot.docs.map((doc) {
