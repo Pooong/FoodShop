@@ -21,7 +21,7 @@ class ProfileCard extends StatelessWidget {
       this.isFavorited = false,
       required this.postDataModel});
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(10),
@@ -80,7 +80,8 @@ class ProfileCard extends StatelessWidget {
                     Colors.transparent,
                   ],
                 ),
-                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(10)),
               ),
             ),
           ),

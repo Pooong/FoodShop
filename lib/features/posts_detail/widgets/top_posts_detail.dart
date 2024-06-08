@@ -1,7 +1,5 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/configs/app_images_string.dart';
-import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
 import 'package:flutter/material.dart';
