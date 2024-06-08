@@ -8,6 +8,7 @@ import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/comment_model.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:find_food/features/model/commentsData.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,6 +25,7 @@ class PostsDetailController extends GetxController {
 
   @override
   void onInit() async {
+    super.onInit();
     userComment = await _getuserUseCase.getUser();
     if (dataAgument is PostDataModel) {
       postDataModel = dataAgument;
@@ -67,9 +69,9 @@ class PostsDetailController extends GetxController {
     if (result.status == Status.success) {
       listComments.insert(0, comment); // Thêm bình luận mới vào đầu danh sách
       update(["fetchComment"]); // Cập nhật giao diện cho phần bình luận
-      SnackbarUtil.show("Add comments success".tr);
+      Fluttertoast.showToast(msg:"Add comments success".tr );
     } else {
-      SnackbarUtil.show("Add comments error".tr);
+      Fluttertoast.showToast(msg:"Add comments error".tr );
     }
     commentController.text = "";
     update();
