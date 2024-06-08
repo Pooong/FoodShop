@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
@@ -13,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:find_food/features/model/commentsData.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart'; // Thêm import cho việc phân tích ngày tháng
 
 class PostsDetailController extends GetxController {
   final GetuserUseCase _getuserUseCase;
@@ -22,6 +22,7 @@ class PostsDetailController extends GetxController {
   PostDataModel? postDataModel;
   final dataAgument = Get.arguments;
   final commentController = TextEditingController();
+
   @override
   void onInit() async {
     super.onInit();
@@ -30,21 +31,28 @@ class PostsDetailController extends GetxController {
       postDataModel = dataAgument;
       getComments();
     }
-
     // super.onInit();
   }
 
+  // Phương thức lấy danh sách bình luận
   void getComments() async {
     final result = await FirestoreComment.getListComments();
     // final result = await FirestoreComment.getListComments(postDataModel!.id!);
     if (result.status == Status.success) {
       listComments = result.data!;
+      listComments.sort((a, b) {
+        // Phân tích chuỗi createdAt thành các đối tượng DateTime và so sánh chúng
+        DateTime dateA = DateFormat("yyyy-MM-dd HH:mm:ss").parse(a.createdAt!);
+        DateTime dateB = DateFormat("yyyy-MM-dd HH:mm:ss").parse(b.createdAt!);
+        return dateB.compareTo(dateA);
+      });
       update(["fetchComment"]);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
   }
 
+  // Phương thức tải lên bình luận
   void uploadComment() async {
     final comment = CommentModel(
       author: userComment!,
@@ -91,6 +99,7 @@ class PostsDetailController extends GetxController {
   var isFavorite = false.obs;
   var isBookmark = false.obs;
   var isFavoriteComments = false.obs;
+
   void previousImage() {
     if (mainPageController.page!.toInt() > 0) {
       mainPageController.previousPage(
@@ -174,8 +183,7 @@ class PostsDetailController extends GetxController {
 
   bool hiddenStar(double star) => star == 0.0;
 
-  //up hinh anh comment
-
+  // up hinh anh comment
   List<String> listPathUrl = [];
   var selectedImages = <File>[].obs;
 

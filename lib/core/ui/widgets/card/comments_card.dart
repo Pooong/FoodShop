@@ -18,7 +18,7 @@ class CommentsCard extends StatelessWidget {
   final String createdAt;
   final VoidCallback toggleActive;
   final bool active;
-  // final String imageUrl;
+  final String imageUrl;
 
   const CommentsCard({
     super.key,
@@ -32,7 +32,7 @@ class CommentsCard extends StatelessWidget {
     this.createdAt = "2 ago",
     required this.toggleActive,
     required this.active,
-    // this.imageUrl = AppImagesString.iPostsDefault,
+    this.imageUrl = AppImagesString.iPostsDefault,
   });
 
   @override
