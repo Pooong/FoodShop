@@ -63,11 +63,11 @@ class UploadController extends GetxController {
 
     final post = PostDataModel(
       title: titleController.text,
-      subtitle: descriptionController.text,
+      subtitle: descriptionController.text.trim(),
       favoriteCount: 10,
       imageList: listPathUrl,
       restaurantId: 'restaurant1',
-      createAt: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      createAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now()),
       isBookmarked: true,
       isFavorited: true,
       latitude: placeSelected.lat ?? 0.0,
@@ -82,9 +82,9 @@ class UploadController extends GetxController {
       descriptionController.text = "";
       nameLocationDisplay.value = "";
       update();
-      SnackbarUtil.show("Add post success".tr);
+      Fluttertoast.showToast(msg: "Add post success".tr);
     } else {
-      SnackbarUtil.show("Add post error".tr);
+      Fluttertoast.showToast(msg: "Add post error".tr);
     }
     _mainController.isLoading.value = false;
   }
@@ -94,6 +94,7 @@ class UploadController extends GetxController {
     return selectedImages.isEmpty;
   }
 
+  
   Future<String?> uploadFile({required File imageFile}) async {
     String? pathUrl;
     final result = await FirebaseStorageData.uploadImage(

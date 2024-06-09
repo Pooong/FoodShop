@@ -1,7 +1,7 @@
-import 'dart:ffi';
 
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/appbar/upload_post_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
@@ -182,8 +182,7 @@ class UploadPage extends GetView<UploadController> {
   InkWell getLocation({String title = "No caption?"}) {
     return InkWell(
         onTap: () async {
-          final result = await Get.toNamed(
-            '/getLocationPage',
+          final result = await Get.toNamed(Routes.getLoactionPage,
             arguments: controller.placeSelected,
           );
           if (result != null) {

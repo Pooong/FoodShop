@@ -1,44 +1,52 @@
 import 'package:find_food/features/auth/user/model/user_model.dart';
 
 class CommentModel {
-  String? idComment;
-  int? favorite;
-  String? comment;
   UserModel author;
+  String? idComment;
+  String? comment;
+  int? favorite;
+  bool? isFavoriteComments;
   String? idPost;
   String? createdAt;
-  bool? isFavoriteComments;
+  List<String>? imageList;
 
   CommentModel({
-    this.idComment,
-    this.favorite,
-    this.comment,
     required this.author,
+    this.idComment,
+    this.comment,
+    this.favorite,
+    required this.isFavoriteComments,
     this.idPost,
     this.createdAt,
-    required this.isFavoriteComments,
+    this.imageList,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'favorite': favorite,
-      'comment': comment,
       'author': author.toJson(),
+      'idComment': idComment,
+      'comment': comment,
+      'favorite': favorite,
+      'isFavoriteComments': isFavoriteComments,
       'idPost': idPost,
       'createdAt': createdAt,
-      'isFavoriteComments': isFavoriteComments,
+      "imageList":
+          imageList == null ? [] : List<dynamic>.from(imageList!.map((x) => x)),
     };
   }
 
   static CommentModel fromJson(Map<String, dynamic> json) {
     return CommentModel(
-      idComment: json['idComment'],
-      favorite: json['favorite'],
-      comment: json['comment'],
       author: UserModel.fromJson(json['author']),
+      idComment: json['idComment'],
+      comment: json['comment'],
+      favorite: json['favorite'],
+      isFavoriteComments: json['isFavoriteComments'],
       idPost: json['idPost'],
       createdAt: json['createdAt'],
-      isFavoriteComments: json['isFavoriteComments'],
+      imageList: json["imageList"] == null
+          ? []
+          : List<String>.from(json["imageList"]!.map((x) => x)),
     );
   }
 }

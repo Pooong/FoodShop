@@ -18,6 +18,7 @@ class CommentsCard extends StatelessWidget {
   final String createdAt;
   final VoidCallback toggleActive;
   final bool active;
+  final String imageUrl;
 
   const CommentsCard({
     super.key,
@@ -31,12 +32,13 @@ class CommentsCard extends StatelessWidget {
     this.createdAt = "2 ago",
     required this.toggleActive,
     required this.active,
+    this.imageUrl = AppImagesString.iPostsDefault,
   });
 
   @override
   Widget build(BuildContext context) {
     double avatarWithLeft = 15.0;
-    double avatarWithTop = 5.0;
+    double avatarWithTop = 15.0;
     double spaceSideLeft = 55.0;
 
     double mimHeightCommentCard = Get.height * 0.14;
@@ -47,7 +49,7 @@ class CommentsCard extends StatelessWidget {
       children: [
         Container(
           constraints: BoxConstraints(minHeight: mimHeightCommentCard),
-          margin: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
+          margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: AppColors.white,
               boxShadow: [
@@ -143,7 +145,19 @@ class CommentsCard extends StatelessWidget {
                           TextWidget(
                             text: comment,
                             size: AppDimens.textSize14,
-                          )
+                          ),
+
+                          const SizedBox(
+                            height: 10,
+                          ),
+
+                          // //truyen hinh anh
+                          // imagePath != null
+                          //     ? Image.network(
+                          //         imagePath!,
+                          //         fit: BoxFit.cover,
+                          //       )
+                          //     : Container(),
                         ],
                       ),
                     ),
