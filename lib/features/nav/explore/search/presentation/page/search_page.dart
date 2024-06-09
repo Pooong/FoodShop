@@ -21,7 +21,7 @@ class SearchPage extends GetView<ExploreController> {
       appBar: const ExploreAppbar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(Get.width*0.03),
           child: Column(
             children: [
               Column(

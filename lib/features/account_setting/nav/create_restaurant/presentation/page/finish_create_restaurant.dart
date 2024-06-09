@@ -1,7 +1,10 @@
 import 'package:find_food/core/configs/app_text_string.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class FinishCreateRestaurantPage extends StatelessWidget {
   const FinishCreateRestaurantPage({super.key});
@@ -26,7 +29,7 @@ class FinishCreateRestaurantPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
             child: ButtonWidget(
               ontap: () {
-                // Get.toNamed(Routes.main);
+                Get.offAllNamed("/home",id:10);
               },
               text: AppTextString.fComplete,
               fontWeight: FontWeight.bold,

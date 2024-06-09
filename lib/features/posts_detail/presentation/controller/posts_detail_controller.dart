@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
@@ -23,6 +24,9 @@ class PostsDetailController extends GetxController {
   final dataAgument = Get.arguments;
   final commentController = TextEditingController();
 
+  List<PostDataModel> postsDetail=[];
+
+   List<dynamic> listImage=[];
 
   @override
   void onInit() async {
@@ -32,8 +36,8 @@ class PostsDetailController extends GetxController {
     if (dataAgument is PostDataModel) {
       postDataModel = dataAgument;
       getComments();
+      getPostDetail();
     }
-    print(dataAgument.id);
   }
 
   void getComments() async {
@@ -42,6 +46,18 @@ class PostsDetailController extends GetxController {
     if (result.status == Status.success) {
       listComments = result.data!;
       update(["fetchComment"]);
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+  }
+
+  void getPostDetail() async {
+    final result = await FirestorePostData.getPostDetail(dataAgument!.id!);
+
+    if (result.status == Status.success) {
+      postsDetail = result.data!;
+      listImage=postsDetail[0].imageList??[];
+      update(['fetchTopPostsDetail']);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
@@ -73,23 +89,23 @@ class PostsDetailController extends GetxController {
 
   final PageController mainPageController = PageController();
 
-  final List<String> mainImages = [
-    'assets/images/food1.png',
-    'assets/images/food2.png',
-    'assets/images/food3.png',
-    'assets/images/food4.png',
-    'assets/images/food5.png',
-    'assets/images/food6.png',
-  ];
+   
+  // List<dynamic> mainImages =  [
+  //     'assets/images/food1.png',
+  //     'assets/images/food2.png',
+  //     'assets/images/food3.png',
+  //     'assets/images/food4.png',
+  //     'assets/images/food5.png',
+  //     'assets/images/food6.png',];
 
-  final List<String> smallImages = [
-    'assets/images/food1.png',
-    'assets/images/food2.png',
-    'assets/images/food3.png',
-    'assets/images/food4.png',
-    'assets/images/food5.png',
-    'assets/images/food6.png',
-  ];
+  // final List<String> smallImages = [
+  //   'assets/images/food1.png',
+  //   'assets/images/food2.png',
+  //   'assets/images/food3.png',
+  //   'assets/images/food4.png',
+  //   'assets/images/food5.png',
+  //   'assets/images/food6.png',
+  // ];
 
   var isFavorite = false.obs;
   var isBookmark = false.obs;
@@ -104,7 +120,7 @@ class PostsDetailController extends GetxController {
   }
 
   void nextImage() {
-    if (mainPageController.page!.toInt() < mainImages.length - 1) {
+    if (mainPageController.page!.toInt() < listImage.length - 1) {
       mainPageController.nextPage(
         duration: const Duration(milliseconds: 500),
         curve: Curves.ease,
@@ -137,10 +153,10 @@ class PostsDetailController extends GetxController {
               crossAxisSpacing: 10.0,
               mainAxisSpacing: 10.0,
             ),
-            itemCount: smallImages.length,
+            itemCount: listImage.length,
             itemBuilder: (context, index) {
               return Image.asset(
-                smallImages[index],
+                listImage[index],
                 fit: BoxFit.cover,
               );
             },
