@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends GetView<ProfileController> {
-  const ProfilePage({Key? key});
+  const ProfilePage({super.key,});
   
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class ProfilePage extends GetView<ProfileController> {
                 },
               )),
           SizedBox(
-            height: Get.height * 0.6,
+            height: Get.height * 0.7,
             width: double.infinity,
             child: PageView(
               controller: controller.pageController,
@@ -122,4 +122,5 @@ class ProfilePage extends GetView<ProfileController> {
       ),
     );
   }
+
 }

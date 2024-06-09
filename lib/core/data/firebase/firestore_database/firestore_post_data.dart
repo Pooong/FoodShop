@@ -127,6 +127,15 @@ class FirestorePostData {
     }
   }
 
+  static Future<Result<List<PostDataModel>>> deletePost(String postId) async {
+    try {
+      await _fireStorePostCollection.doc(postId).delete();
+      return Result.success([]);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
   static Future<Result<List<PostDataModel>>> searchPosts(String query) async {
     try {
       QuerySnapshot querySnapshot = await _fireStorePostCollection
