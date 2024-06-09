@@ -21,7 +21,7 @@ class ExploreAppbar extends StatelessWidget  implements PreferredSizeWidget {
         child: AppBar(
           backgroundColor: AppColors.white,
           flexibleSpace: Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(Get.width*0.03),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,

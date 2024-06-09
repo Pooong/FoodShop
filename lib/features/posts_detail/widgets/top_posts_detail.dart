@@ -1,5 +1,7 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/configs/app_images_string.dart';
+import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
 import 'package:flutter/material.dart';
@@ -15,50 +17,59 @@ class TopPostsDetail extends GetView<PostsDetailController> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          padding: EdgeInsets.only(top: Get.width * .02),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(width: 16),
-              const CircleAvatar(
-                radius: AppDimens.textSize28,
-                backgroundImage: AssetImage('assets/images/author.jpg'),
-              ),
+              const Avatar(
+                  authorImg: AppImagesString.iBackgroundUserDefault,
+                  radius: 50),
               const SizedBox(width: 16),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Write title posts this here',
-                    style: TextStyle(
-                      fontSize: 18,
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: Get.width * 0.6,
+                          child: const Text(
+                            'Write title posts this here  ',
+                            style: TextStyle(
+                                fontSize: AppDimens.textSize16,
+                                fontWeight: FontWeight.w500),
+                            maxLines: 5,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const Text(
+                          '2 hours ago - Author posts',
+                          style: TextStyle(
+                            fontSize: AppDimens.textSize10,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Text(
-                    '2 hours ago - Author posts',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 40),
-              Column(
-                children: [
-                  Obx(
-                    () => IconButton(
-                      onPressed: controller.toggleBookmarkStatus,
-                      icon: Icon(
-                        controller.isBookmark.value
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
-                        color:
-                            controller.isBookmark.value ? Colors.yellow : null,
+                    Obx(
+                      () => IconButton(
+                        onPressed: controller.toggleBookmarkStatus,
+                        icon: Icon(
+                          controller.isBookmark.value
+                              ? Icons.bookmark
+                              : Icons.bookmark_border,
+                          color: controller.isBookmark.value
+                              ? Colors.yellow
+                              : null,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -72,172 +83,196 @@ class TopPostsDetail extends GetView<PostsDetailController> {
             ),
             const SizedBox(height: 10),
             SizedBox(
-              height: 300,
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Column(
+                height: 300,
+                child: GetBuilder<PostsDetailController>(
+                  id: "fetchTopPostsDetail",
+                  builder: (_) {
+                    return Stack(
                       children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  spreadRadius: 2.0,
-                                  blurRadius: 2.0,
-                                  offset: const Offset(0, 1),
-                                ),
-                              ],
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: PageView.builder(
-                                      controller: controller.mainPageController,
-                                      itemCount: controller.mainImages.length,
-                                      itemBuilder: (context, index) {
-                                        return Image.asset(
-                                          controller.mainImages[index],
-                                          fit: BoxFit.cover,
-                                        );
-                                      },
-                                    ),
+                        Positioned.fill(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        spreadRadius: 2.0,
+                                        blurRadius: 2.0,
+                                        offset: const Offset(0, 1),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(height: 10),
-                                  Expanded(
-                                    flex: 1,
-                                    child: controller.smallImages.isNotEmpty
-                                        ? GridView.builder(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 16.0),
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                              // xác định số lượng cột
-                                              crossAxisCount: 4,
-                                              crossAxisSpacing: 10.0,
-                                              mainAxisSpacing: 10.0,
-                                            ),
-                                            itemCount: controller
-                                                        .smallImages.length >
-                                                    4
-                                                ? 4
-                                                : controller.smallImages.length,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: PageView.builder(
+                                            controller:
+                                                controller.mainPageController,
+                                            itemCount:
+                                                controller.listImage.length,
                                             itemBuilder: (context, index) {
-                                              if (index == 3 &&
-                                                  controller
-                                                          .smallImages.length >
-                                                      4) {
-                                                return GestureDetector(
-                                                  onTap:
-                                                      controller.showMoreImages,
-                                                  child: Stack(
-                                                    fit: StackFit.expand,
-                                                    children: [
-                                                      ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.0),
-                                                        child: Image.asset(
-                                                          controller
-                                                                  .smallImages[
-                                                              index],
-                                                          fit: BoxFit.cover,
-                                                          color: Colors.grey
-                                                              .withOpacity(0.6),
-                                                          colorBlendMode:
-                                                              BlendMode.darken,
+                                              return Image.network(
+                                                controller.listImage[index],
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Expanded(
+                                          flex: 1,
+                                          child: controller
+                                                  .listImage.isNotEmpty
+                                              ? GridView.builder(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 16.0),
+                                                  gridDelegate:
+                                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                                    // xác định số lượng cột
+                                                    crossAxisCount: 4,
+                                                    crossAxisSpacing: 10.0,
+                                                    mainAxisSpacing: 10.0,
+                                                  ),
+                                                  itemCount: controller
+                                                              .listImage
+                                                              .length >
+                                                          4
+                                                      ? 4
+                                                      : controller
+                                                          .listImage.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    if (index == 3 &&
+                                                        controller.listImage
+                                                                .length >
+                                                            4) {
+                                                      return GestureDetector(
+                                                        onTap: controller
+                                                            .showMoreImages,
+                                                        child: Stack(
+                                                          fit: StackFit.expand,
+                                                          children: [
+                                                            ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.0),
+                                                              child:
+                                                                  Image.network(
+                                                                controller
+                                                                        .listImage[
+                                                                    index],
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                color: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.6),
+                                                                colorBlendMode:
+                                                                    BlendMode
+                                                                        .darken,
+                                                              ),
+                                                            ),
+                                                            const Center(
+                                                              child: Text(
+                                                                '+2',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 16,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                      const Center(
-                                                        child: Text(
-                                                          '+2',
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 16,
+                                                      );
+                                                    } else {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          controller
+                                                              .mainPageController
+                                                              .animateToPage(
+                                                            index,
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        500),
+                                                            curve: Curves
+                                                                .ease, //đường cong cho hiệu ứng hoạt hình
+                                                          );
+                                                        },
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.0),
+                                                          child: Image.network(
+                                                            controller
+                                                                    .listImage[
+                                                                index],
+                                                            fit: BoxFit.cover,
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              } else {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    controller
-                                                        .mainPageController
-                                                        .animateToPage(
-                                                      index,
-                                                      duration: const Duration(
-                                                          milliseconds: 500),
-                                                      curve: Curves
-                                                          .ease, //đường cong cho hiệu ứng hoạt hình
-                                                    );
+                                                      );
+                                                    }
                                                   },
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                    child: Image.asset(
-                                                      controller
-                                                          .smallImages[index],
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                            },
-                                          )
-                                        : Container(),
+                                                )
+                                              : Container(),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ],
+                                ),
                               ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          left: 10,
+                          top: 80,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.5),
+                              shape: BoxShape.circle,
+                            ),
+                            child: IconButton(
+                              onPressed: controller.previousImage,
+                              icon: const Icon(Icons.chevron_left,
+                                  size: 30, color: Colors.grey),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          right: 10,
+                          top: 80,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.5),
+                              shape: BoxShape.circle,
+                            ),
+                            child: IconButton(
+                              onPressed: controller.nextImage,
+                              icon: const Icon(Icons.chevron_right,
+                                  size: 30, color: Colors.grey),
                             ),
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                  Positioned(
-                    left: 10,
-                    top: 80,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.5),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        onPressed: controller.previousImage,
-                        icon: const Icon(Icons.chevron_left,
-                            size: 30, color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 10,
-                    top: 80,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.5),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        onPressed: controller.nextImage,
-                        icon: const Icon(Icons.chevron_right,
-                            size: 30, color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                    );
+                  },
+                )),
             const SizedBox(height: 20),
             Column(
               children: [

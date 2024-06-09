@@ -97,8 +97,7 @@ class PostsCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: Get.width * .75,
+                          Expanded(
                             child: TextWidget(
                               text: postDataModel.title ?? title,
                               size: AppDimens.textSize20,
