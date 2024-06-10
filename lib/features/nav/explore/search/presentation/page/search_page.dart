@@ -1,8 +1,9 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
+import 'package:find_food/core/configs/app_text_string.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/appbar/explore_appbar.dart';
-import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/card/explore_food_card.dart';
 import 'package:find_food/core/ui/widgets/card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
@@ -20,7 +21,7 @@ class SearchPage extends GetView<ExploreController> {
       appBar: const ExploreAppbar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(Get.width*0.03),
           child: Column(
             children: [
               Column(
@@ -33,26 +34,37 @@ class SearchPage extends GetView<ExploreController> {
                   ),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
+                    child: GetBuilder<ExploreController>(
+                      id: "fetchPosts",
+                      builder: (logic) {
+                        return buildListPostArea();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: InkWell(
+                      onTap: () => {
+                        Get.toNamed(Routes.categorySearch),
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          for (var i = 1; i <= 20; i++)
-                            Container(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: const ExploreFoodCard()),
+                          Text(
+                            "See more",
+                            style: TextStyle(color: AppColors.gray),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: AppDimens.textSize14,
+                          )
                         ],
                       ),
                     ),
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "See more",
-                        style: TextStyle(color: AppColors.gray),
-                      )
-                    ],
                   )
                 ],
               ),
@@ -68,17 +80,11 @@ class SearchPage extends GetView<ExploreController> {
                   ),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        children: [
-                          for (var i = 1; i <= 20; i++)
-                            Container(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: const ExploreFoodCard(),
-                            ),
-                        ],
-                      ),
+                    child: GetBuilder<ExploreController>(
+                      id: "fetchPosts",
+                      builder: (logic) {
+                        return buildListPostFavorite();
+                      },
                     ),
                   ),
                   const Row(
@@ -123,6 +129,7 @@ class SearchPage extends GetView<ExploreController> {
   Widget buildListPost() {
     return controller.listPost.isNotEmpty
         ? ListView.builder(
+            physics: const NeverScrollableScrollPhysics(), // Disable scrolling
             shrinkWrap: true,
             itemCount: controller.listPost.length,
             itemBuilder: (_, index) {
@@ -132,5 +139,45 @@ class SearchPage extends GetView<ExploreController> {
               );
             })
         : const SizedBox.shrink();
+  }
+
+  Widget buildListPostArea() {
+    if (controller.listPostArea.isEmpty) return const SizedBox.shrink();
+    return Row(
+      children: controller.listPostArea.map((postDataModel) {
+        var imageUrl = postDataModel.imageList?.first;
+        var title = postDataModel.title;
+        return Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: ExploreFoodCard(
+            imageUrl: imageUrl ?? AppImagesString.iCardDefault,
+            title: title ?? AppTextString.fCardTitleDefault,
+            rating: 2.5,
+            customerRating: 10,
+            distance: 2.1,
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget buildListPostFavorite() {
+    if (controller.listPostFavorite.isEmpty) return const SizedBox.shrink();
+    return Row(
+      children: controller.listPostFavorite.map((postDataModel) {
+        var imageUrl = postDataModel.imageList?.first;
+        var title = postDataModel.title;
+        return Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: ExploreFoodCard(
+            imageUrl: imageUrl ?? AppImagesString.iCardDefault,
+            title: title ?? AppTextString.fCardTitleDefault,
+            rating: 2.5,
+            customerRating: 10,
+            distance: 2.1,
+          ),
+        );
+      }).toList(),
+    );
   }
 }

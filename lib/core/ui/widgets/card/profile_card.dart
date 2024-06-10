@@ -1,9 +1,25 @@
 import 'package:find_food/core/configs/app_colors.dart';
+import 'package:find_food/core/configs/app_images_string.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
+import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfileCard extends StatelessWidget {
-  const ProfileCard({super.key});
+  final int favoriteCount;
+  final String imageUrl;
+  final bool isBookmarked;
+  final bool isFavorited;
+  final PostDataModel postDataModel;
+
+  ProfileCard(
+      {super.key,
+      this.favoriteCount = 0,
+      this.imageUrl = AppImagesString.iPostsDefault,
+      this.isBookmarked = false,
+      this.isFavorited = false,
+      required this.postDataModel});
 
   @override
   Widget build(BuildContext context) {
@@ -14,37 +30,72 @@ class ProfileCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: AppColors.grey.withOpacity(0.2),
+            color: AppColors.black.withOpacity(0.2),
             spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(1, 2),
+            blurRadius: 3,
+            offset: const Offset(1, 3),
           )
         ],
       ),
       child: Stack(
         children: [
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            decoration: BoxDecoration(
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              image: const DecorationImage(
-                image: AssetImage('assets/images/img_banner_profile1.png'),
-                fit: BoxFit.cover,
+              onTap: () => Get.toNamed(Routes.postsDetail),
+              child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                child: postDataModel.imageList != null &&
+                        postDataModel.imageList!.isNotEmpty
+                    ? Image.network(
+                        postDataModel.imageList!.first,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        imageUrl,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: Get.height * 0.5,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.7),
+                    Colors.black.withOpacity(0.1),
+                    Colors.transparent,
+                  ],
+                ),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(10)),
               ),
             ),
           ),
           Positioned(
             bottom: 10,
             right: 10,
-            child: IconCardProfile(),
+            child: iconCardProfile(),
           ),
         ],
       ),
     );
   }
 
-  Widget IconCardProfile() {
+  Widget iconCardProfile() {
     return Row(
       children: [
         Column(
@@ -61,7 +112,7 @@ class ProfileCard extends StatelessWidget {
                 size: 20,
               ),
             ),
-            const TextWidget(text: "12", color: AppColors.white),
+            TextWidget(text: favoriteCount.toString(), color: AppColors.white),
           ],
         ),
         const SizedBox(width: 10),
@@ -74,7 +125,7 @@ class ProfileCard extends StatelessWidget {
                 color: AppColors.transparent,
               ),
               child: const Icon(
-                Icons.message, 
+                Icons.message,
                 color: AppColors.white,
                 size: 25,
               ),

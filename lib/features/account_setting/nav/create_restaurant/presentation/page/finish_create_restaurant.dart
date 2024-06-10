@@ -1,10 +1,13 @@
-//import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/core/configs/app_text_string.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
+import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/controller/create_restaurant_controller.dart';
 import 'package:flutter/material.dart';
-//import 'package:get/get.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
-class FinishCreateRestaurantPage extends StatelessWidget {
+class FinishCreateRestaurantPage extends GetView<CreateRestaurantController> {
   const FinishCreateRestaurantPage({super.key});
 
   @override
@@ -20,16 +23,18 @@ class FinishCreateRestaurantPage extends StatelessWidget {
             size: 60,
           ),
           const SizedBox(height: 10.0),
-          titleField(title: "Your restaurant has been created"),
+          titleField(title: AppTextString.fCreateRestaurantTitle),
           const SizedBox(height: 10.0),
-          subtitleField(title: "Now you can create your menu and start selling your food.\nGood luck!"),
+          subtitleField(title: AppTextString.fCreateRestaurantSubtitle),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
             child: ButtonWidget(
-              ontap: () {
-                //Get.offNamed(Routes.profile);
+              ontap: () async {
+                await controller.saveRestaurant();
+                Get.close(5);
               },
-              text: "COMPLETE",
+              text: AppTextString.fComplete,
               fontWeight: FontWeight.bold,
             ),
           ),

@@ -13,6 +13,10 @@ import 'package:find_food/features/auth/login/di/login_binding.dart';
 import 'package:find_food/features/auth/login/presentation/page/login_page.dart';
 import 'package:find_food/features/auth/register/di/register_binding.dart';
 import 'package:find_food/features/auth/register/presentation/page/register_page.dart';
+import 'package:find_food/features/find_post/category/di/category_binding.dart';
+import 'package:find_food/features/find_post/category/presentation/page/category_page.dart';
+import 'package:find_food/features/create_menu_restaurant/di/create_menu_binding.dart';
+import 'package:find_food/features/create_menu_restaurant/pressentation/page/create_menu_page.dart';
 import 'package:find_food/features/find_post/result_search/di/resutl_search_binding.dart';
 import 'package:find_food/features/find_post/result_search/presentation/page/result_search_page.dart';
 import 'package:find_food/features/location_restaurant/di/location_restaurant_binding.dart';
@@ -23,19 +27,14 @@ import 'package:find_food/features/maps/location/di/location_binding.dart';
 import 'package:find_food/features/maps/location/presentation/page/location_page.dart';
 import 'package:find_food/features/maps/maps/di/maps_binding.dart';
 import 'package:find_food/features/maps/maps/presentation/page/maps_page.dart';
-import 'package:find_food/features/nav/notify/nav/news_notify/di/news_notify_binding.dart';
-import 'package:find_food/features/nav/notify/nav/news_notify/presentation/page/news_notify_page.dart';
-import 'package:find_food/features/nav/notify/nav/notify_setting/di/notify_setting_binding.dart';
-import 'package:find_food/features/nav/notify/nav/notify_setting/presentation/page/notify_setting_page.dart';
-import 'package:find_food/features/nav/notify/nav/social_notify/di/social_notify_binding.dart';
-import 'package:find_food/features/nav/notify/nav/social_notify/presentation/page/social_notify_page.dart';
+import 'package:find_food/features/nav/notify/di/notify_binding.dart';
+import 'package:find_food/features/nav/notify/presentation/page/notify_setting_page.dart';
 import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
 import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
 import 'package:find_food/features/restaurant/di/restaurant_binding.dart';
-import 'package:find_food/features/restaurant/pressentation/model/restaurant_model.dart';
 import 'package:find_food/features/restaurant/pressentation/page/restaurant_page.dart';
-import 'package:find_food/features/restaurant_change_infor.dart/di/restaurant_change_info_binding.dart';
-import 'package:find_food/features/restaurant_change_infor.dart/pressentation/page/restaurant_change_info.dart';
+import 'package:find_food/features/restaurant_change_infor/di/restaurant_change_info_binding.dart';
+import 'package:find_food/features/restaurant_change_infor/pressentation/page/restaurant_change_info.dart';
 import 'package:find_food/features/restaurant_setting/di/restaurant_setting_binding.dart';
 import 'package:find_food/features/restaurant_setting/pressentation/page/restaurant_setting_page.dart';
 import 'package:find_food/features/restaurant_social_network/di/restaurant_social_network_binding.dart';
@@ -45,7 +44,7 @@ import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
 
 class Pages {
-  static const initial = Routes.none;
+  static const initial = Routes.none; 
   static const main = Routes.main;
 
   static final routes = [
@@ -113,25 +112,11 @@ class Pages {
       binding: CreateRestaurantBinding(),
     ),
 
-    //trang social notify
-    GetPage(
-      name: Routes.socialNotify,
-      page: () => SocialNotifyPage(),
-      binding: SocialNotifyBinding(),
-    ),
-
-    //trang news notify
-    GetPage(
-      name: Routes.newsNotify,
-      page: () => NewsNotifyPage(),
-      binding: NewsNotifyBinding(),
-    ),
-
     //trang Notify Settings
     GetPage(
       name: Routes.notifySetting,
       page: () => const NotifySettingPage(),
-      binding: NotifySettingBinding(),
+      binding: NotifyBinding(),
     ),
 
     // =====================  ROUTE POST =====================
@@ -158,6 +143,16 @@ class Pages {
     ),
 
     // màng hình tìm kiếm
+    GetPage(
+      name: Routes.resultSearch,
+      page: () => const ResultSearchPage(),
+      binding: ResultSearchBinding(),
+    ),
+    GetPage(
+      name: Routes.categorySearch,
+      page: () => const CategoryPage(),
+      binding: CategoryBinding(),
+    ),
     GetPage(
       name: Routes.resultSearch,
       page: () => const ResultSearchPage(),
@@ -193,6 +188,10 @@ class Pages {
     GetPage(
         name: Routes.addlink,
         page: () => RestaurantSocialNetwork(),
-        binding: RestaurantSocialNetworkBinding())
+        binding: RestaurantSocialNetworkBinding()),
+    GetPage(
+        name: Routes.createmenu,
+        page: () => CreateMenuPage(),
+        binding: CreateMenuBinding())
   ];
 }

@@ -37,7 +37,7 @@ class NavControllList extends GetView<ProfileController> {
             ],
           ),
         ),
-        const SizedBox(height: 20.0),
+        const SizedBox(height: 10.0),
       ],
     );
   }

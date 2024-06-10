@@ -4,79 +4,103 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 
+// ignore: must_be_immutable
 class UploadSingleImage extends GetView<CreateRestaurantController> {
-  final bool isLogo;
+  final bool circle;
+  final VoidCallback getImage;
+  final VoidCallback removeSingleImage;
+  final File? display;
+  double width;
+  double height;
+  final String id;
 
-  const UploadSingleImage({Key? key, required this.isLogo}) : super(key: key);
+  UploadSingleImage(
+      {super.key,
+      this.circle = false,
+      required this.getImage,
+      required this.removeSingleImage,
+      required this.display,
+      this.width = double.infinity,
+      this.height = 200,
+      this.id = "fetchImageSetting"});
 
   @override
   Widget build(BuildContext context) {
+    circle ? width = height : "";
+
     return Column(
       children: [
-        const SizedBox(height: 10.0,),
-        Obx(() {
-          File? image = isLogo ? controller.logoImage.value : controller.backgroundImage.value;
-          return image != null
-              ? Stack(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        shape: isLogo ? BoxShape.circle : BoxShape.rectangle,
-                        borderRadius: isLogo ? null : BorderRadius.circular(10),
-                        border: Border.all(
-                          color: AppColors.gray.withOpacity(0.1),
-                          width: 2,
-                        ),
-                        image: DecorationImage(
-                          image: FileImage(image),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      right: 10,
-                      child: GestureDetector(
-                        onTap: () => controller.removeSingleImage(isLogo),
-                        child: Container(
+        const SizedBox(
+          height: 10.0,
+        ),
+        GetBuilder<CreateRestaurantController>(
+            id: id,
+            builder: (_) {
+              File? images = display;
+              return images != null
+                  ? Stack(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: height,
                           decoration: BoxDecoration(
-                            color: AppColors.gray.withOpacity(0.5),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.close,
-                            color: Colors.white,
+                            shape:
+                                circle ? BoxShape.circle : BoxShape.rectangle,
+                            borderRadius:
+                                circle ? null : BorderRadius.circular(10),
+                            border: Border.all(
+                              color: AppColors.gray.withOpacity(0.1),
+                              width: 2,
+                            ),
+                            image: DecorationImage(
+                              image: FileImage(images),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: GestureDetector(
+                            onTap: () => removeSingleImage(),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.gray.withOpacity(0.5),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: Container(
+                        width: width,
+                        height: height,
+                        decoration: BoxDecoration(
+                          shape: circle ? BoxShape.circle : BoxShape.rectangle,
+                          borderRadius:
+                              circle ? null : BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppColors.gray.withOpacity(0.1),
+                            width: 2,
+                          ),
+                          color: AppColors.gray2,
+                        ),
+                        child: const Icon(
+                          Icons.photo_camera_rounded,
+                          size: 100,
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              : GestureDetector(
-                  onTap: () {
-                    controller.pickImage(isLogo);
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      shape: isLogo ? BoxShape.circle : BoxShape.rectangle,
-                      borderRadius: isLogo ? null : BorderRadius.circular(10),
-                      border: Border.all(
-                        color: AppColors.gray.withOpacity(0.1),
-                        width: 2,
-                      ),
-                      color: AppColors.gray2,
-                    ),
-                    child: const Icon(
-                      Icons.photo_camera_rounded,
-                      size: 100,
-                    ),
-                  ),
-                );
-        }),
+                    );
+            }),
         const SizedBox(height: 10),
       ],
     );

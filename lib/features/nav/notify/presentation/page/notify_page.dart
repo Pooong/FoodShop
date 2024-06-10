@@ -1,6 +1,8 @@
+import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/ui/widgets/appbar/notify_appbar.dart';
-import 'package:find_food/features/nav/notify/nav/news_notify/presentation/page/news_notify_page.dart';
-import 'package:find_food/features/nav/notify/nav/social_notify/presentation/page/social_notify_page.dart';
+import 'package:find_food/core/ui/widgets/button/button_widget.dart';
+import 'package:find_food/features/nav/notify/presentation/page/news_notify_page.dart';
+import 'package:find_food/features/nav/notify/presentation/page/social_notify_page.dart';
 import 'package:find_food/features/nav/notify/presentation/controller/notify_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,62 +20,38 @@ class NotifyPage extends GetView<NotifyController> {
         children: [
           Row(
             children: [
-              Expanded(
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                 child: Obx(
-                  () => Container(
-                    margin: EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: controller.selectedTab.value == 'social' ? Colors.red : Colors.white,
-                      borderRadius: BorderRadius.circular(5.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: TextButton(
-                      onPressed: () => controller.selectTab('social'),
-                      child: Text(
-                        'Social',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: controller.selectedTab.value == 'social' ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
+                  () => ButtonWidget(
+                      width: MediaQuery.of(context).size.width / 2 - 8,
+                      borderColor: AppColors.black,
+                      borderRadius: 5.0,
+                      ontap: () => controller.selectTab('social'),
+                      backgroundColor: controller.selectedTab.value == 'social'
+                          ? AppColors.primary
+                          : AppColors.white,
+                      textColor: controller.selectedTab.value == 'social'
+                          ? AppColors.white
+                          : AppColors.black,
+                      text: "Social"),
                 ),
               ),
-              Expanded(
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                 child: Obx(
-                  () => Container(
-                    margin: EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: controller.selectedTab.value == 'news' ? Colors.red : Colors.white,
-                      borderRadius: BorderRadius.circular(5.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: TextButton(
-                      onPressed: () => controller.selectTab('news'),
-                      child: Text(
-                        'News',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: controller.selectedTab.value == 'news' ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
+                  () => ButtonWidget(
+                      width: MediaQuery.of(context).size.width / 2 - 8,
+                      borderColor: AppColors.black,
+                      borderRadius: 5.0,
+                      ontap: () => controller.selectTab('news'),
+                      backgroundColor: controller.selectedTab.value == 'news'
+                          ? AppColors.primary
+                          : AppColors.white,
+                      textColor: controller.selectedTab.value == 'news'
+                          ? AppColors.white
+                          : AppColors.black,
+                      text: "News"),
                 ),
               ),
             ],
@@ -94,3 +72,5 @@ class NotifyPage extends GetView<NotifyController> {
     );
   }
 }
+
+

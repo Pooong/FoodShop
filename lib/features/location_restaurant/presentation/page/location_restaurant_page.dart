@@ -26,7 +26,6 @@ class LocationRestaurantPage extends GetView<LocationRestaurantController> {
                   if (controller.isSearching.value) {
                     final cardfilter = controller
                         .filterItemsCard(controller.searchController.text);
-
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -41,7 +40,8 @@ class LocationRestaurantPage extends GetView<LocationRestaurantController> {
                         }
                       },
                     );
-                  } else {
+                  }
+                   else {
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),

@@ -16,21 +16,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class UploadController extends GetxController {
-
   final MainController _mainController = Get.find();
 
   final GetuserUseCase _getuserUseCase;
-  
+
   UploadController(this._getuserUseCase);
-  
+
   var selectedImages = <File>[].obs;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
   PlaceMap placeSelected = PlaceMap();
 
-  UserModel? user; 
-
+  UserModel? user;
 
   bool attchLocation = false;
 
@@ -65,11 +63,11 @@ class UploadController extends GetxController {
 
     final post = PostDataModel(
       title: titleController.text,
-      subtitle: descriptionController.text,
+      subtitle: descriptionController.text.trim(),
       favoriteCount: 10,
       imageList: listPathUrl,
       restaurantId: 'restaurant1',
-      createAt: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      createAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now()),
       isBookmarked: true,
       isFavorited: true,
       latitude: placeSelected.lat ?? 0.0,
@@ -84,9 +82,9 @@ class UploadController extends GetxController {
       descriptionController.text = "";
       nameLocationDisplay.value = "";
       update();
-      SnackbarUtil.show("Add post success".tr);
+      Fluttertoast.showToast(msg: "Add post success".tr);
     } else {
-      SnackbarUtil.show("Add post error".tr);
+      Fluttertoast.showToast(msg: "Add post error".tr);
     }
     _mainController.isLoading.value = false;
   }

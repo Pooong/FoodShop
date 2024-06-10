@@ -1,47 +1,52 @@
 import 'package:find_food/features/auth/user/model/user_model.dart';
 
 class CommentModel {
-  final String? id;
-  final double favorite;
-  final String comment;
-  final UserModel author;
+  UserModel author;
+  String? idComment;
+  String? comment;
+  int? favorite;
+  bool? isFavoriteComments;
+  String? idPost;
+  String? createdAt;
+  List<String>? imageList;
 
   CommentModel({
-    this.id,
-    required this.favorite,
-    required this.comment,
     required this.author,
+    this.idComment,
+    this.comment,
+    this.favorite,
+    required this.isFavoriteComments,
+    this.idPost,
+    this.createdAt,
+    this.imageList,
   });
-  
-  CommentModel copyWith({
-    String? id,
-    double? favorite,
-    String? comment,
-    double? rate,
-    UserModel? author,
-  }) {
-    return CommentModel(
-      id: id ?? this.id,
-      favorite: favorite ?? this.favorite,
-      comment: comment ?? this.comment,
-      author: author ?? this.author,
-    );
-  }
 
   Map<String, dynamic> toJson() {
     return {
-      'favorite': favorite,
-      'comment': comment,
       'author': author.toJson(),
+      'idComment': idComment,
+      'comment': comment,
+      'favorite': favorite,
+      'isFavoriteComments': isFavoriteComments,
+      'idPost': idPost,
+      'createdAt': createdAt,
+      "imageList":
+          imageList == null ? [] : List<dynamic>.from(imageList!.map((x) => x)),
     };
   }
 
   static CommentModel fromJson(Map<String, dynamic> json) {
     return CommentModel(
-      id: json['id'],
-      favorite: json['favorite'],
-      comment: json['comment'],
       author: UserModel.fromJson(json['author']),
+      idComment: json['idComment'],
+      comment: json['comment'],
+      favorite: json['favorite'],
+      isFavoriteComments: json['isFavoriteComments'],
+      idPost: json['idPost'],
+      createdAt: json['createdAt'],
+      imageList: json["imageList"] == null
+          ? []
+          : List<String>.from(json["imageList"]!.map((x) => x)),
     );
   }
 }

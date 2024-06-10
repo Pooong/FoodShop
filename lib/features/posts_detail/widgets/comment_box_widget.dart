@@ -1,19 +1,15 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/ui/dialogs/dialogs.dart';
-import 'package:find_food/features/model/commentsData.dart';
+import 'package:find_food/core/ui/widgets/card/comments_card.dart';
+import 'package:find_food/features/model/comment_model.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
-import 'package:find_food/features/posts_detail/widgets/comment_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class CommentBoxWidget extends GetWidget<PostsDetailController> {
   const CommentBoxWidget({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
-    var rate = 4.0;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -34,88 +30,81 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
               height: Get.height * 0.6,
               child: ListView.builder(
                 padding: const EdgeInsets.only(bottom: 10),
-                itemCount: CommentData.commentDataList.length,
+                itemCount: controller.listComments.length,
                 itemBuilder: (context, index) {
-
                   // reder list
-                  var data = CommentData.commentDataList[index];
-
-                  return CommentCardWidget(
-                    id: data['id'],
-                    authorImg: data['authorImg'],
-                    authorName: data['authorName'],
-                    favorite: data['favorite'],
-                    comment: data['comment'],
+                  CommentModel dataComments = controller.listComments[index];
+                  return CommentsCard(
+                    comment: dataComments.comment ?? "comment empty !!!",
                     toggleActive: () {
-                      controller.updateComment(data['id']);
+                      print(dataComments.isFavoriteComments);
+                      controller.toggleFavoriteComments(dataComments);
                     },
-                    active: data['isActive'],
+                    active: dataComments.isFavoriteComments ?? false,
                   );
                 },
               ),
             ),
           ),
 
-          
           // comment input
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: const BoxDecoration(
               color: AppColors.gray2,
-            ), 
+            ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                     child: Stack(
                   children: [
                     Container(
-                        padding: const EdgeInsets.only(
-                          left: 10,
-                        ),
-                        margin: const EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: AppColors.gray.withOpacity(.6),
-                            )),
-                        child: const TextField(
-                          decoration: InputDecoration(
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                      ),
+                      margin: const EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: AppColors.gray.withOpacity(.6),
+                          )),
+                      child: SizedBox(
+                        width: Get.width * .65,
+                        child: TextField(
+                          controller: controller.commentController,
+                          maxLines: null,
+                          decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: "Enter your comment",
                               hintStyle: TextStyle(color: AppColors.grey)),
-                        )),
+                        ),
+                      ),
+                    ),
                     Positioned(
-                      top: 0,
-                      bottom: 0,
-                      right: 15,
+                      top: 10,
+                      right: 0,
                       child: InkWell(
-                        onTap: () => {
-                          DialogsUtils.showRatingDialog(
-                            initialRating: rate,
-                            onRatingUpdate: (rating) {
-                              rate = rating;
-                            },
-                            onSubmit: () {
-                              print("Rating submitted");
-                              // Handle submit action
-                            },
-                          ),
-                        },
-                        child: const Icon(
-                          Icons.star_rounded,
-                          size: AppDimens.textSize42,
-                          color: AppColors.yellow,
+                        child: GestureDetector(
+                          onTap: () {
+                            controller.pickImages();
+                          },
+                          child: Image.asset('assets/images/addphoto.png',
+                              width: 50, height: 40),
                         ),
                       ),
                     ),
                   ],
                 )),
-
                 InkWell(
-                    onTap: () {}, child: Image.asset('assets/images/send.png'))
+                    onTap: () {
+                      controller.uploadComment();
+                    },
+                    child: Container(
+                        margin: const EdgeInsets.only(top: 5),
+                        child: Image.asset('assets/images/send.png')))
               ],
-              
             ),
           )
         ],

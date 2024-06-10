@@ -19,7 +19,7 @@ class MainController extends GetxController {
   final GetuserUseCase _getuserUseCase;
 
   MainController(this._getuserUseCase);
-
+   
   bool user = false;
 
   @override
@@ -95,7 +95,7 @@ class MainController extends GetxController {
   void onChangeItemBottomBar(int index) {
     if (currentIndex.value == index) return;
     
-    if(index==2 && user){
+    if(index==2 && !user){
         DialogsUtils.showAlertDialog(title: "Don't have account", message: "you want login account", typeDialog: TypeDialog.warning);
 
     }    
