@@ -18,7 +18,8 @@ class LicenseIdentifyPage extends GetView<CreateRestaurantController> {
   }
 
   Widget buildLicenseIdentifyBody() {
-    return Padding(
+    return SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: GetBuilder<CreateRestaurantController>(
           id: "clearData",
@@ -33,12 +34,16 @@ class LicenseIdentifyPage extends GetView<CreateRestaurantController> {
                       height: 5.0,
                     ),
                     titleField(title: "LICENSE RESTAURANT"),
-                    UploadImage(),
+                    UploadImage(
+                      images: controller.licenseImages,
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
                     titleField(title: "LICENSE OWNER"),
-                    UploadImage(),
+                    UploadImage(
+                      images: controller.ownerLicenseImages,
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -60,6 +65,7 @@ class LicenseIdentifyPage extends GetView<CreateRestaurantController> {
             );
           },
         ),
+      ),
     );
   }
 
@@ -75,6 +81,7 @@ class LicenseIdentifyPage extends GetView<CreateRestaurantController> {
 
   Widget _buildRestaurantAddressField() {
     return TextFormField(
+      controller: controller.addressRestaurant,
       decoration: const InputDecoration(
         hintText: "Enter your restaurant name",
         hintStyle: TextStyle(

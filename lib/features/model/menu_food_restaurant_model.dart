@@ -1,4 +1,4 @@
-import 'restaurant_model.dart';
+import '../restaurant/pressentation/model/restaurant_model.dart';
 
 class MenuModel {
   String? id;

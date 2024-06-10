@@ -6,16 +6,19 @@ import 'dart:io';
 
 class UploadSingleImage extends GetView<CreateRestaurantController> {
   final bool isLogo;
-
-  const UploadSingleImage({Key? key, required this.isLogo}) : super(key: key);
+  const UploadSingleImage({super.key, required this.isLogo});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 10.0,),
+        const SizedBox(
+          height: 10.0,
+        ),
         Obx(() {
-          File? image = isLogo ? controller.logoImage.value : controller.backgroundImage.value;
+          File? image = isLogo
+              ? controller.logoImage.value
+              : controller.backgroundImage.value;
           return image != null
               ? Stack(
                   children: [
