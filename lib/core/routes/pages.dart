@@ -13,6 +13,8 @@ import 'package:find_food/features/auth/login/di/login_binding.dart';
 import 'package:find_food/features/auth/login/presentation/page/login_page.dart';
 import 'package:find_food/features/auth/register/di/register_binding.dart';
 import 'package:find_food/features/auth/register/presentation/page/register_page.dart';
+import 'package:find_food/features/find_post/category/di/category_binding.dart';
+import 'package:find_food/features/find_post/category/presentation/page/category_page.dart';
 import 'package:find_food/features/create_menu_restaurant/di/create_menu_binding.dart';
 import 'package:find_food/features/create_menu_restaurant/pressentation/page/create_menu_page.dart';
 import 'package:find_food/features/find_post/result_search/di/resutl_search_binding.dart';
@@ -141,6 +143,16 @@ class Pages {
     ),
 
     // màng hình tìm kiếm
+    GetPage(
+      name: Routes.resultSearch,
+      page: () => const ResultSearchPage(),
+      binding: ResultSearchBinding(),
+    ),
+    GetPage(
+      name: Routes.categorySearch,
+      page: () => const CategoryPage(),
+      binding: CategoryBinding(),
+    ),
     GetPage(
       name: Routes.resultSearch,
       page: () => const ResultSearchPage(),

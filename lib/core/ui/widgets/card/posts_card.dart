@@ -10,6 +10,7 @@ import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/core/utils/calculator_utils.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 
+// ignore: must_be_immutable
 class PostsCard extends StatelessWidget {
   final String title;
   final String imageUrl;
@@ -17,16 +18,17 @@ class PostsCard extends StatelessWidget {
   final int customerRated;
   final PostDataModel postDataModel;
   final bool activate;
+  bool? restaurantTag ;
 
-  const PostsCard({
-    super.key,
-    this.title = "Default Title",
-    this.imageUrl = AppImagesString.iCardDefault,
-    this.rate = 4.5,
-    this.customerRated = 20,
-    required this.postDataModel,
-    this.activate = false,
-  });
+  PostsCard(
+      {super.key,
+      this.title = "Default Title",
+      this.imageUrl = AppImagesString.iCardDefault,
+      this.rate = 4.5,
+      this.customerRated = 20,
+      required this.postDataModel,
+      this.activate = false,
+      this.restaurantTag=true});
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +36,13 @@ class PostsCard extends StatelessWidget {
       future: distanceCalculate(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
           double distance = snapshot.data ?? 0.0;
           return Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -91,59 +93,90 @@ class PostsCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextWidget(
-                        text: postDataModel.title ?? title,
-                        size: AppDimens.textSize20,
-                        fontWeight: FontWeight.w500,
-                        maxLines: 2,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: TextWidget(
+                              text: postDataModel.title ?? title,
+                              size: AppDimens.textSize20,
+                              fontWeight: FontWeight.w500,
+                              maxLines: 2,
+                            ),
+                          ),
+                          Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              child: const Icon(
+                                Icons.favorite_border,
+                                size: AppDimens.textSize16,
+                              )),
+                        ],
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
-                        child: Text(postDataModel.subtitle ?? ""),
+                        child: Text(
+                          postDataModel.subtitle!.trim(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 10,
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                rate.toString(),
-                                style: const TextStyle(
-                                    fontSize: AppDimens.textSize22,
-                                    color: Colors.black),
-                              ),
-                              const SizedBox(width: 5),
-                              Row(
-                                children: [
-                                  ...Rating.RenderStar(
-                                      star: rate,
-                                      sizeStar: AppDimens.textSize22)
-                                ],
-                              ),
-                              const SizedBox(width: 5),
-                              TextWidget(
-                                text: "($customerRated)",
-                                size: AppDimens.textSize14,
-                              ),
-                              const SizedBox(width: 5),
-                              TextWidget(
-                                text: "${distance.toStringAsFixed(2)} km",
-                                size: AppDimens.textSize10,
-                              ),
-                            ],
-                          ),
-                          TextWidget(
-                            text: activate ? "Closed" : "Opening",
-                            color: activate
-                                ? AppColors.red
-                                : AppColors.greenBold,
-                            size: AppDimens.textSize12,
-                          )
-                        ],
-                      ),
+                      restaurantTag==true
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      rate.toString(),
+                                      style: const TextStyle(
+                                          fontSize: AppDimens.textSize22,
+                                          color: Colors.black),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Row(
+                                      children: [
+                                        ...Rating.RenderStar(
+                                            star: rate,
+                                            sizeStar: AppDimens.textSize22)
+                                      ],
+                                    ),
+                                    const SizedBox(width: 5),
+                                    TextWidget(
+                                      text: "($customerRated)",
+                                      size: AppDimens.textSize14,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    TextWidget(
+                                      text: "${distance.toStringAsFixed(2)} km",
+                                      size: AppDimens.textSize10,
+                                    ),
+                                  ],
+                                ),
+                                TextWidget(
+                                  text: activate ? "Closed" : "Opening",
+                                  color: activate
+                                      ? AppColors.red
+                                      : AppColors.greenBold,
+                                  size: AppDimens.textSize12,
+                                )
+                              ],
+                            )
+                          : Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: TextWidget(
+                                    text: "${distance.toStringAsFixed(2)} km",
+                                    size: AppDimens.textSize10,
+                                  ),
+                                ),
+                              ],
+                            )
                     ],
                   ),
                 )
@@ -158,7 +191,7 @@ class PostsCard extends StatelessWidget {
   Future<double> distanceCalculate() async {
     final LocationService locationService = Get.find<LocationService>();
     var placeMap = await locationService.getLocation();
-    
+
     if (placeMap != null) {
       double placeLat = placeMap.lat ?? 0.0;
       double placeLon = placeMap.lon ?? 0.0;

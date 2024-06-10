@@ -9,6 +9,7 @@ class MainPage extends GetView<MainController> {
 
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       // xay dung appbar biến đổi theo từng trang
       body: Stack(

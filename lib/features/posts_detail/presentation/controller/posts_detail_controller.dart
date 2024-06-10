@@ -1,17 +1,19 @@
 import 'dart:io';
-
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/comment_model.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:find_food/features/model/commentsData.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart'; // Thêm import cho việc phân tích ngày tháng
 
 class PostsDetailController extends GetxController {
   final GetuserUseCase _getuserUseCase;
@@ -21,23 +23,48 @@ class PostsDetailController extends GetxController {
   PostDataModel? postDataModel;
   final dataAgument = Get.arguments;
   final commentController = TextEditingController();
+
+  List<PostDataModel> postsDetail=[];
+
+   List<dynamic> listImage=[];
+
   @override
   void onInit() async {
+    super.onInit();
     userComment = await _getuserUseCase.getUser();
+
     if (dataAgument is PostDataModel) {
       postDataModel = dataAgument;
       getComments();
+      getPostDetail();
     }
-
-    // super.onInit();
   }
 
+  // Phương thức lấy danh sách bình luận
   void getComments() async {
-    final result = await FirestoreComment.getListComments();
-    // final result = await FirestoreComment.getListComments(postDataModel!.id!);
+    // final result = await FirestoreComment.getListComments();
+    final result = await FirestoreComment.getListComments(dataAgument!.id!);
     if (result.status == Status.success) {
       listComments = result.data!;
+      listComments.sort((a, b) {
+        // Phân tích chuỗi createdAt thành các đối tượng DateTime và so sánh chúng
+        DateTime dateA = DateFormat("yyyy-MM-dd HH:mm:ss").parse(a.createdAt!);
+        DateTime dateB = DateFormat("yyyy-MM-dd HH:mm:ss").parse(b.createdAt!);
+        return dateB.compareTo(dateA);
+      });
       update(["fetchComment"]);
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+  }
+
+  void getPostDetail() async {
+    final result = await FirestorePostData.getPostDetail(dataAgument!.id!);
+
+    if (result.status == Status.success) {
+      postsDetail = result.data!;
+      listImage=postsDetail[0].imageList??[];
+      update(['fetchTopPostsDetail']);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
@@ -59,36 +86,38 @@ class PostsDetailController extends GetxController {
     if (result.status == Status.success) {
       listComments.insert(0, comment); // Thêm bình luận mới vào đầu danh sách
       update(["fetchComment"]); // Cập nhật giao diện cho phần bình luận
-      SnackbarUtil.show("Add comments success".tr);
+      Fluttertoast.showToast(msg:"Add comments success".tr );
     } else {
-      SnackbarUtil.show("Add comments error".tr);
+      Fluttertoast.showToast(msg:"Add comments error".tr );
     }
     commentController.text = "";
     update();
   }
 
   final PageController mainPageController = PageController();
-  final List<String> mainImages = [
-    'assets/images/food1.png',
-    'assets/images/food2.png',
-    'assets/images/food3.png',
-    'assets/images/food4.png',
-    'assets/images/food5.png',
-    'assets/images/food6.png',
-  ];
 
-  final List<String> smallImages = [
-    'assets/images/food1.png',
-    'assets/images/food2.png',
-    'assets/images/food3.png',
-    'assets/images/food4.png',
-    'assets/images/food5.png',
-    'assets/images/food6.png',
-  ];
+   
+  // List<dynamic> mainImages =  [
+  //     'assets/images/food1.png',
+  //     'assets/images/food2.png',
+  //     'assets/images/food3.png',
+  //     'assets/images/food4.png',
+  //     'assets/images/food5.png',
+  //     'assets/images/food6.png',];
+
+  // final List<String> smallImages = [
+  //   'assets/images/food1.png',
+  //   'assets/images/food2.png',
+  //   'assets/images/food3.png',
+  //   'assets/images/food4.png',
+  //   'assets/images/food5.png',
+  //   'assets/images/food6.png',
+  // ];
 
   var isFavorite = false.obs;
   var isBookmark = false.obs;
   var isFavoriteComments = false.obs;
+
   void previousImage() {
     if (mainPageController.page!.toInt() > 0) {
       mainPageController.previousPage(
@@ -99,7 +128,7 @@ class PostsDetailController extends GetxController {
   }
 
   void nextImage() {
-    if (mainPageController.page!.toInt() < mainImages.length - 1) {
+    if (mainPageController.page!.toInt() < listImage.length - 1) {
       mainPageController.nextPage(
         duration: const Duration(milliseconds: 500),
         curve: Curves.ease,
@@ -132,10 +161,10 @@ class PostsDetailController extends GetxController {
               crossAxisSpacing: 10.0,
               mainAxisSpacing: 10.0,
             ),
-            itemCount: smallImages.length,
+            itemCount: listImage.length,
             itemBuilder: (context, index) {
               return Image.asset(
-                smallImages[index],
+                listImage[index],
                 fit: BoxFit.cover,
               );
             },
@@ -172,8 +201,7 @@ class PostsDetailController extends GetxController {
 
   bool hiddenStar(double star) => star == 0.0;
 
-  //up hinh anh comment
-
+  // up hinh anh comment
   List<String> listPathUrl = [];
   var selectedImages = <File>[].obs;
 

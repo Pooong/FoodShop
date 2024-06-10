@@ -40,7 +40,7 @@ abstract class Routes {
 
   //food detail
   static const postsDetail = '/postsDetail';
-
+  
   //restaurant page
   static const restaurant = '/restaurant';
   static const createRestaurant = '/createRestaurant';
@@ -50,5 +50,7 @@ abstract class Routes {
   static const setrestaurant = '/setrestaurant';
 
   static const addlink = '/addlink';
+
+  static const categorySearch='/categorySearch';
   static const createmenu = '/createmenu';
 }

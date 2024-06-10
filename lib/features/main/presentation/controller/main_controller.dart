@@ -19,7 +19,7 @@ class MainController extends GetxController {
   final GetuserUseCase _getuserUseCase;
 
   MainController(this._getuserUseCase);
-
+   
   bool user = false;
 
   @override

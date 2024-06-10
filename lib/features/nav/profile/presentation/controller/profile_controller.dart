@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
+import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
@@ -27,6 +28,9 @@ class ProfileController extends GetxController {
     user = await _getuserUseCase.getUser();
     super.onInit();
     getPostsOfUser(); 
+    var avatarUser = Avatar(
+    radius: 100.0,
+    authorImg: user!.photoUrl.toString(),);
   }
 
   RxInt currentIndex = 0.obs;
@@ -83,5 +87,16 @@ class ProfileController extends GetxController {
     }
   }
 
+ 
+
+  void deletePost(String postId) async {
+    final result = await FirestorePostData.deletePost(postId);
+    if (result.status == Status.success) {
+      listPostsOfUser.removeWhere((element) => element.id == postId);
+      update(["fetchPostsOfUser"]);
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+  }
   
 }

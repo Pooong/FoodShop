@@ -3,12 +3,10 @@ import 'package:find_food/features/account_setting/nav/create_restaurant/present
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class UploadImage extends GetView<CreateRestaurantController> {
-  final List images;
-  const UploadImage({
-    super.key,
-    required this.images,
-  });
+  List images;
+  UploadImage({super.key, required this.images});
 
   @override
   Widget build(BuildContext context) {

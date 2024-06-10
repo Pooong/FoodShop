@@ -22,6 +22,24 @@ class FirestorePostData {
     }
   }
 
+  static Future<Result<List<PostDataModel>>> getPostDetail(
+      String postId) async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .where('id', isEqualTo: postId)
+          .get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
   static Future<Result<List<PostDataModel>>> getListPostOfUser(
       String userId) async {
     try {
@@ -109,8 +127,16 @@ class FirestorePostData {
     }
   }
 
+  static Future<Result<List<PostDataModel>>> deletePost(String postId) async {
+    try {
+      await _fireStorePostCollection.doc(postId).delete();
+      return Result.success([]);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
 
-   static Future<Result<List<PostDataModel>>> searchPosts(String query) async {
+  static Future<Result<List<PostDataModel>>> searchPosts(String query) async {
     try {
       QuerySnapshot querySnapshot = await _fireStorePostCollection
           .where('title', isGreaterThanOrEqualTo: query)
@@ -127,9 +153,6 @@ class FirestorePostData {
       return Result.error(e);
     }
   }
-
-
-
 
   static Future<Result<bool>> updatePost(PostDataModel postDataModel) async {
     try {

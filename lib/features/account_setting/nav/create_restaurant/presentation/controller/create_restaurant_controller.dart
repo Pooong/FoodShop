@@ -22,9 +22,9 @@ class CreateRestaurantController extends GetxController {
 
   List<Widget> getPages() {
     return [
-      LicenseIdentifyPage(),
-      ImagesIdentifyPage(),
-      FinishCreateRestaurantPage(),
+      const LicenseIdentifyPage(),
+      const ImagesIdentifyPage(),
+      const FinishCreateRestaurantPage(),
     ];
   }
 
@@ -37,13 +37,16 @@ class CreateRestaurantController extends GetxController {
 
   var licenseImages = <File>[].obs;
   var ownerLicenseImages = <File>[].obs;
-  var restaurantBackgroundImages = <File>[].obs;
-  var restaurantLogoImages = <File>[].obs;
+
+  File? restaurantBackgroundImages;
+  File? restaurantLogoImages;
+  List selectedImages = [];
 
   final nameRestaurant = TextEditingController();
   final emailRestaurant = TextEditingController();
   final phoneRestaurant = TextEditingController();
   final addressRestaurant = TextEditingController();
+
   List<String> listPathUrl = [];
 
   @override
@@ -52,17 +55,17 @@ class CreateRestaurantController extends GetxController {
     super.onInit();
   }
 
-  void saveRestaurant() async {
+  Future<void> saveRestaurant() async {
     var allImages = [
       ...licenseImages,
       ...ownerLicenseImages,
-      ...restaurantBackgroundImages,
-      ...restaurantLogoImages,
+      restaurantBackgroundImages,
+      restaurantLogoImages,
     ];
 
     if (listPathUrl.isEmpty) {
       for (var file in allImages) {
-        String? pathUrl = await uploadFile(imageFile: file);
+        String? pathUrl = await uploadFile(imageFile: file!);
         if (pathUrl != null) {
           listPathUrl.add(pathUrl);
         }
@@ -81,7 +84,6 @@ class CreateRestaurantController extends GetxController {
     final result = await FirestoreRestaurant.createRestaurant(restaurant);
     if (result.status == Status.success) {
       SnackbarUtil.show("Menu created successfully");
-      Get.offAllNamed('accountSetting');
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
@@ -106,40 +108,33 @@ class CreateRestaurantController extends GetxController {
         .addAll(pickedImages.map((image) => File(image.path)).toList());
   }
 
-  bool check_list_empty(List images) {
-    return images.isEmpty;
+  bool check_list_empty(List selectedImages) {
+    return selectedImages.length == 0;
   }
 
   void removeImage(List imageVerify, File image) {
     imageVerify.remove(image);
   }
 
-  void removeSingleImage(bool isLogo) {
-    if (isLogo) {
-      logoImage.value = null;
-    } else {
-      backgroundImage.value = null;
-    }
-  }
-
 // pick single image
-  var backgroundImage = Rxn<File>();
-  var logoImage = Rxn<File>();
+  File? backgroundImage;
+
+  File? logoImage;
 
   final ImagePicker _picker = ImagePicker();
 
-  void pickImage(bool isLogo) async {
+  Future<File?> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      if (isLogo) {
-        logoImage.value = File(pickedFile.path);
-      } else {
-        backgroundImage.value = File(pickedFile.path);
-      }
+      update(["clearData"]);
+      return File(pickedFile.path);
+    } else {
+      return null;
     }
   }
 
-  bool isImageEmpty(bool isLogo) {
-    return isLogo ? logoImage.value == null : backgroundImage.value == null;
+  void removeSingleImage(File? file) {
+    file = null;
+    update(["clearData"]);
   }
 }

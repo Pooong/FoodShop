@@ -63,7 +63,7 @@ class UploadController extends GetxController {
 
     final post = PostDataModel(
       title: titleController.text,
-      subtitle: descriptionController.text,
+      subtitle: descriptionController.text.trim(),
       favoriteCount: 10,
       imageList: listPathUrl,
       restaurantId: 'restaurant1',
@@ -82,9 +82,9 @@ class UploadController extends GetxController {
       descriptionController.text = "";
       nameLocationDisplay.value = "";
       update();
-      SnackbarUtil.show("Add post success".tr);
+      Fluttertoast.showToast(msg: "Add post success".tr);
     } else {
-      SnackbarUtil.show("Add post error".tr);
+      Fluttertoast.showToast(msg: "Add post error".tr);
     }
     _mainController.isLoading.value = false;
   }
