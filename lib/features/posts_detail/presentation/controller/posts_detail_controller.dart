@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
+import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:find_food/features/model/commentsData.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart'; // Thêm import cho việc phân tích ngày tháng
 
 class PostsDetailController extends GetxController {
@@ -34,6 +34,12 @@ class PostsDetailController extends GetxController {
     // super.onInit();
   }
 
+  var isExpanded = false.obs;
+
+  void toggleExpanded() {
+    isExpanded.value = !isExpanded.value;
+  }
+
   // Phương thức lấy danh sách bình luận
   void getComments() async {
     final result = await FirestoreComment.getListComments();
@@ -54,6 +60,18 @@ class PostsDetailController extends GetxController {
 
   // Phương thức tải lên bình luận
   void uploadComment() async {
+    // kiểm tra comments có rỗng
+    if (commentController.text.trim().isEmpty) {
+      Fluttertoast.showToast(msg: "Comment cannot be empty".tr);
+      return;
+    }
+    // kiểm tra độ dài của comment
+    const int maxCommentLength = 50; // Set the maximum comment length
+    if (commentController.text.length > maxCommentLength) {
+      Fluttertoast.showToast(
+          msg: "Comment cannot exceed $maxCommentLength characters".tr);
+      return;
+    }
     final comment = CommentModel(
       author: userComment!,
       comment: commentController.text,
@@ -69,12 +87,24 @@ class PostsDetailController extends GetxController {
     if (result.status == Status.success) {
       listComments.insert(0, comment); // Thêm bình luận mới vào đầu danh sách
       update(["fetchComment"]); // Cập nhật giao diện cho phần bình luận
-      Fluttertoast.showToast(msg:"Add comments success".tr );
+      Fluttertoast.showToast(msg: "Add comments success".tr);
     } else {
-      Fluttertoast.showToast(msg:"Add comments error".tr );
+      Fluttertoast.showToast(msg: "Add comments error".tr);
     }
     commentController.text = "";
     update();
+  }
+
+  // phương thức xóa bình luận
+  void deleteComment(String idComment) async {
+    final result = await FirestoreComment.deleteComment(idComment);
+    if (result.status == Status.success) {
+      listComments.removeWhere((element) => element.idComment == idComment);
+      update(["fetchComment"]);
+      Fluttertoast.showToast(msg: "Delete comments success".tr);
+    } else {
+      Fluttertoast.showToast(msg: "Delete comments error".tr);
+    }
   }
 
   final PageController mainPageController = PageController();
@@ -123,12 +153,30 @@ class PostsDetailController extends GetxController {
     update(["fetchComment"]);
   }
 
+  void toggleActive(CommentModel comment) {
+    if (comment.isFavoriteComments!) {
+      comment.favorite = comment.favorite! + 1;
+    } else {
+      comment.favorite = comment.favorite! - 1;
+    }
+    update();
+  }
+
   void toggleFavoriteStatus() {
     isFavorite.value = !isFavorite.value;
   }
 
   void toggleBookmarkStatus() {
     isBookmark.value = !isBookmark.value;
+  }
+
+  void showDialogDeleteComment() {
+    DialogsUtils.showAlertDialog(
+      title: "Delete comment",
+      message: "Are you sure you want to delete this comment?",
+      typeDialog: TypeDialog.warning,
+      onPresss: () => (deleteComment(listComments[0].idComment!)),
+    );
   }
 
   void showMoreImages() {
@@ -182,34 +230,4 @@ class PostsDetailController extends GetxController {
   }
 
   bool hiddenStar(double star) => star == 0.0;
-
-  // up hinh anh comment
-  List<String> listPathUrl = [];
-  var selectedImages = <File>[].obs;
-
-  UserModel? user;
-
-  Future<void> pickImages() async {
-    final picker = ImagePicker();
-    final pickedImages = await picker.pickMultiImage();
-
-    selectedImages
-        .addAll(pickedImages.map((image) => File(image.path)).toList());
-  }
-
-  Future<String?> uploadFile({required File imageFile}) async {
-    String? pathUrl;
-    final result = await FirebaseStorageData.uploadImage(
-        imageFile: imageFile, userId: user!.uid, collection: "post_images");
-    if (result.status == Status.success) {
-      pathUrl = result.data ?? "";
-    } else {
-      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
-    }
-    return pathUrl;
-  }
-
-  void removeImage(File image) {
-    selectedImages.remove(image);
-  }
 }

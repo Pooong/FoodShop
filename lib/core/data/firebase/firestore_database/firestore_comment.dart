@@ -38,4 +38,14 @@ class FirestoreComment {
       return Result.error(e);
     }
   }
+
+  // xóa comments
+  static Future<Result<bool>> deleteComment(String idComment) async {
+    try {
+      await _fireStoreUserCollection.doc(idComment).delete();
+      return Result.success(true);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
 }

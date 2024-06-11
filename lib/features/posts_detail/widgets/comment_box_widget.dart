@@ -34,13 +34,18 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
                 itemBuilder: (context, index) {
                   // reder list
                   CommentModel dataComments = controller.listComments[index];
-                  return CommentsCard(
-                    comment: dataComments.comment ?? "comment empty !!!",
-                    toggleActive: () {
-                      print(dataComments.isFavoriteComments);
-                      controller.toggleFavoriteComments(dataComments);
+                  return GestureDetector(
+                    onLongPress: () {
+                      controller.showDialogDeleteComment();
                     },
-                    active: dataComments.isFavoriteComments ?? false,
+                    child: CommentsCard(
+                      comment: dataComments.comment ?? "Comment is empty !!!",
+                      toggleActive: () {
+                        print(dataComments.isFavoriteComments);
+                        controller.toggleFavoriteComments(dataComments);
+                      },
+                      active: dataComments.isFavoriteComments ?? false,
+                    ),
                   );
                 },
               ),
@@ -79,19 +84,6 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
                               border: InputBorder.none,
                               hintText: "Enter your comment",
                               hintStyle: TextStyle(color: AppColors.grey)),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      right: 0,
-                      child: InkWell(
-                        child: GestureDetector(
-                          onTap: () {
-                            controller.pickImages();
-                          },
-                          child: Image.asset('assets/images/addphoto.png',
-                              width: 50, height: 40),
                         ),
                       ),
                     ),
