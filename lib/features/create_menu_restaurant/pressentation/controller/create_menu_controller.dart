@@ -11,6 +11,7 @@ import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.d
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/restaurants/restaurant/pressentation/model/menu_food_restaurant_model.dart';
 import 'package:find_food/features/restaurants/restaurant/pressentation/model/restaurant_model.dart';
+import 'package:find_food/features/model/menu_food_restaurant_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -64,9 +65,6 @@ class CreateMenuController extends GetxController {
   var backgroundImage = Rxn<File>();
 
   var imageFood = Rxn<File>();
-
-  final ImagePicker _picker = ImagePicker();
-
   void pickImage() async {
     final pickedFile =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
