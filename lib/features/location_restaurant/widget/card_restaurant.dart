@@ -1,5 +1,5 @@
 import 'package:find_food/features/location_restaurant/presentation/controller/location_restaurant_controller.dart';
-import 'package:find_food/features/restaurant/pressentation/model/restaurant_model.dart';
+import 'package:find_food/features/restaurants/restaurant/pressentation/model/restaurant_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

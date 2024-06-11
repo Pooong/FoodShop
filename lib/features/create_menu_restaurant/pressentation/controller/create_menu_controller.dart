@@ -9,6 +9,8 @@ import 'package:find_food/features/account_setting/nav/create_restaurant/present
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/license_identify_page.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
+import 'package:find_food/features/restaurants/restaurant/pressentation/model/menu_food_restaurant_model.dart';
+import 'package:find_food/features/restaurants/restaurant/pressentation/model/restaurant_model.dart';
 import 'package:find_food/features/model/menu_food_restaurant_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
