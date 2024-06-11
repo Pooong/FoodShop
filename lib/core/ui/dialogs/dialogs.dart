@@ -231,7 +231,7 @@ class DialogsUtils {
                               ),
                             ),
                             onPressed: () {
-                              Get.back(closeOverlays: true); // Đóng dialog
+                              Get.back(); // Đóng dialog
                             },
                           ),
                         ),
