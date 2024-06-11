@@ -10,16 +10,18 @@ class FirestoreRestaurant {
   static final _fireStoreUserCollection =
       FirebaseFirestore.instance.collection('restaurant');
 
-  static Future<Result<bool>> createRestaurant(
-      RestaurantModel newRestaurant) async {
+  static Future<Result<RestaurantModel>> createRestaurant(
+      {required RestaurantModel newRestaurant, required String userId}) async {
     try {
       String restaurantId =
-          FirebaseFirestore.instance.collection('menu').doc().id;
-      newRestaurant!.idRestaurant = restaurantId;
+          FirebaseFirestore.instance.collection('restaurant').doc().id;
+      newRestaurant.idRestaurant = restaurantId;
+      newRestaurant.userId = userId;
+
       await _fireStoreUserCollection
           .doc(newRestaurant.idRestaurant)
           .set(newRestaurant.toJson());
-      return Result.success(true);
+      return Result.success(newRestaurant);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
     }

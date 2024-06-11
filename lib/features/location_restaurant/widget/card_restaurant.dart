@@ -1,5 +1,5 @@
 import 'package:find_food/features/location_restaurant/presentation/controller/location_restaurant_controller.dart';
-import 'package:find_food/features/restaurant/pressentation/model/restaurant_model.dart';
+import 'package:find_food/features/control_restaurants/restaurant/pressentation/model/restaurant_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -28,7 +28,8 @@ class CardRestaurant extends GetView<LocationRestaurantController> {
                 child: SizedBox(
                   width: 150,
                   height: 100,
-                  child: Image.asset(setrestaurant.imagePath, fit: BoxFit.cover),
+                  child:
+                      Image.asset(setrestaurant.imagePath, fit: BoxFit.cover),
                 ),
               ),
               const SizedBox(width: 10),
@@ -38,11 +39,13 @@ class CardRestaurant extends GetView<LocationRestaurantController> {
                   children: [
                     Text(
                       setrestaurant.name,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       setrestaurant.address,
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.normal),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -63,7 +66,11 @@ class CardRestaurant extends GetView<LocationRestaurantController> {
                   padding: const EdgeInsets.all(5),
                   child: Transform.rotate(
                     angle: 70,
-                    child: const Icon(Icons.attach_file, size: 30, color: Colors.white,),
+                    child: const Icon(
+                      Icons.attach_file,
+                      size: 30,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -75,4 +82,3 @@ class CardRestaurant extends GetView<LocationRestaurantController> {
     );
   }
 }
-

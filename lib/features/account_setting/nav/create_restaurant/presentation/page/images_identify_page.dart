@@ -82,7 +82,7 @@ class ImagesIdentifyPage extends GetView<CreateRestaurantController> {
                 ),
                 ButtonWidget(
                   ontap: () {
-                    Get.to(() => const FinishCreateRestaurantPage());
+                    controller.createRestaurant();
                   },
                   text: "CONFIRM",
                   fontWeight: FontWeight.bold,

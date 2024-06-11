@@ -31,7 +31,6 @@ class FinishCreateRestaurantPage extends GetView<CreateRestaurantController> {
                 const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
             child: ButtonWidget(
               ontap: () async {
-                await controller.saveRestaurant();
                 Get.close(5);
               },
               text: AppTextString.fComplete,

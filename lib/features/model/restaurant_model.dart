@@ -1,23 +1,28 @@
 class RestaurantModel {
-  String idRestaurant;
-  String nameRestaurant;
-  String emailRestaurant;
-  String phoneRestaurant;
-  String addressRestaurant;
-  List<String> listPathUrl;
+  String? idRestaurant;
+  String? userId;
+
+  String? nameRestaurant;
+  String? emailRestaurant;
+  String? phoneRestaurant;
+  String? addressRestaurant;
+
+  List<String>? listPathUrl;
 
   RestaurantModel({
-    required this.idRestaurant,
-    required this.nameRestaurant,
-    required this.emailRestaurant,
-    required this.phoneRestaurant,
-    required this.addressRestaurant,
-    required this.listPathUrl,
+    this.idRestaurant,
+    this.userId,
+    this.nameRestaurant,
+    this.emailRestaurant,
+    this.phoneRestaurant,
+    this.addressRestaurant,
+    this.listPathUrl,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'idRestaurant': idRestaurant,
+      'userId': userId,
       'nameRestaurant': nameRestaurant,
       'emailRestaurant': emailRestaurant,
       'phoneRestaurant': phoneRestaurant,
@@ -29,6 +34,7 @@ class RestaurantModel {
   static RestaurantModel fromJson(Map<String, dynamic> json) {
     return RestaurantModel(
       idRestaurant: json['idRestaurant'],
+      userId: json['userId'],
       nameRestaurant: json['nameRestaurant'],
       emailRestaurant: json['emailRestaurant'],
       phoneRestaurant: json['phoneRestaurant'],

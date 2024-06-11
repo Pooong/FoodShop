@@ -31,20 +31,20 @@ import 'package:find_food/features/nav/notify/di/notify_binding.dart';
 import 'package:find_food/features/nav/notify/presentation/page/notify_setting_page.dart';
 import 'package:find_food/features/posts_detail/di/posts_detail_binding.dart';
 import 'package:find_food/features/posts_detail/presentation/page/posts_detail_page.dart';
-import 'package:find_food/features/restaurant/di/restaurant_binding.dart';
-import 'package:find_food/features/restaurant/pressentation/page/restaurant_page.dart';
-import 'package:find_food/features/restaurant_change_infor/di/restaurant_change_info_binding.dart';
-import 'package:find_food/features/restaurant_change_infor/pressentation/page/restaurant_change_info.dart';
-import 'package:find_food/features/restaurant_setting/di/restaurant_setting_binding.dart';
-import 'package:find_food/features/restaurant_setting/pressentation/page/restaurant_setting_page.dart';
-import 'package:find_food/features/restaurant_social_network/di/restaurant_social_network_binding.dart';
-import 'package:find_food/features/restaurant_social_network/pressentation/page/restaurant_social_network.dart';
+import 'package:find_food/features/control_restaurants/restaurant/di/restaurant_binding.dart';
+import 'package:find_food/features/control_restaurants/restaurant/pressentation/page/restaurant_page.dart';
+import 'package:find_food/features/control_restaurants/restaurant_change_infor/di/restaurant_change_info_binding.dart';
+import 'package:find_food/features/control_restaurants/restaurant_change_infor/pressentation/page/restaurant_change_info.dart';
+import 'package:find_food/features/control_restaurants/restaurant_setting/di/restaurant_setting_binding.dart';
+import 'package:find_food/features/control_restaurants/restaurant_setting/pressentation/page/restaurant_setting_page.dart';
+import 'package:find_food/features/control_restaurants/restaurant_social_network/di/restaurant_social_network_binding.dart';
+import 'package:find_food/features/control_restaurants/restaurant_social_network/pressentation/page/restaurant_social_network.dart';
 import 'package:find_food/features/splash/di/splash_binding.dart';
 import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
 
 class Pages {
-  static const initial = Routes.none; 
+  static const initial = Routes.none;
   static const main = Routes.main;
 
   static final routes = [
