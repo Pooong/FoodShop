@@ -16,9 +16,9 @@ class CreateRestaurantController extends GetxController {
 
   List<Widget> getPages() {
     return [
-      LicenseIdentifyPage(),
-      ImagesIdentifyPage(),
-      FinishCreateRestaurantPage(),
+      const LicenseIdentifyPage(),
+      const ImagesIdentifyPage(),
+      const FinishCreateRestaurantPage(),
     ];
   }
 
@@ -45,8 +45,9 @@ class CreateRestaurantController extends GetxController {
         .addAll(pickedImages.map((image) => File(image.path)).toList());
   }
 
+  // ignore: non_constant_identifier_names
   bool check_list_empty() {
-    return selectedImages.length == 0;
+    return selectedImages.isEmpty;
   }
 
   void removeImage(File image) {
@@ -55,27 +56,27 @@ class CreateRestaurantController extends GetxController {
 
 // pick single image
   var backgroundImage = Rxn<File>();
+
   var logoImage = Rxn<File>();
 
   final ImagePicker _picker = ImagePicker();
 
-  void pickImage(bool isLogo) async {
+  File? fileUploadBackground;
+  File? fileUploadLogo;
+
+  Future<File?> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      if (isLogo) {
-        logoImage.value = File(pickedFile.path);
-      } else {
-        backgroundImage.value = File(pickedFile.path);
-      }
+      update(["clearData"]);
+      return File(pickedFile.path);
+    } else {
+      return null;
     }
   }
 
-  void removeSingleImage(bool isLogo) {
-    if (isLogo) {
-      logoImage.value = null;
-    } else {
-      backgroundImage.value = null;
-    }
+  void removeSingleImage(File? file) {
+    file = null;
+    update(["clearData"]);
   }
 
   bool isImageEmpty(bool isLogo) {

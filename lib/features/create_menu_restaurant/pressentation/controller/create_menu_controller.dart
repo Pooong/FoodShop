@@ -62,6 +62,7 @@ class CreateMenuController extends GetxController {
 
 // pick single image
   var backgroundImage = Rxn<File>();
+
   var imageFood = Rxn<File>();
 
   final ImagePicker _picker = ImagePicker();

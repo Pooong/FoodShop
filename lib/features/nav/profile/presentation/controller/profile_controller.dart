@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
@@ -15,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class ProfileController extends GetxController {
   final GetuserUseCase _getuserUseCase;
   ProfileController(this._getuserUseCase);
@@ -26,7 +26,9 @@ class ProfileController extends GetxController {
   void onInit() async {
     user = await _getuserUseCase.getUser();
     super.onInit();
-    getPostsOfUser(); 
+    getPostsOfUser();
+    getUser();
+    update(["fetchDataProfilePage", "listPostsOfUser", "fetchUser", "fetchPostsOfUser"]);
   }
 
   RxInt currentIndex = 0.obs;
@@ -57,7 +59,7 @@ class ProfileController extends GetxController {
 
   Future selectImageAvatar() async {
     final pickFileImg =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
     if (pickFileImg != null) {
       imgAvatar = File(pickFileImg.path);
       update(['updateAvatar']);
@@ -66,7 +68,7 @@ class ProfileController extends GetxController {
 
   Future selectImageBackground() async {
     final pickFileImg =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
     if (pickFileImg != null) {
       imgBackground = File(pickFileImg.path);
       update(['updateBackground']);
@@ -78,6 +80,16 @@ class ProfileController extends GetxController {
     if (result.status == Status.success) {
       listPostsOfUser = result.data!;
       update(["fetchPostsOfUser"]);
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+  }
+
+  void getUser() async {
+    final result = await FirestoreUser.getUser(user!.uid!);
+    if (result.status == Status.success) {
+      user = result.data!;
+      update(["fetchUser"]);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }

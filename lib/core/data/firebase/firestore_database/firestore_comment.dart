@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_food/core/data/firebase/model/result.dart';
 import 'package:find_food/features/model/comment_model.dart';
+import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -22,10 +23,11 @@ class FirestoreComment {
     }
   }
 
-  static Future<Result<List<CommentModel>>> getListComments() async {
+  static Future<Result<List<CommentModel>>> getListComments(
+      String postId) async {
     try {
       QuerySnapshot querySnapshot = await _fireStoreUserCollection
-          // .where('idPost', isEqualTo: postId)
+          .where('idPost', isEqualTo: postId)
           .get();
 
       List<CommentModel> activityList = querySnapshot.docs.map((doc) {
