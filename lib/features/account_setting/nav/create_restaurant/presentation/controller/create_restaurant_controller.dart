@@ -171,4 +171,18 @@ class CreateRestaurantController extends GetxController {
       Get.to(() => const FinishCreateRestaurantPage());
     }
   }
+
+  Future<void> getRestaurantData() async {
+    final result = await FirestoreRestaurant.getRestaurant(user!.uid);
+    if (result.status == Status.success) {
+      final restaurant = result.data;
+      nameRestaurant.text = restaurant!.nameRestaurant!;
+      emailRestaurant.text = restaurant.emailRestaurant!;
+      phoneRestaurant.text = restaurant.phoneRestaurant!;
+      addressRestaurant.text = restaurant.addressRestaurant!;
+      listPathUrl = restaurant.listPathUrl!;
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+  }
 }

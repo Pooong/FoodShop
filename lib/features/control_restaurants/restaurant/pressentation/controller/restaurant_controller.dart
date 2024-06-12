@@ -1,5 +1,10 @@
 import 'dart:io';
 
+import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_restaurant.dart';
+import 'package:find_food/core/ui/snackbar/snackbar.dart';
+import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
+import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/control_restaurants/restaurant/pressentation/model/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +22,17 @@ class RestaurantController extends GetxController {
   final picker = ImagePicker();
   File? imgAvatar;
   File? imgWallpapper;
+  UserModel? user;
+
+  final GetuserUseCase _getuserUseCase;
+  RestaurantController(this._getuserUseCase);
+
+  @override
+  void onInit() async {
+    user = await _getuserUseCase.getUser();
+    getRestaurantData();
+    super.onInit();
+  }
 
   Future selectImageAvatarGallery() async {
     final pickFileImg =
@@ -71,4 +87,27 @@ class RestaurantController extends GetxController {
   void clearSearch() {}
 
   void onSearchItemTap(name) {}
+
+  final nameRestaurant = TextEditingController();
+  final emailRestaurant = TextEditingController();
+  final phoneRestaurant = TextEditingController();
+  final addressRestaurant = TextEditingController();
+  List<String> listPathUrl = [];
+
+  Future<void> getRestaurantData() async {
+    final result = await FirestoreRestaurant.getRestaurant(user!.uid);
+    if (result.status == Status.success) {
+      final restaurant = result.data;
+      nameRestaurant.text = restaurant!.nameRestaurant!.toString();
+      emailRestaurant.text = restaurant.emailRestaurant!;
+      phoneRestaurant.text = restaurant.phoneRestaurant!;
+      addressRestaurant.text = restaurant.addressRestaurant!;
+      listPathUrl = restaurant.listPathUrl!;
+      update(["getInforRestaurant"]);
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+    // print(result.data!.toJson());
+    print(listPathUrl[0]);
+  }
 }

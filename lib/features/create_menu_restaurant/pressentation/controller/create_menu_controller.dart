@@ -31,25 +31,27 @@ class CreateMenuController extends GetxController {
 
   final picker = ImagePicker();
   var selectedImages = <File>[].obs;
+
   final nameFood = TextEditingController();
   final price = TextEditingController();
   File? imgFood;
+
   String? pathUrl = "";
   UserModel? user;
-  List<String> listPathUrl = [];
+  // List<String> listPathUrl = [];
   @override
   void onInit() async {
     user = await _getuserUseCase.getUser();
     super.onInit();
   }
 
-  Future<void> pickImages() async {
-    final picker = ImagePicker();
-    final pickedImages = await picker.pickMultiImage();
+  // Future<void> pickImages() async {
+  //   final picker = ImagePicker();
+  //   final pickedImages = await picker.pickMultiImage();
 
-    selectedImages
-        .addAll(pickedImages.map((image) => File(image.path)).toList());
-  }
+  //   selectedImages
+  //       .addAll(pickedImages.map((image) => File(image.path)).toList());
+  // }
 
   bool check_list_empty() {
     return selectedImages.length == 0;
@@ -93,12 +95,9 @@ class CreateMenuController extends GetxController {
   }
 
   void createMenu() async {
-    // print("1");
-    // print(imageFood.value!);
     if (pathUrl == null || pathUrl!.isEmpty) {
       pathUrl = await uploadFile(imageFile: imageFood.value!);
     }
-    // Upload ảnh trước khi tạo menu
 
     if (pathUrl == null || pathUrl!.isEmpty) {
       SnackbarUtil.show("Failed to upload image");
@@ -128,7 +127,6 @@ class CreateMenuController extends GetxController {
       imageFood.value = null;
       pathUrl = "";
     } else {
-      print("loi roi");
       SnackbarUtil.show(result.exp!.message ?? "Failed to create menu");
     }
   }

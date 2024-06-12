@@ -59,4 +59,20 @@ class FirestoreRestaurant {
       return Result.error(e);
     }
   }
+
+  static Future<Result<RestaurantModel>> getRestaurant(String userId) async {
+    try {
+      final snapshot = await _fireStoreUserCollection
+          .where('userId', isEqualTo: userId)
+          .get();
+      if (snapshot.docs.isEmpty) {
+        return Result.error(FirebaseAuthException(code: 'not found'),
+            data: null);
+      }
+      final restaurant = RestaurantModel.fromJson(snapshot.docs.first.data());
+      return Result.success(restaurant);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
 }

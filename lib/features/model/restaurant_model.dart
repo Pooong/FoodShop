@@ -8,6 +8,8 @@ class RestaurantModel {
   String? addressRestaurant;
 
   List<String>? listPathUrl;
+  String? avatarUrl;
+  String? backgroundUrl;
 
   RestaurantModel({
     this.idRestaurant,
@@ -17,6 +19,8 @@ class RestaurantModel {
     this.phoneRestaurant,
     this.addressRestaurant,
     this.listPathUrl,
+    this.avatarUrl,
+    this.backgroundUrl,
   });
 
   Map<String, dynamic> toJson() {
@@ -28,6 +32,8 @@ class RestaurantModel {
       'phoneRestaurant': phoneRestaurant,
       'addressRestaurant': addressRestaurant,
       'listPathUrl': listPathUrl,
+      'avatarUrl': avatarUrl ?? '',
+      'backgroundUrl': backgroundUrl ?? '',
     };
   }
 
@@ -40,6 +46,8 @@ class RestaurantModel {
       phoneRestaurant: json['phoneRestaurant'],
       addressRestaurant: json['addressRestaurant'],
       listPathUrl: List<String>.from(json['listPathUrl'].map((x) => x)),
+      avatarUrl: json['avatarUrl'],
+      backgroundUrl: json['backgroundUrl'],
     );
   }
 }

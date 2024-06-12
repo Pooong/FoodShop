@@ -154,42 +154,49 @@ class RestaurantPage extends GetView<RestaurantController> {
   }
 
   Widget buildAddressSection() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(5.0),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(1.0, 1.0),
-            blurRadius: 5.0,
-            spreadRadius: 1.0,
-          ),
-        ],
-      ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            flex: 1,
-            child: Icon(
-              Icons.location_on,
-              size: 30,
-              color: Colors.red,
+    return GetBuilder<RestaurantController>(
+        id: "getInforRestaurant",
+        builder: (controller) {
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(5.0),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 5.0,
+                  spreadRadius: 1.0,
+                ),
+              ],
             ),
-          ),
-          Flexible(
-            flex: 8,
-            child: TextWidget(
-              text: "27A - Đường 30 tháng 4 - Hưng Lợi - Ninh Kiều - Cần Thơ",
-              size: AppDimens.textSize18,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Expanded(
+                    flex: 1,
+                    child: Icon(
+                      Icons.location_on,
+                      size: 30,
+                      color: Colors.red,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: TextWidget(
+                      text: controller.addressRestaurant.text,
+                      size: AppDimens.textSize18,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 
   Widget buildMenuSection() {
@@ -224,16 +231,14 @@ class RestaurantPage extends GetView<RestaurantController> {
 
   Widget getWallpapper() {
     return GetBuilder<RestaurantController>(
-      id: "updateWallpaper",
+      id: "getInforRestaurant",
       builder: (controller) {
         return Container(
           height: 300,
           width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: controller.imgWallpapper == null
-                  ? const AssetImage('assets/images/avatar.jpg')
-                  : FileImage(controller.imgWallpapper!) as ImageProvider,
+              image: NetworkImage(controller.listPathUrl[1]),
               fit: BoxFit.cover,
             ),
           ),
@@ -244,7 +249,7 @@ class RestaurantPage extends GetView<RestaurantController> {
 
   Widget getAvatar() {
     return GetBuilder<RestaurantController>(
-      id: "updateAvatar",
+      id: "getInforRestaurant",
       builder: (controller) {
         return GestureDetector(
           onTap: () => controller.selectImageAvatarGallery(),
@@ -256,9 +261,7 @@ class RestaurantPage extends GetView<RestaurantController> {
                 radius: 75,
                 child: CircleAvatar(
                   radius: 70,
-                  backgroundImage: controller.imgAvatar == null
-                      ? const AssetImage('assets/images/avatar.jpg')
-                      : FileImage(controller.imgAvatar!) as ImageProvider,
+                  backgroundImage: NetworkImage(controller.listPathUrl.last),
                 ),
               ),
               Positioned(
@@ -318,65 +321,69 @@ class RestaurantPage extends GetView<RestaurantController> {
   }
 
   Widget inforRestaurant() {
-    return Positioned(
-      width: Get.width * 0.88,
-      bottom: 0,
-      right: 0,
-      child: Container(
-        padding: const EdgeInsets.only(left: 140, bottom: 10),
-        color: Colors.white.withOpacity(0.7),
-        child: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextWidget(
-              text: "RESTAURANT",
-              fontWeight: FontWeight.w700,
-              size: AppDimens.textSize22,
-              color: AppColors.primary,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return GetBuilder<RestaurantController>(
+        id: "getInforRestaurant",
+        builder: (controller) {
+          return Positioned(
+            width: Get.width * 0.88,
+            bottom: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.only(left: 140, bottom: 10),
+              color: Colors.white.withOpacity(0.7),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextWidget(
+                    text: controller.nameRestaurant.text,
+                    fontWeight: FontWeight.w700,
+                    size: AppDimens.textSize22,
+                    color: AppColors.primary,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      TextWidget(
-                        size: AppDimens.textSize9,
-                        text: 'Email: ThanThan@gmail.com',
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextWidget(
+                              size: AppDimens.textSize9,
+                              text: "Email: " + controller.emailRestaurant.text,
+                            ),
+                            TextWidget(
+                              size: AppDimens.textSize9,
+                              text: "SDT: " + controller.phoneRestaurant.text,
+                            ),
+                          ],
+                        ),
                       ),
-                      TextWidget(
-                        size: AppDimens.textSize9,
-                        text: 'SDT: 0788836968',
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.facebook,
+                            size: AppDimens.textSize10,
+                          ),
+                          SizedBox(width: 5),
+                          Icon(
+                            Icons.facebook,
+                            size: AppDimens.textSize10,
+                          ),
+                          SizedBox(width: 5),
+                          Icon(
+                            Icons.facebook,
+                            size: AppDimens.textSize10,
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.facebook,
-                      size: AppDimens.textSize10,
-                    ),
-                    SizedBox(width: 5),
-                    Icon(
-                      Icons.facebook,
-                      size: AppDimens.textSize10,
-                    ),
-                    SizedBox(width: 5),
-                    Icon(
-                      Icons.facebook,
-                      size: AppDimens.textSize10,
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
   Widget buildGridOrders() {

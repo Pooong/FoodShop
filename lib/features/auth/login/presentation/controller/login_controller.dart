@@ -129,12 +129,11 @@ class LoginController extends GetxController {
     }
   }
 
-  signInWithGoogle()async {
-
+  signInWithGoogle() async {
     GoogleAuthProvider.credential(
       accessToken: "",
       idToken: "",
     );
-    FirebaseAuth.instance.signInWithCredential(credential)
+    // FirebaseAuth.instance.signInWithCredential(credential)
   }
 }
