@@ -23,9 +23,8 @@ class FirestoreComment {
     }
   }
 
-  
-
-  static Future<Result<List<CommentModel>>> getListComments(String postId) async {
+  static Future<Result<List<CommentModel>>> getListComments(
+      String postId) async {
     try {
       QuerySnapshot querySnapshot = await _fireStoreUserCollection
           .where('idPost', isEqualTo: postId)
@@ -42,10 +41,13 @@ class FirestoreComment {
     }
   }
 
-
-
-}
-
-class _fireStorePostCollection {
-  static where(String s, {required String isEqualTo}) {}
+  // xóa comments
+  static Future<Result<bool>> deleteComment(String idComment) async {
+    try {
+      await _fireStoreUserCollection.doc(idComment).delete();
+      return Result.success(true);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
 }

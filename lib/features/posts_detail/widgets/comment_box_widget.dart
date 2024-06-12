@@ -22,6 +22,36 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
     );
   }
 }
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GetBuilder<PostsDetailController>(
+            id: "fetchComment",
+            builder: (_) => SizedBox(
+              height: Get.height * 0.6,
+              child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 10),
+                itemCount: controller.listComments.length,
+                itemBuilder: (context, index) {
+                  // reder list
+                  CommentModel dataComments = controller.listComments[index];
+                  return GestureDetector(
+                    onLongPress: () {
+                      controller.showDialogDeleteComment();
+                    },
+                    child: CommentsCard(
+                      comment: dataComments.comment ?? "Comment is empty !!!",
+                      toggleActive: () {
+                        print(dataComments.isFavoriteComments);
+                        controller.toggleFavoriteComments(dataComments);
+                      },
+                      active: dataComments.isFavoriteComments ?? false,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
 
 class MainContentCommentBox extends StatelessWidget {
   const MainContentCommentBox({
@@ -120,6 +150,38 @@ class CommentBar extends StatelessWidget {
                 right: 0,
                 child: InkWell(
                   child: GestureDetector(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                    child: Stack(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                      ),
+                      margin: const EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: AppColors.gray.withOpacity(.6),
+                          )),
+                      child: SizedBox(
+                        width: Get.width * .65,
+                        child: TextField(
+                          controller: controller.commentController,
+                          maxLines: null,
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Enter your comment",
+                              hintStyle: TextStyle(color: AppColors.grey)),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+                InkWell(
                     onTap: () {
                       controller.pickImages();
                     },

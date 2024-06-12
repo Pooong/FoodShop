@@ -10,17 +10,22 @@ class ProfileBookmarkPage extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return controller.listPostsOfUser.isNotEmpty
-        ? GridView.builder(
-            shrinkWrap: true,
-            itemCount: controller.listPostsOfUser.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: 0.7),
-            itemBuilder: (_, index) {
-              PostDataModel postDataModel = controller.listPostsOfUser[index];
-              return ProfileCard(
-                postDataModel: postDataModel,
-              );
-            })
+        ? GetBuilder<ProfileController>(
+        id: "fetchDataProfilePage",
+        builder: (_) {
+          return GridView.builder(
+              shrinkWrap: true,
+              itemCount: controller.listPostsOfUser.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, childAspectRatio: 0.7),
+              itemBuilder: (_, index) {
+                PostDataModel postDataModel =
+                controller.listPostsOfUser[index];
+                return ProfileCard(
+                  postDataModel: postDataModel,
+                );
+              });
+        })
         : const SizedBox.shrink();
   }
 }
