@@ -1,8 +1,9 @@
 import 'package:find_food/core/configs/enum.dart';
-import 'package:flutter/material.dart';
-import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
-import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
+import 'package:find_food/features/model/commentsData.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
@@ -12,9 +13,6 @@ import 'package:find_food/core/data/firebase/firestore_database/firestore_user.d
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:intl/intl.dart';
-import 'package:get/get.dart';
-import 'package:find_food/features/model/commentsData.dart';
 import 'package:intl/intl.dart'; // Thêm import cho việc phân tích ngày tháng
 
 class PostsDetailController extends GetxController {
@@ -38,8 +36,6 @@ class PostsDetailController extends GetxController {
   var isFavorite = false.obs;
   var isBookmark = false.obs;
   var isFavoriteComments = false.obs;
-
-  List<dynamic> listImage = [];
 
   @override
   void onInit() async {
@@ -132,10 +128,11 @@ class PostsDetailController extends GetxController {
     );
     final result = await FirestoreComment.createComment(comment);
     if (result.status == Status.success) {
-      listComments.insert(0, comment); // Thêm bình luận mới vào đầu danh sách
-      update(["fetchComment"]); // Cập nhật giao diện cho phần bình luận
+      listComments.insert(0, comment);
+      update(["fetchComment"]);
       Fluttertoast.showToast(msg: "Add comments success".tr);
     } else {
+      Fluttertoast.showToast(msg: "Add comments error".tr);
       Fluttertoast.showToast(msg: "Add comments error".tr);
     }
     commentController.clear();
@@ -153,24 +150,6 @@ class PostsDetailController extends GetxController {
       Fluttertoast.showToast(msg: "Delete comments error".tr);
     }
   }
-
-
-  // List<dynamic> mainImages =  [
-  //     'assets/images/food1.png',
-  //     'assets/images/food2.png',
-  //     'assets/images/food3.png',
-  //     'assets/images/food4.png',
-  //     'assets/images/food5.png',
-  //     'assets/images/food6.png',];
-
-  // final List<String> smallImages = [
-  //   'assets/images/food1.png',
-  //   'assets/images/food2.png',
-  //   'assets/images/food3.png',
-  //   'assets/images/food4.png',
-  //   'assets/images/food5.png',
-  //   'assets/images/food6.png',
-  // ];
 
   void previousImage() {
     if (currentIndex > 0) {
@@ -219,7 +198,7 @@ class PostsDetailController extends GetxController {
       title: "Delete comment",
       message: "Are you sure you want to delete this comment?",
       typeDialog: TypeDialog.warning,
-      onPresss: () => (deleteComment(listComments[0].idComment!)),
+      // onPresss: () => (deleteComment(listComments[0].idComment!)),
     );
   }
 
