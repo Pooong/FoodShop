@@ -11,9 +11,11 @@ import 'package:get/get.dart';
 
 bool isVisible = true;
 
+// ignore: must_be_immutable
 class TopPostsDetail extends GetView<PostsDetailController> {
-  const TopPostsDetail({super.key});
-
+  const TopPostsDetail({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PostsDetailController>(
@@ -191,6 +193,7 @@ class TagInfoPosts extends StatelessWidget {
   Widget build(BuildContext context) {
     double reat = 4;
     int reatPerson = 20;
+    
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
@@ -208,34 +211,31 @@ class TagInfoPosts extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  controller.isRestaurant
-                      ? Row(
+                  Row(
+                    children: [
+                      Text(
+                        "$reat",
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Row(
                           children: [
-                            Text(
-                              "$reat",
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Row(
-                                children: [
-                                  ...Rating.RenderStar(star: reat, sizeStar: 25)
-                                ],
-                              ),
-                            ),
-                            Text(
-                              "($reatPerson)",
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                              ),
-                            ),
+                            ...Rating.RenderStar(star: reat, sizeStar: 25)
                           ],
-                        )
-                      : const Row(),
+                        ),
+                      ),
+                      Text(
+                        "($reatPerson)",
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
                   Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -252,6 +252,7 @@ class TagInfoPosts extends StatelessWidget {
                         const SizedBox(
                           width: 20.0,
                         ),
+
                         Column(
                           children: [
                             Obx(

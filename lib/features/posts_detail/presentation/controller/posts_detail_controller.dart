@@ -28,7 +28,7 @@ class PostsDetailController extends GetxController {
   List<dynamic> listImagesPostDetail = [];
   String timePosts = "";
   UserModel? authorPosts;
-  bool isRestaurant = true;
+  bool isRestaurant = false;
   int currentIndex = 0;
 
   final PageController mainPageController = PageController();
