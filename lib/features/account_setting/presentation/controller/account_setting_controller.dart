@@ -23,7 +23,7 @@ class AccountSettingController extends GetxController {
 
   _loadLocation() async {
     place = await _getLocationCase.getLocation();
-    locationName = place!.displayName??"Add or chang your location";
+    locationName = place?.displayName??"Add or change your location";
     update(['fetchLocaiton']);
   }
 
