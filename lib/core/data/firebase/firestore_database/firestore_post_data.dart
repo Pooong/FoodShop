@@ -22,24 +22,6 @@ class FirestorePostData {
     }
   }
 
-  static Future<Result<List<PostDataModel>>> getPostDetail(
-      String postId) async {
-    try {
-      QuerySnapshot querySnapshot = await _fireStorePostCollection
-          .where('id', isEqualTo: postId)
-          .get();
-
-      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return PostDataModel.fromJson(data);
-      }).toList();
-
-      return Result.success(activityList);
-    } on FirebaseException catch (e) {
-      return Result.error(e);
-    }
-  }
-
   static Future<Result<List<PostDataModel>>> getListPostOfUser(
       String userId) async {
     try {
@@ -60,7 +42,8 @@ class FirestorePostData {
 
   static Future<Result<List<PostDataModel>>> getListPost() async {
     try {
-      QuerySnapshot querySnapshot = await _fireStorePostCollection.get();
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .get();
 
       List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;

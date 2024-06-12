@@ -15,11 +15,11 @@ class iconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color:AppColors.black.withOpacity(.2),
+            color: AppColors.black.withOpacity(.2),
             spreadRadius: 1,
             blurRadius: 2,
           )

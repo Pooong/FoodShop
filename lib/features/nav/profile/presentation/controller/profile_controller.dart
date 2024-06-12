@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
-import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class ProfileController extends GetxController {
   final GetuserUseCase _getuserUseCase;
   ProfileController(this._getuserUseCase);
@@ -27,10 +26,14 @@ class ProfileController extends GetxController {
   void onInit() async {
     user = await _getuserUseCase.getUser();
     super.onInit();
-    getPostsOfUser(); 
-    var avatarUser = Avatar(
-    radius: 100.0,
-    authorImg: user!.photoUrl.toString(),);
+    getPostsOfUser();
+    getUser();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    await Future.wait([getUser(), getPostsOfUser()]);
+    update(["fetchDataProfilePage", "listPostsOfUser", "fetchUser", "fetchPostsOfUser"]);
   }
 
   RxInt currentIndex = 0.obs;
@@ -61,23 +64,27 @@ class ProfileController extends GetxController {
 
   Future selectImageAvatar() async {
     final pickFileImg =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
     if (pickFileImg != null) {
       imgAvatar = File(pickFileImg.path);
+      user?.avatarUrl = pickFileImg.path;
+      updateUser();
       update(['updateAvatar']);
     }
   }
 
   Future selectImageBackground() async {
     final pickFileImg =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
     if (pickFileImg != null) {
       imgBackground = File(pickFileImg.path);
+      user?.backgroundUrl = pickFileImg.path;
+      updateUser();
       update(['updateBackground']);
     }
   }
 
-  void getPostsOfUser() async {
+  Future<void> getPostsOfUser() async {
     final result = await FirestorePostData.getListPostOfUser(user!.uid!);
     if (result.status == Status.success) {
       listPostsOfUser = result.data!;
@@ -87,16 +94,22 @@ class ProfileController extends GetxController {
     }
   }
 
- 
-
-  void deletePost(String postId) async {
-    final result = await FirestorePostData.deletePost(postId);
+  Future<void> getUser() async {
+    final result = await FirestoreUser.getUser(user!.uid!);
     if (result.status == Status.success) {
-      listPostsOfUser.removeWhere((element) => element.id == postId);
-      update(["fetchPostsOfUser"]);
+      user = result.data!;
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
   }
-  
+
+  void updateUser() async {
+    final result = await FirestoreUser.updateUser(user!);
+    if (result.status == Status.success) {
+      SnackbarUtil.show("Updated successfully!");
+      update(["fetchUser"]);
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+  }
 }

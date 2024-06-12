@@ -65,6 +65,9 @@ class CreateMenuController extends GetxController {
   var backgroundImage = Rxn<File>();
 
   var imageFood = Rxn<File>();
+
+  final ImagePicker _picker = ImagePicker();
+
   void pickImage() async {
     final pickedFile =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);

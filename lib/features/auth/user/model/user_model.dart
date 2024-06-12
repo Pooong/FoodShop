@@ -1,17 +1,19 @@
 class UserModel {
   final String uid;
-  // final String password;
+  String? password;
   final String email;
   String? displayName;
-  String? photoUrl;
+  String? avatarUrl;
+  String? backgroundUrl;
   String? createdAt;
   bool? isComplete;
   UserModel({
     required this.uid,
-    // required this.password,
+    this.password,
     required this.email,
     this.displayName,
-    this.photoUrl,
+    this.avatarUrl,
+    this.backgroundUrl,
     this.createdAt,
     this.isComplete,
   });
@@ -19,10 +21,11 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       uid: json['uid'],
-      // password: json['password'],
+      password: json['password'],
       email: json['email'],
       displayName: json['displayName'],
-      photoUrl: json['photoUrl'],
+      avatarUrl: json['avatarUrl'],
+      backgroundUrl: json['backgroundUrl'],
       createdAt: json['createdAt'],
       isComplete: json['isComplete'],
     );
@@ -31,11 +34,12 @@ class UserModel {
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,
-      // 'password': password,
+      'password': password,
       'email': email,
       'isComplete': isComplete,
       'displayName': displayName,
-      'photoUrl': photoUrl,
+      'avatarUrl': avatarUrl,
+      'backgroundUrl': backgroundUrl,
       'createdAt': createdAt,
     };
   }

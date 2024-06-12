@@ -136,7 +136,7 @@ class CreateRestaurantController extends GetxController {
 
   void removeSingleImage(File? file) {
     file = null;
-    update(["clearData"]);
+    update(["clearData"]);  
   }
 
   void controlCreateRestaurant() {

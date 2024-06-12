@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends GetView<ProfileController> {
-  const ProfilePage({super.key,});
-  
+  const ProfilePage({Key? key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,30 +19,35 @@ class ProfilePage extends GetView<ProfileController> {
 
   Widget buildProfileBodyPage() {
     return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          _buildUserInfo(),
-          const SizedBox(
-            height: 10.0,
-          ),
-          Obx(() => NavControllList(
-                currentIndex: controller.currentIndex.value,
-                onPageChanged: (index) {
-                  controller.onChangeNavList(index);
-                },
-              )),
-          SizedBox(
-            height: Get.height * 0.7,
-            width: double.infinity,
-            child: PageView(
-              controller: controller.pageController,
-              onPageChanged: (index) {
-                controller.onChangePage(index);
-              },
-              children: controller.getPages(),
-            ),
-          )
-        ],
+      child: GetBuilder<ProfileController>(
+        id: "fetchDataProfilePage",
+        builder: (_) {
+          return Column(
+            children: <Widget>[
+              _buildUserInfo(),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Obx(() => NavControllList(
+                    currentIndex: controller.currentIndex.value,
+                    onPageChanged: (index) {
+                      controller.onChangeNavList(index);
+                    },
+                  )),
+              SizedBox(
+                height: Get.height * 0.6,
+                width: double.infinity,
+                child: PageView(
+                  controller: controller.pageController,
+                  onPageChanged: (index) {
+                    controller.onChangePage(index);
+                  },
+                  children: controller.getPages(),
+                ),
+              )
+            ],
+          );
+        },
       ),
     );
   }
@@ -64,18 +69,23 @@ class ProfilePage extends GetView<ProfileController> {
       onTap: () {
         controller.selectImageBackground();
       },
-      child: Container(
-        height: Get.height * 0.24,
-        width: double.infinity,
-        foregroundDecoration: BoxDecoration(
-          color: AppColors.white,
-          image: DecorationImage(
-            image: controller.imgBackground == null
-                ? const AssetImage(AppImagesString.iBackgroundUserDefault)
-                : FileImage(controller.imgBackground!) as ImageProvider,
-            fit: BoxFit.cover,
-          ),
-        ),
+      child: GetBuilder<ProfileController>(
+        id: "updateBackground",
+        builder: (_) {
+          return Container(
+            height: Get.height * 0.24,
+            width: double.infinity,
+            foregroundDecoration: BoxDecoration(
+              color: AppColors.white,
+              image: DecorationImage(
+                image: controller.imgBackground == null
+                    ? const AssetImage(AppImagesString.iBackgroundUserDefault)
+                    : FileImage(controller.imgBackground!) as ImageProvider,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -89,26 +99,33 @@ class ProfilePage extends GetView<ProfileController> {
             onTap: () {
               controller.selectImageAvatar();
             },
-            child: PhysicalModel(
-              color: Colors.transparent,
-              shape: BoxShape.circle,
-              elevation: 10.0,
-              shadowColor: Colors.black54,
-              child: CircleAvatar(
-                backgroundColor: AppColors.white,
-                radius: 55,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: controller.imgAvatar == null
-                      ? const AssetImage(AppImagesString.iUserDefault)
-                      : FileImage(controller.imgAvatar!) as ImageProvider,
-                ),
-              ),
+            child: GetBuilder<ProfileController>(
+              id: "updateAvatar",
+              builder: (_) {
+                return PhysicalModel(
+                  color: Colors.transparent,
+                  shape: BoxShape.circle,
+                  elevation: 10.0,
+                  shadowColor: Colors.black54,
+                  child: CircleAvatar(
+                    backgroundColor: AppColors.white,
+                    radius: 55,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: controller.imgAvatar == null
+                          ? const AssetImage(AppImagesString.iUserDefault)
+                          : FileImage(controller.imgAvatar!) as ImageProvider,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(height: 10.0),
-          const Text(
-            "displayName",
+          Text(
+            controller.user?.displayName ??
+                controller.user?.email ??
+                "Unknown user",
             style: const TextStyle(
               fontSize: 20,
               color: Colors.black,
@@ -122,5 +139,4 @@ class ProfilePage extends GetView<ProfileController> {
       ),
     );
   }
-
 }
