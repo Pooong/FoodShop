@@ -17,6 +17,7 @@ import 'package:intl/intl.dart'; // Thêm import cho việc phân tích ngày th
 
 class PostsDetailController extends GetxController {
   final GetuserUseCase _getuserUseCase;
+
   PostsDetailController(this._getuserUseCase);
 
   UserModel? userComment;
