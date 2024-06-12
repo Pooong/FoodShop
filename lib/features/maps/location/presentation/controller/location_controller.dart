@@ -113,7 +113,7 @@ class LocationController extends GetxController
       mapController.move(newCenter, mapController.camera.zoom);
       initialCenter = newCenter;
       resutlPlaceSearch = PlaceMap();
-      resutlPlaceSearch.displayName='Your current location';
+      resutlPlaceSearch.displayName='Accessing your current location';
       resutlPlaceSearch.lat=initialCenter.latitude;
       resutlPlaceSearch.lon=initialCenter.longitude;
       update();

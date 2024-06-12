@@ -81,7 +81,6 @@ class PostsDetailController extends GetxController {
     } else {
       return '${duration.inSeconds}s ago';
     }
-    // super.onInit();
   }
 
   var isExpanded = false.obs;
@@ -175,15 +174,6 @@ class PostsDetailController extends GetxController {
     comment.isFavoriteComments = !comment.isFavoriteComments!;
     update(["fetchComment"]);
   }
-
-  // void toggleActive(CommentModel comment) {
-  //   if (comment.isFavoriteComments!) {
-  //     comment.favorite = comment.favorite! + 1;
-  //   } else {
-  //     comment.favorite = comment.favorite! - 1;
-  //   }
-  //   update();
-  // }
 
   void toggleFavoriteStatus() {
     isFavorite.value = !isFavorite.value;

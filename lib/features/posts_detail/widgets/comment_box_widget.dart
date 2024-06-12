@@ -55,7 +55,6 @@ class MainContentCommentBox extends StatelessWidget {
                           comment:
                               dataComments.comment ?? "Comment is empty !!!",
                           toggleActive: () {
-                            print(dataComments.isFavoriteComments);
                             controller.toggleFavoriteComments(dataComments);
                           },
                           active: dataComments.isFavoriteComments ?? false,

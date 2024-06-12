@@ -1,4 +1,5 @@
 import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/services/location_service.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/nav/explore/search/di/search_binding.dart';
@@ -18,10 +19,11 @@ class MainController extends GetxController {
 
   final GetuserUseCase _getuserUseCase;
 
-  MainController(this._getuserUseCase);
-   
-  bool user = false;
+  MainController(this._getuserUseCase, this._locationService);
 
+  final LocationService _locationService;
+
+  bool user = false;
   @override
   void onInit() {
     super.onInit();
@@ -31,6 +33,14 @@ class MainController extends GetxController {
         user = true;
       }
     });
+
+    initializeLocation();
+  }
+
+  Future<void> initializeLocation() async {
+    isLoading.value = true;
+    await _locationService.initializeLocation();
+    isLoading.value = false;
   }
 
   final pages = <String>[
@@ -94,14 +104,16 @@ class MainController extends GetxController {
 
   void onChangeItemBottomBar(int index) {
     if (currentIndex.value == index) return;
-    
-    if(index==2 && !user){
-        DialogsUtils.showAlertDialog(title: "Don't have account", message: "you want login account", typeDialog: TypeDialog.warning);
 
-    }    
+    if (index == 2 && !user) {
+      DialogsUtils.showAlertDialog(
+          title: "Don't have account",
+          message: "you want login account",
+          typeDialog: TypeDialog.warning);
+    }
 
     currentIndex.value = index;
-    
+
     Get.offAndToNamed(pages[index], id: 10);
   }
 }
