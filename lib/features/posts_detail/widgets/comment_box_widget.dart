@@ -32,7 +32,7 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
                 padding: const EdgeInsets.only(bottom: 10),
                 itemCount: controller.listComments.length,
                 itemBuilder: (context, index) {
-                  // reder list
+                  // render list
                   CommentModel dataComments = controller.listComments[index];
                   return GestureDetector(
                     onLongPress: () {
@@ -62,43 +62,53 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                    child: Stack(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(
-                        left: 10,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    margin: const EdgeInsets.only(right: 10),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(
+                        color: AppColors.gray.withOpacity(.6),
                       ),
-                      margin: const EdgeInsets.only(right: 10),
-                      decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: AppColors.gray.withOpacity(.6),
-                          )),
-                      child: SizedBox(
-                        width: Get.width * .65,
-                        child: TextField(
-                          controller: controller.commentController,
-                          maxLines: null,
-                          decoration: const InputDecoration(
+                    ),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxHeight: 100.0, // Set a max height
+                      ),
+                      child: Scrollbar(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          reverse: true, // Start scrolled to bottom
+                          child: TextField(
+                            controller: controller.commentController,
+                            maxLines: null,
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: "Enter your comment",
-                              hintStyle: TextStyle(color: AppColors.grey)),
+                              hintStyle: TextStyle(color: AppColors.grey),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ],
-                )),
-                InkWell(
-                    onTap: () {
-                      controller.uploadComment();
-                    },
-                    child: Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        child: Image.asset('assets/images/send.png')))
+                  ),
+                ),
+                // Center the send button vertically
+                Container(
+                  margin: const EdgeInsets.only(top: 5),
+                  child: Center(
+                    child: InkWell(
+                      onTap: () {
+                        controller.uploadComment();
+                      },
+                      child: Image.asset('assets/images/send.png'),
+                    ),
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

@@ -4,7 +4,6 @@ import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/icons/rating.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
-import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +18,7 @@ class CommentsCard extends StatelessWidget {
   final String createdAt;
   final VoidCallback toggleActive;
   final bool active;
-  // final String imageUrl;
+  final String imageUrl;
 
   const CommentsCard({
     super.key,
@@ -30,10 +29,10 @@ class CommentsCard extends StatelessWidget {
     this.authorName = "User Name",
     this.star = 0.0,
     this.idPost = "",
-    this.createdAt = "",
+    this.createdAt = "2 ago",
     required this.toggleActive,
     required this.active,
-    // this.imageUrl = AppImagesString.iPostsDefault,
+    this.imageUrl = AppImagesString.iPostsDefault,
   });
 
   @override
@@ -102,8 +101,8 @@ class CommentsCard extends StatelessWidget {
                               ),
                               TextWidget(
                                 text: favorite.toString(),
-                                size: AppDimens.textSize12,
-                              ),
+                                size: AppDimens.textSize15,
+                              )
                             ],
                           ),
                         )
@@ -138,9 +137,9 @@ class CommentsCard extends StatelessWidget {
                                           InkWell(
                                             onTap: toggleActive,
                                             child: Icon(
-                                              active
-                                                  ? Icons.favorite_outlined
-                                                  : Icons.favorite_outline,
+                                              !active
+                                                  ? Icons.favorite_outline
+                                                  : Icons.favorite_outlined,
                                               size: AppDimens.textSize16,
                                               color:
                                                   active ? AppColors.red : null,
@@ -148,8 +147,8 @@ class CommentsCard extends StatelessWidget {
                                           ),
                                           TextWidget(
                                             text: favorite.toString(),
-                                            size: AppDimens.textSize12,
-                                          ),
+                                            size: AppDimens.textSize15,
+                                          )
                                         ],
                                       ),
                                     )
@@ -170,6 +169,13 @@ class CommentsCard extends StatelessWidget {
                           const SizedBox(
                             height: 10,
                           ),
+// //truyen hinh anh
+                          // imagePath != null
+                          //     ? Image.network(
+                          //         imagePath!,
+                          //         fit: BoxFit.cover,
+                          //       )
+                          //     : Container(),
                         ],
                       ),
                     ),
