@@ -1,4 +1,5 @@
 import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/features/model/commentsData.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -98,6 +99,18 @@ class PostsDetailController extends GetxController {
   }
 
   void uploadComment() async {
+    // kiểm tra comments có rỗng
+    if (commentController.text.trim().isEmpty) {
+      Fluttertoast.showToast(msg: "Comment cannot be empty".tr);
+      return;
+    }
+    // kiểm tra độ dài của comment
+    const int maxCommentLength = 50; // Set the maximum comment length
+    if (commentController.text.length > maxCommentLength) {
+      Fluttertoast.showToast(
+          msg: "Comment cannot exceed $maxCommentLength characters".tr);
+      return;
+    }
     final comment = CommentModel(
       author: userComment!,
       comment: commentController.text,
@@ -112,6 +125,7 @@ class PostsDetailController extends GetxController {
       update(["fetchComment"]);
       Fluttertoast.showToast(msg: "Add comments success".tr);
     } else {
+      Fluttertoast.showToast(msg: "Add comments error".tr);
       Fluttertoast.showToast(msg: "Add comments error".tr);
     }
     commentController.clear();
@@ -143,12 +157,30 @@ class PostsDetailController extends GetxController {
     update(["fetchComment"]);
   }
 
+  void toggleActive(CommentModel comment) {
+    if (comment.isFavoriteComments!) {
+      comment.favorite = comment.favorite! + 1;
+    } else {
+      comment.favorite = comment.favorite! - 1;
+    }
+    update();
+  }
+
   void toggleFavoriteStatus() {
     isFavorite.value = !isFavorite.value;
   }
 
   void toggleBookmarkStatus() {
     isBookmark.value = !isBookmark.value;
+  }
+
+  void showDialogDeleteComment() {
+    DialogsUtils.showAlertDialog(
+      title: "Delete comment",
+      message: "Are you sure you want to delete this comment?",
+      typeDialog: TypeDialog.warning,
+      // onPresss: () => (deleteComment(listComments[0].idComment!)),
+    );
   }
 
   void showMoreImages() {

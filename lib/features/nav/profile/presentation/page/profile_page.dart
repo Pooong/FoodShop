@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   const ProfilePage({Key? key});
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,30 +19,35 @@ class ProfilePage extends GetView<ProfileController> {
 
   Widget buildProfileBodyPage() {
     return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          _buildUserInfo(),
-          const SizedBox(
-            height: 10.0,
-          ),
-          Obx(() => NavControllList(
+      child: GetBuilder<ProfileController>(
+        id: "fetchDataProfilePage",
+        builder: (_) {
+          return Column(
+            children: <Widget>[
+              _buildUserInfo(),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Obx(() => NavControllList(
                 currentIndex: controller.currentIndex.value,
                 onPageChanged: (index) {
                   controller.onChangeNavList(index);
                 },
               )),
-          SizedBox(
-            height: Get.height * 0.6,
-            width: double.infinity,
-            child: PageView(
-              controller: controller.pageController,
-              onPageChanged: (index) {
-                controller.onChangePage(index);
-              },
-              children: controller.getPages(),
-            ),
-          )
-        ],
+              SizedBox(
+                height: Get.height * 0.6,
+                width: double.infinity,
+                child: PageView(
+                  controller: controller.pageController,
+                  onPageChanged: (index) {
+                    controller.onChangePage(index);
+                  },
+                  children: controller.getPages(),
+                ),
+              )
+            ],
+          );
+        },
       ),
     );
   }
@@ -107,8 +112,10 @@ class ProfilePage extends GetView<ProfileController> {
             ),
           ),
           const SizedBox(height: 10.0),
-          const Text(
-            "displayName",
+          Text(
+            controller.user?.displayName ??
+                controller.user?.email ??
+                "Unknown user",
             style: const TextStyle(
               fontSize: 20,
               color: Colors.black,
