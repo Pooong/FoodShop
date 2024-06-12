@@ -16,18 +16,17 @@ class UploadSingleImage extends GetView<CreateRestaurantController> {
 
   UploadSingleImage(
       {super.key,
-      this.circle =false,
+      this.circle = false,
       required this.getImage,
       required this.removeSingleImage,
       required this.display,
-      this.width=double.infinity,
-      this.height=200,
-      this.id= "fetchImageSetting"
-      });
+      this.width = double.infinity,
+      this.height = 200,
+      this.id = "fetchImageSetting"});
 
   @override
   Widget build(BuildContext context) {
-    circle ? width = height: ""; 
+    circle ? width = height : "";
 
     return Column(
       children: [
@@ -35,7 +34,7 @@ class UploadSingleImage extends GetView<CreateRestaurantController> {
           height: 10.0,
         ),
         GetBuilder<CreateRestaurantController>(
-            id:id,
+            id: id,
             builder: (_) {
               File? images = display;
               return images != null

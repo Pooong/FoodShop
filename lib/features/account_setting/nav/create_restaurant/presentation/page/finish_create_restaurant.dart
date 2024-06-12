@@ -2,11 +2,12 @@ import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
+import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/controller/create_restaurant_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-class FinishCreateRestaurantPage extends StatelessWidget {
+class FinishCreateRestaurantPage extends GetView<CreateRestaurantController> {
   const FinishCreateRestaurantPage({super.key});
 
   @override
@@ -26,10 +27,12 @@ class FinishCreateRestaurantPage extends StatelessWidget {
           const SizedBox(height: 10.0),
           subtitleField(title: AppTextString.fCreateRestaurantSubtitle),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
             child: ButtonWidget(
-              ontap: () {
-                Get.offAllNamed("/home",id:10);
+              ontap: () async {
+                await controller.saveRestaurant();
+                Get.close(5);
               },
               text: AppTextString.fComplete,
               fontWeight: FontWeight.bold,

@@ -23,74 +23,77 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.black.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 3,
-            offset: const Offset(1, 3),
-          )
-        ],
-      ),
-      child: Stack(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: InkWell(
+    return InkWell(
+      onTap: () => Get.toNamed(Routes.postsDetail),
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.black.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 3,
+              offset: const Offset(1, 3),
+            )
+          ],
+        ),
+        child: Stack(
+          children: [
+            ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              onTap: () => Get.toNamed(Routes.postsDetail),
-              child: Container(
-                height: double.infinity,
-                width: double.infinity,
-                child: postDataModel.imageList != null &&
-                        postDataModel.imageList!.isNotEmpty
-                    ? Image.network(
-                        postDataModel.imageList!.first,
-                        width: double.infinity,
-                        height: double.infinity,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.asset(
-                        imageUrl,
-                        width: double.infinity,
-                        height: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: Get.height * 0.5,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.7),
-                    Colors.black.withOpacity(0.1),
-                    Colors.transparent,
-                  ],
+              child: InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: () => Get.toNamed(Routes.postsDetail),
+                child: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  child: postDataModel.imageList != null &&
+                          postDataModel.imageList!.isNotEmpty
+                      ? Image.network(
+                          postDataModel.imageList!.first,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          imageUrl,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                 ),
-                borderRadius:
-                    const BorderRadius.vertical(bottom: Radius.circular(10)),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: iconCardProfile(),
-          ),
-        ],
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: Get.height * 0.5,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.7),
+                      Colors.black.withOpacity(0.1),
+                      Colors.transparent,
+                    ],
+                  ),
+                  borderRadius:
+                      const BorderRadius.vertical(bottom: Radius.circular(10)),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: iconCardProfile(),
+            ),
+          ],
+        ),
       ),
     );
   }
