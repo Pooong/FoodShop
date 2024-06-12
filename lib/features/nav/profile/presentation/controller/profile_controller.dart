@@ -28,6 +28,11 @@ class ProfileController extends GetxController {
     super.onInit();
     getPostsOfUser();
     getUser();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    await Future.wait([getUser(), getPostsOfUser()]);
     update(["fetchDataProfilePage", "listPostsOfUser", "fetchUser", "fetchPostsOfUser"]);
   }
 
@@ -62,6 +67,8 @@ class ProfileController extends GetxController {
     await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
     if (pickFileImg != null) {
       imgAvatar = File(pickFileImg.path);
+      user?.avatarUrl = pickFileImg.path;
+      updateUser();
       update(['updateAvatar']);
     }
   }
@@ -71,11 +78,13 @@ class ProfileController extends GetxController {
     await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
     if (pickFileImg != null) {
       imgBackground = File(pickFileImg.path);
+      user?.backgroundUrl = pickFileImg.path;
+      updateUser();
       update(['updateBackground']);
     }
   }
 
-  void getPostsOfUser() async {
+  Future<void> getPostsOfUser() async {
     final result = await FirestorePostData.getListPostOfUser(user!.uid!);
     if (result.status == Status.success) {
       listPostsOfUser = result.data!;
@@ -85,10 +94,19 @@ class ProfileController extends GetxController {
     }
   }
 
-  void getUser() async {
+  Future<void> getUser() async {
     final result = await FirestoreUser.getUser(user!.uid!);
     if (result.status == Status.success) {
       user = result.data!;
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+  }
+
+  void updateUser() async {
+    final result = await FirestoreUser.updateUser(user!);
+    if (result.status == Status.success) {
+      SnackbarUtil.show("Updated successfully!");
       update(["fetchUser"]);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");

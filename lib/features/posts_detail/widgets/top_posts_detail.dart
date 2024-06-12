@@ -59,7 +59,7 @@ class HeaderPosts extends StatelessWidget {
         children: [
           const SizedBox(width: 16),
           Avatar(
-              authorImg: controller.authorPosts?.photoUrl ??
+              authorImg: controller.authorPosts?.avatarUrl ??
                   AppImagesString.iBackgroundUserDefault,
               radius: 50),
           const SizedBox(width: 16),
