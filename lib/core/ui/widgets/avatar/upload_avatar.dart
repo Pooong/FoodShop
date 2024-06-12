@@ -1,6 +1,6 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/features/restaurant/pressentation/controller/restaurant_controller.dart';
-import 'package:find_food/features/restaurant/pressentation/widgets/icon_button.dart';
+import 'package:find_food/features/restaurants/restaurant/pressentation/controller/restaurant_controller.dart';
+import 'package:find_food/features/restaurants/restaurant/pressentation/widgets/icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

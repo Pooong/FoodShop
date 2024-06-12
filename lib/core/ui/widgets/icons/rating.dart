@@ -1,6 +1,5 @@
 // ignore: non_constant_identifier_names
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:flutter/material.dart';
 
 class Rating {
@@ -30,10 +29,10 @@ class Rating {
           size: sizeStar,
         ),
       for (var i = ccl_2 + (halfStar ? 2 : 1); i <= 5; i++)
-        const Icon(
+         Icon(
           Icons.star_border_rounded,
           color: AppColors.yellow,
-          size: AppDimens.textSize20,
+          size: sizeStar,      
         ),
     ];
   }

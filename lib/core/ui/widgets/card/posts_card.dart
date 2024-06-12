@@ -1,4 +1,5 @@
 import 'package:find_food/core/configs/app_images_string.dart';
+import 'package:find_food/core/extensions/color.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/services/location_service.dart';
 import 'package:flutter/material.dart';
@@ -18,17 +19,18 @@ class PostsCard extends StatelessWidget {
   final int customerRated;
   final PostDataModel postDataModel;
   final bool activate;
-  bool? restaurantTag ;
+  bool? restaurantTag;
 
-  PostsCard(
-      {super.key,
-      this.title = "Default Title",
-      this.imageUrl = AppImagesString.iCardDefault,
-      this.rate = 4.5,
-      this.customerRated = 20,
-      required this.postDataModel,
-      this.activate = false,
-      this.restaurantTag=true});
+  PostsCard({
+    super.key,
+    this.title = "Default Title",
+    this.imageUrl = AppImagesString.iCardDefault,
+    this.rate = 4.5,
+    this.customerRated = 20,
+    required this.postDataModel,
+    this.activate = false,
+    this.restaurantTag = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,28 +41,23 @@ class PostsCard extends StatelessWidget {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData) {
+          return const Text('No data available');
         } else {
           double distance = snapshot.data ?? 0.0;
           return Container(
             margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 3,
-                  blurRadius: 2,
-                  offset: const Offset(0, 1),
-                ),
-              ],
+              borderRadius: BorderRadius.circular(AppDimens.radius1),
+              boxShadow:CustomShadow.cardShadow 
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
                   borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(10)),
+                      const BorderRadius.vertical(top: Radius.circular(AppDimens.radius1)),
                   child: InkWell(
                     onTap: () {
                       Get.toNamed(Routes.postsDetail, arguments: postDataModel);
@@ -121,7 +118,7 @@ class PostsCard extends StatelessWidget {
                           maxLines: 10,
                         ),
                       ),
-                      restaurantTag==true
+                      restaurantTag == true
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,7 +163,7 @@ class PostsCard extends StatelessWidget {
                               ],
                             )
                           : Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(right: 10),
@@ -201,6 +198,6 @@ class PostsCard extends StatelessWidget {
           placeLat, placeLon, postLat, postLon);
       return double.parse(distance.toStringAsFixed(2));
     }
-    return 0.0;
+      return 0.0;
   }
 }
