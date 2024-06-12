@@ -1,4 +1,5 @@
-import '../restaurant/pressentation/model/restaurant_model.dart';
+import 'package:find_food/features/restaurants/restaurant/pressentation/model/restaurant_model.dart';
+
 
 class MenuModel {
   String? id;
