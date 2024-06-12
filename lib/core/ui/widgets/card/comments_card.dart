@@ -4,6 +4,7 @@ import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/icons/rating.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
+import 'package:find_food/features/model/comment_model.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,22 +20,24 @@ class CommentsCard extends StatelessWidget {
   final String createdAt;
   final VoidCallback toggleActive;
   final bool active;
+  final CommentModel commentModel;
   // final String imageUrl;
 
-  const CommentsCard({
-    super.key,
-    this.idComment = "",
-    this.favorite = 0,
-    this.comment = "",
-    this.authorAvatar = AppImagesString.iUserDefault,
-    this.authorName = "User Name",
-    this.star = 0.0,
-    this.idPost = "",
-    this.createdAt = "",
-    required this.toggleActive,
-    required this.active,
-    // this.imageUrl = AppImagesString.iPostsDefault,
-  });
+  const CommentsCard(
+      {super.key,
+      this.idComment = "",
+      this.favorite = 0,
+      this.comment = "",
+      this.authorAvatar = AppImagesString.iUserDefault,
+      this.authorName = "User Name",
+      this.star = 0.0,
+      this.idPost = "",
+      this.createdAt = "",
+      required this.toggleActive,
+      required this.active,
+      required this.commentModel
+      // this.imageUrl = AppImagesString.iPostsDefault,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,7 @@ class CommentsCard extends StatelessWidget {
     double mimHeightCommentCard = Get.height * 0.14;
 
     bool hiddenStart = star == 0.0;
-
+    print(commentModel.author.email);
     return Stack(
       children: [
         Container(
@@ -126,7 +129,7 @@ class CommentsCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextWidget(
-                                text: authorName,
+                                text: commentModel.author.email ?? authorName,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black.withOpacity(.7),
                               ),

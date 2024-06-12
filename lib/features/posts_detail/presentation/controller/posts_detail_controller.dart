@@ -176,14 +176,14 @@ class PostsDetailController extends GetxController {
     update(["fetchComment"]);
   }
 
-  void toggleActive(CommentModel comment) {
-    if (comment.isFavoriteComments!) {
-      comment.favorite = comment.favorite! + 1;
-    } else {
-      comment.favorite = comment.favorite! - 1;
-    }
-    update();
-  }
+  // void toggleActive(CommentModel comment) {
+  //   if (comment.isFavoriteComments!) {
+  //     comment.favorite = comment.favorite! + 1;
+  //   } else {
+  //     comment.favorite = comment.favorite! - 1;
+  //   }
+  //   update();
+  // }
 
   void toggleFavoriteStatus() {
     isFavorite.value = !isFavorite.value;
@@ -198,7 +198,7 @@ class PostsDetailController extends GetxController {
       title: "Delete comment",
       message: "Are you sure you want to delete this comment?",
       typeDialog: TypeDialog.warning,
-      // onPresss: () => (deleteComment(listComments[0].idComment!)),
+      onPresss: () => (deleteComment(listComments[0].idComment!)),
     );
   }
 
@@ -217,8 +217,7 @@ class PostsDetailController extends GetxController {
             itemCount: listImagesPostDetail.length,
             itemBuilder: (context, index) {
               return InkWell(
-                onTap:(){
-                } ,
+                onTap: () {},
                 child: Image.network(
                   listImagesPostDetail[index],
                   fit: BoxFit.cover,
@@ -267,9 +266,21 @@ class PostsDetailController extends GetxController {
     final pickedImages = await picker.pickMultiImage();
     selectedImages
         .addAll(pickedImages.map((image) => File(image.path)).toList());
-    }
+  }
 
   void removeImage(File image) {
     selectedImages.remove(image);
   }
+
+  // phương thức xóa bình luận
+  // void deleteComment(String idComment) async {
+  //   final result = await FirestoreComment.deleteComment(idComment);
+  //   if (result.status == Status.success) {
+  //     listComments.removeWhere((element) => element.idComment == idComment);
+  //     update(["fetchComment"]);
+  //     Fluttertoast.showToast(msg: "Delete comments success".tr);
+  //   } else {
+  //     Fluttertoast.showToast(msg: "Delete comments error".tr);
+  //   }
+  // }
 }
