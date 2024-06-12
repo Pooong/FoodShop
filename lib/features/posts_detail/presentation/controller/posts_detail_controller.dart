@@ -1,6 +1,5 @@
 import 'package:find_food/core/configs/enum.dart';
 import 'package:flutter/material.dart';
-import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
@@ -9,9 +8,7 @@ import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.d
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/comment_model.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
-import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
-import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -41,7 +38,6 @@ class PostsDetailController extends GetxController {
   var isFavorite = false.obs;
   var isBookmark = false.obs;
   var isFavoriteComments = false.obs;
-  List<PostDataModel> postsDetail = [];
 
   List<dynamic> listImage = [];
 
@@ -113,18 +109,6 @@ class PostsDetailController extends GetxController {
     }
   }
 
-  void getPostDetail() async {
-    final result = await FirestorePostData.getPostDetail(dataAgument!.id!);
-
-    if (result.status == Status.success) {
-      postsDetail = result.data!;
-      listImage = postsDetail[0].imageList ?? [];
-      update(['fetchTopPostsDetail']);
-    } else {
-      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
-    }
-  }
-
   void uploadComment() async {
     // kiểm tra comments có rỗng
     if (commentController.text.trim().isEmpty) {
@@ -170,7 +154,6 @@ class PostsDetailController extends GetxController {
     }
   }
 
-  final PageController mainPageController = PageController();
 
   // List<dynamic> mainImages =  [
   //     'assets/images/food1.png',
@@ -188,10 +171,6 @@ class PostsDetailController extends GetxController {
   //   'assets/images/food5.png',
   //   'assets/images/food6.png',
   // ];
-
-  var isFavorite = false.obs;
-  var isBookmark = false.obs;
-  var isFavoriteComments = false.obs;
 
   void previousImage() {
     if (currentIndex > 0) {
