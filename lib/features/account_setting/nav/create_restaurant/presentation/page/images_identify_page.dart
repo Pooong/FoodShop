@@ -39,15 +39,16 @@ class ImagesIdentifyPage extends GetView<CreateRestaurantController> {
                     Center(
                       child: UploadSingleImage(
                         circle: false,
-                        getImage: ()async{
-                          controller.fileUploadBackground = await controller.pickImage();
+                        getImage: () async {
+                          controller.restaurantBackgroundImages =
+                              await controller.pickImage();
                           controller.update(["fetchImageSetting"]);
                         },
                         removeSingleImage: () {
-                          controller.fileUploadBackground=null;
+                          controller.restaurantBackgroundImages = null;
                           controller.update(["clearData"]);
                         },
-                        display: controller.fileUploadBackground,
+                        display: controller.restaurantBackgroundImages,
                       ),
                     ),
                     const SizedBox(
@@ -59,15 +60,16 @@ class ImagesIdentifyPage extends GetView<CreateRestaurantController> {
                     Center(
                       child: UploadSingleImage(
                         circle: true,
-                        getImage: () async{
-                          controller.fileUploadLogo = await controller.pickImage();
+                        getImage: () async {
+                          controller.restaurantLogoImages =
+                              await controller.pickImage();
                           controller.update(["fetchImageSetting"]);
                         },
                         removeSingleImage: () {
-                          controller.fileUploadLogo=null;
+                          controller.restaurantLogoImages = null;
                           controller.update(["clearData"]);
                         },
-                        display:  controller.fileUploadLogo,
+                        display: controller.restaurantLogoImages,
                       ),
                     ),
                     const SizedBox(
@@ -82,7 +84,7 @@ class ImagesIdentifyPage extends GetView<CreateRestaurantController> {
                   ontap: () {
                     Get.to(() => const FinishCreateRestaurantPage());
                   },
-                  text: "CONTINUE",
+                  text: "CONFIRM",
                   fontWeight: FontWeight.bold,
                 ),
               ],

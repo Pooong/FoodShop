@@ -3,17 +3,17 @@ import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/features/model/commentsData.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
+import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/comment_model.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
-import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
-import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart'; // Thêm import cho việc phân tích ngày tháng
 
 class PostsDetailController extends GetxController {
   final GetuserUseCase _getuserUseCase;
@@ -81,6 +81,13 @@ class PostsDetailController extends GetxController {
     } else {
       return '${duration.inSeconds}s ago';
     }
+    // super.onInit();
+  }
+
+  var isExpanded = false.obs;
+
+  void toggleExpanded() {
+    isExpanded.value = !isExpanded.value;
   }
 
   getComments() async {
@@ -130,6 +137,18 @@ class PostsDetailController extends GetxController {
     }
     commentController.clear();
     update();
+  }
+
+  // phương thức xóa bình luận
+  void deleteComment(String idComment) async {
+    final result = await FirestoreComment.deleteComment(idComment);
+    if (result.status == Status.success) {
+      listComments.removeWhere((element) => element.idComment == idComment);
+      update(["fetchComment"]);
+      Fluttertoast.showToast(msg: "Delete comments success".tr);
+    } else {
+      Fluttertoast.showToast(msg: "Delete comments error".tr);
+    }
   }
 
   void previousImage() {
