@@ -4,5 +4,5 @@ import 'app.dart';
 
 void main() async {
   await appConfig();
-  runApp(const App());  
+  runApp(const App());
 }
