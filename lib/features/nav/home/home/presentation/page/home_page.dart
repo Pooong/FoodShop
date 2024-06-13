@@ -17,7 +17,10 @@ class HomePage extends GetView<HomeController> {
       body: GetBuilder<HomeController>(
         id: "fetchPosts",
         builder: (logic) {
-          return buildListPostStream();
+          return RefreshIndicator(
+            onRefresh: controller.refreshPosts, // Thêm sự kiện làm mới
+            child: buildListPostStream(),
+          );
         },
       ),
     );
@@ -44,11 +47,16 @@ class HomePage extends GetView<HomeController> {
         if (snapshot.connectionState == ConnectionState.waiting ||
             snapshot.connectionState == ConnectionState.none) {
           return snapshot.hasData
-              ? const Center(
-                  child: CircularProgressIndicator(),
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(AppImagesString.iLoading),
+                    ],
+                  ),
                 )
-              : const Center(
-                  child: Text("No data"),
+              : Center(
+                  child: Image.asset(AppImagesString.iLoading),
                 );
         } else {
           if (snapshot.hasData) {
@@ -57,9 +65,10 @@ class HomePage extends GetView<HomeController> {
               controller: controller.scrollController,
               // reverse: true,
               itemBuilder: (ctx, i) {
-                PostDataModel postDataModel = PostDataModel.fromDocumentSnapshot(postDocs[i]);
+                PostDataModel postDataModel =
+                    PostDataModel.fromDocumentSnapshot(postDocs[i]);
                 return PostsCard(
-                  restaurantTag: i%2==0,
+                  restaurantTag: i % 2 == 0,
                   postDataModel: postDataModel,
                 );
               },
@@ -98,15 +107,19 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 IconButton(
                   icon: const Icon(Icons.filter_list),
                   onPressed: () {
-                    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+                    final RenderBox overlay = Overlay.of(context)
+                        .context
+                        .findRenderObject() as RenderBox;
                     final Size overlaySize = overlay.size;
                     final RelativeRect position = RelativeRect.fromLTRB(
                       overlaySize.width - 10, // Right padding
                       85, // Top padding
                       10, // Left padding (from right edge)
-                      overlaySize.height - kToolbarHeight - 10, // Bottom padding
+                      overlaySize.height -
+                          kToolbarHeight -
+                          10, // Bottom padding
                     );
-    
+
                     showMenu<String>(
                       context: context,
                       position: position,
@@ -123,10 +136,10 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                           value: AppConstants.SelectOption_3,
                           child: Text('Best'),
                         ),
-                      ],color: Colors.white.withOpacity(0.8),
+                      ],
+                      color: Colors.white.withOpacity(0.8),
                     ).then((value) {
                       if (value != null) {
-                        
                         print('Selected: $value');
                       }
                     });
@@ -155,7 +168,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-  
+
   @override
   Size get preferredSize =>
       const Size.fromHeight(kToolbarHeight + 2); // Adjust height for the line

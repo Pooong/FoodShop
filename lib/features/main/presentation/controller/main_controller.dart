@@ -19,9 +19,9 @@ class MainController extends GetxController {
 
   final GetuserUseCase _getuserUseCase;
 
-  MainController(this._getuserUseCase, this._locationService);
+  MainController(this._getuserUseCase, this.locationService);
 
-  final LocationService _locationService;
+  final LocationService locationService;
 
   bool user = false;
   @override
@@ -39,7 +39,7 @@ class MainController extends GetxController {
 
   Future<void> initializeLocation() async {
     isLoading.value = true;
-    await _locationService.initializeLocation();
+    await locationService.initializeLocation();
     isLoading.value = false;
   }
 
@@ -116,4 +116,6 @@ class MainController extends GetxController {
 
     Get.offAndToNamed(pages[index], id: 10);
   }
+
+
 }
