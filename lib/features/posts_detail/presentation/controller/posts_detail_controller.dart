@@ -37,9 +37,13 @@ class PostsDetailController extends GetxController {
   var isBookmark = false.obs;
   var isFavoriteComments = false.obs;
 
+   var isLoading = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
+    isLoading.value=true;
+
     userComment = await _getuserUseCase.getUser();
     if (dataAgument is PostDataModel) {
       postDataModel = dataAgument;
@@ -49,6 +53,7 @@ class PostsDetailController extends GetxController {
       await getAuthorPost();
       update(['fetchDataTopPostDetail']);
     }
+    isLoading.value=false;
   }
 
   getAuthorPost() async {

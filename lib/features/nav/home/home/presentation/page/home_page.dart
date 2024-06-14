@@ -3,6 +3,7 @@ import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/card/posts_card.dart';
+import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/features/nav/home/home/presentation/controller/home_controller.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,9 @@ class HomePage extends GetView<HomeController> {
         id: "fetchPosts",
         builder: (logic) {
           return RefreshIndicator(
-            onRefresh: controller.refreshPosts, // Thêm sự kiện làm mới
+            onRefresh:() async{
+              await controller.refreshPosts();
+            }, // Thêm sự kiện làm mới
             child: buildListPostStream(),
           );
         },
@@ -41,47 +44,34 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget buildListPostStream() {
-    return StreamBuilder<List<DocumentSnapshot>>(
-      stream: controller.listenToPostsRealTime(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.connectionState == ConnectionState.none) {
-          return snapshot.hasData
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(AppImagesString.iLoading),
-                    ],
-                  ),
-                )
-              : Center(
-                  child: Image.asset(AppImagesString.iLoading),
-                );
-        } else {
-          if (snapshot.hasData) {
-            final postDocs = snapshot.data!;
-            return ListView.builder(
-              controller: controller.scrollController,
-              // reverse: true,
-              itemBuilder: (ctx, i) {
-                PostDataModel postDataModel =
-                    PostDataModel.fromDocumentSnapshot(postDocs[i]);
-                return PostsCard(
-                  restaurantTag: i % 2 == 0,
-                  postDataModel: postDataModel,
-                );
-              },
-              itemCount: postDocs.length,
+  return StreamBuilder<List<DocumentSnapshot>>(
+    stream: controller.listenToPostsRealTime(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.none) {
+        return const LoadingDataPage();
+      } else if (snapshot.hasData) {
+        final postDocs = snapshot.data!;
+        return ListView.builder(
+          itemBuilder: (ctx, i) {
+            PostDataModel postDataModel = PostDataModel.fromDocumentSnapshot(postDocs[i]);
+            return PostsCard(
+              restaurantTag: i % 2 == 0,
+              postDataModel: postDataModel,
             );
-          } else {
-            return const CircularProgressIndicator();
-          }
-        }
-      },
-    );
-  }
+          },
+          itemCount: postDocs.length,
+        );
+      } else {
+        return const CircularProgressIndicator();
+      }
+    },
+  );
 }
+
+}
+
+
+
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWidget({

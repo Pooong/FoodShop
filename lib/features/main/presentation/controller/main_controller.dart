@@ -12,6 +12,7 @@ import 'package:find_food/features/nav/post/upload/presentation/page/upload_page
 import 'package:find_food/features/nav/profile/di/profile_binding.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class MainController extends GetxController {
@@ -24,6 +25,11 @@ class MainController extends GetxController {
   final LocationService locationService;
 
   bool user = false;
+
+  var isLocationServiceEnabled = false.obs;
+
+  var showRequiredLocationBox = true.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -33,14 +39,41 @@ class MainController extends GetxController {
         user = true;
       }
     });
-
-    initializeLocation();
+    checkLocationService();
   }
 
   Future<void> initializeLocation() async {
     isLoading.value = true;
     await locationService.initializeLocation();
     isLoading.value = false;
+  }
+
+  Future<void> checkLocationService() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      isLocationServiceEnabled.value = false;
+      return;
+    }
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        isLocationServiceEnabled.value = false;
+        return;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      isLocationServiceEnabled.value = false;
+      return;
+    }
+
+    isLocationServiceEnabled.value = true;
+    initializeLocation();
+  }
+
+  // ignore: non_constant_identifier_names
+  Future<void> CloseRequiredLocationBox() async {
+    showRequiredLocationBox.value=false;
   }
 
   final pages = <String>[
@@ -116,6 +149,4 @@ class MainController extends GetxController {
 
     Get.offAndToNamed(pages[index], id: 10);
   }
-
-
 }

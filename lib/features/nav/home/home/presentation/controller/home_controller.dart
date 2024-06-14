@@ -12,6 +12,7 @@ class HomeController extends GetxController {
   HomeController(this._getuserUseCase);
 
   List<PostDataModel> listPost = [];
+  
   UserModel? user;
   ScrollController scrollController = ScrollController();
   final StreamController<List<DocumentSnapshot>> _postController =
@@ -54,9 +55,9 @@ class HomeController extends GetxController {
 
     isLoading = true;
 
-    final CollectionReference _postCollectionReference =
+    final CollectionReference postCollectionReference =
         FirebaseFirestore.instance.collection('posts');
-    var pagechatQuery = _postCollectionReference
+    var pagechatQuery = postCollectionReference
         .orderBy('createAt', descending: true)
         .limit(pageLimit);
 
