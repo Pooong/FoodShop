@@ -8,7 +8,7 @@ class MainBindding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => Prefs(), fenix: true);
-    Get.lazyPut(() => MainController(Get.find()));
+    Get.lazyPut(() => MainController(Get.find(),Get.find()));
     Get.lazyPut(() => GetuserUseCase(Get.find()));
 
   }

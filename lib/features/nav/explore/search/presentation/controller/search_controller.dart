@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ExploreController extends GetxController {
-
   
   List<PostDataModel> listPost = [];
 
@@ -22,14 +21,23 @@ class ExploreController extends GetxController {
 
   PlaceMap? place;
 
+  var isLoading=false.obs;
+ 
+
   @override
   void onInit() async {
     super.onInit();
+    isLoading.value=true;
     place = await locationService.getLocation();
-    getPosts();
+    await getPosts();
+    isLoading.value=false;
+    update(["fetchDataExplorepage"]);
   }
-  
-  void getPosts() async {
+
+   Future<void>  refreshPage() async{
+    await getPosts();
+  }
+   Future<void> getPosts() async {
     final result = await FirestorePostData.getListPostRelate(limit: 5);
     final resultArea = await FirestorePostData.getListPostRelate(limit:5);
     final resultFavorite = await FirestorePostData.getListPostRelate(limit: 8);

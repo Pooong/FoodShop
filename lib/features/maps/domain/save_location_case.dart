@@ -6,7 +6,6 @@ class SaveLoactionCase {
   final Prefs _prefs;
 
   SaveLoactionCase(this._prefs);
-
   Future saveLocation(PlaceMap placeMap) async {
     _prefs.set(PrefsConstants.location, placeMap);
   }
