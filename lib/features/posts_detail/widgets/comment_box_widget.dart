@@ -48,14 +48,17 @@ class MainContentCommentBox extends StatelessWidget {
                       CommentModel dataComments =
                           controller.listComments[index];
                       return GestureDetector(
+                        //kiem tra id cua user dang dang nhap va id cua user dang comment
                         onLongPress: () {
-                          controller.showDialogDeleteComment();
+                          if (controller.userComment!.uid ==
+                              dataComments.author.uid) {
+                            controller.showDialogDeleteComment();
+                          }
                         },
                         child: CommentsCard(
                           comment:
                               dataComments.comment ?? "Comment is empty !!!",
                           toggleActive: () {
-                            print(dataComments.isFavoriteComments);
                             controller.toggleFavoriteComments(dataComments);
                           },
                           active: dataComments.isFavoriteComments ?? false,
