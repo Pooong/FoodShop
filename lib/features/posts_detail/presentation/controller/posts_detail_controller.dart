@@ -17,6 +17,7 @@ import 'package:intl/intl.dart'; // Thêm import cho việc phân tích ngày th
 
 class PostsDetailController extends GetxController {
   final GetuserUseCase _getuserUseCase;
+
   PostsDetailController(this._getuserUseCase);
 
   UserModel? userComment;
@@ -69,7 +70,7 @@ class PostsDetailController extends GetxController {
       return "";
     }
     DateTime postCreationTime =
-        DateFormat("yyyy-MM-ddTHH:mm:ss").parse(createAt);
+        DateFormat("yyyy-MM-dd THH:mm:ss").parse(createAt);
     DateTime currentTime = DateTime.now();
     Duration difference = currentTime.difference(postCreationTime);
     String timeAgo = _formatDuration(difference);

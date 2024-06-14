@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # timeago: ^3.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -77,13 +78,12 @@ dependencies:
   latlong2: ^0.9.1
 
   # flutter_map: ^7.0.0
-  
+
   flutter_map: ^6.1.0
 
   flutter_osm_plugin: ^0.70.4
 
   google_maps_flutter: ^2.6.1
-
 
   # open_street_map_search_and_pick: ^0.1.1
 
@@ -91,10 +91,10 @@ dependencies:
   delightful_toast: ^1.1.0
   collection: ^1.18.0
   unorm_dart: ^0.3.0
-  
+
   latlng: ^2.0.7
   image_input: ^0.0.2
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -115,7 +115,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-
     - assets/images/
     - assets/images/defaults/
     - assets/icons/
