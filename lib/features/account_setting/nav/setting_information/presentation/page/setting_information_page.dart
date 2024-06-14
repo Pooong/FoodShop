@@ -19,7 +19,7 @@ SingleChildScrollView buildSettingInformationBody() {
   return SingleChildScrollView(
     child: Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Container(
+      child: SizedBox(
         height: Get.height - Get.height * 0.16,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,12 +52,12 @@ Column textFormFieldList() {
 Widget _buildFullNameField() {
   return TextFormField(
     decoration: const InputDecoration(
-      labelText: "Full Name",
+      labelText: "Display Name",
       labelStyle: TextStyle(
         color: Colors.black,
         fontSize: 20,
       ),
-      hintText: "Enter your full name",
+      hintText: "Enter your display name",
       hintStyle: TextStyle(
         color: Colors.grey,
         fontSize: 10,
