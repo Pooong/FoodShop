@@ -15,16 +15,43 @@ class SettingInformationController extends GetxController {
     user = await _getuserUseCase.getUser();
     super.onInit();
     getUser();
-    update(["fetchDataProfilePage", "listPostsOfUser", "fetchUser", "fetchPostsOfUser"]);
+    loadData();
   }
 
-  void getUser() async {
+  Future<void> loadData() async {
+    update(["fetchDataProfilePage", "fetchUser"]);
+  }
+
+   Future<void> getUser() async {
     final result = await FirestoreUser.getUser(user!.uid!);
     if (result.status == Status.success) {
       user = result.data!;
       update(["fetchUser"]);
     } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+  void updateUser() async {
+    final result = await FirestoreUser.updateUser(user!);
+    if (result.status == Status.success) {
+      SnackbarUtil.show("Save changes");
+      update(["fetchUser"]);
+    } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
   }
+
+  Future<void> updateUserInFirestore() async {
+    final result = await FirestoreUser.updateUser(user!);
+    if (result.status == Status.success) {
+      SnackbarUtil.show("Updated successfully!");
+      loadData();
+      update(["fetchUser"]);
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+
 }
