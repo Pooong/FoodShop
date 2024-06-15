@@ -36,7 +36,7 @@ class Avatar extends StatelessWidget {
               return SizedBox(
                 width: radius,
                 height: radius,
-                child: const Center(child: CircularProgressIndicator()),
+                child: const Center(child: CircularProgressIndicator(strokeWidth: 2,)),
               );
             } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == false) {
               return Image.asset(
