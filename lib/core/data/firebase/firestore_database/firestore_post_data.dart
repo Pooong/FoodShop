@@ -22,6 +22,7 @@ class FirestorePostData {
     }
   }
 
+  // list user's posts of profile
   static Future<Result<List<PostDataModel>>> getListPostOfUser(
       String userId) async {
     try {
@@ -40,10 +41,46 @@ class FirestorePostData {
     }
   }
 
-  static Future<Result<List<PostDataModel>>> getListPost() async {
+  // list bookmarked posts of profile
+  static Future<Result<List<PostDataModel>>> getListBookmarkedPosts(
+      String userId) async {
     try {
       QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .where('isBookmarked', arrayContains: userId)
           .get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  // list favorite posts of profile
+  static Future<Result<List<PostDataModel>>> getListFavoritePosts(String userId) async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .where('isFavorited', arrayContains: userId)
+          .get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<List<PostDataModel>>> getListPost() async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection.get();
 
       List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
