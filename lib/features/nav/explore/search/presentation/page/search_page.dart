@@ -5,7 +5,7 @@ import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/appbar/explore_appbar.dart';
 import 'package:find_food/core/ui/widgets/card/explore_food_card.dart';
-import 'package:find_food/core/ui/widgets/card/posts_card.dart';
+import 'package:find_food/core/ui/widgets/card/posts_card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/nav/explore/search/presentation/controller/search_controller.dart';

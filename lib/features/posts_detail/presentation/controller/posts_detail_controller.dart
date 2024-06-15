@@ -1,6 +1,5 @@
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
-import 'package:find_food/features/model/commentsData.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
@@ -38,12 +37,12 @@ class PostsDetailController extends GetxController {
   var isBookmark = false.obs;
   var isFavoriteComments = false.obs;
 
-   var isLoading = false.obs;
+  var isLoading = false.obs;
 
   @override
   void onInit() async {
     super.onInit();
-    isLoading.value=true;
+    isLoading.value = true;
 
     userComment = await _getuserUseCase.getUser();
     if (dataAgument is PostDataModel) {
@@ -54,11 +53,12 @@ class PostsDetailController extends GetxController {
       await getAuthorPost();
       update(['fetchDataTopPostDetail']);
     }
-    isLoading.value=false;
+
+    isLoading.value = false;
   }
 
   getAuthorPost() async {
-    final result = await FirestoreUser.getUser(dataAgument!.userId!);
+    final result = await FirestoreUser.getUser(postDataModel!.userId!);
     if (result.status == Status.success) {
       authorPosts = result.data;
     }
@@ -70,7 +70,7 @@ class PostsDetailController extends GetxController {
       return "";
     }
     DateTime postCreationTime =
-        DateFormat("yyyy-MM-dd THH:mm:ss").parse(createAt);
+        DateFormat("yyyy-MM-ddTHH:mm:ss").parse(createAt);
     DateTime currentTime = DateTime.now();
     Duration difference = currentTime.difference(postCreationTime);
     String timeAgo = _formatDuration(difference);
@@ -244,11 +244,11 @@ class PostsDetailController extends GetxController {
     return null;
   }
 
-  void updateComment(int index) {
-    CommentData.commentDataList[index - 1]['isActive'] =
-        !CommentData.commentDataList[index - 1]['isActive'];
-    update(["fetchComment"]);
-  }
+  // void updateComment(int index) {
+  //   CommentData.commentDataList[index - 1]['isActive'] =
+  //       !CommentData.commentDataList[index - 1]['isActive'];
+  //   update(["fetchComment"]);
+  // }
 
   bool hiddenStar(double star) => star == 0.0;
 
@@ -267,16 +267,4 @@ class PostsDetailController extends GetxController {
   void removeImage(File image) {
     selectedImages.remove(image);
   }
-
-  // phương thức xóa bình luận
-  // void deleteComment(String idComment) async {
-  //   final result = await FirestoreComment.deleteComment(idComment);
-  //   if (result.status == Status.success) {
-  //     listComments.removeWhere((element) => element.idComment == idComment);
-  //     update(["fetchComment"]);
-  //     Fluttertoast.showToast(msg: "Delete comments success".tr);
-  //   } else {
-  //     Fluttertoast.showToast(msg: "Delete comments error".tr);
-  //   }
-  // }
 }

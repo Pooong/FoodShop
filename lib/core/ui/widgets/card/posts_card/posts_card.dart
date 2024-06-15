@@ -2,6 +2,7 @@ import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/extensions/color.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/services/location_service.dart';
+import 'package:find_food/core/ui/widgets/card/posts_card/posts_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:find_food/core/configs/app_colors.dart';
@@ -12,25 +13,27 @@ import 'package:find_food/core/utils/calculator_utils.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 
 // ignore: must_be_immutable
-class PostsCard extends StatelessWidget {
+class PostsCard extends GetView {
   final String title;
   final String imageUrl;
   final double rate;
   final int customerRated;
-  final PostDataModel postDataModel;
   final bool activate;
-  bool? restaurantTag;
+  final PostDataModel postDataModel;
 
+
+  final PostCardController controller = Get.put(PostCardController());
   PostsCard({
     super.key,
     this.title = "Default Title",
     this.imageUrl = AppImagesString.iCardDefault,
     this.rate = 4.5,
     this.customerRated = 20,
-    required this.postDataModel,
     this.activate = false,
-    this.restaurantTag = true,
+    required this.postDataModel,
   });
+
+  bool favoriteActive=false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +51,15 @@ class PostsCard extends StatelessWidget {
           return Container(
             margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(AppDimens.radius1),
-              boxShadow:CustomShadow.cardShadow 
-            ),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(AppDimens.radius1),
+                boxShadow: CustomShadow.cardShadow),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(AppDimens.radius1)),
+                  borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(AppDimens.radius1)),
                   child: InkWell(
                     onTap: () {
                       Get.toNamed(Routes.postsDetail, arguments: postDataModel);
@@ -102,12 +104,30 @@ class PostsCard extends StatelessWidget {
                               maxLines: 2,
                             ),
                           ),
-                          Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              child: const Icon(
-                                Icons.favorite_border,
-                                size: AppDimens.textSize16,
-                              )),
+                          InkWell(
+
+                            onTap: (){
+                              controller.toggleStateIcons(idPost: postDataModel.id ?? "2");
+                            },
+
+                            child: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: GetBuilder<PostCardController>(
+                                  id: "fetchStateIcon",
+                                  builder: (_) {
+                                    return controller.listDataFavorite.contains(postDataModel.id)
+                                        ? const Icon(
+                                            Icons.favorite,
+                                            color: AppColors.red,
+                                            size: AppDimens.textSize16,
+                                          )
+                                        : const Icon(
+                                            Icons.favorite_border,
+                                            size: AppDimens.textSize16,
+                                          );
+                                  },
+                                )),
+                          ),
                         ],
                       ),
                       Padding(
@@ -118,7 +138,7 @@ class PostsCard extends StatelessWidget {
                           maxLines: 10,
                         ),
                       ),
-                      restaurantTag == true
+                      postDataModel.restaurantId != ""
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -198,6 +218,6 @@ class PostsCard extends StatelessWidget {
           placeLat, placeLon, postLat, postLon);
       return double.parse(distance.toStringAsFixed(2));
     }
-      return 0.0;
+    return 0.0;
   }
 }

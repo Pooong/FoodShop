@@ -1,6 +1,6 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/ui/widgets/card/posts_card.dart';
+import 'package:find_food/core/ui/widgets/card/posts_card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/find_post/result_search/presentation/controller/result_search_controller.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';

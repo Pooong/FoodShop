@@ -1,3 +1,4 @@
+import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
@@ -22,11 +23,45 @@ class PostsDetailPage extends GetView<PostsDetailController> {
           title: const TextWidget(text: "DETAIL"),
           centerTitle: true,
           actions: [
-            controller.userComment?.uid == controller.authorPosts?.uid
-                ? Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: const Icon(Icons.settings))
-                : const SizedBox()
+            Container(
+              margin: const EdgeInsets.only(right: 10),
+              child: IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  final RenderBox overlay =
+                      Overlay.of(context).context.findRenderObject() as RenderBox;
+                  final Size overlaySize = overlay.size;
+                  final RelativeRect position = RelativeRect.fromLTRB(
+                    overlaySize.width , // Right padding
+                    Get.height*0.09, // Top padding
+                    10, // Left padding (from right edge)
+                    overlaySize.height - kToolbarHeight, // Bottom padding
+                  );
+              
+                  showMenu<String>(
+                    context: context,
+                    position: position,
+                    items: [
+                      const PopupMenuItem<String>(
+                        value: "_changeValue",
+                        child:Row(children: [Icon(Icons.edit_document),SizedBox(width: 5,), TextWidget(text: "Edit posts")],),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: "_deleteValue",
+                        child:Row(children: [Icon(Icons.delete),SizedBox(width: 5,),TextWidget(text: "Delete")],),
+                      ),
+                    ],
+                    color: Colors.white.withOpacity(0.8),
+                  ).then((value) {
+                    if (value != null) {
+                      if(value =="_changeValue"){
+                        Get.toNamed("/editPosts",arguments: controller.postDataModel);
+                      }
+                    }
+                  });
+                },
+              ),
+            )
           ],
         ),
         body: Obx(() {
