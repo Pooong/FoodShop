@@ -1,5 +1,4 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/appbar/profile_appbar.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/background/background.dart';
@@ -76,8 +75,7 @@ class ProfilePage extends GetView<ProfileController> {
         id: "updateBackground",
         builder: (_) {
           return Background(
-            authorImg: controller.user?.backgroundUrl ??
-                AppImagesString.iBackgroundUserDefault,
+            authorImg: controller.user?.backgroundUrl ?? '',
             heightBg: Get.height * 0.24,
           );
           
@@ -105,8 +103,7 @@ class ProfilePage extends GetView<ProfileController> {
                   elevation: 10.0,
                   shadowColor: AppColors.black,
                   child: Avatar(
-                      authorImg: controller.user?.avatarUrl ??
-                          AppImagesString.iBackgroundUserDefault,
+                      authorImg: controller.user?.avatarUrl ?? '',
                       radius: 100),
                 );
               },
@@ -115,8 +112,8 @@ class ProfilePage extends GetView<ProfileController> {
           const SizedBox(height: 10.0),
           TextWidget(
             text: controller.user?.displayName ??
-                  controller.user?.email ??
-                  "Unknown user",
+                  controller.user?.email ?? '',
+                  // "Unknown user",
             size: 20.0,
             fontWeight: FontWeight.w500,
           ),

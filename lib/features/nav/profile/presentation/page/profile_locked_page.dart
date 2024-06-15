@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 class ProfileLockedPage extends GetView<ProfileController> {
   ProfileLockedPage({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return controller.listPostsOfUser.isNotEmpty
@@ -26,6 +27,8 @@ class ProfileLockedPage extends GetView<ProfileController> {
                 );
               });
         })
-        : const SizedBox.shrink();
+        : const Center(
+            child: Text("No locked posts found"),
+          );
   }
 }
