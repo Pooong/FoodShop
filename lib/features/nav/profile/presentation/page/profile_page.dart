@@ -1,6 +1,8 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/appbar/profile_appbar.dart';
+import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
+import 'package:find_food/core/ui/widgets/background/background.dart';
+import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/nav/profile/presentation/controller/profile_controller.dart';
 import 'package:find_food/features/nav/profile/presentation/widgets/nav_controll_list.dart';
 import 'package:flutter/material.dart';
@@ -72,20 +74,13 @@ class ProfilePage extends GetView<ProfileController> {
       child: GetBuilder<ProfileController>(
         id: "updateBackground",
         builder: (_) {
-          return Container(
-            height: Get.height * 0.24,
-            width: double.infinity,
-            foregroundDecoration: BoxDecoration(
-              color: AppColors.white,
-              image: DecorationImage(
-                image: controller.imgBackground == null
-                    ? const AssetImage(AppImagesString.iBackgroundUserDefault)
-                    : FileImage(controller.imgBackground!) as ImageProvider,
-                fit: BoxFit.cover,
-              ),
-            ),
+          return Background(
+            authorImg: controller.user?.backgroundUrl ?? '',
+            heightBg: Get.height * 0.24,
           );
+          
         },
+        
       ),
     );
   }
@@ -103,38 +98,25 @@ class ProfilePage extends GetView<ProfileController> {
               id: "updateAvatar",
               builder: (_) {
                 return PhysicalModel(
-                  color: Colors.transparent,
+                  color: AppColors.transparent,
                   shape: BoxShape.circle,
                   elevation: 10.0,
-                  shadowColor: Colors.black54,
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.white,
-                    radius: 55,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: controller.imgAvatar == null
-                          ? const AssetImage(AppImagesString.iUserDefault)
-                          : FileImage(controller.imgAvatar!) as ImageProvider,
-                    ),
-                  ),
+                  shadowColor: AppColors.black,
+                  child: Avatar(
+                      authorImg: controller.user?.avatarUrl ?? '',
+                      radius: 100),
                 );
               },
             ),
           ),
           const SizedBox(height: 10.0),
-          Text(
-            controller.user?.displayName ??
-                controller.user?.email ??
-                "Unknown user",
-            style: const TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+          TextWidget(
+            text: controller.user?.displayName ??
+                  controller.user?.email ?? '',
+                  // "Unknown user",
+            size: 20.0,
+            fontWeight: FontWeight.w500,
           ),
-          const SizedBox(
-            height: 10.0,
-          )
         ],
       ),
     );

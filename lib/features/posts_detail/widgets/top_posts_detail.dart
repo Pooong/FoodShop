@@ -11,9 +11,11 @@ import 'package:get/get.dart';
 
 bool isVisible = true;
 
+// ignore: must_be_immutable
 class TopPostsDetail extends GetView<PostsDetailController> {
-  const TopPostsDetail({super.key});
-
+  const TopPostsDetail({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PostsDetailController>(
@@ -29,6 +31,7 @@ class TopPostsDetail extends GetView<PostsDetailController> {
                 children: [
                   Slider(controller: controller),
                   TagInfoPosts(controller: controller),
+                  if(controller.isRestaurant)
                   const TagToRestauRant(),
                 ],
               )
@@ -37,6 +40,7 @@ class TopPostsDetail extends GetView<PostsDetailController> {
         });
   }
 }
+
 
 class HeaderPosts extends StatelessWidget {
   const HeaderPosts({
@@ -191,6 +195,7 @@ class TagInfoPosts extends StatelessWidget {
   Widget build(BuildContext context) {
     double reat = 4;
     int reatPerson = 20;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
@@ -201,12 +206,12 @@ class TagInfoPosts extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   controller.isRestaurant
                       ? Row(
@@ -235,69 +240,75 @@ class TagInfoPosts extends StatelessWidget {
                             ),
                           ],
                         )
-                      : const Row(),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Column(
-                          children: [
-                            const Icon(Icons.comment,
-                                color: Color.fromRGBO(0, 0, 0, 1), size: 20.0),
-                            TextWidget(
-                                text: '${controller.listComments.length ?? 0}',
-                                size: AppDimens.textSize15),
-                          ],
+                      : const SizedBox(
+                          height: 0,
                         ),
-                        const SizedBox(
-                          width: 20.0,
+                  if(controller.isRestaurant)
+                  const SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.location_on, color: Colors.black, size: 20.0),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "2.7km",
+                        style: TextStyle(
+                          fontSize: 14.0,
                         ),
-                        Column(
-                          children: [
-                            Obx(
-                              () => InkWell(
-                                onTap: controller.toggleFavoriteStatus,
-                                child: Icon(
-                                  controller.isFavorite.value
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: controller.isFavorite.value
-                                      ? Colors.red
-                                      : null,
-                                  size: 20.0,
-                                ),
-                              ),
-                            ),
-                            TextWidget(
-                                text:
-                                    "${controller.postDataModel?.favoriteCount ?? 0}",
-                                size: AppDimens.textSize15),
-                          ],
+                      ),
+                      const SizedBox(width: 5),
+                      if(controller.isRestaurant)
+                      const Text(
+                        "Opening",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.green,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const Row(
-                children: [
-                  Icon(Icons.location_on, color: Colors.black, size: 20.0),
-                  SizedBox(width: 5),
-                  Text(
-                    "2.7km",
-                    style: TextStyle(
-                      fontSize: 14.0,
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Column(
+                      children: [
+                        const Icon(Icons.comment,
+                            color: Color.fromRGBO(0, 0, 0, 1), size: 20.0),
+                        TextWidget(
+                            text: '${controller.listComments.length ?? 0}',
+                            size: AppDimens.textSize15),
+                      ],
                     ),
-                  ),
-                  SizedBox(width: 5),
-                  Text(
-                    "Opening",
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.green,
+                    const SizedBox(
+                      width: 20.0,
                     ),
-                  ),
-                ],
+                    Column(
+                      children: [
+                        Obx(
+                          () => InkWell(
+                            onTap: controller.toggleFavoriteStatus,
+                            child: Icon(
+                              controller.isFavorite.value
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: controller.isFavorite.value
+                                  ? Colors.red
+                                  : null,
+                              size: 20.0,
+                            ),
+                          ),
+                        ),
+                        TextWidget(
+                            text:
+                                "${controller.postDataModel?.favoriteCount ?? 0}",
+                            size: AppDimens.textSize15),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

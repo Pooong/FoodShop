@@ -29,7 +29,7 @@ class PostsDetailController extends GetxController {
   List<dynamic> listImagesPostDetail = [];
   String timePosts = "";
   UserModel? authorPosts;
-  bool isRestaurant = true;
+  bool isRestaurant = false;
   int currentIndex = 0;
 
   final PageController mainPageController = PageController();
@@ -38,9 +38,13 @@ class PostsDetailController extends GetxController {
   var isBookmark = false.obs;
   var isFavoriteComments = false.obs;
 
+   var isLoading = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
+    isLoading.value=true;
+
     userComment = await _getuserUseCase.getUser();
     if (dataAgument is PostDataModel) {
       postDataModel = dataAgument;
@@ -50,6 +54,7 @@ class PostsDetailController extends GetxController {
       await getAuthorPost();
       update(['fetchDataTopPostDetail']);
     }
+    isLoading.value=false;
   }
 
   getAuthorPost() async {
@@ -65,7 +70,7 @@ class PostsDetailController extends GetxController {
       return "";
     }
     DateTime postCreationTime =
-        DateFormat("yyyy-MM-ddTHH:mm:ss").parse(createAt);
+        DateFormat("yyyy-MM-dd THH:mm:ss").parse(createAt);
     DateTime currentTime = DateTime.now();
     Duration difference = currentTime.difference(postCreationTime);
     String timeAgo = _formatDuration(difference);
@@ -82,7 +87,6 @@ class PostsDetailController extends GetxController {
     } else {
       return '${duration.inSeconds}s ago';
     }
-    // super.onInit();
   }
 
   var isExpanded = false.obs;
@@ -176,15 +180,6 @@ class PostsDetailController extends GetxController {
     comment.isFavoriteComments = !comment.isFavoriteComments!;
     update(["fetchComment"]);
   }
-
-  // void toggleActive(CommentModel comment) {
-  //   if (comment.isFavoriteComments!) {
-  //     comment.favorite = comment.favorite! + 1;
-  //   } else {
-  //     comment.favorite = comment.favorite! - 1;
-  //   }
-  //   update();
-  // }
 
   void toggleFavoriteStatus() {
     isFavorite.value = !isFavorite.value;

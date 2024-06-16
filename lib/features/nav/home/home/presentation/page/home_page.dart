@@ -3,6 +3,7 @@ import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/card/posts_card.dart';
+import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/features/nav/home/home/presentation/controller/home_controller.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,12 @@ class HomePage extends GetView<HomeController> {
       body: GetBuilder<HomeController>(
         id: "fetchPosts",
         builder: (logic) {
-          return buildListPostStream();
+          return RefreshIndicator(
+            onRefresh:() async{
+              await controller.refreshPosts();
+            }, // Thêm sự kiện làm mới
+            child: buildListPostStream(),
+          );
         },
       ),
     );
@@ -38,41 +44,34 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget buildListPostStream() {
-    return StreamBuilder<List<DocumentSnapshot>>(
-      stream: controller.listenToPostsRealTime(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.connectionState == ConnectionState.none) {
-          return snapshot.hasData
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : const Center(
-                  child: Text("No data"),
-                );
-        } else {
-          if (snapshot.hasData) {
-            final postDocs = snapshot.data!;
-            return ListView.builder(
-              controller: controller.scrollController,
-              // reverse: true,
-              itemBuilder: (ctx, i) {
-                PostDataModel postDataModel = PostDataModel.fromDocumentSnapshot(postDocs[i]);
-                return PostsCard(
-                  restaurantTag: i%2==0,
-                  postDataModel: postDataModel,
-                );
-              },
-              itemCount: postDocs.length,
+  return StreamBuilder<List<DocumentSnapshot>>(
+    stream: controller.listenToPostsRealTime(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.none) {
+        return const LoadingDataPage();
+      } else if (snapshot.hasData) {
+        final postDocs = snapshot.data!;
+        return ListView.builder(
+          itemBuilder: (ctx, i) {
+            PostDataModel postDataModel = PostDataModel.fromDocumentSnapshot(postDocs[i]);
+            return PostsCard(
+              restaurantTag: i % 2 == 0,
+              postDataModel: postDataModel,
             );
-          } else {
-            return const CircularProgressIndicator();
-          }
-        }
-      },
-    );
-  }
+          },
+          itemCount: postDocs.length,
+        );
+      } else {
+        return const CircularProgressIndicator();
+      }
+    },
+  );
 }
+
+}
+
+
+
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWidget({
@@ -98,15 +97,19 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 IconButton(
                   icon: const Icon(Icons.filter_list),
                   onPressed: () {
-                    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+                    final RenderBox overlay = Overlay.of(context)
+                        .context
+                        .findRenderObject() as RenderBox;
                     final Size overlaySize = overlay.size;
                     final RelativeRect position = RelativeRect.fromLTRB(
                       overlaySize.width - 10, // Right padding
                       85, // Top padding
                       10, // Left padding (from right edge)
-                      overlaySize.height - kToolbarHeight - 10, // Bottom padding
+                      overlaySize.height -
+                          kToolbarHeight -
+                          10, // Bottom padding
                     );
-    
+
                     showMenu<String>(
                       context: context,
                       position: position,
@@ -123,10 +126,10 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                           value: AppConstants.SelectOption_3,
                           child: Text('Best'),
                         ),
-                      ],color: Colors.white.withOpacity(0.8),
+                      ],
+                      color: Colors.white.withOpacity(0.8),
                     ).then((value) {
                       if (value != null) {
-                        
                         print('Selected: $value');
                       }
                     });
@@ -155,7 +158,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-  
+
   @override
   Size get preferredSize =>
       const Size.fromHeight(kToolbarHeight + 2); // Adjust height for the line

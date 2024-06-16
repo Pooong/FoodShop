@@ -7,26 +7,28 @@ import 'package:get/get.dart';
 
 class ProfileFavoritePage extends GetView<ProfileController> {
   ProfileFavoritePage({super.key});
-  // ProfileController controller = Get.put(ProfileController());
+
   @override
   Widget build(BuildContext context) {
-    return controller.listPostsOfUser.isNotEmpty
+    return controller.listFavoritePosts.isNotEmpty
         ? GetBuilder<ProfileController>(
         id: "fetchDataProfilePage",
         builder: (_) {
           return GridView.builder(
               shrinkWrap: true,
-              itemCount: controller.listPostsOfUser.length,
+              itemCount: controller.listFavoritePosts.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, childAspectRatio: 0.7),
               itemBuilder: (_, index) {
                 PostDataModel postDataModel =
-                controller.listPostsOfUser[index];
+                controller.listFavoritePosts[index];
                 return ProfileCard(
                   postDataModel: postDataModel,
                 );
               });
         })
-        : const SizedBox.shrink();
+        : const Center(
+            child: Text("No favorite posts found"),
+          );
   }
 }

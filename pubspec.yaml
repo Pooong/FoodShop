@@ -119,6 +119,7 @@ flutter:
     - assets/images/defaults/
     - assets/icons/
     - assets/images/food/
+    - assets/images/loading/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
