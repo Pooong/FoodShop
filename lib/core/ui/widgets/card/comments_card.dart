@@ -21,6 +21,7 @@ class CommentsCard extends StatelessWidget {
   final VoidCallback toggleActive;
   final bool active;
   final CommentModel commentModel;
+  // final
 
   const CommentsCard({
     super.key,
