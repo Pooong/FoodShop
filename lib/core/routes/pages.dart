@@ -13,6 +13,8 @@ import 'package:find_food/features/auth/login/di/login_binding.dart';
 import 'package:find_food/features/auth/login/presentation/page/login_page.dart';
 import 'package:find_food/features/auth/register/di/register_binding.dart';
 import 'package:find_food/features/auth/register/presentation/page/register_page.dart';
+import 'package:find_food/features/edit_posts/edit/di/edit_posts_binding.dart';
+import 'package:find_food/features/edit_posts/edit/presentation/page/edit_post_page.dart';
 import 'package:find_food/features/find_post/category/di/category_binding.dart';
 import 'package:find_food/features/find_post/category/presentation/page/category_page.dart';
 import 'package:find_food/features/create_menu_restaurant/di/create_menu_binding.dart';
@@ -89,6 +91,12 @@ class Pages {
       name: Routes.accountSetting,
       page: () => const AccountSettingPage(),
       binding: AccountSettingBinding(),
+    ),
+
+    GetPage(
+      name: Routes.editPosts,
+      page: () => const EditPostPage(),
+      binding: EditPostsBinding(),
     ),
 
     //trang setting information

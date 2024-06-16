@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
@@ -19,8 +20,18 @@ import 'package:image_picker/image_picker.dart';
 class ProfileController extends GetxController {
   final GetuserUseCase _getuserUseCase;
   ProfileController(this._getuserUseCase);
+
   List<PostDataModel> listPostsOfUser = [];
+  List<PostDataModel> listBookmarkedPosts = [];
+  List<PostDataModel> listFavoritePosts = [];
   UserModel? user;
+
+  RxInt currentIndex = 0.obs;
+  PageController pageController = PageController(initialPage: 0);
+
+  final picker = ImagePicker();
+  File? imgAvatar;
+  File? imgBackground;
 
   @override
   void onInit() async {
@@ -28,11 +39,13 @@ class ProfileController extends GetxController {
     super.onInit();
     getPostsOfUser();
     getUser();
-    update(["fetchDataProfilePage", "listPostsOfUser", "fetchUser", "fetchPostsOfUser"]);
+    loadData();
   }
 
-  RxInt currentIndex = 0.obs;
-  PageController pageController = PageController(initialPage: 0);
+  Future<void> loadData() async {
+    await Future.wait([getUser(), getPostsOfUser()]);
+    update(["fetchDataProfilePage", "listPostsOfUser", "fetchUser", "fetchPostsOfUser"]);
+  }
 
   void onChangeNavList(int index) {
     if (currentIndex.value == index) return;
@@ -44,6 +57,7 @@ class ProfileController extends GetxController {
     currentIndex.value = index;
   }
 
+  /// Get the list of profile pages
   List<Widget> getPages() {
     return [
       ProfileListPage(),
@@ -53,45 +67,121 @@ class ProfileController extends GetxController {
     ];
   }
 
-  final picker = ImagePicker();
-  File? imgAvatar;
-  File? imgBackground;
-
-  Future selectImageAvatar() async {
-    final pickFileImg =
-    await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
-    if (pickFileImg != null) {
-      imgAvatar = File(pickFileImg.path);
+  /// Select an image for the avatar from the gallery
+  Future<void> selectImageAvatar() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    if (pickedFile != null) {
+      imgAvatar = File(pickedFile.path);
+      user?.avatarUrl = pickedFile.path;
+      await updateUserAvatar();
       update(['updateAvatar']);
     }
   }
 
-  Future selectImageBackground() async {
-    final pickFileImg =
-    await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
-    if (pickFileImg != null) {
-      imgBackground = File(pickFileImg.path);
+  /// Select an image for the background from the gallery
+  Future<void> selectImageBackground() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    if (pickedFile != null) {
+      imgBackground = File(pickedFile.path);
+      user?.backgroundUrl = pickedFile.path;
+      await updateUserBackground();
       update(['updateBackground']);
     }
   }
 
-  void getPostsOfUser() async {
+  // Get the list of posts by the user
+  Future<void> getPostsOfUser() async {
+    if (user == null) return;
+
     final result = await FirestorePostData.getListPostOfUser(user!.uid!);
     if (result.status == Status.success) {
       listPostsOfUser = result.data!;
       update(["fetchPostsOfUser"]);
     } else {
-      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
     }
   }
 
-  void getUser() async {
+  // Get the list of bookmark posts by the user
+  Future<void> getBookmarkedPosts() async {
+    if (user == null) return;
+
+    final result = await FirestorePostData.getListBookmarkedPosts(user!.uid!);
+    if (result.status == Status.success) {
+      listBookmarkedPosts = result.data!;
+      update(["fetchBookmarkedPosts"]);
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+  // Get the list of favorite posts by the user
+  Future<void> getFavoritePosts() async {
+    if (user == null) return;
+
+    final result = await FirestorePostData.getListFavoritePosts(user!.uid!);
+    if (result.status == Status.success) {
+      listBookmarkedPosts = result.data!;
+      update(["fetchFavoritePosts"]);
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+  //Get the user data from Firestore
+  Future<void> getUser() async {
     final result = await FirestoreUser.getUser(user!.uid!);
     if (result.status == Status.success) {
       user = result.data!;
       update(["fetchUser"]);
     } else {
-      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+  //Update the user's avatar in Firestore
+  Future<void> updateUserAvatar() async {
+    if (imgAvatar == null || user == null) return;
+
+    final result = await FirebaseStorageData.uploadImage(
+      imageFile: imgAvatar!,
+      userId: user!.uid!,
+      collection: "avatarUsers",
+    );
+    if (result.status == Status.success) {
+      user!.avatarUrl = result.data;
+      await updateUserInFirestore();
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+  // Update the user's background in Firestore
+  Future<void> updateUserBackground() async {
+    if (imgBackground == null || user == null) return;
+
+    final result = await FirebaseStorageData.uploadImage(
+      imageFile: imgBackground!,
+      userId: user!.uid!,
+      collection: "backgroundUsers",
+    );
+    if (result.status == Status.success) {
+      user!.backgroundUrl = result.data;
+      await updateUserInFirestore();
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+  // Update the user data in Firestore
+  Future<void> updateUserInFirestore() async {
+    final result = await FirestoreUser.updateUser(user!);
+    if (result.status == Status.success) {
+      SnackbarUtil.show("Updated successfully!");
+      loadData();
+      update(["fetchUser"]);
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
     }
   }
 }

@@ -1,9 +1,10 @@
-
 import 'package:find_food/core/data/prefs/prefs.dart';
 import 'package:find_food/features/maps/domain/get_location_case.dart';
 import 'package:find_food/features/maps/domain/save_location_case.dart';
 import 'package:find_food/features/maps/location/models/place_map.dart';
+import 'package:find_food/features/model/VietnamProvinces%20.dart';
 import 'package:get/get.dart';
+import 'dart:math' as math;
 
 class AccountSettingController extends GetxController {
   final SaveLoactionCase _saveLoactionCase;
@@ -23,7 +24,14 @@ class AccountSettingController extends GetxController {
 
   _loadLocation() async {
     place = await _getLocationCase.getLocation();
-    locationName = place!.displayName??"Add or chang your location";
+    locationName = place?.displayName??"Add or change your location";
+
+    // Check if the current location falls within any province
+    String? provinceName = checkProvinceLocation(place!.lat??0.0, place!.lon??0.0);
+    if (provinceName != null) {
+      locationName = '${place!.displayName} ($provinceName)' ;
+    }
+
     update(['fetchLocaiton']);
   }
 
@@ -39,5 +47,35 @@ class AccountSettingController extends GetxController {
     _saveLoactionCase.saveLocation(place);
     await _loadLocation();
     update(['fetchLocaiton']);
+  }
+
+  // Function to check which province the location falls within
+  String? checkProvinceLocation(double latitude, double longitude) {
+    for (var province in VietnamProvinces.provinces) {
+      double distance = calculateDistance(latitude, longitude, province.latitude, province.longitude);
+      if (distance <= province.radius) {
+        return province.name;
+      }
+    }
+    return null;
+  }
+
+  // Function to calculate the distance between two coordinates using Haversine formula
+  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double radiusEarth = 6371; // Earth's radius in kilometers
+    double dLat = (lat2 - lat1).toRadians();
+    double dLon = (lon2 - lon1).toRadians();
+    double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.cos(lat1.toRadians()) * math.cos(lat2.toRadians()) *
+        math.sin(dLon / 2) * math.sin(dLon / 2);
+    double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+    return radiusEarth * c;
+  }
+}
+
+// Extension method to convert degrees to radians
+extension on double {
+  double toRadians() {
+    return this * math.pi / 180;
   }
 }

@@ -47,12 +47,23 @@ class MainContentCommentBox extends StatelessWidget {
                     itemBuilder: (context, index) {
                       CommentModel dataComments =
                           controller.listComments[index];
-                      return CommentsCard(
-                        comment: dataComments.comment ?? "comment empty !!!",
-                        toggleActive: () {
-                          controller.toggleFavoriteComments(dataComments);
+                      return GestureDetector(
+                        //kiem tra id cua user dang dang nhap va id cua user dang comment
+                        onLongPress: () {
+                          if (controller.userComment!.uid ==
+                              dataComments.author.uid) {
+                            controller.showDialogDeleteComment();
+                          }
                         },
-                        active: dataComments.isFavoriteComments ?? false,
+                        child: CommentsCard(
+                          comment:
+                              dataComments.comment ?? "Comment is empty !!!",
+                          toggleActive: () {
+                            controller.toggleFavoriteComments(dataComments);
+                          },
+                          active: dataComments.isFavoriteComments ?? false,
+                          commentModel: dataComments,
+                        ),
                       );
                     },
                   )
@@ -112,19 +123,6 @@ class CommentBar extends StatelessWidget {
                         border: InputBorder.none,
                         hintText: "Enter your comment",
                         hintStyle: TextStyle(color: AppColors.grey)),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 10,
-                right: 0,
-                child: InkWell(
-                  child: GestureDetector(
-                    onTap: () {
-                      controller.pickImages();
-                    },
-                    child: Image.asset('assets/images/addphoto.png',
-                        width: 50, height: 40),
                   ),
                 ),
               ),

@@ -22,6 +22,7 @@ class FirestorePostData {
     }
   }
 
+  // list user's posts of profile
   static Future<Result<List<PostDataModel>>> getListPostOfUser(
       String userId) async {
     try {
@@ -40,10 +41,47 @@ class FirestorePostData {
     }
   }
 
-  static Future<Result<List<PostDataModel>>> getListPost() async {
+  // list bookmarked posts of profile
+  static Future<Result<List<PostDataModel>>> getListBookmarkedPosts(
+      String userId) async {
     try {
       QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .where('isBookmarked', arrayContains: userId)
           .get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  // list favorite posts of profile
+  static Future<Result<List<PostDataModel>>> getListFavoritePosts(
+      String userId) async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .where('isFavorited', arrayContains: userId)
+          .get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<List<PostDataModel>>> getListPost() async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection.get();
 
       List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -116,6 +154,27 @@ class FirestorePostData {
       return Result.success([]);
     } on FirebaseException catch (e) {
       return Result.error(e);
+    }
+  }
+
+  static Future<Result<PostDataModel>> getPost(String postId) async {
+    try {
+      DocumentSnapshot documentSnapshot =
+          await _fireStorePostCollection.doc(postId).get();
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> postData =
+            documentSnapshot.data() as Map<String, dynamic>;
+        return Result.success(PostDataModel.fromJson(postData));
+      } else {
+        return Result.error(FirebaseAuthException(
+            code: 'post-not-found',
+            message: 'No post found with the provided ID.'));
+      }
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    } catch (e) {
+      return Result.error(
+          FirebaseAuthException(code: 'unknown-error', message: e.toString()));
     }
   }
 
