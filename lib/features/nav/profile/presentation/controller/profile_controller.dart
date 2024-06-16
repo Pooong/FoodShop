@@ -22,6 +22,8 @@ class ProfileController extends GetxController {
   ProfileController(this._getuserUseCase);
 
   List<PostDataModel> listPostsOfUser = [];
+  List<PostDataModel> listBookmarkedPosts = [];
+  List<PostDataModel> listFavoritePosts = [];
   UserModel? user;
 
   RxInt currentIndex = 0.obs;
@@ -95,6 +97,32 @@ class ProfileController extends GetxController {
     if (result.status == Status.success) {
       listPostsOfUser = result.data!;
       update(["fetchPostsOfUser"]);
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+  // Get the list of bookmark posts by the user
+  Future<void> getBookmarkedPosts() async {
+    if (user == null) return;
+
+    final result = await FirestorePostData.getListBookmarkedPosts(user!.uid!);
+    if (result.status == Status.success) {
+      listBookmarkedPosts = result.data!;
+      update(["fetchBookmarkedPosts"]);
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+  // Get the list of favorite posts by the user
+  Future<void> getFavoritePosts() async {
+    if (user == null) return;
+
+    final result = await FirestorePostData.getListFavoritePosts(user!.uid!);
+    if (result.status == Status.success) {
+      listBookmarkedPosts = result.data!;
+      update(["fetchFavoritePosts"]);
     } else {
       SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
     }
