@@ -73,6 +73,7 @@ class UploadController extends GetxController {
       latitude: placeSelected.lat ?? 0.0,
       longitude: placeSelected.lon ?? 0.0,
     );
+    
     final result = await FirestorePostData.savedPost(
         postDataModel: post, userId: user!.uid);
     if (result.status == Status.success) {

@@ -43,6 +43,22 @@ class PostsDetailController extends GetxController {
   void onInit() async {
     super.onInit();
     isLoading.value = true;
+    userComment = await _getuserUseCase.getUser();
+    if (dataAgument is PostDataModel) {
+      postDataModel = dataAgument;
+      listImagesPostDetail = postDataModel?.imageList ?? [];
+      await getComments();
+      timePosts = CaculateTime(postDataModel?.createAt);
+      await getAuthorPost();
+      update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
+    }
+
+    isLoading.value = false;
+  }
+
+  refreshPostsDetail() async {
+    super.onInit();
+    isLoading.value = true;
 
     userComment = await _getuserUseCase.getUser();
     if (dataAgument is PostDataModel) {
@@ -51,7 +67,7 @@ class PostsDetailController extends GetxController {
       await getComments();
       timePosts = CaculateTime(postDataModel?.createAt);
       await getAuthorPost();
-      update(['fetchDataTopPostDetail']);
+      update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
     }
 
     isLoading.value = false;

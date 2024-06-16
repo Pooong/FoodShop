@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/ui/widgets/button/button_widget.dart';
+import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/edit_posts/edit/presentation/controller/edit_posts_controller.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,10 @@ class EditPostPage extends GetView<EditPostsController> {
     return Scaffold(
         appBar: AppBar(
           leading: InkWell(
-            onTap: () => Get.back(),
+            onTap: () {
+              controller.onClose();
+              Get.back();
+            },
             child: const Icon(
               Icons.arrow_back_ios,
             ),
@@ -25,17 +30,44 @@ class EditPostPage extends GetView<EditPostsController> {
             "EDIT POSTS",
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 40),
-          child: Column(
-            children: [
-              titleBox(),
-              descriptionBox(),
-              imagesBox(),
-            ],
-          ),
+        body: GetBuilder<EditPostsController>(
+          id: "featchValueEditPostPage",
+          builder: (_) {
+            return Obx(
+              () {
+                return controller.isLoading.value
+                    ? const LoadingDataPage()
+                    : SingleChildScrollView(
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 40),
+                          child: Column(
+                            children: [
+                              titleBox(),
+                              descriptionBox(),
+                              imagesBox(),
+                              ButtonUpdate()
+                            ],
+                          ),
+                        ),
+                    );
+              },
+            );
+          },
         ));
   }
+
+  // ignore: non_constant_identifier_names
+  Container ButtonUpdate() {
+    return Container(
+        margin: const EdgeInsets.symmetric(vertical: 20),
+        child: ButtonWidget(ontap: () async{
+          controller.isLoading.value=true;
+          await controller.updatePosts();
+          controller.isLoading.value=false;
+          Get.back();
+        }, text: "Confirm Update"));
+  }
+
   Column titleBox() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +121,7 @@ class EditPostPage extends GetView<EditPostsController> {
           return Wrap(
             spacing: 15,
             runSpacing: 15,
-            children: controller.selectedImages.map((imagePath) {
+            children: controller.selectedImagesEdit.map((imagePath) {
               return Stack(
                 children: [
                   // Check if the imagePath is a network URL or a local file path
