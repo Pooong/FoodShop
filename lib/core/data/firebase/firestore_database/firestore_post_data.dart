@@ -61,7 +61,8 @@ class FirestorePostData {
   }
 
   // list favorite posts of profile
-  static Future<Result<List<PostDataModel>>> getListFavoritePosts(String userId) async {
+  static Future<Result<List<PostDataModel>>> getListFavoritePosts(
+      String userId) async {
     try {
       QuerySnapshot querySnapshot = await _fireStorePostCollection
           .where('isFavorited', arrayContains: userId)
@@ -153,6 +154,27 @@ class FirestorePostData {
       return Result.success([]);
     } on FirebaseException catch (e) {
       return Result.error(e);
+    }
+  }
+
+  static Future<Result<PostDataModel>> getPost(String postId) async {
+    try {
+      DocumentSnapshot documentSnapshot =
+          await _fireStorePostCollection.doc(postId).get();
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> postData =
+            documentSnapshot.data() as Map<String, dynamic>;
+        return Result.success(PostDataModel.fromJson(postData));
+      } else {
+        return Result.error(FirebaseAuthException(
+            code: 'post-not-found',
+            message: 'No post found with the provided ID.'));
+      }
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    } catch (e) {
+      return Result.error(
+          FirebaseAuthException(code: 'unknown-error', message: e.toString()));
     }
   }
 

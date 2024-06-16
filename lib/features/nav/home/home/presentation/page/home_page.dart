@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
-import 'package:find_food/core/ui/widgets/card/posts_card.dart';
+import 'package:find_food/core/ui/widgets/card/posts_card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/features/nav/home/home/presentation/controller/home_controller.dart';
 import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
@@ -54,8 +54,8 @@ class HomePage extends GetView<HomeController> {
         return ListView.builder(
           itemBuilder: (ctx, i) {
             PostDataModel postDataModel = PostDataModel.fromDocumentSnapshot(postDocs[i]);
+            postDataModel?.restaurantId = i%2==0? "" : "id";
             return PostsCard(
-              restaurantTag: i % 2 == 0,
               postDataModel: postDataModel,
             );
           },

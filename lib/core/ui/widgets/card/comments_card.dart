@@ -45,10 +45,9 @@ class CommentsCard extends StatelessWidget {
 
     try {
       DateTime postCreationTime =
-          DateFormat("yyyy-MM-ddTHH:mm:ss").parse(createdAt);
+           DateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").parse(createdAt);
       DateTime currentTime = DateTime.now();
       Duration difference = currentTime.difference(postCreationTime);
-      print("========================$difference");
       return _formatDuration(difference);
     } catch (e) {
       print("Error parsing createdAt: $e");
@@ -76,9 +75,6 @@ class CommentsCard extends StatelessWidget {
     double minHeightCommentCard = Get.height * 0.14;
     bool hiddenStar = star == 0.0;
     String calculatedTime = calculateTime(commentModel.createdAt);
-    String timePosts = "";
-    print(calculateTime(commentModel.createdAt));
-    print(commentModel.createdAt);
     return Stack(
       children: [
         Container(
@@ -211,8 +207,8 @@ class CommentsCard extends StatelessWidget {
             const SizedBox(height: 15),
             TextWidget(
               text: '$calculatedTime',
-              size: AppDimens.textSize12,
-              color: AppColors.black.withOpacity(.5),
+              size: AppDimens.textSize10,
+              color: AppColors.primary.withOpacity(.5),
             ),
           ]),
         ),

@@ -84,7 +84,7 @@ class HeaderPosts extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${controller.timePosts} - ${controller.authorPosts?.displayName ?? "Author posts"} ',
+                      '${controller.timePosts} - ${controller.authorPosts?.email ?? "Author posts"} ',
                       style: const TextStyle(
                         fontSize: AppDimens.textSize10,
                         fontWeight: FontWeight.w400,
@@ -188,9 +188,7 @@ class TagInfoPosts extends StatelessWidget {
     super.key,
     required this.controller,
   });
-
   final PostsDetailController controller;
-
   @override
   Widget build(BuildContext context) {
     double reat = 4;
@@ -213,38 +211,39 @@ class TagInfoPosts extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  controller.isRestaurant
-                      ? Row(
-                          children: [
-                            Text(
-                              "$reat",
-                              style: const TextStyle(
-                                fontSize: 16.0,
+                  controller.postDataModel?.restaurantId!=""
+                      ? Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                            children: [
+                              Text(
+                                "$reat",
+                                style: const TextStyle(
+                                  fontSize: 16.0,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Row(
-                                children: [
-                                  ...Rating.RenderStar(star: reat, sizeStar: 25)
-                                ],
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Row(
+                                  children: [
+                                    ...Rating.RenderStar(star: reat, sizeStar: 25)
+                                  ],
+                                ),
                               ),
-                            ),
-                            Text(
-                              "($reatPerson)",
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.black,
+                              Text(
+                                "($reatPerson)",
+                                style: const TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                          ],
-                        )
+                            ],
+                          ),
+                      )
                       : const SizedBox(
                           height: 0,
                         ),
-                  if(controller.isRestaurant)
-                  const SizedBox(height: 10,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
