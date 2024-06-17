@@ -21,11 +21,11 @@ class FullScreenImage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.white),
           onPressed: () {
-            Get.back();
+            Get.back();   
           },
         ),
       ),
-      
+
       body: Stack(
         children: [
           PageView.builder(
