@@ -12,6 +12,7 @@ class FullScreenImage extends StatelessWidget {
   final dynamic controller;
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -24,6 +25,7 @@ class FullScreenImage extends StatelessWidget {
           },
         ),
       ),
+      
       body: Stack(
         children: [
           PageView.builder(
