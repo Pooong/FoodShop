@@ -12,24 +12,26 @@ class HomeController extends GetxController {
   HomeController(this._getuserUseCase);
 
   List<PostDataModel> listPost = [];
+  
   UserModel? user;
   ScrollController scrollController = ScrollController();
   final StreamController<List<DocumentSnapshot>> _postController =
       StreamController<List<DocumentSnapshot>>.broadcast();
 
-  final List<List<DocumentSnapshot>> _allPagedResults = [<DocumentSnapshot>[]];
-  int pageLimit = 20;
+  final List<DocumentSnapshot> _allPagedResults = [];
+  int pageLimit = 10;
   DocumentSnapshot? _lastDocument;
 
   bool _hasMoreData = true;
-  
-  bool isLoading = false; // Biến để theo dõi trạng thái tải dữ liệu
+  bool isLoading = false;
 
   @override
   void onInit() {
     super.onInit();
     _initialize();
     scrollController.addListener(_scrollListener);
+    getPosts();  // Gọi getPosts ngay khi khởi tạo để lấy dữ liệu ban đầu
+    update(['fetchPosts']);
   }
 
   Future<void> _initialize() async {
@@ -43,21 +45,19 @@ class HomeController extends GetxController {
       getPosts();
     }
   }
-  
 
   Stream<List<DocumentSnapshot>> listenToPostsRealTime() {
-    getPosts();
     return _postController.stream;
   }
 
   Future<void> getPosts() async {
-    if (!_hasMoreData || isLoading) return; // Kiểm tra nếu đang tải dữ liệu hoặc không còn dữ liệu để tải thêm thì không thực hiện tiếp
+    if (!_hasMoreData || isLoading) return;
 
-    isLoading = true; // Đặt trạng thái tải dữ liệu thành true
+    isLoading = true;
 
-    final CollectionReference _postCollectionReference =
+    final CollectionReference postCollectionReference =
         FirebaseFirestore.instance.collection('posts');
-    var pagechatQuery = _postCollectionReference
+    var pagechatQuery = postCollectionReference
         .orderBy('createAt', descending: true)
         .limit(pageLimit);
 
@@ -70,23 +70,25 @@ class HomeController extends GetxController {
       if (snapshot.docs.isNotEmpty) {
         var generalChats = snapshot.docs.toList();
 
-        _allPagedResults.add(generalChats);
+        _allPagedResults.addAll(generalChats);
 
-        var allChats = _allPagedResults.fold<List<DocumentSnapshot>>(
-            <DocumentSnapshot>[],
-            (initialValue, pageItems) => initialValue..addAll(pageItems));
+        _postController.add(_allPagedResults);
 
-        _postController.add(allChats);
-
-        _lastDocument = snapshot.docs.elementAt(snapshot.docs.length - 2);
+        _lastDocument = snapshot.docs.last;
 
         _hasMoreData = generalChats.length == pageLimit;
       }
     } catch (e) {
       print("Error getting posts: $e");
     } finally {
-      isLoading = false; // Đặt trạng thái tải dữ liệu thành false sau khi hoàn thành tải dữ liệu
+      isLoading = false;
     }
+  }
+    Future<void> refreshPosts() async {
+    _allPagedResults.clear();
+    _lastDocument = null;
+    _hasMoreData = true;
+    await getPosts();
   }
 
   @override

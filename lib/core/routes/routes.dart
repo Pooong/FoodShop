@@ -53,4 +53,8 @@ abstract class Routes {
 
   static const categorySearch='/categorySearch';
   static const createmenu = '/createmenu';
+
+
+  static const editPosts='/editPosts';
+  
 }

@@ -1,6 +1,5 @@
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
-import 'package:find_food/features/model/commentsData.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
@@ -17,6 +16,7 @@ import 'package:intl/intl.dart'; // Thêm import cho việc phân tích ngày th
 
 class PostsDetailController extends GetxController {
   final GetuserUseCase _getuserUseCase;
+
   PostsDetailController(this._getuserUseCase);
 
   UserModel? userComment;
@@ -28,7 +28,7 @@ class PostsDetailController extends GetxController {
   List<dynamic> listImagesPostDetail = [];
   String timePosts = "";
   UserModel? authorPosts;
-  bool isRestaurant = true;
+  bool isRestaurant = false;
   int currentIndex = 0;
 
   final PageController mainPageController = PageController();
@@ -37,9 +37,12 @@ class PostsDetailController extends GetxController {
   var isBookmark = false.obs;
   var isFavoriteComments = false.obs;
 
+  var isLoading = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
+    isLoading.value = true;
     userComment = await _getuserUseCase.getUser();
     if (dataAgument is PostDataModel) {
       postDataModel = dataAgument;
@@ -47,12 +50,31 @@ class PostsDetailController extends GetxController {
       await getComments();
       timePosts = CaculateTime(postDataModel?.createAt);
       await getAuthorPost();
-      update(['fetchDataTopPostDetail']);
+      update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
     }
+
+    isLoading.value = false;
+  }
+
+  refreshPostsDetail() async {
+    super.onInit();
+    isLoading.value = true;
+
+    userComment = await _getuserUseCase.getUser();
+    if (dataAgument is PostDataModel) {
+      postDataModel = dataAgument;
+      listImagesPostDetail = postDataModel?.imageList ?? [];
+      await getComments();
+      timePosts = CaculateTime(postDataModel?.createAt);
+      await getAuthorPost();
+      update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
+    }
+
+    isLoading.value = false;
   }
 
   getAuthorPost() async {
-    final result = await FirestoreUser.getUser(dataAgument!.userId!);
+    final result = await FirestoreUser.getUser(postDataModel!.userId!);
     if (result.status == Status.success) {
       authorPosts = result.data;
     }
@@ -81,7 +103,6 @@ class PostsDetailController extends GetxController {
     } else {
       return '${duration.inSeconds}s ago';
     }
-    // super.onInit();
   }
 
   var isExpanded = false.obs;
@@ -176,15 +197,6 @@ class PostsDetailController extends GetxController {
     update(["fetchComment"]);
   }
 
-  // void toggleActive(CommentModel comment) {
-  //   if (comment.isFavoriteComments!) {
-  //     comment.favorite = comment.favorite! + 1;
-  //   } else {
-  //     comment.favorite = comment.favorite! - 1;
-  //   }
-  //   update();
-  // }
-
   void toggleFavoriteStatus() {
     isFavorite.value = !isFavorite.value;
   }
@@ -248,11 +260,11 @@ class PostsDetailController extends GetxController {
     return null;
   }
 
-  void updateComment(int index) {
-    CommentData.commentDataList[index - 1]['isActive'] =
-        !CommentData.commentDataList[index - 1]['isActive'];
-    update(["fetchComment"]);
-  }
+  // void updateComment(int index) {
+  //   CommentData.commentDataList[index - 1]['isActive'] =
+  //       !CommentData.commentDataList[index - 1]['isActive'];
+  //   update(["fetchComment"]);
+  // }
 
   bool hiddenStar(double star) => star == 0.0;
 
@@ -271,16 +283,4 @@ class PostsDetailController extends GetxController {
   void removeImage(File image) {
     selectedImages.remove(image);
   }
-
-  // phương thức xóa bình luận
-  // void deleteComment(String idComment) async {
-  //   final result = await FirestoreComment.deleteComment(idComment);
-  //   if (result.status == Status.success) {
-  //     listComments.removeWhere((element) => element.idComment == idComment);
-  //     update(["fetchComment"]);
-  //     Fluttertoast.showToast(msg: "Delete comments success".tr);
-  //   } else {
-  //     Fluttertoast.showToast(msg: "Delete comments error".tr);
-  //   }
-  // }
 }
