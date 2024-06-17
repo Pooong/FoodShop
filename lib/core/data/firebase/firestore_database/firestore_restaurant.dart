@@ -10,16 +10,18 @@ class FirestoreRestaurant {
   static final _fireStoreUserCollection =
       FirebaseFirestore.instance.collection('restaurant');
 
-  static Future<Result<bool>> createRestaurant(
-      RestaurantModel newRestaurant) async {
+  static Future<Result<RestaurantModel>> createRestaurant(
+      {required RestaurantModel newRestaurant, required String userId}) async {
     try {
       String restaurantId =
-          FirebaseFirestore.instance.collection('menu').doc().id;
-      newRestaurant!.idRestaurant = restaurantId;
+          FirebaseFirestore.instance.collection('restaurant').doc().id;
+      newRestaurant.idRestaurant = restaurantId;
+      newRestaurant.userId = userId;
+
       await _fireStoreUserCollection
           .doc(newRestaurant.idRestaurant)
           .set(newRestaurant.toJson());
-      return Result.success(true);
+      return Result.success(newRestaurant);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
     }
@@ -53,6 +55,22 @@ class FirestoreRestaurant {
           .map((doc) => RestaurantModel.fromJson(doc.data()))
           .toList();
       return Result.success(restaurantList);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<RestaurantModel>> getRestaurant(String userId) async {
+    try {
+      final snapshot = await _fireStoreUserCollection
+          .where('userId', isEqualTo: userId)
+          .get();
+      if (snapshot.docs.isEmpty) {
+        return Result.error(FirebaseAuthException(code: 'not found'),
+            data: null);
+      }
+      final restaurant = RestaurantModel.fromJson(snapshot.docs.first.data());
+      return Result.success(restaurant);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
     }

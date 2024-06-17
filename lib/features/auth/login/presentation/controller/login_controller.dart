@@ -96,7 +96,7 @@ class LoginController extends GetxController {
   //     }
   //   }
   // }
-  
+
   void handleLoginWithEmail() async {
     if (!_validateEmail()) return;
     DialogsUtils.showAlterLoading();
@@ -129,13 +129,11 @@ class LoginController extends GetxController {
     }
   }
 
-  login() async {
-    const username = "1";
-    const password = "1";
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
+  signInWithGoogle() async {
+    GoogleAuthProvider.credential(
+      accessToken: "",
+      idToken: "",
+    );
+    // FirebaseAuth.instance.signInWithCredential(credential)
   }
 }
