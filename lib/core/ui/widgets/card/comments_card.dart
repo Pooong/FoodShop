@@ -21,7 +21,6 @@ class CommentsCard extends StatelessWidget {
   final VoidCallback toggleActive;
   final bool active;
   final CommentModel commentModel;
-  // final
 
   const CommentsCard({
     super.key,
@@ -37,7 +36,6 @@ class CommentsCard extends StatelessWidget {
     required this.active,
     required this.commentModel,
   });
-
   String calculateTime(String? createdAt) {
     if (createdAt == null || createdAt.isEmpty) {
       return "";
@@ -45,10 +43,13 @@ class CommentsCard extends StatelessWidget {
 
     try {
       DateTime postCreationTime =
-          DateFormat("yyyy-MM-ddTHH:mm:ss").parse(createdAt);
+          DateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").parse(createdAt);
       DateTime currentTime = DateTime.now();
       Duration difference = currentTime.difference(postCreationTime);
-      print("========================$difference");
+      if (difference.isNegative) {
+        return "Vừa xong";
+      }
+
       return _formatDuration(difference);
     } catch (e) {
       print("Error parsing createdAt: $e");
@@ -76,9 +77,7 @@ class CommentsCard extends StatelessWidget {
     double minHeightCommentCard = Get.height * 0.14;
     bool hiddenStar = star == 0.0;
     String calculatedTime = calculateTime(commentModel.createdAt);
-    String timePosts = "";
-    print(calculateTime(commentModel.createdAt));
-    print(commentModel.createdAt);
+    // print(commentModel.author.email);
     return Stack(
       children: [
         Container(
@@ -157,7 +156,7 @@ class CommentsCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextWidget(
-                                text: commentModel.author.email ?? authorName,
+                                text: commentModel.author.displayName ?? "",
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black.withOpacity(.7),
                               ),
@@ -206,13 +205,14 @@ class CommentsCard extends StatelessWidget {
           child: Column(children: [
             Avatar(
               radius: 50,
-              authorImg: authorAvatar,
+              authorImg:
+                  commentModel.author.avatarUrl ?? AppImagesString.iUserDefault,
             ),
             const SizedBox(height: 15),
             TextWidget(
               text: '$calculatedTime',
-              size: AppDimens.textSize12,
-              color: AppColors.black.withOpacity(.5),
+              size: AppDimens.textSize10,
+              color: AppColors.primary.withOpacity(.5),
             ),
           ]),
         ),
