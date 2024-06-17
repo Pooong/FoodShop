@@ -6,4 +6,4 @@ void main() async {
   await appConfig();
   runApp(const App());
 }
-  
+

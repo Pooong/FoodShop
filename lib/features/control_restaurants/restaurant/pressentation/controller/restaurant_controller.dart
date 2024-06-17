@@ -30,7 +30,7 @@ class RestaurantController extends GetxController {
   @override
   void onInit() async {
     user = await _getuserUseCase.getUser();
-    getRestaurantData();
+    await getRestaurantData();
     super.onInit();
   }
 
