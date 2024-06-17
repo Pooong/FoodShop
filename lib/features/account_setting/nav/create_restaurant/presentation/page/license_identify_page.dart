@@ -56,7 +56,8 @@ class LicenseIdentifyPage extends GetView<CreateRestaurantController> {
                 ),
                 ButtonWidget(
                   ontap: () {
-                    Get.to(() => ImagesIdentifyPage());
+                    controller.controlLicenseIdentify();
+                    // Get.to(() => ImagesIdentifyPage());
                   },
                   text: "CONTINUE",
                   fontWeight: FontWeight.bold,

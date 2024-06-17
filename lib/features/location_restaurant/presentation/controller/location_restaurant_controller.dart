@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:find_food/features/location_restaurant/widget/seach_restaurant.dart';
-import 'package:find_food/features/restaurants/restaurant/pressentation/model/restaurant_model.dart';
+import 'package:find_food/features/control_restaurants/restaurant/pressentation/model/restaurant_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

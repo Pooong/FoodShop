@@ -12,6 +12,7 @@ import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.d
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/restaurant_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -73,7 +74,6 @@ class CreateRestaurantController extends GetxController {
     }
 
     final restaurant = RestaurantModel(
-      idRestaurant: user!.uid,
       nameRestaurant: nameRestaurant.text,
       emailRestaurant: emailRestaurant.text,
       phoneRestaurant: phoneRestaurant.text,
@@ -81,7 +81,8 @@ class CreateRestaurantController extends GetxController {
       listPathUrl: listPathUrl,
     );
 
-    final result = await FirestoreRestaurant.createRestaurant(restaurant);
+    final result = await FirestoreRestaurant.createRestaurant(
+        newRestaurant: restaurant, userId: user!.uid);
     if (result.status == Status.success) {
       SnackbarUtil.show("Menu created successfully");
     } else {
@@ -136,5 +137,52 @@ class CreateRestaurantController extends GetxController {
   void removeSingleImage(File? file) {
     file = null;
     update(["clearData"]);  
+  }
+
+  void controlCreateRestaurant() {
+    if (nameRestaurant.text.isEmpty ||
+        emailRestaurant.text.isEmpty ||
+        phoneRestaurant.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Please fill in all the information");
+    } else {
+      Get.to(() => const LicenseIdentifyPage());
+    }
+  }
+
+  void controlLicenseIdentify() {
+    if (licenseImages.isEmpty || ownerLicenseImages.isEmpty) {
+      Fluttertoast.showToast(msg: "Please select an image for the posts");
+      return;
+    }
+    if (addressRestaurant.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Please fill the address of the restaurant");
+      return;
+    }
+    Get.to(() => const ImagesIdentifyPage());
+  }
+
+  void createRestaurant() {
+    if (restaurantBackgroundImages == null || restaurantLogoImages == null) {
+      Fluttertoast.showToast(msg: "Please select an image for the posts");
+      return;
+    } else {
+      Fluttertoast.showToast(msg: "Create Restaurant Success ");
+      saveRestaurant();
+      Get.to(() => const FinishCreateRestaurantPage());
+    }
+  }
+
+  Future<void> getRestaurantData() async {
+    final result = await FirestoreRestaurant.getRestaurant(user!.uid);
+    if (result.status == Status.success) {
+      final restaurant = result.data;
+      nameRestaurant.text = restaurant!.nameRestaurant!;
+      emailRestaurant.text = restaurant.emailRestaurant!;
+      phoneRestaurant.text = restaurant.phoneRestaurant!;
+      addressRestaurant.text = restaurant.addressRestaurant!;
+      listPathUrl = restaurant.listPathUrl!;
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
   }
 }
