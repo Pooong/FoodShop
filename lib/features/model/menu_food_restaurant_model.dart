@@ -1,12 +1,13 @@
-import 'package:find_food/features/restaurants/restaurant/pressentation/model/restaurant_model.dart';
+import 'package:find_food/features/model/restaurant_model.dart';
 
+import '../control_restaurants/restaurant/pressentation/model/restaurant_model.dart';
 
 class MenuModel {
   String? id;
   String? name;
   double? price;
   String? image;
-  SetRestaurant? idRestaurant;
+  RestaurantModel? idRestaurant;
 
   MenuModel({
     required this.id,
@@ -20,7 +21,7 @@ class MenuModel {
       name: json['name'],
       price: json['price'],
       image: json['image'],
-      idRestaurant: SetRestaurant.fromJson(json['restaurant']));
+      idRestaurant: RestaurantModel.fromJson(json['restaurant']));
 
   Map<String, dynamic> toJson() {
     return {

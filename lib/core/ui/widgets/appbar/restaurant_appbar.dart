@@ -1,5 +1,5 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/features/restaurants/restaurant/pressentation/widgets/icon_button.dart';
+import 'package:find_food/features/control_restaurants/restaurant/pressentation/widgets/icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
