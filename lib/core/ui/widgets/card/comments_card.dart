@@ -156,7 +156,8 @@ class CommentsCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextWidget(
-                                text: commentModel.author.displayName ?? "",
+                                text: commentModel.author.displayName ??
+                                    commentModel.author.email,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black.withOpacity(.7),
                               ),
