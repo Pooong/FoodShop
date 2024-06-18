@@ -284,4 +284,11 @@ class PostsDetailController extends GetxController {
   void hideKeyboard() {
     FocusScope.of(Get.context!).requestFocus(FocusNode());
   }
+
+  String _truncateText(String text) {
+    const maxLength = 30; // Define your maximum length
+    return text.length > maxLength
+        ? '${text.substring(0, maxLength)}...'
+        : text;
+  }
 }

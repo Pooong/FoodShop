@@ -79,11 +79,12 @@ class HeaderPosts extends StatelessWidget {
                             fontSize: AppDimens.textSize16,
                             fontWeight: FontWeight.w500),
                         maxLines: 5,
-                        // overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
-                      '${controller.timePosts} - ${controller.authorPosts?.displayName ?? controller.authorPosts?.email} ',
+                      _truncateText(
+                          '${controller.timePosts} - ${controller.authorPosts?.displayName ?? controller.authorPosts?.email} '),
                       style: const TextStyle(
                         fontSize: AppDimens.textSize10,
                         fontWeight: FontWeight.w400,
@@ -489,4 +490,11 @@ class Slider extends StatelessWidget {
           : Container(),
     );
   }
+}
+
+String _truncateText(
+  String text,
+) {
+  const maxLength = 30; // Độ dài tối đa của chuỗi
+  return text.length > maxLength ? '${text.substring(0, maxLength)}...' : text;
 }

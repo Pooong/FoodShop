@@ -14,26 +14,25 @@ class ExploreFoodCard extends StatelessWidget {
   final int customerRating;
   final double distance;
 
-  const ExploreFoodCard({
-    super.key,
-    required this.title,
-    required this.imageUrl,
-    required this.rating,
-    required this.customerRating,
-    required this.distance
-  });
+  const ExploreFoodCard(
+      {super.key,
+      required this.title,
+      required this.imageUrl,
+      required this.rating,
+      required this.customerRating,
+      required this.distance});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         Get.toNamed(Routes.postsDetail);
       },
       child: Container(
-        constraints: const BoxConstraints(minHeight: 200,minWidth:100 ),
-        margin: const EdgeInsets.symmetric(horizontal: 5,vertical: 10),
-        width: Get.width*.35,
-        height:  Get.height*.2,
+        constraints: const BoxConstraints(minHeight: 200, minWidth: 100),
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        width: Get.width * .35,
+        height: Get.height * .2,
         clipBehavior: Clip.antiAlias,
         decoration:
             BoxDecoration(borderRadius: BorderRadius.circular(10), boxShadow: [
@@ -61,8 +60,7 @@ class ExploreFoodCard extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
                       decoration: const BoxDecoration(color: AppColors.white),
-                      child: const Center(
-                        child: CircularProgressIndicator()),
+                      child: const Center(child: CircularProgressIndicator()),
                     );
                   } else {
                     // Trạng thái đã có kết quả
@@ -90,8 +88,8 @@ class ExploreFoodCard extends StatelessWidget {
                 child: Container(
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                      begin:
-                          Alignment.bottomCenter, // Bắt đầu từ góc dưới bên trái
+                      begin: Alignment
+                          .bottomCenter, // Bắt đầu từ góc dưới bên trái
                       end: Alignment.topCenter, // Kết thúc ở góc trên bên phải
                       colors: [
                         Color.fromARGB(255, 0, 0, 0),
@@ -107,7 +105,7 @@ class ExploreFoodCard extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          overflow: TextOverflow.ellipsis,
+                          // overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                               color: AppColors.white,
                               fontWeight: FontWeight.w500),

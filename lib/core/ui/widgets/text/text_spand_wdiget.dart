@@ -27,7 +27,7 @@ class TextSpanWidget extends StatelessWidget {
         style: GoogleFonts.nunitoSans(
           textStyle: TextStyle(
             fontSize: size,
-            overflow: TextOverflow.ellipsis,
+            // overflow: TextOverflow.ellipsis,
             color: AppColors.black,
           ),
         ),
@@ -37,7 +37,7 @@ class TextSpanWidget extends StatelessWidget {
             style: GoogleFonts.nunitoSans(
               textStyle: TextStyle(
                   fontSize: size,
-                  overflow: TextOverflow.ellipsis,
+                  // overflow: TextOverflow.ellipsis,
                   fontWeight: fontWeight1),
             ),
           ),
@@ -47,7 +47,7 @@ class TextSpanWidget extends StatelessWidget {
             style: GoogleFonts.nunitoSans(
               textStyle: TextStyle(
                 fontSize: size,
-                overflow: TextOverflow.ellipsis,
+                // overflow: TextOverflow.ellipsis,
                 fontWeight: fontWeight2,
                 color: textColor2,
               ),

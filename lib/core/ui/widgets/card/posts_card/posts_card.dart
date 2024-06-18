@@ -21,7 +21,6 @@ class PostsCard extends GetView {
   final bool activate;
   final PostDataModel postDataModel;
 
-
   final PostCardController controller = Get.put(PostCardController());
   PostsCard({
     super.key,
@@ -33,7 +32,7 @@ class PostsCard extends GetView {
     required this.postDataModel,
   });
 
-  bool favoriteActive=false;
+  bool favoriteActive = false;
 
   @override
   Widget build(BuildContext context) {
@@ -105,17 +104,17 @@ class PostsCard extends GetView {
                             ),
                           ),
                           InkWell(
-
-                            onTap: (){
-                              controller.toggleStateIcons(idPost: postDataModel.id ?? "2");
+                            onTap: () {
+                              controller.toggleStateIcons(
+                                  idPost: postDataModel.id ?? "2");
                             },
-
                             child: Container(
                                 margin: const EdgeInsets.only(right: 10),
                                 child: GetBuilder<PostCardController>(
                                   id: "fetchStateIcon",
                                   builder: (_) {
-                                    return controller.listDataFavorite.contains(postDataModel.id)
+                                    return controller.listDataFavorite
+                                            .contains(postDataModel.id)
                                         ? const Icon(
                                             Icons.favorite,
                                             color: AppColors.red,
@@ -134,7 +133,7 @@ class PostsCard extends GetView {
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Text(
                           postDataModel.subtitle!.trim(),
-                          overflow: TextOverflow.ellipsis,
+                          // overflow: TextOverflow.ellipsis,
                           maxLines: 10,
                         ),
                       ),

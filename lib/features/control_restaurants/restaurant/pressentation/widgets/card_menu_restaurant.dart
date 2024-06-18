@@ -44,7 +44,7 @@ class CardMenuRestaurant extends GetView<RestaurantController> {
               children: <Widget>[
                 Text(
                   // controller:,
-                  overflow: TextOverflow.ellipsis,
+                  // overflow: TextOverflow.ellipsis,
                   softWrap: false,
                   foodname,
                   style: TextStyle(
