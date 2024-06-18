@@ -2,6 +2,7 @@ import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/extensions/color.dart';
+import 'package:find_food/core/ui/dialogs/full_screen_image.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/icons/rating.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
@@ -486,52 +487,6 @@ class Slider extends StatelessWidget {
               ),
             )
           : Container(),
-    );
-  }
-}
-
-class FullScreenImage extends StatelessWidget {
-  final int initialIndex;
-  const FullScreenImage({
-    super.key,
-    required this.initialIndex,
-    required this.controller,
-  });
-
-  final PostsDetailController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-      ),
-      body: Stack(
-        children: [
-          PageView.builder(
-            controller: PageController(initialPage: initialIndex),
-            itemCount: controller.listImagesPostDetail.length,
-            onPageChanged: (index) {
-              controller.currentIndex = index;
-            },
-            itemBuilder: (context, index) {
-              return Center(
-                child: Image.network(
-                  controller.listImagesPostDetail[index],
-                  fit: BoxFit.contain,
-                ),
-              );
-            },
-          ),
-        ],
-      ),
     );
   }
 }
