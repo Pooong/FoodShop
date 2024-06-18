@@ -31,8 +31,7 @@ class TopPostsDetail extends GetView<PostsDetailController> {
                 children: [
                   Slider(controller: controller),
                   TagInfoPosts(controller: controller),
-                  if(controller.isRestaurant)
-                  const TagToRestauRant(),
+                  if (controller.isRestaurant) const TagToRestauRant(),
                 ],
               )
             ],
@@ -40,7 +39,6 @@ class TopPostsDetail extends GetView<PostsDetailController> {
         });
   }
 }
-
 
 class HeaderPosts extends StatelessWidget {
   const HeaderPosts({
@@ -84,7 +82,7 @@ class HeaderPosts extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${controller.timePosts} - ${controller.authorPosts?.email ?? "Author posts"} ',
+                      '${controller.timePosts} - ${controller.authorPosts?.displayName ?? controller.authorPosts?.email} ',
                       style: const TextStyle(
                         fontSize: AppDimens.textSize10,
                         fontWeight: FontWeight.w400,
@@ -211,10 +209,10 @@ class TagInfoPosts extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  controller.postDataModel?.restaurantId!=""
+                  controller.postDataModel?.restaurantId != ""
                       ? Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Row(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Row(
                             children: [
                               Text(
                                 "$reat",
@@ -227,7 +225,8 @@ class TagInfoPosts extends StatelessWidget {
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: Row(
                                   children: [
-                                    ...Rating.RenderStar(star: reat, sizeStar: 25)
+                                    ...Rating.RenderStar(
+                                        star: reat, sizeStar: 25)
                                   ],
                                 ),
                               ),
@@ -240,14 +239,15 @@ class TagInfoPosts extends StatelessWidget {
                               ),
                             ],
                           ),
-                      )
+                        )
                       : const SizedBox(
                           height: 0,
                         ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Icon(Icons.location_on, color: Colors.black, size: 20.0),
+                      const Icon(Icons.location_on,
+                          color: Colors.black, size: 20.0),
                       const SizedBox(width: 5),
                       const Text(
                         "2.7km",
@@ -256,14 +256,14 @@ class TagInfoPosts extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 5),
-                      if(controller.isRestaurant)
-                      const Text(
-                        "Opening",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.green,
+                      if (controller.isRestaurant)
+                        const Text(
+                          "Opening",
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.green,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ],

@@ -36,6 +36,7 @@ class CommentsCard extends StatelessWidget {
     required this.active,
     required this.commentModel,
   });
+
   String calculateTime(String? createdAt) {
     if (createdAt == null || createdAt.isEmpty) {
       return "";
