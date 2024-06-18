@@ -39,6 +39,8 @@ class PostsDetailController extends GetxController {
 
   var isLoading = false.obs;
 
+  get commentFocusNode => null;
+
   @override
   void onInit() async {
     super.onInit();
@@ -162,6 +164,7 @@ class PostsDetailController extends GetxController {
 
   // phương thức xóa bình luận
   void deleteComment(String idComment) async {
+    print(idComment);
     final result = await FirestoreComment.deleteComment(idComment);
     if (result.status == Status.success) {
       listComments.removeWhere((element) => element.idComment == idComment);
@@ -205,12 +208,12 @@ class PostsDetailController extends GetxController {
     isBookmark.value = !isBookmark.value;
   }
 
-  void showDialogDeleteComment() {
+  void showDialogDeleteComment(String id) {
     DialogsUtils.showAlertDialog(
       title: "Delete comment",
       message: "Are you sure you want to delete this comment?",
       typeDialog: TypeDialog.warning,
-      onPresss: () => (deleteComment(listComments[0].idComment!)),
+      onPresss: () => (deleteComment(id)),
     );
   }
 
@@ -260,12 +263,6 @@ class PostsDetailController extends GetxController {
     return null;
   }
 
-  // void updateComment(int index) {
-  //   CommentData.commentDataList[index - 1]['isActive'] =
-  //       !CommentData.commentDataList[index - 1]['isActive'];
-  //   update(["fetchComment"]);
-  // }
-
   bool hiddenStar(double star) => star == 0.0;
 
   List<String> listPathUrl = [];
@@ -282,5 +279,9 @@ class PostsDetailController extends GetxController {
 
   void removeImage(File image) {
     selectedImages.remove(image);
+  }
+
+  void hideKeyboard() {
+    FocusScope.of(Get.context!).requestFocus(FocusNode());
   }
 }

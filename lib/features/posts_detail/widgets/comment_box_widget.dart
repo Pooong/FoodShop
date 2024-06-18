@@ -8,27 +8,38 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CommentBoxWidget extends GetWidget<PostsDetailController> {
-  const CommentBoxWidget({super.key});
+  const CommentBoxWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(AppDimens.radius1),
-        boxShadow: CustomShadow.cardShadow,
+    return GestureDetector(
+      onTap: () {
+        // Đóng bàn phím khi nhấn vào bất kỳ nơi nào khác trên màn hình
+        FocusScope.of(context).unfocus();
+      },
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(AppDimens.radius1),
+            boxShadow: CustomShadow.cardShadow,
+          ),
+          child: MainContentCommentBox(controller: controller),
+        ),
       ),
-      child: MainContentCommentBox(controller: controller),
     );
   }
 }
 
 class MainContentCommentBox extends StatelessWidget {
   const MainContentCommentBox({
-    super.key,
+    Key? key,
     required this.controller,
-  });
+  }) : super(key: key);
+
   final PostsDetailController controller;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,7 +63,8 @@ class MainContentCommentBox extends StatelessWidget {
                         onLongPress: () {
                           if (controller.userComment!.uid ==
                               dataComments.author.uid) {
-                            controller.showDialogDeleteComment();
+                            controller.showDialogDeleteComment(
+                                dataComments.idComment ?? "");
                           }
                         },
                         child: CommentsCard(
@@ -84,9 +96,9 @@ class MainContentCommentBox extends StatelessWidget {
 
 class CommentBar extends StatelessWidget {
   const CommentBar({
-    super.key,
+    Key? key,
     required this.controller,
-  });
+  }) : super(key: key);
 
   final PostsDetailController controller;
 
@@ -101,40 +113,64 @@ class CommentBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-              child: Stack(
-            children: [
-              Container(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                ),
+            child: GestureDetector(
+              onTap: () {
+                // Đóng bàn phím khi nhấn vào bất kỳ nơi nào khác trên màn hình
+                FocusScope.of(context).unfocus();
+              },
+              child: Container(
+                padding: const EdgeInsets.only(left: 10),
                 margin: const EdgeInsets.only(right: 10),
                 decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(AppDimens.radius1),
-                    border: Border.all(
-                      color: AppColors.gray.withOpacity(.6),
-                    )),
-                child: SizedBox(
-                  width: Get.width * .65,
-                  child: TextField(
-                    controller: controller.commentController,
-                    maxLines: null,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Enter your comment",
-                        hintStyle: TextStyle(color: AppColors.grey)),
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(AppDimens.radius1),
+                  border: Border.all(
+                    color: AppColors.gray.withOpacity(.6),
+                  ),
+                ),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxHeight: 100.0, // Set a max height
+                  ),
+                  child: Scrollbar(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      reverse: true, // Start scrolled to bottom
+                      child: TextField(
+                        controller: controller.commentController,
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Enter your comment",
+                          hintStyle: TextStyle(color: AppColors.grey),
+                        ),
+                        // Đóng bàn phím khi nhấn phím Enter
+                        onSubmitted: (_) {
+                          FocusScope.of(context).unfocus();
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ],
-          )),
-          InkWell(
-              onTap: () {
-                controller.uploadComment();
-              },
-              child: Container(
+            ),
+          ),
+          // Center the send button vertically
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  controller.uploadComment();
+                },
+                child: Container(
                   margin: const EdgeInsets.only(top: 5),
-                  child: Image.asset('assets/images/send.png')))
+                  child: Image.asset('assets/images/send.png'),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

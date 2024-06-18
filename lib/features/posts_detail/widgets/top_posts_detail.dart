@@ -79,7 +79,7 @@ class HeaderPosts extends StatelessWidget {
                             fontSize: AppDimens.textSize16,
                             fontWeight: FontWeight.w500),
                         maxLines: 5,
-                        overflow: TextOverflow.ellipsis,
+                        // overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
