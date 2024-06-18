@@ -211,7 +211,7 @@ Widget _buildPasswordField(SettingInformationController controller) {
           Expanded(
             child: TextFormField(
               initialValue: controller.user?.password ?? "",
-              enabled: false, // Disable TextFormField
+              // enabled: false, // Disable TextFormField
               obscureText: true,
               decoration: const InputDecoration(
                 labelText: "Password",
@@ -250,7 +250,7 @@ Widget _buildPasswordField(SettingInformationController controller) {
             onTap: () {
               Get.offNamed("/changePassword");
             },
-            child:const TextWidget(
+            child: const TextWidget(
               text: "Change Password",
               color: Colors.red,
             ),
