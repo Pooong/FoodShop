@@ -59,7 +59,7 @@ class CommentsCard extends StatelessWidget {
   }
 
   String _truncateName(String name) {
-    const maxLength = 20; // Adjust maximum length as needed
+    const maxLength = 20;
     return name.length > maxLength
         ? '${name.substring(0, maxLength)}...'
         : name;
@@ -85,9 +85,8 @@ class CommentsCard extends StatelessWidget {
     double minHeightCommentCard = Get.height * 0.14;
     bool hiddenStar = star == 0.0;
     String calculatedTime = calculateTime(commentModel.createdAt);
-    // print(commentModel.author.email);
+
     return SingleChildScrollView(
-      // padding: const EdgeInsets.all(8.0),
       child: Stack(
         children: [
           Container(
@@ -171,6 +170,7 @@ class CommentsCard extends StatelessWidget {
                                         commentModel.author.displayName ??
                                             commentModel.author.email),
                                     style: TextStyle(
+                                      fontSize: AppDimens.textSize16,
                                       fontWeight: FontWeight.w500,
                                       color: AppColors.black.withOpacity(.7),
                                     ),
