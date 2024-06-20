@@ -53,6 +53,7 @@ class SocialNotifyPage extends GetView<NotifyController> {
     );
   }
 }
+
 Widget _buildCardNotify(
   BuildContext context, {
   required Image? img,
@@ -91,11 +92,11 @@ Widget _buildCardNotify(
               child: Container(
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  color: Colors.white, 
-                  borderRadius: BorderRadius.circular(8.0), 
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.2), 
+                      color: Colors.grey.withOpacity(0.2),
                       spreadRadius: 2,
                       blurRadius: 2,
                       offset: Offset(2, 3),
@@ -109,14 +110,14 @@ Widget _buildCardNotify(
                       title,
                       style: Theme.of(context).textTheme.bodyLarge,
                       maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      // overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4.0),
                     Text(
                       subtitle,
                       style: Theme.of(context).textTheme.bodySmall,
                       maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                      // overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8.0),
                     Align(

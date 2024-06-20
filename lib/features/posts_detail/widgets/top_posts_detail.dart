@@ -79,11 +79,12 @@ class HeaderPosts extends StatelessWidget {
                             fontSize: AppDimens.textSize16,
                             fontWeight: FontWeight.w500),
                         maxLines: 5,
-                        // overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
-                      '${controller.timePosts} - ${controller.authorPosts?.displayName ?? controller.authorPosts?.email} ',
+                      _truncateText(
+                          '${controller.timePosts} - ${controller.authorPosts?.displayName ?? controller.authorPosts?.email} '),
                       style: const TextStyle(
                         fontSize: AppDimens.textSize10,
                         fontWeight: FontWeight.w400,
@@ -122,10 +123,52 @@ class SubTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final subtitle = controller.postDataModel?.subtitle?.trim() ??
+        "Writing this post's description this here ....";
+
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Text(controller.postDataModel?.subtitle?.trim() ??
-          "Writing this post's description this here ...."),
+      child: SubtitleText(subtitle: subtitle),
+    );
+  }
+}
+
+class SubtitleText extends StatelessWidget {
+  const SubtitleText({super.key, required this.subtitle});
+
+  final String subtitle;
+  final int trimLength = 100;
+
+  @override
+  Widget build(BuildContext context) {
+    final ValueNotifier<bool> isExpanded = ValueNotifier<bool>(false);
+
+    return ValueListenableBuilder<bool>(
+      valueListenable: isExpanded,
+      builder: (context, value, child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              subtitle,
+              maxLines: value ? null : 2,
+            ),
+            if (subtitle.trim().length > trimLength)
+              TextButton(
+                onPressed: () {
+                  isExpanded.value = !isExpanded.value;
+                },
+                child: Text(
+                  value ? 'Thu gọn' : 'Xem thêm',
+                  style: const TextStyle(
+                    fontSize: AppDimens.textSize10,
+                    color: AppColors.red,
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
@@ -489,4 +532,11 @@ class Slider extends StatelessWidget {
           : Container(),
     );
   }
+}
+
+String _truncateText(
+  String text,
+) {
+  const maxLength = 30; // Độ dài tối đa của chuỗi
+  return text.length > maxLength ? '${text.substring(0, maxLength)}...' : text;
 }

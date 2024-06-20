@@ -24,7 +24,7 @@ class ItemInforProfile extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
           maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+          // overflow: TextOverflow.ellipsis,
         ),
         Text(
           title,
@@ -33,7 +33,7 @@ class ItemInforProfile extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
           maxLines: 2,
-          overflow: TextOverflow.ellipsis,
+          // overflow: TextOverflow.ellipsis,
         ),
       ],
     );

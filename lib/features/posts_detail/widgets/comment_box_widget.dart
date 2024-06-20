@@ -18,7 +18,7 @@ class CommentBoxWidget extends GetWidget<PostsDetailController> {
         FocusScope.of(context).unfocus();
       },
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(8.0),
+        // padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.white,
@@ -67,14 +67,16 @@ class MainContentCommentBox extends StatelessWidget {
                                 dataComments.idComment ?? "");
                           }
                         },
-                        child: CommentsCard(
-                          comment:
-                              dataComments.comment ?? "Comment is empty !!!",
-                          toggleActive: () {
-                            controller.toggleFavoriteComments(dataComments);
-                          },
-                          active: dataComments.isFavoriteComments ?? false,
-                          commentModel: dataComments,
+                        child: SingleChildScrollView(
+                          child: CommentsCard(
+                            comment:
+                                dataComments.comment ?? "Comment is empty !!!",
+                            toggleActive: () {
+                              controller.toggleFavoriteComments(dataComments);
+                            },
+                            active: dataComments.isFavoriteComments ?? false,
+                            commentModel: dataComments,
+                          ),
                         ),
                       );
                     },

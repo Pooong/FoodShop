@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 import 'package:find_food/features/model/post_model.dart';
@@ -73,14 +72,14 @@ class NotifyCard extends GetView<NotifyController> {
                         title,
                         style: Theme.of(context).textTheme.bodyLarge,
                         maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        // overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4.0),
                       Text(
                         subtitle,
                         style: Theme.of(context).textTheme.bodySmall,
                         maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                        // overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 8.0),
                       Align(
@@ -102,6 +101,5 @@ class NotifyCard extends GetView<NotifyController> {
         ),
       ),
     );
-
   }
 }
