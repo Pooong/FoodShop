@@ -4,6 +4,7 @@ import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/widgets/appbar/restaurant_appbar.dart';
 import 'package:find_food/core/ui/widgets/avatar/upload_avatar.dart';
+import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/control_restaurants/restaurant/pressentation/controller/restaurant_controller.dart';
 import 'package:find_food/features/control_restaurants/restaurant/pressentation/model/food_model.dart';
@@ -25,7 +26,10 @@ class RestaurantPage extends GetView<RestaurantController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const RestaurantAppbar(),
-      body: buildBody(),
+      body: Obx(
+        () =>
+            controller.isLoading.value ? const LoadingDataPage() : buildBody(),
+      ),
     );
   }
 
@@ -52,7 +56,7 @@ class RestaurantPage extends GetView<RestaurantController> {
               ),
             ],
           ),
-          const SizedBox(height: 60), // Add space to accommodate the rating
+          const SizedBox(height: 60),
           buildInfoSection(),
           const SizedBox(height: 10),
           buildContactSection(),
@@ -61,7 +65,7 @@ class RestaurantPage extends GetView<RestaurantController> {
           const SizedBox(height: 10),
           buildMenuSection(),
           const SizedBox(height: 10),
-          buildGridOrders()
+          // buildGridOrders()
         ],
       ),
     );
@@ -188,7 +192,7 @@ class RestaurantPage extends GetView<RestaurantController> {
                   Expanded(
                     flex: 8,
                     child: TextWidget(
-                      text: controller.addressRestaurant.text,
+                      text: controller.addressRestaurant,
                       size: AppDimens.textSize18,
                     ),
                   ),
@@ -238,7 +242,7 @@ class RestaurantPage extends GetView<RestaurantController> {
           width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(controller.listPathUrl[1]),
+              image: NetworkImage(controller.backgroundUrl),
               fit: BoxFit.cover,
             ),
           ),
@@ -261,7 +265,7 @@ class RestaurantPage extends GetView<RestaurantController> {
                 radius: 75,
                 child: CircleAvatar(
                   radius: 70,
-                  backgroundImage: NetworkImage(controller.listPathUrl.last),
+                  backgroundImage: NetworkImage(controller.avatarUrl),
                 ),
               ),
               Positioned(
@@ -335,7 +339,7 @@ class RestaurantPage extends GetView<RestaurantController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextWidget(
-                    text: controller.nameRestaurant.text,
+                    text: controller.nameRestaurant,
                     fontWeight: FontWeight.w700,
                     size: AppDimens.textSize22,
                     color: AppColors.primary,
@@ -350,11 +354,11 @@ class RestaurantPage extends GetView<RestaurantController> {
                           children: [
                             TextWidget(
                               size: AppDimens.textSize9,
-                              text: "Email: " + controller.emailRestaurant.text,
+                              text: "Email: ${controller.emailRestaurant}",
                             ),
                             TextWidget(
                               size: AppDimens.textSize9,
-                              text: "SDT: " + controller.phoneRestaurant.text,
+                              text: "SDT: ${controller.phoneRestaurant}",
                             ),
                           ],
                         ),
@@ -386,77 +390,77 @@ class RestaurantPage extends GetView<RestaurantController> {
         });
   }
 
-  Widget buildGridOrders() {
-    return Obx(() {
-      return GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        itemCount: controller.itemsToShow.value <= controller.menu.length
-            ? controller.itemsToShow.value + 1
-            : controller.itemsToShow.value,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == controller.itemsToShow.value) {
-            return GestureDetector(
-              onTap: controller.seeMore,
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: TextWidget(
-                  textAlign: TextAlign.start,
-                  text: "See More",
-                  color: AppColors.blue,
-                  size: AppDimens.textSize18,
-                ),
-              ),
-            );
-          } else {
-            final foodMenu = controller.menu[index];
-            return GestureDetector(
-              onTap: () {
-                controller.inforCard(foodMenu);
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
-                  builder: (BuildContext context) {
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                      ),
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: [
-                          Center(
-                            child: Container(
-                              padding: const EdgeInsets.all(16.0),
-                              child:
-                                  EditFoodModal(food: foodMenu, index: index),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              },
-              child: CardMenuRestaurant(
-                img: foodMenu.imageFood,
-                foodname: foodMenu.foodName,
-                pricefood: foodMenu.priceFood,
-              ),
-            );
-          }
-        },
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
-        ),
-      );
-    });
-  }
+  // Widget buildGridOrders() {
+  //   return Obx(() {
+  //     return GridView.builder(
+  //       shrinkWrap: true,
+  //       physics: const NeverScrollableScrollPhysics(),
+  //       padding: const EdgeInsets.symmetric(horizontal: 20),
+  //       itemCount: controller.itemsToShow.value <= controller.menu.length
+  //           ? controller.itemsToShow.value + 1
+  //           : controller.itemsToShow.value,
+  //       itemBuilder: (BuildContext context, int index) {
+  //         if (index == controller.itemsToShow.value) {
+  //           return GestureDetector(
+  //             onTap: controller.seeMore,
+  //             child: const Padding(
+  //               padding: EdgeInsets.symmetric(horizontal: 10),
+  //               child: TextWidget(
+  //                 textAlign: TextAlign.start,
+  //                 text: "See More",
+  //                 color: AppColors.blue,
+  //                 size: AppDimens.textSize18,
+  //               ),
+  //             ),
+  //           );
+  //         } else {
+  //           final foodMenu = controller.menu[index];
+  //           return GestureDetector(
+  //             onTap: () {
+  //               controller.inforCard(foodMenu);
+  //               showModalBottomSheet(
+  //                 context: context,
+  //                 isScrollControlled: true,
+  //                 shape: const RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.vertical(
+  //                     top: Radius.circular(20),
+  //                   ),
+  //                 ),
+  //                 builder: (BuildContext context) {
+  //                   return Padding(
+  //                     padding: EdgeInsets.only(
+  //                       bottom: MediaQuery.of(context).viewInsets.bottom,
+  //                     ),
+  //                     child: ListView(
+  //                       shrinkWrap: true,
+  //                       children: [
+  //                         Center(
+  //                           child: Container(
+  //                             padding: const EdgeInsets.all(16.0),
+  //                             child:
+  //                                 EditFoodModal(food: foodMenu, index: index),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   );
+  //                 },
+  //               );
+  //             },
+  //             child: CardMenuRestaurant(
+  //               img: foodMenu.imageFood,
+  //               foodname: foodMenu.foodName,
+  //               pricefood: foodMenu.priceFood,
+  //             ),
+  //           );
+  //         }
+  //       },
+  //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //         crossAxisCount: 2,
+  //         crossAxisSpacing: 4.0,
+  //         mainAxisSpacing: 4.0,
+  //       ),
+  //     );
+  //   });
+  // }
 }

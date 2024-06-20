@@ -7,7 +7,8 @@ class RestaurantModel {
   String? phoneRestaurant;
   String? addressRestaurant;
 
-  List<String>? listPathUrl;
+  List<String>? licenseRestaurant;
+  List<String>? onwnerLicenseImages;
   String? avatarUrl;
   String? backgroundUrl;
 
@@ -18,7 +19,8 @@ class RestaurantModel {
     this.emailRestaurant,
     this.phoneRestaurant,
     this.addressRestaurant,
-    this.listPathUrl,
+    this.licenseRestaurant,
+    this.onwnerLicenseImages,
     this.avatarUrl,
     this.backgroundUrl,
   });
@@ -31,7 +33,8 @@ class RestaurantModel {
       'emailRestaurant': emailRestaurant,
       'phoneRestaurant': phoneRestaurant,
       'addressRestaurant': addressRestaurant,
-      'listPathUrl': listPathUrl,
+      'licenseRestaurant': licenseRestaurant ?? '',
+      'onwnerLicenseImages': onwnerLicenseImages ?? '',
       'avatarUrl': avatarUrl ?? '',
       'backgroundUrl': backgroundUrl ?? '',
     };
@@ -45,7 +48,10 @@ class RestaurantModel {
       emailRestaurant: json['emailRestaurant'],
       phoneRestaurant: json['phoneRestaurant'],
       addressRestaurant: json['addressRestaurant'],
-      listPathUrl: List<String>.from(json['listPathUrl'].map((x) => x)),
+      licenseRestaurant:
+          List<String>.from(json['licenseRestaurant'].map((x) => x)),
+      onwnerLicenseImages:
+          List<String>.from(json['onwnerLicenseImages'].map((x) => x)),
       avatarUrl: json['avatarUrl'],
       backgroundUrl: json['backgroundUrl'],
     );

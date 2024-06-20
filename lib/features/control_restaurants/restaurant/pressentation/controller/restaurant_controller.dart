@@ -14,7 +14,7 @@ class RestaurantController extends GetxController {
   final TextEditingController imageController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-
+  var isLoading = false.obs;
   var menu = FoodModel.menu.obs;
   var itemsToShow = 4.obs;
   var itemHide = false.obs;
@@ -29,9 +29,11 @@ class RestaurantController extends GetxController {
 
   @override
   void onInit() async {
+    isLoading.value = true;
     user = await _getuserUseCase.getUser();
-    getRestaurantData();
+    await getRestaurantData();
     super.onInit();
+    isLoading.value = false;
   }
 
   Future selectImageAvatarGallery() async {
@@ -88,26 +90,26 @@ class RestaurantController extends GetxController {
 
   void onSearchItemTap(name) {}
 
-  final nameRestaurant = TextEditingController();
-  final emailRestaurant = TextEditingController();
-  final phoneRestaurant = TextEditingController();
-  final addressRestaurant = TextEditingController();
-  List<String> listPathUrl = [];
-
+  String nameRestaurant = "";
+  String emailRestaurant = "";
+  String phoneRestaurant = "";
+  String addressRestaurant = "";
+  String avatarUrl = "";
+  String backgroundUrl = "";
   Future<void> getRestaurantData() async {
     final result = await FirestoreRestaurant.getRestaurant(user!.uid);
     if (result.status == Status.success) {
       final restaurant = result.data;
-      nameRestaurant.text = restaurant!.nameRestaurant!.toString();
-      emailRestaurant.text = restaurant.emailRestaurant!;
-      phoneRestaurant.text = restaurant.phoneRestaurant!;
-      addressRestaurant.text = restaurant.addressRestaurant!;
-      listPathUrl = restaurant.listPathUrl!;
+      nameRestaurant = restaurant!.nameRestaurant!.toString();
+      emailRestaurant = restaurant.emailRestaurant!;
+      phoneRestaurant = restaurant.phoneRestaurant!;
+      addressRestaurant = restaurant.addressRestaurant!;
+      avatarUrl = restaurant.avatarUrl!;
+      backgroundUrl = restaurant.backgroundUrl!;
       update(["getInforRestaurant"]);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
     // print(result.data!.toJson());
-    print(listPathUrl[0]);
   }
 }
