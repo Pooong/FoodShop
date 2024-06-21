@@ -1,7 +1,7 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
-import 'package:find_food/core/extensions/color.dart';
+import 'package:find_food/core/extensions/helper.dart';
 import 'package:find_food/core/ui/dialogs/full_screen_image.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/icons/rating.dart';

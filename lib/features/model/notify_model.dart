@@ -1,4 +1,4 @@
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 
 class NotifyModel {
   String? idNotify;

@@ -1,6 +1,6 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/extensions/color.dart';
+import 'package:find_food/core/extensions/helper.dart';
 import 'package:find_food/core/ui/widgets/card/comments_card.dart';
 import 'package:find_food/features/model/comment_model.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
