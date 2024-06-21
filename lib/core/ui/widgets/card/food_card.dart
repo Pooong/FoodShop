@@ -75,7 +75,7 @@ class FoodCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 16.0,
                           color: Colors.grey,
-                          overflow: TextOverflow.ellipsis,
+                          // overflow: TextOverflow.ellipsis,
                         ),
                         maxLines: 1,
                       ),
@@ -83,14 +83,14 @@ class FoodCard extends StatelessWidget {
                   ],
                 ),
                 Text(
-                                  title,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold,
-                                  ),
-                                )
+                  title,
+                  maxLines: 1,
+                  // overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
               ],
             ),
           ))
