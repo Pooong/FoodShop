@@ -1,20 +1,25 @@
 import 'package:find_food/features/auth/user/model/user_model.dart';
-import 'package:find_food/features/model/post_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 
 class FavoriteModel {
-  UserModel author;
-  PostModel posts;
+  String? id;
+  
+  UserModel? author;
+  PostDataModel posts;
+
   String? createdAt;
 
   FavoriteModel({
+    this.id,
     required this.author,
     required this.posts,
-    this.createdAt,
+    required this.createdAt, 
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'author': author.toJson(),
+      'id':id,
+      'author': author?.toJson(),
       'posts': posts.toJson(),
       'createdAt': createdAt,
     };
@@ -22,8 +27,9 @@ class FavoriteModel {
 
   static FavoriteModel fromJson(Map<String, dynamic> json) {
     return FavoriteModel(
-      author: UserModel.fromJson(json['author']),
-      posts: PostModel.fromJson(json['posts']),
+      id:json['id'] as String,
+       author: UserModel.fromJson(json['author']),
+      posts: PostDataModel.fromJson(json['posts']),
       createdAt: json['createdAt'],
     );
   }

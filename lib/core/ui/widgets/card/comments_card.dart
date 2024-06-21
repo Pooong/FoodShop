@@ -36,7 +36,6 @@ class CommentsCard extends StatelessWidget {
     required this.active,
     required this.commentModel,
   });
-
   String calculateTime(String? createdAt) {
     if (createdAt == null || createdAt.isEmpty) {
       return "";
@@ -47,6 +46,9 @@ class CommentsCard extends StatelessWidget {
           DateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").parse(createdAt);
       DateTime currentTime = DateTime.now();
       Duration difference = currentTime.difference(postCreationTime);
+      if (difference.isNegative) {
+        return "Vừa xong";
+      }
       if (difference.isNegative) {
         return "Vừa xong";
       }
