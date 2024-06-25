@@ -64,7 +64,7 @@ class UploadController extends GetxController {
     final post = PostDataModel(
       title: titleController.text,
       subtitle: descriptionController.text.trim(),
-      favoriteCount: 10,
+      favoriteCount: 0,
       imageList: listPathUrl,
       restaurantId: 'restaurant1',
       createAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now()),

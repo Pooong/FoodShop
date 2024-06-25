@@ -17,34 +17,29 @@ class PostCardController extends GetxController {
 
   List<dynamic> listPostUserFavorite = [];
 
-  String tempFavoriteAdd = "";
-
-  String tempFavoriteRemove = "";
-
-  int tempFavoriteCount = -10;
+  var distance = 0.0;
 
   final Prefs prefs = Prefs.preferences;
 
   UserModel? author;
+  var isFavorite = false.obs;
+
 
   @override
   void onInit() async {
     super.onInit();
     await _initializeFavoriteState();
+    update(['updateStateInteractive']);
   }
 
   _initializeFavoriteState() async {
     GetuserUseCase user = GetuserUseCase(prefs);
     author = await user.getUser();
-    if (author != null) {
-      await _getListPostsUserFavorite();
-    }
-    update(['featchDataCard']);
+    await _getListPostsUserFavorite();
   }
 
   _getListPostsUserFavorite() async {
-    var result =
-        await FirestoreFavorite.getPostsFavoritedByUser(author!.uid ?? "");
+    var result =await FirestoreFavorite.getPostsFavoritedByUser(author!.uid ?? "");
     if (result.status == Status.success) {
       listPostUserFavorite = result.data ?? [];
     }
@@ -54,23 +49,9 @@ class PostCardController extends GetxController {
     return await FirestoreFavorite.countFavoritesByPostId(postId);
   }
 
-  handleClick({required String postsId, required bool stateIcon}) {
-    var save="";
-    if (stateIcon) {
-      tempFavoriteRemove = postsId;
-      tempFavoriteAdd = "";
-      save='$tempFavoriteRemove remove';
-    } else {
-      tempFavoriteAdd = postsId;
-      tempFavoriteRemove = "";
-      save='$tempFavoriteAdd add';
-    }
-    print(save);
-  }
-
   Future<void> toggleFavoriteState(
       {required PostDataModel posts, required bool stateIcon}) async {
-    isProcessing =true;
+    isProcessing = true;
     if (stateIcon) {
       await FirestoreFavorite.createFavorite(FavoriteModel(
           author: author, posts: posts, createdAt: DateTime.now().toString()));
@@ -79,7 +60,7 @@ class PostCardController extends GetxController {
           userId: author!.uid, postId: posts.id ?? "");
     }
     await _getListPostsUserFavorite();
-    isProcessing=false;
+    isProcessing = false;
     update([posts.id ?? ""]);
   }
 
@@ -96,8 +77,10 @@ class PostCardController extends GetxController {
         postLat,
         postLon,
       );
+      distance = double.parse(distance.toStringAsFixed(2));
       return double.parse(distance.toStringAsFixed(2));
     }
     return 0.0;
   }
+
 }

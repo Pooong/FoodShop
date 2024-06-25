@@ -30,11 +30,10 @@ class FirestoreFavorite {
     }
   }
 
-  static Future<bool> checkFavoriteExistsByUserAndPostId(
-      String userId, String postId) async {
+  static Future<bool> checkFavoriteExistsByUserAndPostId({required String userId,required String postId}) async {
     try {
       final snapshot = await _fireStoreUserCollection
-          .where('author.id', isEqualTo: userId)
+          .where('author.uid', isEqualTo: userId)
           .where('posts.id', isEqualTo: postId)
           .get();
       return snapshot.size > 0;

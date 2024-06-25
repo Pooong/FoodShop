@@ -1,5 +1,9 @@
 import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_interaction.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
+import 'package:find_food/features/model/favorite_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
@@ -20,42 +24,89 @@ class PostsDetailController extends GetxController {
   PostsDetailController(this._getuserUseCase);
 
   UserModel? userComment;
+
   List<CommentModel> listComments = [];
+
   PostDataModel? postDataModel;
-  final dataAgument = Get.arguments;
+
+  final dataAgument = Get.arguments as Map<String, dynamic>;
+
   final commentController = TextEditingController();
+
   List<PostDataModel> postsDetail = [];
+
   List<dynamic> listImagesPostDetail = [];
+
   String timePosts = "";
+
   UserModel? authorPosts;
+
   bool isRestaurant = false;
+
   int currentIndex = 0;
 
   final PageController mainPageController = PageController();
 
   var isFavorite = false.obs;
+
+  var distance = 0.0;
+
   var isBookmark = false.obs;
+
   var isFavoriteComments = false.obs;
 
   var isLoading = false.obs;
 
+  var activeState = false;
   get commentFocusNode => null;
+
+  bool isProcessing = false;
 
   @override
   void onInit() async {
     super.onInit();
     isLoading.value = true;
+    await _initialize();
+    isLoading.value = false;
+  }
+
+  Future<void> deletePosts() async {
+    isLoading.value = true;
+    await FirestorePostData.deletePost(postDataModel?.id ?? "");
+    isLoading.value = false;
+    Get.offAllNamed("/home");
+  }
+
+  Future<void> _initialize() async {
     userComment = await _getuserUseCase.getUser();
-    if (dataAgument is PostDataModel) {
-      postDataModel = dataAgument;
+    if (dataAgument != null) {
+      postDataModel = dataAgument['postsData'];
+      isFavorite.value = dataAgument['isFavorite'];
+      distance = dataAgument['distance'] ?? 0.0;
       listImagesPostDetail = postDataModel?.imageList ?? [];
       await getComments();
-      timePosts = CaculateTime(postDataModel?.createAt);
       await getAuthorPost();
       update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
     }
+    timePosts = CaculateTime(postDataModel?.createAt);
+  }
 
-    isLoading.value = false;
+  Future<void> toggleFavoriteState(
+      {required PostDataModel posts, required bool stateIcon}) async {
+    isProcessing = true;
+    activeState = true;
+    if (stateIcon) {
+      await FirestoreFavorite.createFavorite(FavoriteModel(
+          author: authorPosts,
+          posts: posts,
+          createdAt: DateTime.now().toString()));
+    } else {
+      await FirestoreFavorite.deleteFavoriteByUserAndPostId(
+          userId: authorPosts!.uid, postId: posts.id ?? "");
+    }
+    isFavorite.value = !isFavorite.value;
+    isProcessing = false;
+    update([posts.id ?? ""]);
   }
 
   refreshPostsDetail() async {
@@ -64,7 +115,7 @@ class PostsDetailController extends GetxController {
 
     userComment = await _getuserUseCase.getUser();
     if (dataAgument is PostDataModel) {
-      postDataModel = dataAgument;
+      postDataModel = dataAgument["postsData"];
       listImagesPostDetail = postDataModel?.imageList ?? [];
       await getComments();
       timePosts = CaculateTime(postDataModel?.createAt);
@@ -80,6 +131,10 @@ class PostsDetailController extends GetxController {
     if (result.status == Status.success) {
       authorPosts = result.data;
     }
+  }
+
+  Future<int> getCountFavorite(String postId) async {
+    return await FirestoreFavorite.countFavoritesByPostId(postId);
   }
 
   // ignore: non_constant_identifier_names
@@ -114,7 +169,7 @@ class PostsDetailController extends GetxController {
   }
 
   getComments() async {
-    final result = await FirestoreComment.getListComments(dataAgument!.id!);
+    final result = await FirestoreComment.getListComments(postDataModel!.id!);
     if (result.status == Status.success) {
       listComments = result.data!;
       listComments.sort((a, b) {

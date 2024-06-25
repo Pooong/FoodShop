@@ -12,11 +12,14 @@ import 'package:find_food/core/ui/widgets/icons/rating.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/model/post_data_model.dart';
 
+// ignore: must_be_immutable
 class PostsCard extends GetView<PostCardController> {
   final PostDataModel postDataModel;
 
-  const PostsCard({super.key, required this.postDataModel});
+  PostsCard({super.key, required this.postDataModel});
 
+  var distance = 0.0;
+  bool isFavorited = false;
   @override
   Widget build(BuildContext context) {
     final PostCardController controller = Get.put(PostCardController());
@@ -50,7 +53,7 @@ class PostsCard extends GetView<PostCardController> {
         horizontal: AppDimens.spacing3,
         vertical: AppDimens.spacing2,
       ),
-      child: FutureBuilder<double>(
+      child: FutureBuilder(
         future: controller.distanceCalculate(postsData: postDataModel),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -58,11 +61,15 @@ class PostsCard extends GetView<PostCardController> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            double distance = snapshot.data ?? 0.0;
+            distance = snapshot.data ?? 0.0;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _TitleAndFavorite(controller: controller),
+                GetBuilder<PostCardController>(
+                    id: "updateStateInteractive",
+                    builder: (_) {
+                      return _TitleAndFavorite(controller: controller);
+                    }),
                 const SizedBox(height: AppDimens.spacing1),
                 _SubTitle(content: postDataModel.subtitle),
                 const SizedBox(height: AppDimens.spacing4),
@@ -145,7 +152,7 @@ class PostsCard extends GetView<PostCardController> {
 
   // ignore: non_constant_identifier_names
   Row _TitleAndFavorite({required PostCardController controller}) {
-  
+    isFavorited = controller.listPostUserFavorite.contains(postDataModel.id);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,16 +168,16 @@ class PostsCard extends GetView<PostCardController> {
         GetBuilder<PostCardController>(
           id: postDataModel.id,
           builder: (_) {
-            bool isFavorited = controller.listPostUserFavorite.contains(postDataModel.id);
             return InkWell(
               excludeFromSemantics: true,
               onTap: () async {
-                if(controller.isProcessing) return;
-                await controller.toggleFavoriteState(posts: postDataModel, stateIcon: !isFavorited);
-                postDataModel.favoriteCount = await controller.getCountFavorite(postDataModel.id ?? "");
+                if (controller.isProcessing) return;
+                await controller.toggleFavoriteState(
+                    posts: postDataModel, stateIcon: !isFavorited);
+                isFavorited =
+                    controller.listPostUserFavorite.contains(postDataModel.id);
                 controller.update([postDataModel.id ?? ""]);
               },
-
               child: Column(
                 children: [
                   Icon(
@@ -178,7 +185,6 @@ class PostsCard extends GetView<PostCardController> {
                     color: isFavorited ? AppColors.red : null,
                     size: AppDimens.textSize20,
                   ),
-
                   FutureBuilder<int>(
                     future: controller.getCountFavorite(postDataModel.id ?? ""),
                     builder: (context, snapshot) {
@@ -186,7 +192,9 @@ class PostsCard extends GetView<PostCardController> {
                         return const SizedBox(
                             width: AppDimens.textSize10,
                             height: AppDimens.textSize14,
-                            child: CircularProgressIndicator(strokeWidth: 1,));
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1,
+                            ));
                       } else if (snapshot.hasError) {
                         return const TextWidget(
                           text: '0',
@@ -200,7 +208,6 @@ class PostsCard extends GetView<PostCardController> {
                       }
                     },
                   ),
-                  
                 ],
               ),
             );
@@ -216,8 +223,17 @@ class PostsCard extends GetView<PostCardController> {
       borderRadius:
           const BorderRadius.vertical(top: Radius.circular(AppDimens.radius1)),
       child: InkWell(
-        onTap: () {
-          Get.toNamed(Routes.postsDetail, arguments: postDataModel);
+        onTap: () async {
+          final result = await Get.toNamed(Routes.postsDetail, arguments: {
+            'postsData': postDataModel,
+            'distace': distance,
+            'isFavorite': isFavorited
+          });
+          if (result != null) {
+            await controller.getCountFavorite(postDataModel.id ?? "");
+            isFavorited = result['isFavorite'];
+            controller.update([result['postsId']]);
+          }
         },
         child: postDataModel.imageList != null &&
                 postDataModel.imageList!.isNotEmpty
