@@ -59,4 +59,23 @@ class FirebaseAuthentication {
   }
 
   static Future signOut() async => await firebaseAuth.signOut();
+
+  static Future<Result<void>> updatePassword({
+    required String newPassword,
+  }) async {
+    try {
+      User? user = firebaseAuth.currentUser;
+      if (user != null) {
+        await user.updatePassword(newPassword);
+        return Result.success(user);
+      } else {
+        return Result.error(FirebaseAuthException(
+          code: "no-current-user",
+          message: "No user currently signed in",
+        ));
+      }
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
 }
