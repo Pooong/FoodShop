@@ -6,6 +6,7 @@ import 'package:find_food/core/ui/dialogs/full_screen_image.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/icons/rating.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -293,9 +294,9 @@ class TagInfoPosts extends StatelessWidget {
                       const Icon(Icons.location_on,
                           color: Colors.black, size: 20.0),
                       const SizedBox(width: 5),
-                      const Text(
-                        "2.7km",
-                        style: TextStyle(
+                      Text(
+                        controller.distance.toString(),
+                        style: const TextStyle(
                           fontSize: 14.0,
                         ),
                       ),
@@ -328,27 +329,54 @@ class TagInfoPosts extends StatelessWidget {
                     const SizedBox(
                       width: 20.0,
                     ),
-                    Column(
-                      children: [
-                        Obx(
-                          () => InkWell(
-                            onTap: controller.toggleFavoriteStatus,
-                            child: Icon(
-                              controller.isFavorite.value
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: controller.isFavorite.value
-                                  ? Colors.red
-                                  : null,
-                              size: 20.0,
-                            ),
+                    GetBuilder<PostsDetailController>(
+                      id: controller.postDataModel?.id,
+                      builder: (_) {
+                        bool isFavorited = controller.isFavorite.value;
+                        return InkWell(
+                          excludeFromSemantics: true,
+                          onTap: () async {
+                            if (controller.isProcessing) return;
+                            await controller.toggleFavoriteState(posts: controller.postDataModel ?? PostDataModel(), stateIcon: !isFavorited);
+                            controller.update([ controller.postDataModel?.id ?? ""]);
+                          },
+                          child: Column(
+                            children: [
+                              Icon(
+                                isFavorited
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isFavorited ? AppColors.red : null,
+                                size: AppDimens.textSize20,
+                              ),
+                              FutureBuilder<int>(
+                                future: controller.getCountFavorite(controller.postDataModel!.id ?? ""),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const SizedBox(
+                                        width: AppDimens.textSize10,
+                                        height: AppDimens.textSize14,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 1,
+                                        ));
+                                  } else if (snapshot.hasError) {
+                                    return const TextWidget(
+                                      text: '0',
+                                      size: AppDimens.textSize10,
+                                    );
+                                  } else {
+                                    return TextWidget(
+                                      text: '${snapshot.data}',
+                                      size: AppDimens.textSize10,
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
                           ),
-                        ),
-                        TextWidget(
-                            text:
-                                "${controller.postDataModel?.favoriteCount ?? 0}",
-                            size: AppDimens.textSize15),
-                      ],
+                        );
+                      },
                     ),
                   ],
                 ),

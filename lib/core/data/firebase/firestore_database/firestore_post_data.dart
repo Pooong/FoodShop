@@ -147,10 +147,10 @@ class FirestorePostData {
     }
   }
 
-  static Future<Result<List<PostDataModel>>> deletePost(String postId) async {
+  static Future<Result<bool>> deletePost(String postId) async {
     try {
       await _fireStorePostCollection.doc(postId).delete();
-      return Result.success([]);
+      return Result.success(true);
     } on FirebaseException catch (e) {
       return Result.error(e);
     }

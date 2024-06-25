@@ -4,8 +4,8 @@ import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/card/posts_card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
-import 'package:find_food/features/nav/home/home/presentation/controller/home_controller.dart';
 import 'package:find_food/features/model/post_data_model.dart';
+import 'package:find_food/features/nav/home/home/presentation/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,55 +15,31 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarWidget(),
-      body: GetBuilder<HomeController>(
-        id: "fetchPosts",
-        builder: (logic) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              await controller.refreshPosts();
-            }, // Thêm sự kiện làm mới
-            child: buildListPostStream(),
-          );
+      body: RefreshIndicator(onRefresh: () async {
+        await controller.refreshPosts();
+      }, child: GetBuilder<HomeController>(
+        id: "fetchListPost",
+        builder: (_) {
+          return buildListPostStream();
         },
-      ),
+      )),
     );
-  }
-
-  Widget buildListPost() {
-    return controller.listPost.isNotEmpty
-        ? ListView.builder(
-            shrinkWrap: true,
-            itemCount: controller.listPost.length,
-            itemBuilder: (_, index) {
-              PostDataModel postDataModel = controller.listPost[index];
-              return PostsCard(
-                postDataModel: postDataModel,
-              );
-            })
-        : const SizedBox.shrink();
   }
 
   Widget buildListPostStream() {
     return StreamBuilder<List<DocumentSnapshot>>(
       stream: controller.listenToPostsRealTime(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.connectionState == ConnectionState.none) {
-          return snapshot.hasData
-              ? const Center(
-                  child: LoadingDataPage(),
-                )
-              : const Center(
-                  child: LoadingDataPage(),
-                );
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const LoadingDataPage();
         } else {
           if (snapshot.hasData) {
             final postDocs = snapshot.data!;
             return ListView.builder(
               controller: controller.scrollController,
               itemBuilder: (ctx, i) {
-                PostDataModel postDataModel =
-                    PostDataModel.fromDocumentSnapshot(postDocs[i]);
+                PostDataModel postDataModel = PostDataModel.fromDocumentSnapshot(postDocs[i]);
+                postDataModel.restaurantId= i%2==0?"idrestaurant":"";
                 return PostsCard(
                   postDataModel: postDataModel,
                 );
