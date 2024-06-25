@@ -7,7 +7,7 @@ import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/comment_model.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,6 +38,8 @@ class PostsDetailController extends GetxController {
   var isFavoriteComments = false.obs;
 
   var isLoading = false.obs;
+
+  get commentFocusNode => null;
 
   @override
   void onInit() async {
@@ -133,7 +135,7 @@ class PostsDetailController extends GetxController {
       return;
     }
     // kiểm tra độ dài của comment
-    const int maxCommentLength = 50; // Set the maximum comment length
+    const int maxCommentLength = 100; // Set the maximum comment length
     if (commentController.text.length > maxCommentLength) {
       Fluttertoast.showToast(
           msg: "Comment cannot exceed $maxCommentLength characters".tr);
@@ -162,6 +164,7 @@ class PostsDetailController extends GetxController {
 
   // phương thức xóa bình luận
   void deleteComment(String idComment) async {
+    print(idComment);
     final result = await FirestoreComment.deleteComment(idComment);
     if (result.status == Status.success) {
       listComments.removeWhere((element) => element.idComment == idComment);
@@ -205,12 +208,12 @@ class PostsDetailController extends GetxController {
     isBookmark.value = !isBookmark.value;
   }
 
-  void showDialogDeleteComment() {
+  void showDialogDeleteComment(String id) {
     DialogsUtils.showAlertDialog(
       title: "Delete comment",
       message: "Are you sure you want to delete this comment?",
       typeDialog: TypeDialog.warning,
-      onPresss: () => (deleteComment(listComments[0].idComment!)),
+      onPresss: () => (deleteComment(id)),
     );
   }
 
@@ -260,12 +263,6 @@ class PostsDetailController extends GetxController {
     return null;
   }
 
-  // void updateComment(int index) {
-  //   CommentData.commentDataList[index - 1]['isActive'] =
-  //       !CommentData.commentDataList[index - 1]['isActive'];
-  //   update(["fetchComment"]);
-  // }
-
   bool hiddenStar(double star) => star == 0.0;
 
   List<String> listPathUrl = [];
@@ -282,5 +279,9 @@ class PostsDetailController extends GetxController {
 
   void removeImage(File image) {
     selectedImages.remove(image);
+  }
+
+  void hideKeyboard() {
+    FocusScope.of(Get.context!).requestFocus(FocusNode());
   }
 }

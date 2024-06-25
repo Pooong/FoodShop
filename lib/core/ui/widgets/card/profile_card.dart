@@ -2,7 +2,7 @@ import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

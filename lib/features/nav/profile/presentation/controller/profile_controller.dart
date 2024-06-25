@@ -7,7 +7,7 @@ import 'package:find_food/core/data/firebase/firestore_database/firestore_user.d
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_bookmark_page.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_favorite_page.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_list_page.dart';
@@ -26,20 +26,27 @@ class ProfileController extends GetxController {
   List<PostDataModel> listFavoritePosts = [];
   UserModel? user;
 
+  var isLoading=false.obs;
+
   RxInt currentIndex = 0.obs;
+
   PageController pageController = PageController(initialPage: 0);
 
   final picker = ImagePicker();
+
   File? imgAvatar;
+
   File? imgBackground;
 
   @override
   void onInit() async {
-    user = await _getuserUseCase.getUser();
     super.onInit();
-    getPostsOfUser();
-    getUser();
-    loadData();
+    isLoading.value=true;
+    user = await _getuserUseCase.getUser();
+    await getPostsOfUser();
+    await getUser();
+    await loadData();
+    isLoading.value=false;
   }
 
   Future<void> loadData() async {
@@ -73,8 +80,11 @@ class ProfileController extends GetxController {
     if (pickedFile != null) {
       imgAvatar = File(pickedFile.path);
       user?.avatarUrl = pickedFile.path;
+      isLoading.value=true;
+      update(['fetchDataProfilePage']);
       await updateUserAvatar();
-      update(['updateAvatar']);
+      isLoading.value=false;
+      update(['updateAvatar','fetchDataProfilePage']);
     }
   }
 
@@ -84,8 +94,11 @@ class ProfileController extends GetxController {
     if (pickedFile != null) {
       imgBackground = File(pickedFile.path);
       user?.backgroundUrl = pickedFile.path;
+      isLoading.value=true;
+      update(['fetchDataProfilePage']);
       await updateUserBackground();
-      update(['updateBackground']);
+      isLoading.value=false;
+      update(['updateBackground','fetchDataProfilePage']);
     }
   }
 

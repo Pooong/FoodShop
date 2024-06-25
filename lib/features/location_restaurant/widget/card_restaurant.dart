@@ -47,7 +47,7 @@ class CardRestaurant extends GetView<LocationRestaurantController> {
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.normal),
                       maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      // overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

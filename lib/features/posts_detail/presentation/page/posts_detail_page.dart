@@ -21,7 +21,7 @@ class PostsDetailPage extends GetView<PostsDetailController> {
           return controller.isLoading.value
               ? const LoadingDataPage()
               : const SingleChildScrollView(
-                  child: Padding(
+                  child: SingleChildScrollView(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Wrap(
                       runSpacing: AppDimens.columnSpacing,
