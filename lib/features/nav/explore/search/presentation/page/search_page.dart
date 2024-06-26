@@ -113,7 +113,7 @@ class SearchPage extends GetView<ExploreController> {
                         title: title ?? AppTextString.fCardTitleDefault,
                         rating: 2.5,
                         customerRating: 10,
-                        distance: 2.1,
+                        distance: 2.1, postDataModel: postDataModel,
                       ),
                     );
                   }).toList(),

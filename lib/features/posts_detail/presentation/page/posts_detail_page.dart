@@ -1,5 +1,4 @@
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
@@ -40,7 +39,10 @@ class PostsDetailPage extends GetView<PostsDetailController> {
       leading: InkWell(
           onTap: () {
             // controller.activeState?
-            Get.back(result: {"postsId": controller.postDataModel!.id,"isFavorite":controller.isFavorite.value});
+            Get.back(result: {
+              "postsId": controller.postDataModel!.id,
+              "isFavorite": controller.isFavorite.value
+            });
           },
           child: const Icon(Icons.arrow_back_ios)),
       title: const TextWidget(text: "DETAIL"),
@@ -107,7 +109,6 @@ class PostsDetailPage extends GetView<PostsDetailController> {
           ],
           color: Colors.white.withOpacity(0.8),
         ).then((value) {
-          print(value);
           if (value != null) {
             if (value == "_changeValue") {
               Get.toNamed(Routes.editPosts,
@@ -136,10 +137,11 @@ class PostsDetailPage extends GetView<PostsDetailController> {
               child: Text('Hủy'),
             ),
             TextButton(
-              onPressed: () async{
+              onPressed: () async {
                 Navigator.of(context).pop(); // Đóng dialog
                 await controller.deletePosts();
-                ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Text('Bài viết đã được xóa')),
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Bài viết đã được xóa')),
                 );
               },
               child: Text('Đồng ý'),

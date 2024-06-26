@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:find_food/core/configs/enum.dart';
-import 'package:find_food/core/data/firebase/firestore_database/firestore_interaction.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_favorite.dart';
 import 'package:find_food/core/data/prefs/prefs.dart';
 import 'package:find_food/core/services/location_service.dart';
 import 'package:find_food/core/utils/calculator_utils.dart';

@@ -1,9 +1,11 @@
 import 'package:find_food/core/configs/enum.dart';
-import 'package:find_food/core/data/firebase/firestore_database/firestore_interaction.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_favorite.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_bookmark.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/features/model/favorite_model.dart';
+import 'package:find_food/features/model/bookmark_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
@@ -58,6 +60,7 @@ class PostsDetailController extends GetxController {
   var isLoading = false.obs;
 
   var activeState = false;
+
   get commentFocusNode => null;
 
   bool isProcessing = false;
@@ -81,10 +84,15 @@ class PostsDetailController extends GetxController {
     userComment = await _getuserUseCase.getUser();
     if (dataAgument != null) {
       postDataModel = dataAgument['postsData'];
-      isFavorite.value = dataAgument['isFavorite'];
       distance = dataAgument['distance'] ?? 0.0;
       listImagesPostDetail = postDataModel?.imageList ?? [];
-      await getComments();
+      isFavorite.value =
+          await FirestoreFavorite.checkFavoriteExistsByUserAndPostId(
+              userId: userComment!.uid, postId: postDataModel!.id ?? "");
+      isBookmark.value =
+          await FirestoreBookmark.checkBookmarkExistsByUserAndPostId(
+              userId: userComment!.uid, postId: postDataModel!.id ?? "");
+      print(isBookmark.value);
       await getAuthorPost();
       update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
     }
@@ -107,6 +115,21 @@ class PostsDetailController extends GetxController {
     isFavorite.value = !isFavorite.value;
     isProcessing = false;
     update([posts.id ?? ""]);
+  }
+
+  Future<void> toggleBookmarkState({required bool stateIcon}) async {
+    isProcessing = true;
+    if (!stateIcon) {
+      await FirestoreBookmark.createBookmark(BookmarkModel(
+          author: userComment,
+          posts: postDataModel ?? PostDataModel(),
+          createdAt: DateTime.now().toString()));
+    } else {
+      await FirestoreBookmark.deleteBookmarkByUserAndPostId(
+          userId: userComment!.uid, postId: postDataModel?.id ?? "");
+    }
+    isBookmark.value = !isBookmark.value;
+    isProcessing = false;
   }
 
   refreshPostsDetail() async {
@@ -253,14 +276,6 @@ class PostsDetailController extends GetxController {
   void toggleFavoriteComments(CommentModel comment) {
     comment.isFavoriteComments = !comment.isFavoriteComments!;
     update(["fetchComment"]);
-  }
-
-  void toggleFavoriteStatus() {
-    isFavorite.value = !isFavorite.value;
-  }
-
-  void toggleBookmarkStatus() {
-    isBookmark.value = !isBookmark.value;
   }
 
   void showDialogDeleteComment(String id) {

@@ -1,6 +1,6 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/configs/app_images_string.dart';
+import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/extensions/helper.dart';
 import 'package:find_food/core/ui/dialogs/full_screen_image.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
@@ -57,12 +57,12 @@ class HeaderPosts extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(width: 16),
+          const SizedBox(width: 10),
           Avatar(
-              authorImg: controller.authorPosts?.avatarUrl ??
-                  AppImagesString.iBackgroundUserDefault,
-              radius: 50),
-          const SizedBox(width: 16),
+            authorImg: controller.authorPosts?.avatarUrl,
+            radius: 50,
+          ),
+          const SizedBox(width: 10),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,7 +75,7 @@ class HeaderPosts extends StatelessWidget {
                       width: Get.width * 0.6,
                       child: Text(
                         controller.postDataModel?.title?.trim() ??
-                            'Write title posts this here  ',
+                            AppTextString.fCardTitleDefault,
                         style: const TextStyle(
                             fontSize: AppDimens.textSize16,
                             fontWeight: FontWeight.w500),
@@ -94,17 +94,26 @@ class HeaderPosts extends StatelessWidget {
                     ),
                   ],
                 ),
-                Obx(
-                  () => IconButton(
-                    onPressed: controller.toggleBookmarkStatus,
-                    icon: Icon(
-                      controller.isBookmark.value
-                          ? Icons.bookmark
-                          : Icons.bookmark_border,
-                      color: controller.isBookmark.value ? Colors.yellow : null,
-                    ),
-                  ),
-                ),
+                Obx(() {
+                  return controller.userComment?.uid ==
+                              controller.authorPosts?.uid &&
+                          !controller.isLoading.value
+                      ? const SizedBox()
+                      : IconButton(
+                          onPressed:()async{
+                            if(controller.isProcessing) return ;
+                            await controller.toggleBookmarkState(stateIcon: controller.isBookmark.value);
+                          },
+                          icon: Icon(
+                            controller.isBookmark.value
+                                ? Icons.bookmark
+                                : Icons.bookmark_border,
+                            color: controller.isBookmark.value
+                                ? Colors.yellow
+                                : null,
+                          ),
+                        );
+                }),
               ],
             ),
           ),
@@ -125,7 +134,7 @@ class SubTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final subtitle = controller.postDataModel?.subtitle?.trim() ??
-        "Writing this post's description this here ....";
+        AppTextString.fCardDesription;
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -160,7 +169,7 @@ class SubtitleText extends StatelessWidget {
                   isExpanded.value = !isExpanded.value;
                 },
                 child: Text(
-                  value ? 'Thu gọn' : 'Xem thêm',
+                  value ? 'Collapse' : 'See more',
                   style: const TextStyle(
                     fontSize: AppDimens.textSize10,
                     color: AppColors.red,
@@ -337,8 +346,11 @@ class TagInfoPosts extends StatelessWidget {
                           excludeFromSemantics: true,
                           onTap: () async {
                             if (controller.isProcessing) return;
-                            await controller.toggleFavoriteState(posts: controller.postDataModel ?? PostDataModel(), stateIcon: !isFavorited);
-                            controller.update([ controller.postDataModel?.id ?? ""]);
+                            await controller.toggleFavoriteState(
+                                posts:controller.postDataModel ?? PostDataModel(),
+                                stateIcon: !isFavorited);
+                            controller
+                                .update([controller.postDataModel?.id ?? ""]);
                           },
                           child: Column(
                             children: [
@@ -350,7 +362,8 @@ class TagInfoPosts extends StatelessWidget {
                                 size: AppDimens.textSize20,
                               ),
                               FutureBuilder<int>(
-                                future: controller.getCountFavorite(controller.postDataModel!.id ?? ""),
+                                future: controller.getCountFavorite(
+                                    controller.postDataModel!.id ?? ""),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {

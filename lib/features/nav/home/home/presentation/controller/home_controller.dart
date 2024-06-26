@@ -49,8 +49,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> _getPosts() async {
-    if (!_hasMoreData || isLoading)
-      return; // Kiểm tra nếu đang tải dữ liệu hoặc không còn dữ liệu để tải thêm thì không thực hiện tiếp
+    if (!_hasMoreData || isLoading) return; // Kiểm tra nếu đang tải dữ liệu hoặc không còn dữ liệu để tải thêm thì không thực hiện tiếp
 
     isLoading = true; // Đặt trạng thái tải dữ liệu thành true
 
