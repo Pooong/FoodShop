@@ -33,7 +33,7 @@ class FavoriteCategoryPage extends GetView<CategoryController> {
                 imageUrl: postDataModel.imageList!.first,
                 rating: 3,
                 customerRating: 30,
-                distance: 2,
+                distance: 2, postDataModel: postDataModel,
               );
             },
           ),
