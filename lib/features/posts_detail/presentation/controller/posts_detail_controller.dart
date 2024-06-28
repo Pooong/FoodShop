@@ -3,7 +3,9 @@ import 'package:find_food/core/data/firebase/firestore_database/firestore_favori
 import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_bookmark.dart';
 import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/core/services/location_service.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
+import 'package:find_food/core/utils/calculator_utils.dart';
 import 'package:find_food/features/model/favorite_model.dart';
 import 'package:find_food/features/model/bookmark_model.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +66,9 @@ class PostsDetailController extends GetxController {
   get commentFocusNode => null;
 
   bool isProcessing = false;
+  
+  final LocationService locationService = Get.find<LocationService>();
+
 
   @override
   void onInit() async {
@@ -73,18 +78,20 @@ class PostsDetailController extends GetxController {
     isLoading.value = false;
   }
 
+  
   Future<void> deletePosts() async {
     isLoading.value = true;
     await FirestorePostData.deletePost(postDataModel?.id ?? "");
     isLoading.value = false;
-    Get.offAllNamed("/home");
+    Get.back(result: {"deleteSuccess":true});
   }
 
   Future<void> _initialize() async {
     userComment = await _getuserUseCase.getUser();
     if (dataAgument != null) {
       postDataModel = dataAgument['postsData'];
-      distance = dataAgument['distance'] ?? 0.0;
+      distance = await distanceCalculate(postsData: postDataModel ?? PostDataModel());
+
       listImagesPostDetail = postDataModel?.imageList ?? [];
       isFavorite.value =
           await FirestoreFavorite.checkFavoriteExistsByUserAndPostId(
@@ -92,7 +99,6 @@ class PostsDetailController extends GetxController {
       isBookmark.value =
           await FirestoreBookmark.checkBookmarkExistsByUserAndPostId(
               userId: userComment!.uid, postId: postDataModel!.id ?? "");
-      print(isBookmark.value);
       await getAuthorPost();
       update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
     }
@@ -105,16 +111,37 @@ class PostsDetailController extends GetxController {
     activeState = true;
     if (stateIcon) {
       await FirestoreFavorite.createFavorite(FavoriteModel(
-          author: authorPosts,
+          author: userComment,
           posts: posts,
           createdAt: DateTime.now().toString()));
     } else {
       await FirestoreFavorite.deleteFavoriteByUserAndPostId(
-          userId: authorPosts!.uid, postId: posts.id ?? "");
+          userId: userComment!.uid, postId: posts.id ?? "");
     }
     isFavorite.value = !isFavorite.value;
     isProcessing = false;
     update([posts.id ?? ""]);
+  }
+
+  Future<void> privatePosts() async{
+    try{
+      isLoading.value=true;
+      await FirestorePostData.updateStatus(postDataModel?.id ?? "", StatusPosts.private);
+      isLoading.value=false;
+       Fluttertoast.showToast(msg: "Posts is Privaiting Status");
+    }catch (e){
+      Fluttertoast.showToast(msg: "Change status posts fauil");
+    }
+  }
+  Future<void> publicPosts() async{
+    try{
+      isLoading.value=true;
+      await FirestorePostData.updateStatus(postDataModel?.id ?? "", StatusPosts.active);
+      isLoading.value=false;
+       Fluttertoast.showToast(msg: "Posts is Privaiting Status");
+    }catch (e){
+      Fluttertoast.showToast(msg: "Change status posts fauil");
+    }
   }
 
   Future<void> toggleBookmarkState({required bool stateIcon}) async {
@@ -159,6 +186,26 @@ class PostsDetailController extends GetxController {
   Future<int> getCountFavorite(String postId) async {
     return await FirestoreFavorite.countFavoritesByPostId(postId);
   }
+
+  Future<double> distanceCalculate({required PostDataModel postsData}) async {
+    var placeMap = await locationService.getLocation();
+    if (placeMap != null) {
+      double placeLat = placeMap.lat ?? 0.0;
+      double placeLon = placeMap.lon ?? 0.0;
+      double postLat = postsData.latitude ?? 0.0;
+      double postLon = postsData.longitude ?? 0.0;
+      double distance = CalculatorUtils.calculateDistance(
+        placeLat,
+        placeLon,
+        postLat,
+        postLon,
+      );
+      distance = double.parse(distance.toStringAsFixed(2));
+      return double.parse(distance.toStringAsFixed(2));
+    }
+    return 0.0;
+  }
+
 
   // ignore: non_constant_identifier_names
   String CaculateTime(String? createAt) {

@@ -13,6 +13,8 @@ class SettingInformationController extends GetxController {
   SettingInformationController(this._getuserUseCase, this._saveUserUseCase);
   UserModel? user;
 
+  var isChangeValue = false;
+
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -38,14 +40,17 @@ class SettingInformationController extends GetxController {
   Future<void> updateUser() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-
-      await _saveUserUseCase.saveUser(user!);
-      final result = await FirestoreUser.updateUser(user!);
-
-      if (result.status == Status.success) {
-        SnackbarUtil.show("Save changes");
-      } else {
-        SnackbarUtil.show("Something went wrong");
+      if (isChangeValue) {
+        await _saveUserUseCase.saveUser(user!);
+        final result = await FirestoreUser.updateUser(user!);
+        if (result.status == Status.success) {
+          SnackbarUtil.show("Save changes");
+          isChangeValue = false;
+        } else {
+          SnackbarUtil.show("Something went wrong");
+        }
+      }else{
+          SnackbarUtil.show("Please enter the information you want to change");
       }
       update(["fetchUserInformation"]);
     } else {

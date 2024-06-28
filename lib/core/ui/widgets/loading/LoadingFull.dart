@@ -15,7 +15,7 @@ class LoadingFull extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(.6),
+                color: AppColors.primary,
                 borderRadius: BorderRadius.circular(10)),
             child: LoadingAnimationWidget.staggeredDotsWave(
                 color: AppColors.white, size: 90),

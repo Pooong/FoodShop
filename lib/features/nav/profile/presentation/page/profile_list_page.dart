@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileListPage extends GetView<ProfileController> {
-  ProfileListPage({super.key});
+  const ProfileListPage({super.key});
   
   @override
   Widget build(BuildContext context) {

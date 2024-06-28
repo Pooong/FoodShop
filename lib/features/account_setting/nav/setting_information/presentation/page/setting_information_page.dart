@@ -1,3 +1,4 @@
+import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/ui/widgets/appbar/setting_infomation_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
@@ -98,64 +99,25 @@ class SettingInformationPage extends GetView<SettingInformationController> {
             fontSize: 20,
           ),
           validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Please enter your Full name";
+            if (value != null && value != "") {
+              if (value.length < 5) {
+                return "Display name must not be less than 5 characters";
+              }
+              if (value.length > 25) {
+                return "Display name must not be more than 25 characters";
+              }
             }
-            return null;
           },
           onSaved: (value) {
-            controller.user?.displayName = value;
+            if (value != "" &&  controller.user?.displayName !=value) {
+              controller.isChangeValue=true;
+              controller.user?.displayName = value;
+            }
           },
         );
       },
     );
   }
-
-  // Widget _buildEmailField() {
-  //   return GetBuilder<SettingInformationController>(
-  //     id: "fetchUserInformation",
-  //     builder: (_) {
-  //       return TextFormField(
-  //         initialValue: controller.user?.email ?? "",
-  //         decoration: const InputDecoration(
-  //           labelText: "Email Address",
-  //           labelStyle: TextStyle(
-  //             color: Colors.black,
-  //             fontSize: 20,
-  //           ),
-  //           hintText: "Enter Your Email Address",
-  //           hintStyle: TextStyle(
-  //             color: Colors.grey,
-  //             fontSize: 10,
-  //           ),
-  //           border: UnderlineInputBorder(
-  //             borderSide: BorderSide(
-  //               color: Colors.red,
-  //               width: 2.0,
-  //             ),
-  //           ),
-  //         ),
-  //         keyboardType: TextInputType.emailAddress,
-  //         style: const TextStyle(
-  //           color: Colors.black,
-  //           fontSize: 20,
-  //         ),
-  //         validator: (value) {
-  //           if (value == null || value.isEmpty) {
-  //             return "Your email is required";
-  //           }
-  //           if (!value.contains('@')) {
-  //             return "Please enter a correct email!";
-  //           }
-  //           return null;
-  //         },
-  //         onSaved: (value) {
-  //           controller.user?.email = value ?? "";
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
 
   Widget _buildPhoneNumberField() {
     return GetBuilder<SettingInformationController>(
@@ -186,14 +148,12 @@ class SettingInformationPage extends GetView<SettingInformationController> {
             color: Colors.black,
             fontSize: 20,
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Please enter your phone number";
-            }
-            return null;
-          },
+          validator: (value) {},
           onSaved: (value) {
-            controller.user?.phoneNumber = value;
+            if (value != "" && controller.user?.phoneNumber!=value) {
+              controller.isChangeValue=true;
+              controller.user?.phoneNumber = value;
+            }
           },
         );
       },
@@ -204,56 +164,25 @@ class SettingInformationPage extends GetView<SettingInformationController> {
     return GetBuilder<SettingInformationController>(
       id: "fetchUserInformation",
       builder: (_) {
-        return Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-                initialValue: controller.user?.password ?? "",
-                enabled: false,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                  ),
-                  hintText: "Password",
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 10,
-                  ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 2.0,
-                    ),
-                  ),
-                ),
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter your password";
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  controller.user?.password = value;
-                },
+        return Container(
+          padding: const EdgeInsets.only(top: AppDimens.spacing4),
+          child: Row(
+            children: [
+              const TextWidget(text: "Password"),
+              const SizedBox(
+                width: AppDimens.spacing4,
               ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.offNamed("/changePassword");
-              },
-              child: const TextWidget(
-                text: "Change",
-                color: Colors.red,
+              GestureDetector(
+                onTap: () {
+                  Get.offNamed("/changePassword");
+                },
+                child: const TextWidget(
+                  text: "Change",
+                  color: Colors.red,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

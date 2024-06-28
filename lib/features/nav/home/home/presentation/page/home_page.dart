@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
+import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/ui/widgets/card/posts_card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/features/model/post_data_model.dart';
@@ -15,14 +16,16 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarWidget(),
-      body: RefreshIndicator(onRefresh: () async {
-        await controller.refreshPosts();
-      }, child: GetBuilder<HomeController>(
-        id: "fetchListPost",
-        builder: (_) {
-          return buildListPostStream();
-        },
-      )),
+      body: RefreshIndicator(
+          onRefresh: () async {
+            await controller.refreshPosts();
+          },
+          child: GetBuilder<HomeController>(
+            id: "fetchListPost",
+            builder: (_) {
+              return buildListPostStream();
+            },
+          )),
     );
   }
 
@@ -39,10 +42,8 @@ class HomePage extends GetView<HomeController> {
               controller: controller.scrollController,
               itemBuilder: (ctx, i) {
                 PostDataModel postDataModel = PostDataModel.fromDocumentSnapshot(postDocs[i]);
-                postDataModel.restaurantId= i%2==0?"idrestaurant":"";
-                return PostsCard(
-                  postDataModel: postDataModel,
-                );
+                postDataModel.restaurantId = i % 2 == 0 ? "idrestaurant" : "";
+                return  PostsCard(postDataModel: postDataModel);
               },
               itemCount: postDocs.length,
             );

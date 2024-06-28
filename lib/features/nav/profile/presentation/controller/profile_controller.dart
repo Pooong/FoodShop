@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_bookmark.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_favorite.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
@@ -22,6 +24,7 @@ class ProfileController extends GetxController {
   ProfileController(this._getuserUseCase);
 
   List<PostDataModel> listPostsOfUser = [];
+  List<PostDataModel> listPostsOfUserLocked = [];
   List<PostDataModel> listBookmarkedPosts = [];
   List<PostDataModel> listFavoritePosts = [];
   UserModel? user;
@@ -44,6 +47,9 @@ class ProfileController extends GetxController {
     isLoading.value=true;
     user = await _getuserUseCase.getUser();
     await getPostsOfUser();
+    await getPostsOfUserPrivate();
+    await getFavoritePosts();
+    await getBookmarkedPosts();
     await getUser();
     await loadData();
     isLoading.value=false;
@@ -67,10 +73,10 @@ class ProfileController extends GetxController {
   /// Get the list of profile pages
   List<Widget> getPages() {
     return [
-      ProfileListPage(),
-      ProfileFavoritePage(),
+      const ProfileListPage(),
+      const ProfileFavoritePage(),
       ProfileBookmarkPage(),
-      ProfileLockedPage()
+      const ProfileLockedPage()
     ];
   }
 
@@ -105,10 +111,19 @@ class ProfileController extends GetxController {
   // Get the list of posts by the user
   Future<void> getPostsOfUser() async {
     if (user == null) return;
-
-    final result = await FirestorePostData.getListPostOfUser(user!.uid!);
+    final result = await FirestorePostData.getListPostOfUserPublic(user!.uid);
     if (result.status == Status.success) {
       listPostsOfUser = result.data!;
+      update(["fetchPostsOfUser"]);
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+  Future<void> getPostsOfUserPrivate() async {
+    if (user == null) return;
+    final result = await FirestorePostData.getListPostOfUserPrivite(user!.uid);
+    if (result.status == Status.success) {
+      listPostsOfUserLocked = result.data!;
       update(["fetchPostsOfUser"]);
     } else {
       SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
@@ -118,8 +133,7 @@ class ProfileController extends GetxController {
   // Get the list of bookmark posts by the user
   Future<void> getBookmarkedPosts() async {
     if (user == null) return;
-
-    final result = await FirestorePostData.getListBookmarkedPosts(user!.uid!);
+    final result = await FirestoreBookmark.getBoolmarkPostOfUser(user!.uid);
     if (result.status == Status.success) {
       listBookmarkedPosts = result.data!;
       update(["fetchBookmarkedPosts"]);
@@ -131,19 +145,18 @@ class ProfileController extends GetxController {
   // Get the list of favorite posts by the user
   Future<void> getFavoritePosts() async {
     if (user == null) return;
-
-    final result = await FirestorePostData.getListFavoritePosts(user!.uid!);
-    if (result.status == Status.success) {
-      listBookmarkedPosts = result.data!;
+    var result= await FirestoreFavorite.getFavoritedPostOfUser(user!.uid);
+    if(result.status == Status.success){
+      listFavoritePosts = result.data ?? [];
       update(["fetchFavoritePosts"]);
-    } else {
+    }else{
       SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
     }
   }
 
   //Get the user data from Firestore
   Future<void> getUser() async {
-    final result = await FirestoreUser.getUser(user!.uid!);
+    final result = await FirestoreUser.getUser(user!.uid);
     if (result.status == Status.success) {
       user = result.data!;
       update(["fetchUser"]);
@@ -158,7 +171,7 @@ class ProfileController extends GetxController {
 
     final result = await FirebaseStorageData.uploadImage(
       imageFile: imgAvatar!,
-      userId: user!.uid!,
+      userId: user!.uid,
       collection: "avatarUsers",
     );
     if (result.status == Status.success) {
@@ -175,7 +188,7 @@ class ProfileController extends GetxController {
 
     final result = await FirebaseStorageData.uploadImage(
       imageFile: imgBackground!,
-      userId: user!.uid!,
+      userId: user!.uid,
       collection: "backgroundUsers",
     );
     if (result.status == Status.success) {
