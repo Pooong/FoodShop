@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/model/result.dart';
 import 'package:find_food/features/model/post_data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,6 +30,42 @@ class FirestorePostData {
     try {
       QuerySnapshot querySnapshot = await _fireStorePostCollection
           .where('userId', isEqualTo: userId)
+          .get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+  static Future<Result<List<PostDataModel>>> getListPostOfUserPublic(
+      String userId) async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .where('userId', isEqualTo: userId)
+          .where('status', isEqualTo: StatusPosts.active.name)
+          .get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+  static Future<Result<List<PostDataModel>>> getListPostOfUserPrivite(
+      String userId) async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .where('userId', isEqualTo: userId)
+          .where('status', isEqualTo: StatusPosts.private.name)
           .get();
 
       List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
@@ -199,6 +236,16 @@ class FirestorePostData {
       String postId, Map<String, dynamic> data) async {
     try {
       await _fireStorePostCollection.doc(postId).update(data);
+      return Result.success(true);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<bool>> updateStatus(
+      String postId, StatusPosts status) async {
+    try {
+      await _fireStorePostCollection.doc(postId).update({"status":status.name});
       return Result.success(true);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);

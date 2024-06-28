@@ -6,22 +6,22 @@ import 'package:get/get.dart';
 // import 'package:get/get.dart';
 
 class ProfileLockedPage extends GetView<ProfileController> {
-  ProfileLockedPage({super.key});
+  const ProfileLockedPage({super.key});
   
   @override
   Widget build(BuildContext context) {
-    return controller.listPostsOfUser.isNotEmpty
+    return controller.listPostsOfUserLocked.isNotEmpty
         ? GetBuilder<ProfileController>(
         id: "fetchDataProfilePage",
         builder: (_) {
           return GridView.builder(
               shrinkWrap: true,
-              itemCount: controller.listPostsOfUser.length,
+              itemCount: controller.listPostsOfUserLocked.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, childAspectRatio: 0.7),
               itemBuilder: (_, index) {
                 PostDataModel postDataModel =
-                controller.listPostsOfUser[index];
+                controller.listPostsOfUserLocked[index];
                 return ProfileCard(
                   postDataModel: postDataModel,
                 );

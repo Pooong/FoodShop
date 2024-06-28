@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 // import 'package:get/get.dart';
 
 class ProfileFavoritePage extends GetView<ProfileController> {
-  ProfileFavoritePage({super.key});
+  const ProfileFavoritePage({super.key});
 
   @override
   Widget build(BuildContext context) {

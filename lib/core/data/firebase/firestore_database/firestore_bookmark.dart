@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_food/core/data/firebase/model/result.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/bookmark_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreBookmark {
@@ -13,7 +14,9 @@ class FirestoreBookmark {
       String idBookmark =
           FirebaseFirestore.instance.collection('bookmark').doc().id;
       bookmark!.id = idBookmark;
-      await _fireStoreBookmarkCollection.doc(bookmark.id).set(bookmark.toJson());
+      await _fireStoreBookmarkCollection
+          .doc(bookmark.id)
+          .set(bookmark.toJson());
       return Result.success(true);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
@@ -30,10 +33,9 @@ class FirestoreBookmark {
     }
   }
 
-  static Future<bool> checkBookmarkExistsByUserAndPostId({required String userId,required String postId}) async {
+  static Future<bool> checkBookmarkExistsByUserAndPostId(
+      {required String userId, required String postId}) async {
     try {
-      print(userId);
-      print(postId);
       final snapshot = await _fireStoreBookmarkCollection
           .where('author.uid', isEqualTo: userId)
           .where('posts.id', isEqualTo: postId)
@@ -41,6 +43,22 @@ class FirestoreBookmark {
       return snapshot.size > 0;
     } catch (e) {
       return false;
+    }
+  }
+
+  static Future<Result<List<PostDataModel>>> getBoolmarkPostOfUser(
+      String uid) async {
+    try {
+      QuerySnapshot snapshot = await _fireStoreBookmarkCollection
+          .where('author.uid', isEqualTo: uid)
+          .get();
+      List<PostDataModel> users = snapshot.docs
+          .map((doc) =>
+              PostDataModel.fromJson(doc['posts'] as Map<String, dynamic>))
+          .toList();
+      return Result.success(users);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
     }
   }
 
@@ -108,6 +126,4 @@ class FirestoreBookmark {
       return Result.error(e);
     }
   }
-
-
 }

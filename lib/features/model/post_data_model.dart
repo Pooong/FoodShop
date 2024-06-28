@@ -1,32 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_food/core/configs/enum.dart';
 
 class PostDataModel {
   String? id;
   String? userId;
   String? title;
   String? subtitle;
-  int? favoriteCount;
   List<String>? imageList;
   String? restaurantId;
   String? createAt;
-  bool? isBookmarked;
-  bool? isFavorited;
   double? latitude;
   double? longitude;
+  Map<String,dynamic>? placeMap;
+  StatusPosts? status;
+
+
+  
 
   PostDataModel({
     this.id,
     this.userId,
     this.title,
     this.subtitle,
-    this.favoriteCount,
     this.imageList,
     this.restaurantId,
     this.createAt,
-    this.isBookmarked,
-    this.isFavorited,
     this.latitude,
     this.longitude,
+    this.placeMap,
+    this.status
   });
 
   // Define the copyWith method
@@ -35,28 +37,27 @@ class PostDataModel {
     String? userId,
     String? title,
     String? subtitle,
-    int? favoriteCount,
     List<String>? imageList,
     String? restaurantId,
     String? createAt,
-    bool? isBookmarked,
-    bool? isFavorited,
     double? latitude,
     double? longitude,
+    Map<String,dynamic>?placeMap,
+    StatusPosts ? status
+    
   }) {
     return PostDataModel(
       id: id ?? this.id,
       userId: userId ?? this.userId,
       title: title ?? this.title,
       subtitle: subtitle ?? this.subtitle,
-      favoriteCount: favoriteCount ?? this.favoriteCount,
       imageList: imageList ?? this.imageList,
       restaurantId: restaurantId ?? this.restaurantId,
       createAt: createAt ?? this.createAt,
-      isBookmarked: isBookmarked ?? this.isBookmarked,
-      isFavorited: isFavorited ?? this.isFavorited,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      placeMap: placeMap,
+      status: status ?? this.status
     );
   }
 
@@ -65,16 +66,15 @@ class PostDataModel {
         userId: json["userId"],
         title: json["title"],
         subtitle: json["subtitle"],
-        favoriteCount: json["favoriteCount"],
         imageList: json["imageList"] == null
             ? []
             : List<String>.from(json["imageList"].map((x) => x)),
         restaurantId: json["restaurantId"],
         createAt: json["createAt"],
-        isBookmarked: json["isBookmarked"],
-        isFavorited: json["isFavorited"],
         latitude: json["latitude"]?.toDouble(),
         longitude: json["longitude"]?.toDouble(),
+        placeMap: (json["placeMap"] ?? {}),
+        status: json["status"] != null ? StatusPosts.values.byName(json["status"]) : null,
       );
 // Chuyển đổi từ DocumentSnapshot sang PostModel
   factory PostDataModel.fromDocumentSnapshot(DocumentSnapshot doc) {
@@ -84,16 +84,15 @@ class PostDataModel {
       userId: json["userId"],
       title: json["title"],
       subtitle: json["subtitle"],
-      favoriteCount: json["favoriteCount"],
       imageList: json["imageList"] == null
           ? []
           : List<String>.from(json["imageList"]!.map((x) => x)),
       restaurantId: json["restaurantId"],
       createAt: json["createAt"],
-      isBookmarked: json["isBookmarked"],
-      isFavorited: json["isFavorited"],
       latitude: json["latitude"]?.toDouble(),
       longitude: json["longitude"]?.toDouble(),
+      placeMap: (json["placeMap"] ?? {}),
+      status: json["status"] != null ? StatusPosts.values.byName(json["status"]) : null,
     );
   }
   Map<String, dynamic> toJson() => {
@@ -101,15 +100,14 @@ class PostDataModel {
         "userId": userId,
         "title": title,
         "subtitle": subtitle,
-        "favoriteCount": favoriteCount,
         "imageList": imageList == null
             ? []
             : List<dynamic>.from(imageList!.map((x) => x)),
         "restaurantId": restaurantId,
         "createAt": createAt,
-        "isBookmarked": isBookmarked,
-        "isFavorited": isFavorited,
         "latitude": latitude,
         "longitude": longitude,
+        "placeMap":placeMap,
+        "status": status?.name,
       };
 }

@@ -1,4 +1,5 @@
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
@@ -94,6 +95,20 @@ class PostsDetailPage extends GetView<PostsDetailController> {
                 ],
               ),
             ),
+            PopupMenuItem<String>(
+              value: "_changeStatus",
+              child: Row(
+                children: [
+                  controller.postDataModel?.status == StatusPosts.active
+                      ? const Icon(Icons.lock)
+                      : const Icon(Icons.public),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  TextWidget(text:controller.postDataModel?.status == StatusPosts.active? "Private" : "Public")
+                ],
+              ),
+            ),
             const PopupMenuItem<String>(
               value: "_deleteValue",
               child: Row(
@@ -108,13 +123,17 @@ class PostsDetailPage extends GetView<PostsDetailController> {
             ),
           ],
           color: Colors.white.withOpacity(0.8),
-        ).then((value) {
+        ).then((value) async {
           if (value != null) {
             if (value == "_changeValue") {
               Get.toNamed(Routes.editPosts,
                   arguments: controller.postDataModel);
             } else if (value == "_deleteValue") {
               _showDeleteConfirmationDialog(context);
+            } else if (value == "_changeStatus") {
+               controller.postDataModel?.status == StatusPosts.active?
+              await controller.privatePosts():
+              await controller.publicPosts();
             }
           }
         });
@@ -127,24 +146,25 @@ class PostsDetailPage extends GetView<PostsDetailController> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Xác nhận'),
-          content: const Text('Bạn có chắc chắn muốn xóa bài viết này không?'),
+          title: const Text('Confirm'),
+          content: const Text('Are you sure you want to delete this posts?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Đóng dialog
               },
-              child: Text('Hủy'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop(); // Đóng dialog
                 await controller.deletePosts();
+                // ignore: use_build_context_synchronously
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Bài viết đã được xóa')),
+                  const SnackBar(content: Text('Deleted posts')),
                 );
               },
-              child: Text('Đồng ý'),
+              child: const Text('Oke'),
             ),
           ],
         );

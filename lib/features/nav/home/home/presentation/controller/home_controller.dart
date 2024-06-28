@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/post_data_model.dart';
@@ -9,26 +10,24 @@ import 'package:get/get.dart';
 class HomeController extends GetxController {
   final GetuserUseCase _getuserUseCase;
   HomeController(this._getuserUseCase);
+
   List<PostDataModel> listPost = [];
   UserModel? user;
   ScrollController scrollController = ScrollController();
   final StreamController<List<DocumentSnapshot>> _postController =
       StreamController<List<DocumentSnapshot>>.broadcast();
 
-  final List<List<DocumentSnapshot>> _allPagedResults = [<DocumentSnapshot>[]];
+  final List<DocumentSnapshot> _allPagedResults = [];
   int pageLimit = 20;
   DocumentSnapshot? _lastDocument;
-
   bool _hasMoreData = true;
-
-  bool isLoading = false; // Biến để theo dõi trạng thái tải dữ liệu
+  bool isLoading = false;
 
   @override
   void onInit() {
     super.onInit();
     _initialize();
     scrollController.addListener(_scrollListener);
-    
   }
 
   Future<void> _initialize() async {
@@ -36,9 +35,8 @@ class HomeController extends GetxController {
   }
 
   void _scrollListener() {
-    if (scrollController.offset >=
-            (scrollController.position.maxScrollExtent) &&
-        !scrollController.position.outOfRange) {
+    if (scrollController.position.atEdge &&
+        scrollController.position.pixels != 0) {
       _getPosts();
     }
   }
@@ -49,9 +47,9 @@ class HomeController extends GetxController {
   }
 
   Future<void> _getPosts() async {
-    if (!_hasMoreData || isLoading) return; // Kiểm tra nếu đang tải dữ liệu hoặc không còn dữ liệu để tải thêm thì không thực hiện tiếp
+    if (!_hasMoreData || isLoading) return;
 
-    isLoading = true; // Đặt trạng thái tải dữ liệu thành true
+    isLoading = true;
 
     final CollectionReference postCollectionReference =
         FirebaseFirestore.instance.collection('posts');
@@ -66,29 +64,34 @@ class HomeController extends GetxController {
     try {
       var snapshot = await pagechatQuery.get();
       if (snapshot.docs.isNotEmpty) {
-        var generalChats = snapshot.docs.toList();
+        var newPosts = snapshot.docs
+            .map((doc) =>
+                PostDataModel.fromJson(doc.data() as Map<String, dynamic>))
+            .where((post) => post.status == StatusPosts.active)
+            .toList();
 
-        _allPagedResults.add(generalChats);
+        _allPagedResults.addAll(snapshot.docs
+            .where((doc) => newPosts.any((post) => post.id == doc.id)));
 
-        var allChats = _allPagedResults.fold<List<DocumentSnapshot>>(
-            <DocumentSnapshot>[],
-            (initialValue, pageItems) => initialValue..addAll(pageItems));
+        _postController.add(_allPagedResults);
 
-        _postController.add(allChats);
-
-        _lastDocument = snapshot.docs.elementAt(snapshot.docs.length - 1);
-
-        _hasMoreData = generalChats.length == pageLimit;
+        _lastDocument = snapshot.docs.last;
+        _hasMoreData = newPosts.length == pageLimit;
+      } else {
+        _hasMoreData = false;
       }
     } catch (e) {
       print("Error getting posts: $e");
+    } finally {
+      isLoading = false;
     }
   }
 
-  refreshPosts() {
+  Future<void> refreshPosts() async {
     _hasMoreData = true;
-    _allPagedResults.clear(); // Xóa hết các trang dữ liệu đã lưu
-    _getPosts(); // Gọi lại hàm để lấy dữ liệu mới
+    _allPagedResults.clear();
+    _lastDocument = null;
+    await _getPosts();
     update(['fetchListPost']);
   }
 

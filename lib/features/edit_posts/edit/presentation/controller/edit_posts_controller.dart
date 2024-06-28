@@ -56,6 +56,8 @@ class EditPostsController extends GetxController {
     return selectedImagesEdit.isEmpty;
   }
 
+  
+
   Future<String?> uploadFile({required File imageFile}) async {
     String? pathUrl;
     final result = await FirebaseStorageData.uploadImage(
@@ -82,16 +84,14 @@ class EditPostsController extends GetxController {
     List<dynamic> listImagesUpload = [];
 
     List<String> valueOrigin = [];
-
-    selectedImagesEdit.forEach(
-      (image) {
+    
+    for (var image in selectedImagesEdit) {
         if (!image.startsWith("http")) {
           listImagesUpload.add(image);
         } else {
           valueOrigin.add(image);
         }
-      },
-    );
+      }
 
     if (listImagesUpload.isNotEmpty) {
       for (var file in listImagesUpload) {
@@ -108,14 +108,14 @@ class EditPostsController extends GetxController {
         subtitle: subtitleController?.text,
         createAt: dataPosts?.createAt,
         userId: dataPosts?.userId,
-        favoriteCount: dataPosts?.favoriteCount,
         imageList: valueOrigin,
         latitude: dataPosts?.latitude,
         longitude: dataPosts?.longitude,
-        isBookmarked: dataPosts?.isBookmarked,
-        isFavorited: dataPosts?.isFavorited,
-        restaurantId: dataPosts?.restaurantId));
-        print(result.status);
+        restaurantId: dataPosts?.restaurantId,
+        placeMap: dataPosts?.placeMap,
+        status: StatusPosts.active
+
+        ));
     if (result.status == Status.success) {
       Fluttertoast.showToast(msg: "Post updated successfully");
     } else {
