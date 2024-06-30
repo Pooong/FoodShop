@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_food/core/data/firebase/model/result.dart';
 import 'package:find_food/features/model/comment_model.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreComment {

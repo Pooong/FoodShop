@@ -10,10 +10,10 @@ import 'package:find_food/core/ui/widgets/icons/rating.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/model/comment_model.dart';
 
-class CommentsCard extends StatelessWidget {
-  final String idComment;
-  final int favorite;
-  final String comment;
+class CommentsRestaurants extends StatelessWidget {
+  final String idCommentRestaurant;
+  final int favoriteRestaurant;
+  final String commentRestaurant;
   final String authorAvatar;
   final String authorName;
   final double? star;
@@ -23,20 +23,34 @@ class CommentsCard extends StatelessWidget {
   final bool active;
   final CommentModel commentModel;
 
-  const CommentsCard({
-    super.key,
-    this.idComment = "",
-    this.favorite = 0,
-    this.comment = "",
-    this.authorAvatar = AppImagesString.iUserDefault,
-    this.authorName = "User Name",
-    this.star = 0.0,
-    this.idPost = "",
-    this.createdAt = "",
-    required this.toggleActive,
-    required this.active,
-    required this.commentModel,
+  const CommentsRestaurants({super.key, 
+  required this.idCommentRestaurant, 
+  required this.favoriteRestaurant, 
+  required this.commentRestaurant, 
+  required this.authorAvatar, 
+  required this.authorName, 
+  this.star, 
+  required this.idPost, 
+  required this.createdAt, 
+  required this.toggleActive, 
+  required this.active, 
+  required this.commentModel
   });
+
+  // const CommentsCard({
+  //   super.key,
+  //   this.idComment = "",
+  //   this.favorite = 0,
+  //   this.comment = "",
+  //   this.authorAvatar = AppImagesString.iUserDefault,
+  //   this.authorName = "User Name",
+  //   this.star = 0.0,
+  //   this.idPost = "",
+  //   this.createdAt = "",
+  //   required this.toggleActive,
+  //   required this.active,
+  //   required this.commentModel,
+  // });
 
   String calculateTime(String? createdAt) {
     if (createdAt == null || createdAt.isEmpty) {
@@ -144,7 +158,7 @@ class CommentsCard extends StatelessWidget {
                               ),
                             ),
                             TextWidget(
-                              text: favorite.toString(),
+                              text: favoriteRestaurant.toString(),
                               size: AppDimens.textSize15,
                             ),
                           ],
@@ -194,7 +208,7 @@ class CommentsCard extends StatelessWidget {
                                           ),
                                         ),
                                         TextWidget(
-                                          text: favorite.toString(),
+                                          text: favoriteRestaurant.toString(),
                                           size: AppDimens.textSize15,
                                         ),
                                       ],
@@ -204,7 +218,7 @@ class CommentsCard extends StatelessWidget {
                             ),
                             const SizedBox(height: 5),
                             ExpandableText(
-                              comment,
+                              commentRestaurant,
                               style: TextStyle(
                                 fontSize: AppDimens.textSize14,
                                 color: AppColors.black.withOpacity(.7),
