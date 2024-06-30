@@ -7,9 +7,11 @@ import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/control_restaurants/restaurant/pressentation/controller/restaurant_controller.dart';
 import 'package:find_food/features/control_restaurants/restaurant/pressentation/widgets/card_menu_restaurant.dart';
+import 'package:find_food/features/control_restaurants/restaurant/pressentation/widgets/comments_restaurants.dart';
 import 'package:find_food/features/control_restaurants/restaurant/pressentation/widgets/edit_modal_menu.dart';
 import 'package:find_food/features/control_restaurants/restaurant/pressentation/widgets/icon_button.dart';
 import 'package:find_food/features/control_restaurants/restaurant/pressentation/widgets/item_infor_profile.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
