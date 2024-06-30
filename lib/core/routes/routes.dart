@@ -56,5 +56,6 @@ abstract class Routes {
 
 
   static const editPosts='/editPosts';
+  static const profileClient='/profileClient';
   
 }

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
-import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/ui/widgets/card/posts_card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/features/model/post_data_model.dart';

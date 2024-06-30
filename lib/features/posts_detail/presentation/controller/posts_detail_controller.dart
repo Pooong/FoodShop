@@ -260,7 +260,7 @@ class PostsDetailController extends GetxController {
       return;
     }
     // kiểm tra độ dài của comment
-    const int maxCommentLength = 100; // Set the maximum comment length
+    const int maxCommentLength = 200; // Set the maximum comment length
     if (commentController.text.length > maxCommentLength) {
       Fluttertoast.showToast(
           msg: "Comment cannot exceed $maxCommentLength characters".tr);
