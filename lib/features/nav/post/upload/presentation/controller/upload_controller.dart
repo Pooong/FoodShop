@@ -72,7 +72,7 @@ class UploadController extends GetxController {
         latitude: placeSelected.lat ?? 0.0,
         longitude: placeSelected.lon ?? 0.0,
         placeMap: placeSelected.toJson(),
-        status: StatusPosts.wating
+        status: StatusPosts.waiting
         );
 
     final result = await FirestorePostData.savedPost(

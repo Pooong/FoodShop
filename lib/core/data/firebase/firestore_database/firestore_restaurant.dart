@@ -64,8 +64,7 @@ class FirestoreRestaurant {
           .where('userId', isEqualTo: userId)
           .get();
       if (snapshot.docs.isEmpty) {
-        return Result.error(FirebaseAuthException(code: 'not found'),
-            data: null);
+        return Result.error(FirebaseAuthException(code: 'not found'),data: null);
       }
       final restaurant = RestaurantModel.fromJson(snapshot.docs.first.data());
       return Result.success(restaurant);
@@ -73,4 +72,5 @@ class FirestoreRestaurant {
       return Result.error(e);
     }
   }
+
 }
