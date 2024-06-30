@@ -4,6 +4,7 @@ import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/services/images_service.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,7 @@ class ExploreFoodCard extends StatelessWidget {
   final double rating;
   final int customerRating;
   final double distance;
+  final PostDataModel postDataModel;
 
   const ExploreFoodCard(
       {super.key,
@@ -20,13 +22,18 @@ class ExploreFoodCard extends StatelessWidget {
       required this.imageUrl,
       required this.rating,
       required this.customerRating,
-      required this.distance});
+      required this.distance,
+      required this.postDataModel});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Get.toNamed(Routes.postsDetail);
+      onTap: () async {
+         final result = await Get.toNamed(Routes.postsDetail, arguments: {
+            'postsData': postDataModel,
+            'distace': distance,
+            "isFavorite":false
+          });
       },
       child: Container(
         constraints: const BoxConstraints(minHeight: 200, minWidth: 100),

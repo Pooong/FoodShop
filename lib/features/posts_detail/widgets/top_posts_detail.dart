@@ -1,11 +1,14 @@
 import 'package:find_food/core/configs/app_colors.dart';
+import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
-import 'package:find_food/core/configs/app_images_string.dart';
-import 'package:find_food/core/extensions/color.dart';
+import 'package:find_food/core/configs/app_text_string.dart';
+import 'package:find_food/core/extensions/helper.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/dialogs/full_screen_image.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/icons/rating.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:find_food/features/posts_detail/presentation/controller/posts_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,12 +28,13 @@ class TopPostsDetail extends GetView<PostsDetailController> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderPosts(controller: controller),
+              _BuildHeaderPosts(controller: controller),
               SubTitle(controller: controller),
               Wrap(
                 runSpacing: AppDimens.columnSpacing,
                 children: [
-                  Slider(controller: controller),
+                  _BuildSlider(controller: controller),
+                  _BuildTagAddress(context),
                   TagInfoPosts(controller: controller),
                   if (controller.isRestaurant) const TagToRestauRant(),
                 ],
@@ -39,10 +43,157 @@ class TopPostsDetail extends GetView<PostsDetailController> {
           );
         });
   }
+
+  // ignore: non_constant_identifier_names
+  Container _BuildTagAddress(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(AppDimens.spacing2),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppDimens.radius1),
+          boxShadow: CustomShadow.cardShadow,
+          color: AppColors.white),
+      child: Row(
+        children: [
+          Expanded(
+            child: InkWell(
+              onTap: () async {
+                if (controller.postDataModel?.placeMap != null &&
+                    controller.postDataModel!.placeMap!['display_name'] !=
+                        null &&
+                    controller.postDataModel!.placeMap!['display_name'] !=
+                        AppConstants.disPlayLoacionCurrent) {
+                  await _BuildDialogShowLocation(context);
+                }
+              },
+              child: Row(
+                children: [
+                  Column(
+                    children: [
+                      const Icon(Icons.location_on,
+                          color: AppColors.red, size: AppDimens.textSize28),
+                      const SizedBox(width: AppDimens.spacing1),
+                      Text(
+                        "${controller.distance} km",
+                        style: const TextStyle(
+                          fontSize: AppDimens.textSize10,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  controller.postDataModel?.placeMap != null &&
+                          controller.postDataModel!.placeMap!['display_name'] !=
+                              null &&
+                          controller.postDataModel!.placeMap!['display_name'] !=
+                              AppConstants.disPlayLoacionCurrent
+                      ? _BuildDisplayLocation()
+                      : const TextWidget(
+                          text: "Accessing post locations on Maps",
+                          size: AppDimens.textSize14,
+                        )
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          InkWell(
+              onTap: () async {
+                if (controller.postDataModel?.placeMap != null &&
+                    controller.postDataModel!.placeMap!['display_name'] !=
+                        null) {
+                  var result = await Get.toNamed(Routes.getLoactionPage,
+                      arguments: {
+                        "placeMap": controller.postDataModel?.placeMap
+                      });
+                  if (result != null) {}
+                }
+              },
+              child: const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.primary,
+              ))
+        ],
+      ),
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  Expanded _BuildDisplayLocation() {
+    return Expanded(
+        child: Text(
+      controller.postDataModel?.placeMap != null
+          ? controller.postDataModel!.placeMap!['display_name']
+          : "Don't can access location",
+      style: const TextStyle(fontSize: AppDimens.textSize14),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    ));
+  }
+
+  // ignore: non_constant_identifier_names
+  Future<dynamic> _BuildDialogShowLocation(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Address Detail"),
+            content: Text(
+              controller.postDataModel?.placeMap != null
+                  ? controller.postDataModel!.placeMap!['display_name']
+                  : "Don't can access location",
+              style: const TextStyle(fontSize: AppDimens.textSize14),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 5,
+            ),
+            actions: [
+              Container(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                    ),
+                    onPressed: () async {
+                      if (controller.postDataModel?.placeMap != null) {
+                        var result = await Get.toNamed(Routes.getLoactionPage,
+                            arguments: {
+                              "placeMap": controller.postDataModel?.placeMap
+                            });
+                        if (result != null) {
+                          if (result['closeDialog'] == true) {
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pop();
+                          }
+                        }
+                      }
+                    },
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Location On Maps",
+                          style: TextStyle(color: AppColors.white),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.white,
+                          size: AppDimens.textSize18,
+                        )
+                      ],
+                    )),
+              )
+            ],
+          );
+        });
+  }
 }
 
-class HeaderPosts extends StatelessWidget {
-  const HeaderPosts({
+class _BuildHeaderPosts extends StatelessWidget {
+  const _BuildHeaderPosts({
     super.key,
     required this.controller,
   });
@@ -56,12 +207,12 @@ class HeaderPosts extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(width: 16),
+          const SizedBox(width: 10),
           Avatar(
-              authorImg: controller.authorPosts?.avatarUrl ??
-                  AppImagesString.iBackgroundUserDefault,
-              radius: 50),
-          const SizedBox(width: 16),
+            authorImg: controller.authorPosts?.avatarUrl,
+            radius: 50,
+          ),
+          const SizedBox(width: 10),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,7 +225,7 @@ class HeaderPosts extends StatelessWidget {
                       width: Get.width * 0.6,
                       child: Text(
                         controller.postDataModel?.title?.trim() ??
-                            'Write title posts this here  ',
+                            AppTextString.fCardTitleDefault,
                         style: const TextStyle(
                             fontSize: AppDimens.textSize16,
                             fontWeight: FontWeight.w500),
@@ -93,17 +244,27 @@ class HeaderPosts extends StatelessWidget {
                     ),
                   ],
                 ),
-                Obx(
-                  () => IconButton(
-                    onPressed: controller.toggleBookmarkStatus,
-                    icon: Icon(
-                      controller.isBookmark.value
-                          ? Icons.bookmark
-                          : Icons.bookmark_border,
-                      color: controller.isBookmark.value ? Colors.yellow : null,
-                    ),
-                  ),
-                ),
+                Obx(() {
+                  return controller.userComment?.uid ==
+                              controller.authorPosts?.uid &&
+                          !controller.isLoading.value
+                      ? const SizedBox()
+                      : IconButton(
+                          onPressed: () async {
+                            if (controller.isProcessing) return;
+                            await controller.toggleBookmarkState(
+                                stateIcon: controller.isBookmark.value);
+                          },
+                          icon: Icon(
+                            controller.isBookmark.value
+                                ? Icons.bookmark
+                                : Icons.bookmark_border,
+                            color: controller.isBookmark.value
+                                ? Colors.yellow
+                                : null,
+                          ),
+                        );
+                }),
               ],
             ),
           ),
@@ -124,7 +285,7 @@ class SubTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final subtitle = controller.postDataModel?.subtitle?.trim() ??
-        "Writing this post's description this here ....";
+        AppTextString.fCardDesription;
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -159,7 +320,7 @@ class SubtitleText extends StatelessWidget {
                   isExpanded.value = !isExpanded.value;
                 },
                 child: Text(
-                  value ? 'Thu gọn' : 'Xem thêm',
+                  value ? 'Collapse' : 'See more',
                   style: const TextStyle(
                     fontSize: AppDimens.textSize10,
                     color: AppColors.red,
@@ -290,16 +451,6 @@ class TagInfoPosts extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Icon(Icons.location_on,
-                          color: Colors.black, size: 20.0),
-                      const SizedBox(width: 5),
-                      const Text(
-                        "2.7km",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
                       if (controller.isRestaurant)
                         const Text(
                           "Opening",
@@ -319,7 +470,7 @@ class TagInfoPosts extends StatelessWidget {
                     Column(
                       children: [
                         const Icon(Icons.comment,
-                            color: Color.fromRGBO(0, 0, 0, 1), size: 20.0),
+                            color: AppColors.gray, size: AppDimens.textSize20),
                         TextWidget(
                             text: '${controller.listComments.length ?? 0}',
                             size: AppDimens.textSize15),
@@ -328,27 +479,59 @@ class TagInfoPosts extends StatelessWidget {
                     const SizedBox(
                       width: 20.0,
                     ),
-                    Column(
-                      children: [
-                        Obx(
-                          () => InkWell(
-                            onTap: controller.toggleFavoriteStatus,
-                            child: Icon(
-                              controller.isFavorite.value
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: controller.isFavorite.value
-                                  ? Colors.red
-                                  : null,
-                              size: 20.0,
-                            ),
+                    GetBuilder<PostsDetailController>(
+                      id: controller.postDataModel?.id,
+                      builder: (_) {
+                        bool isFavorited = controller.isFavorite.value;
+                        return InkWell(
+                          excludeFromSemantics: true,
+                          onTap: () async {
+                            if (controller.isProcessing) return;
+                            await controller.toggleFavoriteState(
+                                posts:
+                                    controller.postDataModel ?? PostDataModel(),
+                                stateIcon: !isFavorited);
+                            controller
+                                .update([controller.postDataModel?.id ?? ""]);
+                          },
+                          child: Column(
+                            children: [
+                              Icon(
+                                isFavorited
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isFavorited ? AppColors.red : null,
+                                size: AppDimens.textSize20,
+                              ),
+                              FutureBuilder<int>(
+                                future: controller.getCountFavorite(
+                                    controller.postDataModel!.id ?? ""),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const SizedBox(
+                                        width: AppDimens.textSize12,
+                                        height: AppDimens.textSize20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 1,
+                                        ));
+                                  } else if (snapshot.hasError) {
+                                    return const TextWidget(
+                                      text: '0',
+                                      size: AppDimens.textSize15,
+                                    );
+                                  } else {
+                                    return TextWidget(
+                                      text: '${snapshot.data}',
+                                      size: AppDimens.textSize15,
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
                           ),
-                        ),
-                        TextWidget(
-                            text:
-                                "${controller.postDataModel?.favoriteCount ?? 0}",
-                            size: AppDimens.textSize15),
-                      ],
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -361,8 +544,8 @@ class TagInfoPosts extends StatelessWidget {
   }
 }
 
-class Slider extends StatelessWidget {
-  const Slider({
+class _BuildSlider extends StatelessWidget {
+  const _BuildSlider({
     super.key,
     required this.controller,
   });
@@ -389,7 +572,7 @@ class Slider extends StatelessWidget {
                       child: Column(
                         children: [
                           MainImageSlide(),
-                          listImaegsSlider(),
+                          listImaegs_BuildSlider(),
                         ],
                       ),
                     ),
@@ -463,7 +646,7 @@ class Slider extends StatelessWidget {
     );
   }
 
-  Expanded listImaegsSlider() {
+  Expanded listImaegs_BuildSlider() {
     return Expanded(
       flex: 1,
       child: controller.listImagesPostDetail.isNotEmpty

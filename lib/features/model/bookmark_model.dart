@@ -1,7 +1,8 @@
+
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/post_data_model.dart';
 
-class FavoriteModel {
+class BookmarkModel {
   String? id;
   
   UserModel? author;
@@ -9,7 +10,7 @@ class FavoriteModel {
 
   String? createdAt;
 
-  FavoriteModel({
+  BookmarkModel({
     this.id,
     required this.author,
     required this.posts,
@@ -25,8 +26,8 @@ class FavoriteModel {
     };
   }
 
-  static FavoriteModel fromJson(Map<String, dynamic> json) {
-    return FavoriteModel(
+  static BookmarkModel fromJson(Map<String, dynamic> json) {
+    return BookmarkModel(
       id:json['id'] as String,
        author: UserModel.fromJson(json['author']),
       posts: PostDataModel.fromJson(json['posts']),

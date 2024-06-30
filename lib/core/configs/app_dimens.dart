@@ -20,12 +20,19 @@ class AppDimens {
   static const double textSize42 = 42.0;
   static const double textSize48 = 48.0;
 
-  static const double radius1=5;
-  static const double radius2=10;
-  static const double radius3=15;
-  static const double circle=100000;
+  static const double radius1=5.0;
+  static const double radius2=10.0;
+  static const double radius3=15.0;
+  static const double circle=100000.0;
 
   //spacing
   static const double rowSpacing=15;
   static const double columnSpacing=15;
+
+  static const double spacing1=5.0;
+  static const double spacing2=10.0;
+  static const double spacing3=15.0;
+  static const double spacing4=20.0;
+  static const double spacing5=25.0;
+  static const double spacing6=30.0;
 }
