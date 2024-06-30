@@ -24,14 +24,20 @@ class RestaurantController extends GetxController {
   File? imgWallpapper;
   UserModel? user;
 
+  var isLoading = false.obs;
+
   final GetuserUseCase _getuserUseCase;
   RestaurantController(this._getuserUseCase);
 
   @override
   void onInit() async {
-    user = await _getuserUseCase.getUser();
-    await getRestaurantData();
     super.onInit();
+    isLoading.value = true;
+    user = await _getuserUseCase.getUser();
+    if (user != null) {
+      await getRestaurantData();
+    }
+    isLoading.value = false;
   }
 
   Future selectImageAvatarGallery() async {
@@ -52,6 +58,13 @@ class RestaurantController extends GetxController {
     }
   }
 
+  refreshPage() async {
+    if (user != null) {
+      await getRestaurantData();
+    }
+    update();
+  }
+
   void updateFood(int index, FoodModel updatedFood) {
     var updatedMenu = List<FoodModel>.from(menu);
     updatedMenu[index] = updatedFood;
@@ -60,17 +73,10 @@ class RestaurantController extends GetxController {
   }
 
   void inforCard(FoodModel food) {
-    print(food.toJson());
     imageController.text = food.imageFood;
     nameController.text = food.foodName;
     priceController.text = food.priceFood;
   }
-
-  // void clearControllers() {
-  //   imageController.clear();
-  //   nameController.clear();
-  //   priceController.clear();
-  // }
 
   void seeMore() {
     if (itemsToShow.value < menu.length) {
@@ -107,7 +113,5 @@ class RestaurantController extends GetxController {
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
-    // print(result.data!.toJson());
-    print(listPathUrl[0]);
   }
 }
