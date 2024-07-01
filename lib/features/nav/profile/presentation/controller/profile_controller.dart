@@ -30,7 +30,7 @@ class ProfileController extends GetxController {
   List<PostDataModel> listBookmarkedPosts = [];
   List<PostDataModel> listFavoritePosts = [];
   UserModel? user;
-
+  
   var isLoading = false.obs;
 
   RxInt currentIndex = 0.obs;
@@ -71,6 +71,7 @@ class ProfileController extends GetxController {
     final result = await FirestoreRestaurant.getRestaurant(user!.uid);
     if (result.status == Status.success) {
       restaurant.value = result.data;
+      print(restaurant.value);
     }
   }
 

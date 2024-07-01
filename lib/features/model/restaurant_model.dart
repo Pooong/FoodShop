@@ -51,10 +51,12 @@ class RestaurantModel {
       emailRestaurant: json['emailRestaurant'],
       phoneRestaurant: json['phoneRestaurant'],
       addressRestaurant: json['addressRestaurant'],
-      licenseRestaurant:
-          List<String>.from(json['licenseRestaurant'].map((x) => x)),
-      onwnerLicenseImages:
-          List<String>.from(json['onwnerLicenseImages'].map((x) => x)),
+      licenseRestaurant: json["licenseRestaurant"] == null
+          ? []
+          : List<String>.from(json["licenseRestaurant"].map((x) => x)),
+      onwnerLicenseImages: json["onwnerLicenseImages"] == null
+          ? []
+          : List<String>.from(json["onwnerLicenseImages"].map((x) => x)),
       avatarUrl: json['avatarUrl'],
       backgroundUrl: json['backgroundUrl'],
       status: json['status'] != null

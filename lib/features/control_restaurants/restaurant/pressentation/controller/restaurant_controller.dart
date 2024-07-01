@@ -33,18 +33,18 @@ class RestaurantController extends GetxController {
 
   String? foodImagePath = "";
 
-  List<MenuModel>? listFood ; 
+  List<MenuModel> listFood =[];
 
   final GetuserUseCase _getuserUseCase;
   RestaurantController(this._getuserUseCase);
 
   @override
   void onInit() async {
-    super.onInit();
     isLoading.value = true;
     user = await _getuserUseCase.getUser();
     await getRestaurantData();
     await getMenuOfRestaurant();
+    super.onInit();
     isLoading.value = false;
   }
 
@@ -97,7 +97,7 @@ class RestaurantController extends GetxController {
   Future<void> getMenuOfRestaurant() async {
     final result = await FirestoreMenu.getMenu(restaurantID: idRestaurant);
     if (result.status == Status.success) {
-      listFood = result.data;
+      listFood = result.data ?? [];
       update(["getMenuOfRestaurant"]);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");

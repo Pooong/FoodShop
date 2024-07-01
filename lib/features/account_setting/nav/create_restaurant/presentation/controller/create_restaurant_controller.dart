@@ -20,6 +20,8 @@ class CreateRestaurantController extends GetxController {
     return null;
   }
 
+  var isLoading=false.obs;
+
   List<Widget> getPages() {
     return [
       const LicenseIdentifyPage(),
@@ -49,9 +51,6 @@ class CreateRestaurantController extends GetxController {
   List<String> listPathUrl = [];
   List<String> listPathLisenceRestaurant = [];
   List<String> listPathOwnerLicenseImages = [];
-
-  var isLoading=false.obs;
-  
   @override
   void onInit() async {
     user = await _getuserUseCase.getUser();
@@ -88,12 +87,12 @@ class CreateRestaurantController extends GetxController {
       avatarUrl: pathLogoImages,
       licenseRestaurant: listPathLisenceRestaurant,
       onwnerLicenseImages: listPathOwnerLicenseImages,
+      status: StatusPosts.waiting
     );
 
-    final result = await FirestoreRestaurant.createRestaurant(
-        newRestaurant: restaurant, userId: user!.uid);
+    final result = await FirestoreRestaurant.createRestaurant(newRestaurant: restaurant, userId: user!.uid);
     if (result.status == Status.success) {
-      SnackbarUtil.show("Menu created successfully");
+      Fluttertoast.showToast(msg: "Create Restaurant Success ");
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
@@ -118,8 +117,9 @@ class CreateRestaurantController extends GetxController {
         .addAll(pickedImages.map((image) => File(image.path)).toList());
   }
 
+  // ignore: non_constant_identifier_names
   bool check_list_empty(List selectedImages) {
-    return selectedImages.length == 0;
+    return selectedImages.isEmpty;
   }
 
   void removeImage(List imageVerify, File image) {
@@ -170,13 +170,14 @@ class CreateRestaurantController extends GetxController {
     Get.to(() => const ImagesIdentifyPage());
   }
 
-  void createRestaurant() {
+  Future<void> createRestaurant()async {
     if (restaurantBackgroundImages == null || restaurantLogoImages == null) {
       Fluttertoast.showToast(msg: "Please select an image for the posts");
       return;
     } else {
-      Fluttertoast.showToast(msg: "Create Restaurant Success ");
-      saveRestaurant();
+      isLoading.value=true;
+      await saveRestaurant();
+      isLoading.value=false;
       Get.to(() => const FinishCreateRestaurantPage());
     }
   }

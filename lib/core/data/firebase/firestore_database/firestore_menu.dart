@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_food/core/data/firebase/model/result.dart';
 import 'package:find_food/features/model/menu_food_restaurant_model.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreMenu {
@@ -11,10 +12,10 @@ class FirestoreMenu {
       {required MenuModel newMenu, required String userId}) async {
     try {
       String menuId = FirebaseFirestore.instance.collection('menu').doc().id;
-      newMenu.id = menuId;
-      newMenu.id = userId;
+      newMenu.idMenu = menuId;
+      newMenu.userId = userId;
 
-      await _fireStoreUserCollection.doc(newMenu.id).set(newMenu.toJson());
+      await _fireStoreUserCollection.doc(newMenu.idMenu).set(newMenu.toJson());
       return Result.success(newMenu);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
@@ -24,9 +25,9 @@ class FirestoreMenu {
   static Future<Result<MenuModel>> updateMenu(
       {required MenuModel newMenu, required String userId}) async {
     try {
-      newMenu.id = userId;
+      newMenu.userId = userId;
       await _fireStoreUserCollection
-          .doc(newMenu.id)
+          .doc(newMenu.idMenu)
           .update(newMenu.toJson());
       return Result.success(newMenu);
     } on FirebaseAuthException catch (e) {
@@ -37,8 +38,8 @@ class FirestoreMenu {
   static Future<Result<MenuModel>> deleteMenu(
       {required MenuModel newMenu, required String userId}) async {
     try {
-      newMenu.id = userId;
-      await _fireStoreUserCollection.doc(newMenu.id).delete();
+      newMenu.userId = userId;
+      await _fireStoreUserCollection.doc(newMenu.idMenu).delete();
       return Result.success(newMenu);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
@@ -52,7 +53,7 @@ class FirestoreMenu {
           .where('idRestaurant', isEqualTo: restaurantID)
           .get();
       final List<MenuModel> listMenu = result.docs
-          .map((e) => MenuModel.fromJson(e.data()))
+          .map((e) => MenuModel.fromJson(e.data() as Map<String, dynamic>))
           .toList();
       return Result.success(listMenu);
     } on FirebaseAuthException catch (e) {

@@ -34,8 +34,6 @@ class CreateRestaurantPage extends GetView<CreateRestaurantController> {
               ButtonWidget(
                 ontap: () {
                   controller.controlCreateRestaurant();
-
-                  // Get.to(() => LicenseIdentifyPage());
                 },
                 text: "CONTINUE",
                 fontWeight: FontWeight.bold,

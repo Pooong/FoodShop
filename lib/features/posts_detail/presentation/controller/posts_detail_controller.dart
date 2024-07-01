@@ -74,7 +74,7 @@ class PostsDetailController extends GetxController {
     isLoading.value = true;
     await _initialize();
     userComment = await _getuserUseCase.getUser();
-    if (dataAgument !=null) {
+    if (dataAgument != null) {
       postDataModel = dataAgument["postsData"];
       listImagesPostDetail = postDataModel?.imageList ?? [];
       await getComments();
@@ -174,7 +174,7 @@ class PostsDetailController extends GetxController {
     isLoading.value = true;
 
     userComment = await _getuserUseCase.getUser();
-    if (dataAgument != null) {
+    if (dataAgument is PostDataModel) {
       postDataModel = dataAgument["postsData"];
       listImagesPostDetail = postDataModel?.imageList ?? [];
       await getComments();
@@ -251,7 +251,6 @@ class PostsDetailController extends GetxController {
     final result = await FirestoreComment.getListComments(postDataModel!.id!);
     if (result.status == Status.success) {
       listComments = result.data!;
-      print(listComments);
       listComments.sort((a, b) {
         DateTime dateA = DateFormat("yyyy-MM-dd HH:mm:ss").parse(a.createdAt!);
         DateTime dateB = DateFormat("yyyy-MM-dd HH:mm:ss").parse(b.createdAt!);

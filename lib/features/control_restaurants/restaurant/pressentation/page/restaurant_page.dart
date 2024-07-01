@@ -1,5 +1,6 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
+import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/extensions/helper.dart';
 import 'package:find_food/core/ui/widgets/appbar/restaurant_appbar.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
@@ -68,8 +69,7 @@ class RestaurantPage extends GetView<RestaurantController> {
           const SizedBox(height: AppDimens.spacing6),
           buildMenuSection(),
           const SizedBox(height: AppDimens.spacing2),
-          buildGridOrders(),
-          const SizedBox(height: AppDimens.spacing3),
+          // buildGridOrders(), const SizedBox(height: AppDimens.spacing3),
           // CommentsRestaurants(), // Ensure this is correctly implemented and visible
         ],
       ),
@@ -223,7 +223,11 @@ class RestaurantPage extends GetView<RestaurantController> {
           width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(controller.backgroundUrl),
+              image: controller.backgroundUrl != null &&
+                      controller.backgroundUrl!.isNotEmpty
+                  ? NetworkImage(controller.backgroundUrl!)
+                  : const AssetImage(AppImagesString.iBackgroundUserDefault)
+                      as ImageProvider,
               fit: BoxFit.cover,
             ),
           ),
@@ -362,77 +366,77 @@ class RestaurantPage extends GetView<RestaurantController> {
         });
   }
 
-  Widget buildGridOrders() {
-    return Obx(() {
-      return GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        itemCount: controller.itemsToShow.value <= controller.listFood!.length
-            ? controller.itemsToShow.value + 1
-            : controller.itemsToShow.value,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == controller.itemsToShow.value) {
-            return GestureDetector(
-              onTap: (){},
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: TextWidget(
-                  textAlign: TextAlign.start,
-                  text: "See More",
-                  color: AppColors.blue,
-                  size: AppDimens.textSize18,
-                ),
-              ),
-            );
-          } else {
-            final foodMenu = controller.listFood![index];
-            return GestureDetector(
-              onTap: () {
-                // controller.inforCard(foodMenu);
-                // showModalBottomSheet(
-                //   context: context,
-                //   isScrollControlled: true,
-                //   shape: const RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.vertical(
-                //       top: Radius.circular(20),
-                //     ),
-                //   ),
-                //   builder: (BuildContext context) {
-                //     return Padding(
-                //       padding: EdgeInsets.only(
-                //         bottom: MediaQuery.of(context).viewInsets.bottom,
-                //       ),
-                //       child: ListView(
-                //         shrinkWrap: true,
-                //         children: [
-                //           Center(
-                //             child: Container(
-                //               padding: const EdgeInsets.all(16.0),
-                //               child:
-                //                   EditFoodModal(food: foodMenu, index: index),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     );
-                //   },
-                // );
-              },
-              // child: CardMenuRestaurant(
-              //   img: foodMenu.image ?? "",
-              //   foodname: foodMenu.name ??"",
-              //   pricefood: foodMenu.price ?? 0.0,
-              // ),
-            );
-          }
-        },
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
-        ),
-      );
-    });
-  }
+  // Widget buildGridOrders() {
+  //   return Obx(() {
+  //     return GridView.builder(
+  //       shrinkWrap: true,
+  //       physics: const NeverScrollableScrollPhysics(),
+  //       padding: const EdgeInsets.symmetric(horizontal: 20),
+  //       itemCount: controller.itemsToShow.value <= controller.menu.length
+  //           ? controller.itemsToShow.value + 1
+  //           : controller.itemsToShow.value,
+  //       itemBuilder: (BuildContext context, int index) {
+  //         if (index == controller.itemsToShow.value) {
+  //           return GestureDetector(
+  //             onTap: controller.seeMore,
+  //             child: const Padding(
+  //               padding: EdgeInsets.symmetric(horizontal: 10),
+  //               child: TextWidget(
+  //                 textAlign: TextAlign.start,
+  //                 text: "See More",
+  //                 color: AppColors.blue,
+  //                 size: AppDimens.textSize18,
+  //               ),
+  //             ),
+  //           );
+  //         } else {
+  //           final foodMenu = controller.menu[index];
+  //           return GestureDetector(
+  //             onTap: () {
+  //               controller.inforCard(foodMenu);
+  //               showModalBottomSheet(
+  //                 context: context,
+  //                 isScrollControlled: true,
+  //                 shape: const RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.vertical(
+  //                     top: Radius.circular(20),
+  //                   ),
+  //                 ),
+  //                 builder: (BuildContext context) {
+  //                   return Padding(
+  //                     padding: EdgeInsets.only(
+  //                       bottom: MediaQuery.of(context).viewInsets.bottom,
+  //                     ),
+  //                     child: ListView(
+  //                       shrinkWrap: true,
+  //                       children: [
+  //                         Center(
+  //                           child: Container(
+  //                             padding: const EdgeInsets.all(16.0),
+  //                             child:
+  //                                 EditFoodModal(food: foodMenu, index: index),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   );
+  //                 },
+  //               );
+  //             },
+  //             child: CardMenuRestaurant(
+  //               img: foodMenu.imageFood,
+  //               foodname: foodMenu.foodName,
+  //               pricefood: foodMenu.priceFood,
+  //             ),
+  //           );
+  //         }
+  //       },
+  //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //         crossAxisCount: 2,
+  //         crossAxisSpacing: 4.0,
+  //         mainAxisSpacing: 4.0,
+  //       ),
+  //     );
+  //   });
+  // }
 }

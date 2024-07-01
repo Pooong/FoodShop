@@ -85,8 +85,8 @@ class ImagesIdentifyPage extends GetView<CreateRestaurantController> {
                   height: 30.0,
                 ),
                 ButtonWidget(
-                  ontap: () {
-                    controller.createRestaurant();
+                  ontap: ()async {
+                    await controller.createRestaurant();
                   },
                   text: "CONFIRM",
                   fontWeight: FontWeight.bold,
