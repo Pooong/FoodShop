@@ -66,31 +66,39 @@ class PostsDetailController extends GetxController {
   get commentFocusNode => null;
 
   bool isProcessing = false;
-  
-  final LocationService locationService = Get.find<LocationService>();
 
+  final LocationService locationService = Get.find<LocationService>();
 
   @override
   void onInit() async {
     super.onInit();
     isLoading.value = true;
     await _initialize();
+    userComment = await _getuserUseCase.getUser();
+    if (dataAgument != null) {
+      postDataModel = dataAgument["postsData"];
+      listImagesPostDetail = postDataModel?.imageList ?? [];
+      await getComments();
+      timePosts = CaculateTime(postDataModel?.createAt);
+      update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
+    }
+
     isLoading.value = false;
   }
 
-  
   Future<void> deletePosts() async {
     isLoading.value = true;
     await FirestorePostData.deletePost(postDataModel?.id ?? "");
     isLoading.value = false;
-    Get.back(result: {"deleteSuccess":true});
+    Get.back(result: {"deleteSuccess": true});
   }
 
   Future<void> _initialize() async {
     userComment = await _getuserUseCase.getUser();
     if (dataAgument != null) {
       postDataModel = dataAgument['postsData'];
-      distance = await distanceCalculate(postsData: postDataModel ?? PostDataModel());
+      distance =
+          await distanceCalculate(postsData: postDataModel ?? PostDataModel());
 
       listImagesPostDetail = postDataModel?.imageList ?? [];
       isFavorite.value =
@@ -123,23 +131,26 @@ class PostsDetailController extends GetxController {
     update([posts.id ?? ""]);
   }
 
-  Future<void> privatePosts() async{
-    try{
-      isLoading.value=true;
-      await FirestorePostData.updateStatus(postDataModel?.id ?? "", StatusPosts.private);
-      isLoading.value=false;
-       Fluttertoast.showToast(msg: "Posts is Privaiting Status");
-    }catch (e){
+  Future<void> privatePosts() async {
+    try {
+      isLoading.value = true;
+      await FirestorePostData.updateStatus(
+          postDataModel?.id ?? "", StatusPosts.private);
+      isLoading.value = false;
+      Fluttertoast.showToast(msg: "Posts is Privaiting Status");
+    } catch (e) {
       Fluttertoast.showToast(msg: "Change status posts fauil");
     }
   }
-  Future<void> publicPosts() async{
-    try{
-      isLoading.value=true;
-      await FirestorePostData.updateStatus(postDataModel?.id ?? "", StatusPosts.active);
-      isLoading.value=false;
-       Fluttertoast.showToast(msg: "Posts is Privaiting Status");
-    }catch (e){
+
+  Future<void> publicPosts() async {
+    try {
+      isLoading.value = true;
+      await FirestorePostData.updateStatus(
+          postDataModel?.id ?? "", StatusPosts.active);
+      isLoading.value = false;
+      Fluttertoast.showToast(msg: "Posts is Privaiting Status");
+    } catch (e) {
       Fluttertoast.showToast(msg: "Change status posts fauil");
     }
   }
@@ -205,7 +216,6 @@ class PostsDetailController extends GetxController {
     }
     return 0.0;
   }
-
 
   // ignore: non_constant_identifier_names
   String CaculateTime(String? createAt) {
