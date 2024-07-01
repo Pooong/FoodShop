@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/model/result.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FirestorePostData {
   static final _fireStorePostCollection =
       FirebaseFirestore.instance.collection('posts');
+  static final _storage = FirebaseStorage.instance;
 
   static Future<Result<PostDataModel>> savedPost(
       {required PostDataModel postDataModel, required String userId}) async {
@@ -22,7 +27,6 @@ class FirestorePostData {
     }
   }
 
-  // list user's posts of profile
   static Future<Result<List<PostDataModel>>> getListPostOfUser(
       String userId) async {
     try {
@@ -41,7 +45,44 @@ class FirestorePostData {
     }
   }
 
-  // list bookmarked posts of profile
+  static Future<Result<List<PostDataModel>>> getListPostOfUserPublic(
+      String userId) async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .where('userId', isEqualTo: userId)
+          .where('status', isEqualTo: StatusPosts.active.name)
+          .get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<List<PostDataModel>>> getListPostOfUserPrivite(
+      String userId) async {
+    try {
+      QuerySnapshot querySnapshot = await _fireStorePostCollection
+          .where('userId', isEqualTo: userId)
+          .where('status', isEqualTo: StatusPosts.private.name)
+          .get();
+
+      List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return PostDataModel.fromJson(data);
+      }).toList();
+
+      return Result.success(activityList);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
   static Future<Result<List<PostDataModel>>> getListBookmarkedPosts(
       String userId) async {
     try {
@@ -60,7 +101,6 @@ class FirestorePostData {
     }
   }
 
-  // list favorite posts of profile
   static Future<Result<List<PostDataModel>>> getListFavoritePosts(
       String userId) async {
     try {
@@ -148,12 +188,43 @@ class FirestorePostData {
     }
   }
 
-  static Future<Result<List<PostDataModel>>> deletePost(String postId) async {
+  static Future<Result<bool>> deletePost(String postId) async {
     try {
+      // Retrieve the post to get its image list
+      DocumentSnapshot documentSnapshot =
+          await _fireStorePostCollection.doc(postId).get();
+
+      if (!documentSnapshot.exists) {
+        return Result.error(FirebaseAuthException(
+            code: 'post-not-found',
+            message: 'No post found with the provided ID.'));
+      }
+
+      Map<String, dynamic> postData =
+          documentSnapshot.data() as Map<String, dynamic>;
+      PostDataModel postDataModel = PostDataModel.fromJson(postData);
+
+      // Delete each image from Firebase Storage
+      if (postDataModel.imageList != null) {
+        for (String imageUrl in postDataModel.imageList!) {
+          await _deleteImageFromStorage(imageUrl);
+        }
+      }
+
+      // Delete the post from Firestore
       await _fireStorePostCollection.doc(postId).delete();
-      return Result.success([]);
+      return Result.success(true);
     } on FirebaseException catch (e) {
       return Result.error(e);
+    }
+  }
+
+  static Future<void> _deleteImageFromStorage(String imageUrl) async {
+    try {
+      Reference storageReference = _storage.refFromURL(imageUrl);
+      await storageReference.delete();
+    } on FirebaseException catch (e) {
+      print('Error deleting image from Firebase Storage: $e');
     }
   }
 
@@ -192,6 +263,50 @@ class FirestorePostData {
 
       return Result.success(activityList);
     } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<bool>> updateField(
+      String postId, Map<String, dynamic> data) async {
+    try {
+      await _fireStorePostCollection.doc(postId).update(data);
+      return Result.success(true);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<bool>> updateStatus(
+      String postId, StatusPosts status) async {
+    try {
+      await _fireStorePostCollection
+          .doc(postId)
+          .update({"status": status.name});
+      return Result.success(true);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<bool>> incrementFavoriteCount(String postId) async {
+    try {
+      await _fireStorePostCollection.doc(postId).update({
+        'favoriteCount': FieldValue.increment(1),
+      });
+      return Result.success(true);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<bool>> decrementFavoriteCount(String postId) async {
+    try {
+      await _fireStorePostCollection.doc(postId).update({
+        'favoriteCount': FieldValue.increment(-1),
+      });
+      return Result.success(true);
+    } on FirebaseAuthException catch (e) {
       return Result.error(e);
     }
   }

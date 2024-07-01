@@ -29,11 +29,11 @@ class MainController extends GetxController {
   var isLocationServiceEnabled = false.obs;
 
   var showRequiredLocationBox = true.obs;
-
+  
+  
   @override
   void onInit() {
     super.onInit();
-
     _getuserUseCase.getUser().then((value) {
       if (value != null) {
         user = true;

@@ -9,7 +9,7 @@ import 'package:find_food/core/ui/widgets/card/posts_card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/nav/explore/search/presentation/controller/search_controller.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -113,7 +113,7 @@ class SearchPage extends GetView<ExploreController> {
                         title: title ?? AppTextString.fCardTitleDefault,
                         rating: 2.5,
                         customerRating: 10,
-                        distance: 2.1,
+                        distance: 2.1, postDataModel: postDataModel,
                       ),
                     );
                   }).toList(),

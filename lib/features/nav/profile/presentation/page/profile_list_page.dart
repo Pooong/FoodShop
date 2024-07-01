@@ -1,11 +1,11 @@
 import 'package:find_food/core/ui/widgets/card/profile_card.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:find_food/features/nav/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileListPage extends GetView<ProfileController> {
-  ProfileListPage({super.key});
+  const ProfileListPage({super.key});
   
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +13,7 @@ class ProfileCard extends StatelessWidget {
   final bool isFavorited;
   final PostDataModel postDataModel;
 
-  ProfileCard(
+  const ProfileCard(
       {super.key,
       this.favoriteCount = 0,
       this.imageUrl = AppImagesString.iPostsDefault,
@@ -24,7 +24,13 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.toNamed(Routes.postsDetail),
+      onTap: () async {
+        var result = await Get.toNamed(Routes.postsDetail, arguments: {
+          'postsData': postDataModel,
+          'distace': 0.0,
+          "isFavorite": false
+        });
+      },
       child: Container(
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -43,27 +49,23 @@ class ProfileCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(10),
-                onTap: () => Get.toNamed(Routes.postsDetail),
-                child: Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  child: postDataModel.imageList != null &&
-                          postDataModel.imageList!.isNotEmpty
-                      ? Image.network(
-                          postDataModel.imageList!.first,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.asset(
-                          imageUrl,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                ),
+              child: SizedBox(
+                height: double.infinity,
+                width: double.infinity,
+                child: postDataModel.imageList != null &&
+                        postDataModel.imageList!.isNotEmpty
+                    ? Image.network(
+                        postDataModel.imageList!.first,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        imageUrl,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
             Positioned(

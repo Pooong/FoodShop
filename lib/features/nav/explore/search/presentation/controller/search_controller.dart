@@ -3,7 +3,7 @@ import 'package:find_food/core/data/firebase/firestore_database/firestore_post_d
 import 'package:find_food/core/services/location_service.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/maps/location/models/place_map.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

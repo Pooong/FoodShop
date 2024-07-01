@@ -17,8 +17,8 @@ import 'package:find_food/features/edit_posts/edit/di/edit_posts_binding.dart';
 import 'package:find_food/features/edit_posts/edit/presentation/page/edit_post_page.dart';
 import 'package:find_food/features/find_post/category/di/category_binding.dart';
 import 'package:find_food/features/find_post/category/presentation/page/category_page.dart';
-import 'package:find_food/features/create_menu_restaurant/di/create_menu_binding.dart';
-import 'package:find_food/features/create_menu_restaurant/pressentation/page/create_menu_page.dart';
+import 'package:find_food/features/control_restaurants/create_menu_restaurant/di/create_menu_binding.dart';
+import 'package:find_food/features/control_restaurants/create_menu_restaurant/pressentation/page/create_menu_page.dart';
 import 'package:find_food/features/find_post/result_search/di/resutl_search_binding.dart';
 import 'package:find_food/features/find_post/result_search/presentation/page/result_search_page.dart';
 import 'package:find_food/features/location_restaurant/di/location_restaurant_binding.dart';
@@ -41,6 +41,9 @@ import 'package:find_food/features/control_restaurants/restaurant_setting/di/res
 import 'package:find_food/features/control_restaurants/restaurant_setting/pressentation/page/restaurant_setting_page.dart';
 import 'package:find_food/features/control_restaurants/restaurant_social_network/di/restaurant_social_network_binding.dart';
 import 'package:find_food/features/control_restaurants/restaurant_social_network/pressentation/page/restaurant_social_network.dart';
+import 'package:find_food/features/profile_client/di/profile_client_binding.dart';
+import 'package:find_food/features/profile_client/presentation/controller/profile_client_controller.dart';
+import 'package:find_food/features/profile_client/presentation/page/profile_client_page.dart';
 import 'package:find_food/features/splash/di/splash_binding.dart';
 import 'package:find_food/features/splash/presentation/pages/splash_page.dart';
 import 'package:get/get.dart';
@@ -92,6 +95,16 @@ class Pages {
       page: () => const AccountSettingPage(),
       binding: AccountSettingBinding(),
     ),
+
+    
+    //trang setting account
+    GetPage(
+      name: Routes.profileClient,
+      page: () => const ProfileClientPage(),
+      binding: ProfileClientBinding(),
+    ),
+
+
 
     GetPage(
       name: Routes.editPosts,
@@ -170,7 +183,7 @@ class Pages {
     // màng hình tìm kiếm
     GetPage(
       name: Routes.postsDetail,
-      page: () => PostsDetailPage(),
+      page: () => const PostsDetailPage(),
       binding: PostsDetailBinding(),
     ),
 

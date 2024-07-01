@@ -1,56 +1,52 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   final GetuserUseCase _getuserUseCase;
-
   HomeController(this._getuserUseCase);
 
   List<PostDataModel> listPost = [];
-  
   UserModel? user;
   ScrollController scrollController = ScrollController();
   final StreamController<List<DocumentSnapshot>> _postController =
       StreamController<List<DocumentSnapshot>>.broadcast();
 
   final List<DocumentSnapshot> _allPagedResults = [];
-  int pageLimit = 10;
+  int pageLimit = 20;
   DocumentSnapshot? _lastDocument;
-
   bool _hasMoreData = true;
   bool isLoading = false;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    _initialize();
+    user = await _getuserUseCase.getUser();
     scrollController.addListener(_scrollListener);
-    getPosts();  // Gọi getPosts ngay khi khởi tạo để lấy dữ liệu ban đầu
-    update(['fetchPosts']);
   }
 
-  Future<void> _initialize() async {
-    user = await _getuserUseCase.getUser();
-  }
+  // Future<void> _initialize() async {
+
+  // }
 
   void _scrollListener() {
-    if (scrollController.offset >=
-            (scrollController.position.maxScrollExtent) &&
-        !scrollController.position.outOfRange) {
-      getPosts();
+    if (scrollController.position.atEdge &&
+        scrollController.position.pixels != 0) {
+      _getPosts();
     }
   }
 
   Stream<List<DocumentSnapshot>> listenToPostsRealTime() {
+    _getPosts();
     return _postController.stream;
   }
 
-  Future<void> getPosts() async {
+  Future<void> _getPosts() async {
     if (!_hasMoreData || isLoading) return;
 
     isLoading = true;
@@ -68,15 +64,21 @@ class HomeController extends GetxController {
     try {
       var snapshot = await pagechatQuery.get();
       if (snapshot.docs.isNotEmpty) {
-        var generalChats = snapshot.docs.toList();
+        var newPosts = snapshot.docs
+            .map((doc) =>
+                PostDataModel.fromJson(doc.data() as Map<String, dynamic>))
+            .where((post) => post.status == StatusPosts.active)
+            .toList();
 
-        _allPagedResults.addAll(generalChats);
+        _allPagedResults.addAll(snapshot.docs
+            .where((doc) => newPosts.any((post) => post.id == doc.id)));
 
         _postController.add(_allPagedResults);
 
         _lastDocument = snapshot.docs.last;
-
-        _hasMoreData = generalChats.length == pageLimit;
+        _hasMoreData = newPosts.length == pageLimit;
+      } else {
+        _hasMoreData = false;
       }
     } catch (e) {
       print("Error getting posts: $e");
@@ -84,11 +86,13 @@ class HomeController extends GetxController {
       isLoading = false;
     }
   }
-    Future<void> refreshPosts() async {
+
+  Future<void> refreshPosts() async {
+    _hasMoreData = true;
     _allPagedResults.clear();
     _lastDocument = null;
-    _hasMoreData = true;
-    await getPosts();
+    await _getPosts();
+    update(['fetchListPost']);
   }
 
   @override

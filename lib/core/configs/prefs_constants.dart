@@ -4,4 +4,5 @@ class PrefsConstants {
   static const String timeSchedule = "timeSchedule";
   static const String location ="LOCATION";
   static const String favorite = "FAVORITESERVICE";
+  static const String favoriteRemove = "FAVORITEREMOVESERVICE";
 }

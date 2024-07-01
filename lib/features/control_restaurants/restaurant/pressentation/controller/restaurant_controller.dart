@@ -6,7 +6,6 @@ import 'package:find_food/core/data/firebase/firestore_database/firestore_restau
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
-import 'package:find_food/features/control_restaurants/restaurant/pressentation/model/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -86,24 +85,13 @@ class RestaurantController extends GetxController {
     }
   }
 
-  List<MenuModel> listFood = [];
   Future<void> getMenuOfRestaurant() async {
     final result = await FirestoreMenu.getMenu(restaurantID: idRestaurant);
     if (result.status == Status.success) {
-      listFood = result.data!.cast<MenuModel>();
-      print(listFood.first.foodName);
+      final listFood = result.data;
       update(["getMenuOfRestaurant"]);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
-  }
-
-  void seeMore() {
-    if (itemsToShow.value < listFood.length) {
-      itemsToShow.value += 4; // Tăng số lượng món ăn hiển thị thêm 4
-    } else {
-      print("OKE");
-    }
-    update(['getMenuOfRestaurant']);
   }
 }
