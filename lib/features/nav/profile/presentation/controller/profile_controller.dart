@@ -5,11 +5,13 @@ import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.d
 import 'package:find_food/core/data/firebase/firestore_database/firestore_bookmark.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_favorite.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_restaurant.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/post_data_model.dart';
+import 'package:find_food/features/model/restaurant_model.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_bookmark_page.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_favorite_page.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_list_page.dart';
@@ -29,7 +31,7 @@ class ProfileController extends GetxController {
   List<PostDataModel> listFavoritePosts = [];
   UserModel? user;
 
-  var isLoading=false.obs;
+  var isLoading = false.obs;
 
   RxInt currentIndex = 0.obs;
 
@@ -41,23 +43,44 @@ class ProfileController extends GetxController {
 
   File? imgBackground;
 
+  var restaurant = Rx<RestaurantModel>(RestaurantModel()) ?? null.obs;
+
   @override
   void onInit() async {
     super.onInit();
-    isLoading.value=true;
+    isLoading.value = true;
+    await _init();
+    isLoading.value = false;
+  }
+
+  Future<void> _init() async {
     user = await _getuserUseCase.getUser();
-    await getPostsOfUser();
-    await getPostsOfUserPrivate();
-    await getFavoritePosts();
-    await getBookmarkedPosts();
-    await getUser();
-    await loadData();
-    isLoading.value=false;
+    if (user != null) {
+      await getUser();
+      await getPostsOfUser();
+      await getPostsOfUserPrivate();
+      await getFavoritePosts();
+      await getBookmarkedPosts();
+      await getRestaurant();
+      await loadData();
+    }
+  }
+
+  Future<void> getRestaurant() async {
+    final result = await FirestoreRestaurant.getRestaurant(user!.uid);
+    if (result.status == Status.success) {
+      restaurant.value = result.data;
+    } 
   }
 
   Future<void> loadData() async {
     await Future.wait([getUser(), getPostsOfUser()]);
-    update(["fetchDataProfilePage", "listPostsOfUser", "fetchUser", "fetchPostsOfUser"]);
+    update([
+      "fetchDataProfilePage",
+      "listPostsOfUser",
+      "fetchUser",
+      "fetchPostsOfUser"
+    ]);
   }
 
   void onChangeNavList(int index) {
@@ -82,29 +105,31 @@ class ProfileController extends GetxController {
 
   /// Select an image for the avatar from the gallery
   Future<void> selectImageAvatar() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
     if (pickedFile != null) {
       imgAvatar = File(pickedFile.path);
       user?.avatarUrl = pickedFile.path;
-      isLoading.value=true;
+      isLoading.value = true;
       update(['fetchDataProfilePage']);
       await updateUserAvatar();
-      isLoading.value=false;
-      update(['updateAvatar','fetchDataProfilePage']);
+      isLoading.value = false;
+      update(['updateAvatar', 'fetchDataProfilePage']);
     }
   }
 
   /// Select an image for the background from the gallery
   Future<void> selectImageBackground() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
     if (pickedFile != null) {
       imgBackground = File(pickedFile.path);
       user?.backgroundUrl = pickedFile.path;
-      isLoading.value=true;
+      isLoading.value = true;
       update(['fetchDataProfilePage']);
       await updateUserBackground();
-      isLoading.value=false;
-      update(['updateBackground','fetchDataProfilePage']);
+      isLoading.value = false;
+      update(['updateBackground', 'fetchDataProfilePage']);
     }
   }
 
@@ -119,6 +144,7 @@ class ProfileController extends GetxController {
       SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
     }
   }
+
   Future<void> getPostsOfUserPrivate() async {
     if (user == null) return;
     final result = await FirestorePostData.getListPostOfUserPrivite(user!.uid);
@@ -145,11 +171,11 @@ class ProfileController extends GetxController {
   // Get the list of favorite posts by the user
   Future<void> getFavoritePosts() async {
     if (user == null) return;
-    var result= await FirestoreFavorite.getFavoritedPostOfUser(user!.uid);
-    if(result.status == Status.success){
+    var result = await FirestoreFavorite.getFavoritedPostOfUser(user!.uid);
+    if (result.status == Status.success) {
       listFavoritePosts = result.data ?? [];
       update(["fetchFavoritePosts"]);
-    }else{
+    } else {
       SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
     }
   }

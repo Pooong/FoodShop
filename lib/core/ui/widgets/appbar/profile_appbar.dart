@@ -1,28 +1,31 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/routes/routes.dart';
+import 'package:find_food/features/nav/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const ProfileAppbar({super.key});
+  final ProfileController controller;
+  const ProfileAppbar({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Profile",
-        ),
+    return Obx(() {
+      return AppBar(
+        title: const Text("Profile"),
         actions: [
+          controller.restaurant.value?.emailRestaurant != null
+              ? IconButton(
+                  onPressed: () {
+                    Get.toNamed(Routes.restaurant);
+                  },
+                  icon: const Icon(Icons.store_mall_directory_rounded),
+                )
+              : const SizedBox(),
+
           IconButton(
             onPressed: () {
-              Get.toNamed(Routes.restaurant);
-            },
-            icon: const Icon(Icons.store_mall_directory_rounded),
-          ),
-          IconButton(
-            onPressed: () {
-              Get.toNamed(Routes.accountSetting);
+              Get.toNamed(Routes.accountSetting,arguments:{"restaurant": controller.restaurant.value?.emailRestaurant});
             },
             icon: const Icon(Icons.settings),
           ),
@@ -35,11 +38,10 @@ class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget {
             height: 2.0,
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   @override
-  // TODO: implement preferredSize
-  Size get preferredSize => AppBar().preferredSize;
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 2.0);
 }

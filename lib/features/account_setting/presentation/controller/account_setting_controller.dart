@@ -14,12 +14,22 @@ class AccountSettingController extends GetxController {
 
   PlaceMap? place;
 
+  var dataArgument= Get.arguments;
+
   String locationName = "";
+
+  var isRetaurant=false.obs;
 
   @override
   void onInit() async{
     super.onInit();
     await _loadLocation();
+    if(dataArgument !=null){
+      if(dataArgument['restaurant']!=null){
+        isRetaurant.value=true;
+      }
+    }
+    update(['fetchRestaurant']);
   }
 
   _loadLocation() async {
@@ -31,7 +41,6 @@ class AccountSettingController extends GetxController {
     if (provinceName != null) {
       locationName = '${place!.displayName} ($provinceName)' ;
     }
-
     update(['fetchLocaiton']);
   }
 
@@ -41,6 +50,7 @@ class AccountSettingController extends GetxController {
     await prefs.clear();
     Get.offAllNamed('/login');
   }
+
 
   // Save the current location using SaveLoactionCase
   void saveLocation(PlaceMap place) async {

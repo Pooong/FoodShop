@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 class AccountSettingPage extends GetView<AccountSettingController> {
   const AccountSettingPage({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,15 +63,28 @@ class AccountSettingPage extends GetView<AccountSettingController> {
           sectionIcon: Icons.arrow_forward_ios,
           route: "",
         ),
-        const SizedBox(height: 30),
-        _buildTitleText(titleText: "RESTAURANT"),
-        _buildSection(
-          icon: Icons.store_mall_directory_rounded,
-          title: "Restaurant",
-          subtitle: "Change or create your restaurant information",
-          sectionIcon: Icons.arrow_forward_ios,
-          route: Routes.createRestaurant,
-        ),
+
+        GetBuilder<AccountSettingController>(
+            id: "fetchRestaurant",
+            builder: (_) {
+              return controller.isRetaurant.value
+                  ? const SizedBox()
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 30),
+                        _buildTitleText(titleText: "RESTAURANT"),
+                        _buildSection(
+                          icon: Icons.store_mall_directory_rounded,
+                          title: "Restaurant",
+                          subtitle:
+                              "Change or create your restaurant information",
+                          sectionIcon: Icons.arrow_forward_ios,
+                          route: Routes.createRestaurant,
+                        ),
+                      ],
+                    );
+            }),
         const SizedBox(height: 30),
         _buildTitleText(titleText: "MORE"),
         _buildSection(

@@ -10,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends GetView<ProfileController> {
-  const ProfilePage({Key? key});
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const ProfileAppbar(),
+        appBar: ProfileAppbar(controller: controller,),
         body: GetBuilder<ProfileController>(
           id: "fetchDataProfilePage",
           builder: (_){

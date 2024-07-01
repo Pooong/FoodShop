@@ -24,15 +24,15 @@ class HomeController extends GetxController {
   bool isLoading = false;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    _initialize();
+    user = await _getuserUseCase.getUser();
     scrollController.addListener(_scrollListener);
   }
 
-  Future<void> _initialize() async {
-    user = await _getuserUseCase.getUser();
-  }
+  // Future<void> _initialize() async {
+
+  // }
 
   void _scrollListener() {
     if (scrollController.position.atEdge &&

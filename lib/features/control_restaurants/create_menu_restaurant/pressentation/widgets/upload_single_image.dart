@@ -1,9 +1,7 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/controller/create_restaurant_controller.dart';
-import 'package:find_food/features/create_menu_restaurant/pressentation/controller/create_menu_controller.dart';
+import 'package:find_food/features/control_restaurants/create_menu_restaurant/pressentation/controller/create_menu_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:io';
 
 class UploadSingleImage extends GetView<CreateMenuController> {
   const UploadSingleImage({Key? key}) : super(key: key);
@@ -16,9 +14,6 @@ class UploadSingleImage extends GetView<CreateMenuController> {
           height: 10.0,
         ),
         Obx(() {
-          // File? image = isLogo
-          //     ? controller.imageFood.value
-          //     : controller.backgroundImage.value;
           return controller.imageFood.value != null
               ? Stack(
                   children: [

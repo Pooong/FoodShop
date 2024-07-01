@@ -208,14 +208,9 @@ class _BuildHeaderPosts extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(width: 10),
-          InkWell(
-            onTap: () {
-              Get.toNamed(Routes.profileClient,arguments: {"idAuthor":controller.authorPosts?.uid});
-            },
-            child: Avatar(
-              authorImg: controller.authorPosts?.avatarUrl,
-              radius: 50,
-            ),
+          Avatar(
+            authorImg: controller.authorPosts?.avatarUrl,
+            radius: 50,
           ),
           const SizedBox(width: 10),
           Expanded(
