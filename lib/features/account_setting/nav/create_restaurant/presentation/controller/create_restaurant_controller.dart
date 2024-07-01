@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_restaurant.dart';
-import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/finish_create_restaurant.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/images_identify_page.dart';
@@ -20,6 +19,8 @@ class CreateRestaurantController extends GetxController {
   Route? onGenerateRoute(Route setting) {
     return null;
   }
+
+  var isLoading=false.obs;
 
   List<Widget> getPages() {
     return [
@@ -86,12 +87,12 @@ class CreateRestaurantController extends GetxController {
       avatarUrl: pathLogoImages,
       licenseRestaurant: listPathLisenceRestaurant,
       onwnerLicenseImages: listPathOwnerLicenseImages,
+      status: StatusPosts.waiting
     );
 
-    final result = await FirestoreRestaurant.createRestaurant(
-        newRestaurant: restaurant, userId: user!.uid);
+    final result = await FirestoreRestaurant.createRestaurant(newRestaurant: restaurant, userId: user!.uid);
     if (result.status == Status.success) {
-      SnackbarUtil.show("Menu created successfully");
+      Fluttertoast.showToast(msg: "Create Restaurant Success ");
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
@@ -116,8 +117,9 @@ class CreateRestaurantController extends GetxController {
         .addAll(pickedImages.map((image) => File(image.path)).toList());
   }
 
+  // ignore: non_constant_identifier_names
   bool check_list_empty(List selectedImages) {
-    return selectedImages.length == 0;
+    return selectedImages.isEmpty;
   }
 
   void removeImage(List imageVerify, File image) {
@@ -168,13 +170,14 @@ class CreateRestaurantController extends GetxController {
     Get.to(() => const ImagesIdentifyPage());
   }
 
-  void createRestaurant() {
+  Future<void> createRestaurant()async {
     if (restaurantBackgroundImages == null || restaurantLogoImages == null) {
       Fluttertoast.showToast(msg: "Please select an image for the posts");
       return;
     } else {
-      Fluttertoast.showToast(msg: "Create Restaurant Success ");
-      saveRestaurant();
+      isLoading.value=true;
+      await saveRestaurant();
+      isLoading.value=false;
       Get.to(() => const FinishCreateRestaurantPage());
     }
   }

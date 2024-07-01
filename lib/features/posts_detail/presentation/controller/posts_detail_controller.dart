@@ -2,7 +2,6 @@ import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_favorite.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_bookmark.dart';
-import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/services/location_service.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
 import 'package:find_food/core/utils/calculator_utils.dart';

@@ -30,7 +30,7 @@ class ProfileController extends GetxController {
   List<PostDataModel> listBookmarkedPosts = [];
   List<PostDataModel> listFavoritePosts = [];
   UserModel? user;
-
+  
   var isLoading = false.obs;
 
   RxInt currentIndex = 0.obs;
@@ -48,12 +48,12 @@ class ProfileController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    isLoading.value = true;
+
     await _init();
-    isLoading.value = false;
   }
 
   Future<void> _init() async {
+    isLoading.value = true;
     user = await _getuserUseCase.getUser();
     if (user != null) {
       await getUser();
@@ -64,13 +64,15 @@ class ProfileController extends GetxController {
       await getRestaurant();
       await loadData();
     }
+    isLoading.value = false;
   }
 
   Future<void> getRestaurant() async {
     final result = await FirestoreRestaurant.getRestaurant(user!.uid);
     if (result.status == Status.success) {
       restaurant.value = result.data;
-    } 
+      print(restaurant.value);
+    }
   }
 
   Future<void> loadData() async {
@@ -81,6 +83,10 @@ class ProfileController extends GetxController {
       "fetchUser",
       "fetchPostsOfUser"
     ]);
+  }
+
+  refreshProfilepage() async {
+    await _init();
   }
 
   void onChangeNavList(int index) {

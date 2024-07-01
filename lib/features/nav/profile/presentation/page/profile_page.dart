@@ -15,16 +15,22 @@ class ProfilePage extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: ProfileAppbar(controller: controller,),
-        body: GetBuilder<ProfileController>(
-          id: "fetchDataProfilePage",
-          builder: (_){
-          return 
-          controller.isLoading.value?
-          const LoadingDataPage()
-          :buildProfileBodyPage();
-        },)
-        );
+      appBar: ProfileAppbar(
+        controller: controller,
+      ),
+      body: RefreshIndicator(
+          onRefresh: () async {
+            await controller.refreshProfilepage();
+          },
+          child: GetBuilder<ProfileController>(
+            id: "fetchDataProfilePage",
+            builder: (_) {
+              return controller.isLoading.value
+                  ? const LoadingDataPage()
+                  : buildProfileBodyPage();
+            },
+          )),
+    );
   }
 
   Widget buildProfileBodyPage() {
@@ -92,7 +98,7 @@ class ProfilePage extends GetView<ProfileController> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           GestureDetector(
-            onTap: () async{
+            onTap: () async {
               await controller.selectImageAvatar();
             },
             child: GetBuilder<ProfileController>(

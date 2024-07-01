@@ -1,11 +1,9 @@
 import 'package:find_food/core/configs/app_text_string.dart';
-import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/controller/create_restaurant_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class FinishCreateRestaurantPage extends GetView<CreateRestaurantController> {
   const FinishCreateRestaurantPage({super.key});

@@ -1,4 +1,3 @@
-import 'package:find_food/features/model/restaurant_model.dart';
 class MenuModel {
   String? idMenu;
   String? name;

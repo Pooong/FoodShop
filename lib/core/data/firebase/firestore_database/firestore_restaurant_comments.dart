@@ -4,7 +4,7 @@ import 'package:find_food/features/model/comments_restaurant_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreRestaurantComments {
-  static final _fireStoreUserCollection =
+  static final _fireStorRestaurantCollection =
       FirebaseFirestore.instance.collection('commentsRestaurant');
 
   static Future<Result<bool>> createComment(
@@ -13,7 +13,7 @@ class FirestoreRestaurantComments {
       String idCommentRestaurant =
           FirebaseFirestore.instance.collection('commentsRestaurant').doc().id;
       commentsRestaurant!.idCommentRestaurant = idCommentRestaurant;
-      await _fireStoreUserCollection
+      await _fireStorRestaurantCollection
           .doc(commentsRestaurant.idCommentRestaurant)
           .set(commentsRestaurant.toJson());
       return Result.success(true);
@@ -25,7 +25,7 @@ class FirestoreRestaurantComments {
   static Future<Result<List<CommentsRestaurantModel>>> getListComments(
       String postId) async {
     try {
-      QuerySnapshot querySnapshot = await _fireStoreUserCollection
+      QuerySnapshot querySnapshot = await _fireStorRestaurantCollection
           .where('idPost', isEqualTo: postId)
           .get();
 
@@ -44,7 +44,7 @@ class FirestoreRestaurantComments {
   // xóa comments
   static Future<Result<bool>> deleteComment(String idCommentRestaurant) async {
     try {
-      await _fireStoreUserCollection.doc(idCommentRestaurant).delete();
+      await _fireStorRestaurantCollection.doc(idCommentRestaurant).delete();
       return Result.success(true);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);

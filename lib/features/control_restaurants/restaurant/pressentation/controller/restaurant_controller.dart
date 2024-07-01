@@ -6,6 +6,7 @@ import 'package:find_food/core/data/firebase/firestore_database/firestore_restau
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
+import 'package:find_food/features/model/menu_food_restaurant_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,6 +33,8 @@ class RestaurantController extends GetxController {
 
   String? foodImagePath = "";
 
+  List<MenuModel> listFood =[];
+
   final GetuserUseCase _getuserUseCase;
   RestaurantController(this._getuserUseCase);
 
@@ -43,6 +46,12 @@ class RestaurantController extends GetxController {
     await getMenuOfRestaurant();
     super.onInit();
     isLoading.value = false;
+  }
+
+  refreshPage() async {
+    user = await _getuserUseCase.getUser();
+    await getRestaurantData();
+    await getMenuOfRestaurant();
   }
 
   Future selectImageAvatarGallery() async {
@@ -88,7 +97,7 @@ class RestaurantController extends GetxController {
   Future<void> getMenuOfRestaurant() async {
     final result = await FirestoreMenu.getMenu(restaurantID: idRestaurant);
     if (result.status == Status.success) {
-      final listFood = result.data;
+      listFood = result.data ?? [];
       update(["getMenuOfRestaurant"]);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
