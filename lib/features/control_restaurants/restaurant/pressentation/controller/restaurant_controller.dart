@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_menu.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_restaurant.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
@@ -11,11 +12,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RestaurantController extends GetxController {
-  final TextEditingController imageController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
   var isLoading = false.obs;
-  var menu = FoodModel.menu.obs;
   var itemsToShow = 4.obs;
   var itemHide = false.obs;
 
@@ -23,6 +20,18 @@ class RestaurantController extends GetxController {
   File? imgAvatar;
   File? imgWallpapper;
   UserModel? user;
+  String nameRestaurant = "";
+  String emailRestaurant = "";
+  String phoneRestaurant = "";
+  String addressRestaurant = "";
+  String avatarUrl = "";
+  String backgroundUrl = "";
+  String idRestaurant = "";
+  File? foodImage;
+  final TextEditingController foodName = TextEditingController();
+  final TextEditingController foodPrice = TextEditingController();
+
+  String? foodImagePath = "";
 
   final GetuserUseCase _getuserUseCase;
   RestaurantController(this._getuserUseCase);
@@ -32,6 +41,7 @@ class RestaurantController extends GetxController {
     isLoading.value = true;
     user = await _getuserUseCase.getUser();
     await getRestaurantData();
+    await getMenuOfRestaurant();
     super.onInit();
     isLoading.value = false;
   }
@@ -54,48 +64,11 @@ class RestaurantController extends GetxController {
     }
   }
 
-  void updateFood(int index, FoodModel updatedFood) {
-    var updatedMenu = List<FoodModel>.from(menu);
-    updatedMenu[index] = updatedFood;
-    menu.assignAll(updatedMenu);
-    // clearControllers();
-  }
-
-  void inforCard(FoodModel food) {
-    print(food.toJson());
-    imageController.text = food.imageFood;
-    nameController.text = food.foodName;
-    priceController.text = food.priceFood;
-  }
-
-  // void clearControllers() {
-  //   imageController.clear();
-  //   nameController.clear();
-  //   priceController.clear();
-  // }
-
-  void seeMore() {
-    if (itemsToShow.value < menu.length) {
-      itemsToShow.value += 4;
-      itemHide.value = true;
-    }
-  }
-
   void hideItems() {
     itemsToShow.value = 4;
     itemHide.value = false;
   }
 
-  void clearSearch() {}
-
-  void onSearchItemTap(name) {}
-
-  String nameRestaurant = "";
-  String emailRestaurant = "";
-  String phoneRestaurant = "";
-  String addressRestaurant = "";
-  String avatarUrl = "";
-  String backgroundUrl = "";
   Future<void> getRestaurantData() async {
     final result = await FirestoreRestaurant.getRestaurant(user!.uid);
     if (result.status == Status.success) {
@@ -106,10 +79,31 @@ class RestaurantController extends GetxController {
       addressRestaurant = restaurant.addressRestaurant!;
       avatarUrl = restaurant.avatarUrl!;
       backgroundUrl = restaurant.backgroundUrl!;
+      idRestaurant = restaurant.idRestaurant!;
       update(["getInforRestaurant"]);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
-    // print(result.data!.toJson());
+  }
+
+  List<MenuModel> listFood = [];
+  Future<void> getMenuOfRestaurant() async {
+    final result = await FirestoreMenu.getMenu(restaurantID: idRestaurant);
+    if (result.status == Status.success) {
+      listFood = result.data!.cast<MenuModel>();
+      print(listFood.first.foodName);
+      update(["getMenuOfRestaurant"]);
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+  }
+
+  void seeMore() {
+    if (itemsToShow.value < listFood.length) {
+      itemsToShow.value += 4; // Tăng số lượng món ăn hiển thị thêm 4
+    } else {
+      print("OKE");
+    }
+    update(['getMenuOfRestaurant']);
   }
 }

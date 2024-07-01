@@ -21,19 +21,13 @@ class CreateMenuController extends GetxController {
     return null;
   }
 
-  List<Widget> getPages() {
-    return [
-      LicenseIdentifyPage(),
-      ImagesIdentifyPage(),
-      FinishCreateRestaurantPage(),
-    ];
-  }
-
+  var idRestaurant = Get.arguments;
   final picker = ImagePicker();
   var selectedImages = <File>[].obs;
 
   final nameFood = TextEditingController();
   final price = TextEditingController();
+  String? restaurantID = "";
   File? imgFood;
 
   String? pathUrl = "";
@@ -108,7 +102,6 @@ class CreateMenuController extends GetxController {
     }
 
     if (nameFood.text.isEmpty || price.text.isEmpty) {
-      print(nameFood.text + "-" + price.text + "-");
       SnackbarUtil.show("Please fill in all fields");
       return;
     }
@@ -117,10 +110,11 @@ class CreateMenuController extends GetxController {
       name: nameFood.text,
       price: double.parse(price.text),
       image: pathUrl,
-      id: '',
+      idRestaurant: idRestaurant,
     );
-
-    final result = await FirestoreMenu.createMenu(menu);
+    print(idRestaurant);
+    final result =
+        await FirestoreMenu.createMenu(userId: user!.uid, newMenu: menu);
     if (result.status == Status.success) {
       SnackbarUtil.show("Menu created successfully");
       // Reset fields

@@ -216,7 +216,7 @@ class RestaurantPage extends GetView<RestaurantController> {
           ),
           GestureDetector(
             onTap: () {
-              Get.toNamed('createmenu');
+              Get.toNamed('createmenu', arguments: controller.idRestaurant);
             },
             child: const Row(
               children: [
@@ -390,77 +390,25 @@ class RestaurantPage extends GetView<RestaurantController> {
         });
   }
 
-  // Widget buildGridOrders() {
-  //   return Obx(() {
-  //     return GridView.builder(
-  //       shrinkWrap: true,
-  //       physics: const NeverScrollableScrollPhysics(),
-  //       padding: const EdgeInsets.symmetric(horizontal: 20),
-  //       itemCount: controller.itemsToShow.value <= controller.menu.length
-  //           ? controller.itemsToShow.value + 1
-  //           : controller.itemsToShow.value,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         if (index == controller.itemsToShow.value) {
-  //           return GestureDetector(
-  //             onTap: controller.seeMore,
-  //             child: const Padding(
-  //               padding: EdgeInsets.symmetric(horizontal: 10),
-  //               child: TextWidget(
-  //                 textAlign: TextAlign.start,
-  //                 text: "See More",
-  //                 color: AppColors.blue,
-  //                 size: AppDimens.textSize18,
-  //               ),
-  //             ),
-  //           );
-  //         } else {
-  //           final foodMenu = controller.menu[index];
-  //           return GestureDetector(
-  //             onTap: () {
-  //               controller.inforCard(foodMenu);
-  //               showModalBottomSheet(
-  //                 context: context,
-  //                 isScrollControlled: true,
-  //                 shape: const RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.vertical(
-  //                     top: Radius.circular(20),
-  //                   ),
-  //                 ),
-  //                 builder: (BuildContext context) {
-  //                   return Padding(
-  //                     padding: EdgeInsets.only(
-  //                       bottom: MediaQuery.of(context).viewInsets.bottom,
-  //                     ),
-  //                     child: ListView(
-  //                       shrinkWrap: true,
-  //                       children: [
-  //                         Center(
-  //                           child: Container(
-  //                             padding: const EdgeInsets.all(16.0),
-  //                             child:
-  //                                 EditFoodModal(food: foodMenu, index: index),
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   );
-  //                 },
-  //               );
-  //             },
-  //             child: CardMenuRestaurant(
-  //               img: foodMenu.imageFood,
-  //               foodname: foodMenu.foodName,
-  //               pricefood: foodMenu.priceFood,
-  //             ),
-  //           );
-  //         }
-  //       },
-  //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //         crossAxisCount: 2,
-  //         crossAxisSpacing: 4.0,
-  //         mainAxisSpacing: 4.0,
-  //       ),
-  //     );
-  //   });
-  // }
+  Widget buildGridOrders() {
+    return GetBuilder<RestaurantController>(
+        id: "getMenuOfRestaurant",
+        builder: (controller) {
+          return GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: controller.listFood.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.7,
+              ),
+              itemBuilder: (context, index) {
+                return CardMenuRestaurant(
+                  img: controller.listFood[index].imageFood.toString(),
+                  foodname: controller.listFood[index].foodName.toString(),
+                  pricefood: controller.listFood[index].priceFood.toString(),
+                );
+              });
+        });
+  }
 }

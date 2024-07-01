@@ -3,33 +3,48 @@ import 'package:find_food/features/model/restaurant_model.dart';
 import '../control_restaurants/restaurant/pressentation/model/restaurant_model.dart';
 
 class MenuModel {
-  String? id;
+  String? idMenu;
   String? name;
   double? price;
   String? image;
-  RestaurantModel? idRestaurant;
-
-  MenuModel({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.image,
-    this.idRestaurant,
-  });
+  String? idRestaurant;
+  String? userId;
+  MenuModel(
+      {this.idMenu,
+      this.name,
+      this.price,
+      this.image,
+      this.idRestaurant,
+      this.userId});
   factory MenuModel.fromJson(Map<String, dynamic> json) => MenuModel(
-      id: json['id'],
-      name: json['name'],
-      price: json['price'],
-      image: json['image'],
-      idRestaurant: RestaurantModel.fromJson(json['restaurant']));
+        idMenu: json['idMenu'],
+        name: json['name'],
+        price: json['price'],
+        image: json['image'],
+        idRestaurant: json['idRestaurant'],
+        userId: json['userId'],
+      );
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'idMenu': idMenu,
       'name': name,
       'price': price,
       'image': image,
-      'restaurant': idRestaurant?.toJson()
+      'idRestaurant': idRestaurant,
+      'userId': userId,
     };
+  }
+
+  @override
+  String toString() {
+    return {
+      'idMenu': idMenu,
+      'name': name,
+      'price': price,
+      'image': image,
+      'idRestaurant': idRestaurant,
+      'userId': userId,
+    }.toString();
   }
 }
