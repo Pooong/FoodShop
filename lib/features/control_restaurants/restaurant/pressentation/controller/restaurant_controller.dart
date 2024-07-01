@@ -1,21 +1,18 @@
 import 'dart:io';
 
 import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_menu.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_restaurant.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
-import 'package:find_food/features/control_restaurants/restaurant/pressentation/model/food_model.dart';
+import 'package:find_food/features/model/menu_food_restaurant_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RestaurantController extends GetxController {
-  final TextEditingController imageController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
-
-  var menu = FoodModel.menu.obs;
+  var isLoading = false.obs;
   var itemsToShow = 4.obs;
   var itemHide = false.obs;
 
@@ -23,8 +20,20 @@ class RestaurantController extends GetxController {
   File? imgAvatar;
   File? imgWallpapper;
   UserModel? user;
+  String nameRestaurant = "";
+  String emailRestaurant = "";
+  String phoneRestaurant = "";
+  String addressRestaurant = "";
+  String avatarUrl = "";
+  String backgroundUrl = "";
+  String idRestaurant = "";
+  File? foodImage;
+  final TextEditingController foodName = TextEditingController();
+  final TextEditingController foodPrice = TextEditingController();
 
-  var isLoading = false.obs;
+  String? foodImagePath = "";
+
+  List<MenuModel>? listFood ; 
 
   final GetuserUseCase _getuserUseCase;
   RestaurantController(this._getuserUseCase);
@@ -34,10 +43,15 @@ class RestaurantController extends GetxController {
     super.onInit();
     isLoading.value = true;
     user = await _getuserUseCase.getUser();
-    if (user != null) {
-      await getRestaurantData();
-    }
+    await getRestaurantData();
+    await getMenuOfRestaurant();
     isLoading.value = false;
+  }
+
+  refreshPage() async {
+    user = await _getuserUseCase.getUser();
+    await getRestaurantData();
+    await getMenuOfRestaurant();
   }
 
   Future selectImageAvatarGallery() async {
@@ -58,58 +72,33 @@ class RestaurantController extends GetxController {
     }
   }
 
-  refreshPage() async {
-    if (user != null) {
-      await getRestaurantData();
-    }
-    update();
-  }
-
-  void updateFood(int index, FoodModel updatedFood) {
-    var updatedMenu = List<FoodModel>.from(menu);
-    updatedMenu[index] = updatedFood;
-    menu.assignAll(updatedMenu);
-    // clearControllers();
-  }
-
-  void inforCard(FoodModel food) {
-    imageController.text = food.imageFood;
-    nameController.text = food.foodName;
-    priceController.text = food.priceFood;
-  }
-
-  void seeMore() {
-    if (itemsToShow.value < menu.length) {
-      itemsToShow.value += 4;
-      itemHide.value = true;
-    }
-  }
-
   void hideItems() {
     itemsToShow.value = 4;
     itemHide.value = false;
   }
 
-  void clearSearch() {}
-
-  void onSearchItemTap(name) {}
-
-  final nameRestaurant = TextEditingController();
-  final emailRestaurant = TextEditingController();
-  final phoneRestaurant = TextEditingController();
-  final addressRestaurant = TextEditingController();
-  List<String> listPathUrl = [];
-
   Future<void> getRestaurantData() async {
     final result = await FirestoreRestaurant.getRestaurant(user!.uid);
     if (result.status == Status.success) {
       final restaurant = result.data;
-      nameRestaurant.text = restaurant!.nameRestaurant!.toString();
-      emailRestaurant.text = restaurant.emailRestaurant!;
-      phoneRestaurant.text = restaurant.phoneRestaurant!;
-      addressRestaurant.text = restaurant.addressRestaurant!;
-      listPathUrl = restaurant.listPathUrl!;
+      nameRestaurant = restaurant!.nameRestaurant!.toString();
+      emailRestaurant = restaurant.emailRestaurant!;
+      phoneRestaurant = restaurant.phoneRestaurant!;
+      addressRestaurant = restaurant.addressRestaurant!;
+      avatarUrl = restaurant.avatarUrl!;
+      backgroundUrl = restaurant.backgroundUrl!;
+      idRestaurant = restaurant.idRestaurant!;
       update(["getInforRestaurant"]);
+    } else {
+      SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
+    }
+  }
+
+  Future<void> getMenuOfRestaurant() async {
+    final result = await FirestoreMenu.getMenu(restaurantID: idRestaurant);
+    if (result.status == Status.success) {
+      listFood = result.data;
+      update(["getMenuOfRestaurant"]);
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }

@@ -120,7 +120,7 @@ class CreateMenuController extends GetxController {
       id: '',
     );
 
-    final result = await FirestoreMenu.createMenu(menu);
+    final result = await FirestoreMenu.createMenu(newMenu: menu, userId: user!.uid);
     if (result.status == Status.success) {
       SnackbarUtil.show("Menu created successfully");
       // Reset fields

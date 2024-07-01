@@ -1,7 +1,7 @@
 import 'package:find_food/core/ui/widgets/appbar/images_identify_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
+import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/controller/create_restaurant_controller.dart';
-import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/finish_create_restaurant.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/widgets/upload_single_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +13,11 @@ class ImagesIdentifyPage extends GetView<CreateRestaurantController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const ImagesIdentifyAppbar(),
-      body: buildImagesIdentifyBody(),
+      body: Obx(
+        () => controller.isLoading.value
+            ? const LoadingDataPage()
+            : buildImagesIdentifyBody(),
+      ),
     );
   }
 

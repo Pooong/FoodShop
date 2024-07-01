@@ -1,7 +1,7 @@
 import 'package:find_food/core/ui/widgets/appbar/create_restaurant_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
+import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/controller/create_restaurant_controller.dart';
-import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/license_identify_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +12,11 @@ class CreateRestaurantPage extends GetView<CreateRestaurantController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CreateRestaurantAppbar(),
-      body: buildCreateRestaurantBody(),
+      body: Obx(()=>
+      controller.isLoading.value?
+      const LoadingDataPage():
+      buildCreateRestaurantBody()
+      ),
     );
   }
 
