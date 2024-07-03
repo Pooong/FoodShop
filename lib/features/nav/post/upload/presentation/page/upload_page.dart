@@ -5,7 +5,6 @@ import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/appbar/upload_post_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/core/ui/widgets/text/text_widget.dart';
-import 'package:find_food/features/maps/location/models/place_map.dart';
 import 'package:find_food/features/nav/post/upload/presentation/controller/upload_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

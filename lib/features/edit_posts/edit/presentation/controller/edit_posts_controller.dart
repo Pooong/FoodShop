@@ -113,9 +113,9 @@ class EditPostsController extends GetxController {
         longitude: dataPosts?.longitude,
         restaurantId: dataPosts?.restaurantId,
         placeMap: dataPosts?.placeMap,
-        status: StatusPosts.active
-
+        status: dataPosts?.status
         ));
+        
     if (result.status == Status.success) {
       Fluttertoast.showToast(msg: "Post updated successfully");
     } else {

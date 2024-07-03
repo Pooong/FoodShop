@@ -20,6 +20,8 @@ class CreateRestaurantController extends GetxController {
     return null;
   }
 
+  
+
   var isLoading=false.obs;
 
   List<Widget> getPages() {
@@ -163,6 +165,7 @@ class CreateRestaurantController extends GetxController {
       Fluttertoast.showToast(msg: "Please select an image for the posts");
       return;
     }
+    
     if (addressRestaurant.text.isEmpty) {
       Fluttertoast.showToast(msg: "Please fill the address of the restaurant");
       return;

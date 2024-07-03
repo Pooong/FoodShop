@@ -1,3 +1,5 @@
+import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_restaurant.dart';
 import 'package:find_food/core/data/prefs/prefs.dart';
 import 'package:find_food/features/maps/domain/get_location_case.dart';
 import 'package:find_food/features/maps/domain/save_location_case.dart';
@@ -9,24 +11,32 @@ import 'dart:math' as math;
 class AccountSettingController extends GetxController {
   final SaveLoactionCase _saveLoactionCase;
   final GetLocationCase _getLocationCase;
-  
   AccountSettingController(this._saveLoactionCase, this._getLocationCase);
+
+  var isWaitingCreateRestaurant = false.obs;
 
   PlaceMap? place;
 
-  var dataArgument= Get.arguments;
+  var dataArgument = Get.arguments;
 
   String locationName = "";
 
-  var isRetaurant=false.obs;
+  var isRetaurant = false.obs;
 
   @override
-  void onInit() async{
+  void onInit() async {
     super.onInit();
     await _loadLocation();
-    if(dataArgument !=null){
-      if(dataArgument['restaurant']!=null){
-        isRetaurant.value=true;
+    if (dataArgument != null) {
+      if (dataArgument['restaurant'] != null) {
+        isRetaurant.value = true;
+      }
+      if (dataArgument['uid'] != null) {
+        var uid = dataArgument['uid'];
+        print(uid);
+        if (uid != "") {
+          await getRestaurantWaiting(uid: uid);
+        }
       }
     }
     update(['fetchRestaurant']);
@@ -34,12 +44,12 @@ class AccountSettingController extends GetxController {
 
   _loadLocation() async {
     place = await _getLocationCase.getLocation();
-    locationName = place?.displayName??"Add or change your location";
-
+    locationName = place?.displayName ?? "Add or change your location";
     // Check if the current location falls within any province
-    String? provinceName = checkProvinceLocation(place!.lat??0.0, place!.lon??0.0);
+    String? provinceName =
+        checkProvinceLocation(place!.lat ?? 0.0, place!.lon ?? 0.0);
     if (provinceName != null) {
-      locationName = '${place!.displayName} ($provinceName)' ;
+      locationName = '${place!.displayName} ($provinceName)';
     }
     update(['fetchLocaiton']);
   }
@@ -51,6 +61,13 @@ class AccountSettingController extends GetxController {
     Get.offAllNamed('/login');
   }
 
+  getRestaurantWaiting({required String uid}) async {
+    var result = await FirestoreRestaurant.getRestaurantWaiting(uid);
+    if (result.status == Status.success) {
+      isWaitingCreateRestaurant.value = true;
+      print(isWaitingCreateRestaurant);
+    }
+  }
 
   // Save the current location using SaveLoactionCase
   void saveLocation(PlaceMap place) async {
@@ -62,7 +79,8 @@ class AccountSettingController extends GetxController {
   // Function to check which province the location falls within
   String? checkProvinceLocation(double latitude, double longitude) {
     for (var province in VietnamProvinces.provinces) {
-      double distance = calculateDistance(latitude, longitude, province.latitude, province.longitude);
+      double distance = calculateDistance(
+          latitude, longitude, province.latitude, province.longitude);
       if (distance <= province.radius) {
         return province.name;
       }
@@ -76,8 +94,10 @@ class AccountSettingController extends GetxController {
     double dLat = (lat2 - lat1).toRadians();
     double dLon = (lon2 - lon1).toRadians();
     double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
-        math.cos(lat1.toRadians()) * math.cos(lat2.toRadians()) *
-        math.sin(dLon / 2) * math.sin(dLon / 2);
+        math.cos(lat1.toRadians()) *
+            math.cos(lat2.toRadians()) *
+            math.sin(dLon / 2) *
+            math.sin(dLon / 2);
     double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
     return radiusEarth * c;
   }

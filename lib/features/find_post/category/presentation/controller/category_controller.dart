@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/features/find_post/category/presentation/page/area_category_page.dart';
 import 'package:find_food/features/find_post/category/presentation/page/favorite_category_page.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,9 @@ class CategoryController extends GetxController {
     final CollectionReference postCollectionReference =
         FirebaseFirestore.instance.collection('posts');
 
-    var pageQuery = postCollectionReference.limit(pageLimit);
+    var pageQuery = postCollectionReference
+        .limit(pageLimit)
+        .where("status", isEqualTo: StatusPosts.active.name);
 
     if (_lastAreaDocument != null) {
       pageQuery = pageQuery.startAfterDocument(_lastAreaDocument!);
