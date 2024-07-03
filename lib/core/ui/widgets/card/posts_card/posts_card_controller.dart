@@ -22,7 +22,10 @@ class PostCardController extends GetxController {
   final Prefs prefs = Prefs.preferences;
 
   UserModel? author;
+
   var isFavorite = false.obs;
+
+  int countFavorites = 0;
 
   @override
   void onInit() async {
@@ -33,15 +36,13 @@ class PostCardController extends GetxController {
   _initializeFavoriteState() async {
     GetuserUseCase user = GetuserUseCase(prefs);
     author = await user.getUser();
-    if (author != null) {
-      await _getListPostsUserFavorite();
-    }
+    if (author != null) {}
+    await getListPostsUserFavorite();
     update(['updateStateInteractive']);
   }
 
-  _getListPostsUserFavorite() async {
-    var result =
-        await FirestoreFavorite.getPostsFavoritedByUser(author!.uid ?? "");
+  getListPostsUserFavorite() async {
+    var result = await FirestoreFavorite.getPostsFavoritedByUser(author!.uid ?? "");
     if (result.status == Status.success) {
       listPostUserFavorite = result.data ?? [];
     }
@@ -61,9 +62,9 @@ class PostCardController extends GetxController {
       await FirestoreFavorite.deleteFavoriteByUserAndPostId(
           userId: author!.uid, postId: posts.id ?? "");
     }
-    await _getListPostsUserFavorite();
+    await getListPostsUserFavorite();
     isProcessing = false;
-    update([posts.id ?? ""]);
+    // update([posts.id ?? ""]);
   }
 
   Future<double> distanceCalculate({required PostDataModel postsData}) async {

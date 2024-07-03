@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/extensions/helper.dart';
@@ -20,6 +22,9 @@ class PostsCard extends GetView<PostCardController> {
 
   var distance = 0.0;
   bool isFavorited = false;
+  Timer? _debounceTimer;
+  int countFavorites = 0;
+  bool isClick = false;
   @override
   Widget build(BuildContext context) {
     final PostCardController controller = Get.put(PostCardController());
@@ -172,42 +177,60 @@ class PostsCard extends GetView<PostCardController> {
               excludeFromSemantics: true,
               onTap: () async {
                 if (controller.isProcessing) return;
-                await controller.toggleFavoriteState(
-                    posts: postDataModel, stateIcon: !isFavorited);
-                isFavorited =
-                    controller.listPostUserFavorite.contains(postDataModel.id);
+                isClick = true;
+                isFavorited ? countFavorites -= 1 : countFavorites += 1;
+                isFavorited = !isFavorited;
+
                 controller.update([postDataModel.id ?? ""]);
+                _debounceTimer?.cancel();
+                _debounceTimer = Timer(
+                  const Duration(milliseconds: 500),
+                  () async {
+                    var isFavorited2 = controller.listPostUserFavorite
+                        .contains(postDataModel.id);
+                    await controller.toggleFavoriteState(
+                        posts: postDataModel, stateIcon: !isFavorited2);
+                  },
+                );
               },
               child: Column(
                 children: [
                   Icon(
                     isFavorited ? Icons.favorite : Icons.favorite_border,
                     color: isFavorited ? AppColors.red : null,
-                    size: AppDimens.textSize20,
+                    size: AppDimens.textSize24,
                   ),
-                  FutureBuilder<int>(
-                    future: controller.getCountFavorite(postDataModel.id ?? ""),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const SizedBox(
-                            width: AppDimens.textSize10,
-                            height: AppDimens.textSize14,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1,
-                            ));
-                      } else if (snapshot.hasError) {
-                        return const TextWidget(
-                          text: '0',
+                  isClick
+                      ? TextWidget(
+                          text: "$countFavorites",
                           size: AppDimens.textSize10,
-                        );
-                      } else {
-                        return TextWidget(
-                          text: '${snapshot.data}',
-                          size: AppDimens.textSize10,
-                        );
-                      }
-                    },
-                  ),
+                        )
+                      : FutureBuilder<int>(
+                          future: controller
+                              .getCountFavorite(postDataModel.id ?? ""),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const SizedBox(
+                                  width: AppDimens.textSize10,
+                                  height: AppDimens.textSize14,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 1,
+                                  ));
+                            } else if (snapshot.hasError) {
+                              return const TextWidget(
+                                text: '0',
+                                size: AppDimens.textSize10,
+                              );
+                            } else {
+                              countFavorites = snapshot.data ?? 0;
+                              return TextWidget(
+                                text: '${snapshot.data}',
+                                size: AppDimens.textSize10,
+                              );
+                            }
+                          },
+                        ),
                 ],
               ),
             );
@@ -232,6 +255,7 @@ class PostsCard extends GetView<PostCardController> {
           if (result != null) {
             await controller.getCountFavorite(postDataModel.id ?? "");
             isFavorited = result['isFavorite'];
+            await controller.getListPostsUserFavorite();
             controller.update([result['postsId']]);
           }
         },
