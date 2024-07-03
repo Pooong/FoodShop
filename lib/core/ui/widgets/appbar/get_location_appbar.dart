@@ -11,7 +11,7 @@ class GetLocationAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading:
-          IconButton(onPressed: () {Get.back();}, icon: const Icon(Icons.arrow_back_ios)),
+          IconButton(onPressed: () {Get.back(result: {"closeDialog":true});}, icon: const Icon(Icons.arrow_back_ios)),
       title: const Text(
         AppTextString.fLocationAppbar,
         style: TextStyle(

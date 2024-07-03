@@ -3,12 +3,11 @@ import 'package:find_food/core/data/firebase/firestore_database/firestore_post_d
 import 'package:find_food/core/services/location_service.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/maps/location/models/place_map.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ExploreController extends GetxController {
-
   
   List<PostDataModel> listPost = [];
 
@@ -22,14 +21,24 @@ class ExploreController extends GetxController {
 
   PlaceMap? place;
 
+  var isLoading=false.obs;
+ 
+
   @override
   void onInit() async {
     super.onInit();
+    isLoading.value=true;
     place = await locationService.getLocation();
-    getPosts();
+    await getPosts();
+    isLoading.value=false;
+    update(["fetchDataExplorepage"]);
   }
-  
-  void getPosts() async {
+
+   Future<void>  refreshPage() async{
+    await getPosts();
+    update(["fetchDataExplorepage"]);
+  }
+   Future<void> getPosts() async {
     final result = await FirestorePostData.getListPostRelate(limit: 5);
     final resultArea = await FirestorePostData.getListPostRelate(limit:5);
     final resultFavorite = await FirestorePostData.getListPostRelate(limit: 8);

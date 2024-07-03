@@ -1,53 +1,67 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/appbar/profile_appbar.dart';
+import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
+import 'package:find_food/core/ui/widgets/background/background.dart';
+import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
+import 'package:find_food/core/ui/widgets/text/text_widget.dart';
 import 'package:find_food/features/nav/profile/presentation/controller/profile_controller.dart';
 import 'package:find_food/features/nav/profile/presentation/widgets/nav_controll_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends GetView<ProfileController> {
-  const ProfilePage({Key? key});
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ProfileAppbar(),
-      body: buildProfileBodyPage(),
+      appBar: ProfileAppbar(controller: controller),
+      body: RefreshIndicator(
+        onRefresh: controller.refreshProfilePage,
+        child: GetBuilder<ProfileController>(
+          id: "fetchDataProfilePage",
+          builder: (_) {
+            return controller.isLoading.value
+                ? const LoadingDataPage()
+                : buildProfileBodyPage();
+          },
+        ),
+      ),
     );
   }
 
   Widget buildProfileBodyPage() {
     return SingleChildScrollView(
-      child: GetBuilder<ProfileController>(
-        id: "fetchDataProfilePage",
-        builder: (_) {
-          return Column(
-            children: <Widget>[
-              _buildUserInfo(),
-              const SizedBox(
-                height: 10.0,
-              ),
-              Obx(() => NavControllList(
-                    currentIndex: controller.currentIndex.value,
-                    onPageChanged: (index) {
-                      controller.onChangeNavList(index);
-                    },
-                  )),
-              SizedBox(
-                height: Get.height * 0.6,
-                width: double.infinity,
-                child: PageView(
-                  controller: controller.pageController,
-                  onPageChanged: (index) {
-                    controller.onChangePage(index);
-                  },
-                  children: controller.getPages(),
-                ),
-              )
-            ],
-          );
-        },
+      child: Column(
+        children: <Widget>[
+          _buildUserInfo(),
+          const SizedBox(height: 10.0),
+          Obx(() => NavControllList(
+                currentIndex: controller.currentIndex.value,
+                onPageChanged: controller.onChangeNavList,
+              )),
+          GetBuilder<ProfileController>(
+              id: "fetchBodyList",
+              builder: (_) {
+                return SizedBox(
+                  height: Get.height * 0.6,
+                  width: double.infinity,
+                  child: Obx(() {
+                    return controller.isLoadPosts.value
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : PageView(
+                            controller: controller.pageController,
+                            onPageChanged: (index) {
+                              controller.onChangePage(index);
+                            },
+                            children: controller.getPages(),
+                          );
+                  }),
+                );
+              })
+        ],
       ),
     );
   }
@@ -66,24 +80,13 @@ class ProfilePage extends GetView<ProfileController> {
 
   Widget _buildBackground() {
     return GestureDetector(
-      onTap: () {
-        controller.selectImageBackground();
-      },
+      onTap: controller.selectImageBackground,
       child: GetBuilder<ProfileController>(
         id: "updateBackground",
         builder: (_) {
-          return Container(
-            height: Get.height * 0.24,
-            width: double.infinity,
-            foregroundDecoration: BoxDecoration(
-              color: AppColors.white,
-              image: DecorationImage(
-                image: controller.imgBackground == null
-                    ? const AssetImage(AppImagesString.iBackgroundUserDefault)
-                    : FileImage(controller.imgBackground!) as ImageProvider,
-                fit: BoxFit.cover,
-              ),
-            ),
+          return Background(
+            authorImg: controller.user?.backgroundUrl ?? '',
+            heightBg: Get.height * 0.24,
           );
         },
       ),
@@ -96,45 +99,27 @@ class ProfilePage extends GetView<ProfileController> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           GestureDetector(
-            onTap: () {
-              controller.selectImageAvatar();
-            },
+            onTap: controller.selectImageAvatar,
             child: GetBuilder<ProfileController>(
               id: "updateAvatar",
               builder: (_) {
                 return PhysicalModel(
-                  color: Colors.transparent,
+                  color: AppColors.transparent,
                   shape: BoxShape.circle,
                   elevation: 10.0,
-                  shadowColor: Colors.black54,
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.white,
-                    radius: 55,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: controller.imgAvatar == null
-                          ? const AssetImage(AppImagesString.iUserDefault)
-                          : FileImage(controller.imgAvatar!) as ImageProvider,
-                    ),
-                  ),
+                  shadowColor: AppColors.black,
+                  child: Avatar(
+                      authorImg: controller.user?.avatarUrl ?? '', radius: 100),
                 );
               },
             ),
           ),
           const SizedBox(height: 10.0),
-          Text(
-            controller.user?.displayName ??
-                controller.user?.email ??
-                "Unknown user",
-            style: const TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+          TextWidget(
+            text: controller.user?.displayName ?? controller.user?.email ?? '',
+            size: 20.0,
+            fontWeight: FontWeight.w500,
           ),
-          const SizedBox(
-            height: 10.0,
-          )
         ],
       ),
     );

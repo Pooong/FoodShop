@@ -1,6 +1,12 @@
 import 'package:find_food/core/configs/enum.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_favorite.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_post_data.dart';
+import 'package:find_food/core/data/firebase/firestore_database/firestore_bookmark.dart';
+import 'package:find_food/core/services/location_service.dart';
 import 'package:find_food/core/ui/dialogs/dialogs.dart';
-import 'package:find_food/features/model/commentsData.dart';
+import 'package:find_food/core/utils/calculator_utils.dart';
+import 'package:find_food/features/model/favorite_model.dart';
+import 'package:find_food/features/model/bookmark_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_comment.dart';
@@ -8,7 +14,7 @@ import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/comment_model.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_user.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,45 +23,199 @@ import 'package:intl/intl.dart'; // Thêm import cho việc phân tích ngày th
 
 class PostsDetailController extends GetxController {
   final GetuserUseCase _getuserUseCase;
+
   PostsDetailController(this._getuserUseCase);
 
   UserModel? userComment;
+
   List<CommentModel> listComments = [];
+
   PostDataModel? postDataModel;
-  final dataAgument = Get.arguments;
+
+  final dataAgument = Get.arguments as Map<String, dynamic>;
+
   final commentController = TextEditingController();
+
   List<PostDataModel> postsDetail = [];
+
   List<dynamic> listImagesPostDetail = [];
+
   String timePosts = "";
+
   UserModel? authorPosts;
-  bool isRestaurant = true;
+
+  bool isRestaurant = false;
+
   int currentIndex = 0;
 
   final PageController mainPageController = PageController();
 
   var isFavorite = false.obs;
+
+  var distance = 0.0;
+
   var isBookmark = false.obs;
+
   var isFavoriteComments = false.obs;
+
+  var isLoading = false.obs;
+
+  var activeState = false;
+
+  get commentFocusNode => null;
+
+  bool isProcessing = false;
+
+  final LocationService locationService = Get.find<LocationService>();
 
   @override
   void onInit() async {
     super.onInit();
+    isLoading.value = true;
+    await _initialize();
+    userComment = await _getuserUseCase.getUser();
+    if (dataAgument != null) {
+      postDataModel = dataAgument["postsData"];
+      listImagesPostDetail = postDataModel?.imageList ?? [];
+      await getComments();
+      timePosts = CaculateTime(postDataModel?.createAt);
+      update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
+    }
+
+    isLoading.value = false;
+  }
+
+  Future<void> deletePosts() async {
+    isLoading.value = true;
+    await FirestorePostData.deletePostAndRelatedData(postDataModel?.id ?? "");
+    isLoading.value = false;
+    Get.back(result: {"deleteSuccess": true});
+  }
+
+  Future<void> _initialize() async {
+    userComment = await _getuserUseCase.getUser();
+    if (dataAgument != null) {
+      postDataModel = dataAgument['postsData'];
+      distance =
+          await distanceCalculate(postsData: postDataModel ?? PostDataModel());
+
+      listImagesPostDetail = postDataModel?.imageList ?? [];
+      isFavorite.value =
+          await FirestoreFavorite.checkFavoriteExistsByUserAndPostId(
+              userId: userComment!.uid, postId: postDataModel!.id ?? "");
+      isBookmark.value =
+          await FirestoreBookmark.checkBookmarkExistsByUserAndPostId(
+              userId: userComment!.uid, postId: postDataModel!.id ?? "");
+      await getAuthorPost();
+      update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
+    }
+    timePosts = CaculateTime(postDataModel?.createAt);
+  }
+
+  Future<void> toggleFavoriteState(
+      {required PostDataModel posts, required bool stateIcon}) async {
+    isProcessing = true;
+    activeState = true;
+    if (stateIcon) {
+      await FirestoreFavorite.createFavorite(FavoriteModel(
+          author: userComment,
+          posts: posts,
+          createdAt: DateTime.now().toString()));
+    } else {
+      await FirestoreFavorite.deleteFavoriteByUserAndPostId(
+          userId: userComment!.uid, postId: posts.id ?? "");
+    }
+    isFavorite.value = !isFavorite.value;
+    isProcessing = false;
+    update([posts.id ?? ""]);
+  }
+
+  Future<void> privatePosts() async {
+    try {
+      isLoading.value = true;
+      await FirestorePostData.updateStatus(
+          postDataModel?.id ?? "", StatusPosts.private);
+      isLoading.value = false;
+      Fluttertoast.showToast(msg: "Posts is Privaiting Status");
+      postDataModel!.status = StatusPosts.private;
+      update(['fetchDataPostsDetailPage']);
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Change status posts fauil");
+    }
+  }
+
+  Future<void> publicPosts() async {
+    try {
+      isLoading.value = true;
+      await FirestorePostData.updateStatus(
+          postDataModel?.id ?? "", StatusPosts.active);
+      isLoading.value = false;
+      Fluttertoast.showToast(msg: "Posts is Privaiting Status");
+      postDataModel!.status = StatusPosts.active;
+      update(['fetchDataPostsDetailPage']);
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Change status posts fauil");
+    }
+  }
+
+  Future<void> toggleBookmarkState({required bool stateIcon}) async {
+    isProcessing = true;
+    if (!stateIcon) {
+      await FirestoreBookmark.createBookmark(BookmarkModel(
+          author: userComment,
+          posts: postDataModel ?? PostDataModel(),
+          createdAt: DateTime.now().toString()));
+    } else {
+      await FirestoreBookmark.deleteBookmarkByUserAndPostId(
+          userId: userComment!.uid, postId: postDataModel?.id ?? "");
+    }
+    isBookmark.value = !isBookmark.value;
+    isProcessing = false;
+  }
+
+  refreshPostsDetail() async {
+    isLoading.value = true;
     userComment = await _getuserUseCase.getUser();
     if (dataAgument is PostDataModel) {
-      postDataModel = dataAgument;
+      postDataModel = dataAgument["postsData"];
       listImagesPostDetail = postDataModel?.imageList ?? [];
       await getComments();
       timePosts = CaculateTime(postDataModel?.createAt);
       await getAuthorPost();
-      update(['fetchDataTopPostDetail']);
+      update(['fetchDataTopPostDetail', 'checkAuthorPosts']);
     }
+
+    isLoading.value = false;
   }
 
   getAuthorPost() async {
-    final result = await FirestoreUser.getUser(dataAgument!.userId!);
+    final result = await FirestoreUser.getUser(postDataModel!.userId!);
     if (result.status == Status.success) {
       authorPosts = result.data;
     }
+  }
+
+  Future<int> getCountFavorite(String postId) async {
+    return await FirestoreFavorite.countFavoritesByPostId(postId);
+  }
+
+  Future<double> distanceCalculate({required PostDataModel postsData}) async {
+    var placeMap = await locationService.getLocation();
+    if (placeMap != null) {
+      double placeLat = placeMap.lat ?? 0.0;
+      double placeLon = placeMap.lon ?? 0.0;
+      double postLat = postsData.latitude ?? 0.0;
+      double postLon = postsData.longitude ?? 0.0;
+      double distance = CalculatorUtils.calculateDistance(
+        placeLat,
+        placeLon,
+        postLat,
+        postLon,
+      );
+      distance = double.parse(distance.toStringAsFixed(2));
+      return double.parse(distance.toStringAsFixed(2));
+    }
+    return 0.0;
   }
 
   // ignore: non_constant_identifier_names
@@ -81,7 +241,6 @@ class PostsDetailController extends GetxController {
     } else {
       return '${duration.inSeconds}s ago';
     }
-    // super.onInit();
   }
 
   var isExpanded = false.obs;
@@ -91,7 +250,7 @@ class PostsDetailController extends GetxController {
   }
 
   getComments() async {
-    final result = await FirestoreComment.getListComments(dataAgument!.id!);
+    final result = await FirestoreComment.getListComments(postDataModel!.id!);
     if (result.status == Status.success) {
       listComments = result.data!;
       listComments.sort((a, b) {
@@ -112,7 +271,7 @@ class PostsDetailController extends GetxController {
       return;
     }
     // kiểm tra độ dài của comment
-    const int maxCommentLength = 50; // Set the maximum comment length
+    const int maxCommentLength = 200; // Set the maximum comment length
     if (commentController.text.length > maxCommentLength) {
       Fluttertoast.showToast(
           msg: "Comment cannot exceed $maxCommentLength characters".tr);
@@ -141,6 +300,7 @@ class PostsDetailController extends GetxController {
 
   // phương thức xóa bình luận
   void deleteComment(String idComment) async {
+    print(idComment);
     final result = await FirestoreComment.deleteComment(idComment);
     if (result.status == Status.success) {
       listComments.removeWhere((element) => element.idComment == idComment);
@@ -176,29 +336,12 @@ class PostsDetailController extends GetxController {
     update(["fetchComment"]);
   }
 
-  // void toggleActive(CommentModel comment) {
-  //   if (comment.isFavoriteComments!) {
-  //     comment.favorite = comment.favorite! + 1;
-  //   } else {
-  //     comment.favorite = comment.favorite! - 1;
-  //   }
-  //   update();
-  // }
-
-  void toggleFavoriteStatus() {
-    isFavorite.value = !isFavorite.value;
-  }
-
-  void toggleBookmarkStatus() {
-    isBookmark.value = !isBookmark.value;
-  }
-
-  void showDialogDeleteComment() {
+  void showDialogDeleteComment(String id) {
     DialogsUtils.showAlertDialog(
       title: "Delete comment",
       message: "Are you sure you want to delete this comment?",
       typeDialog: TypeDialog.warning,
-      onPresss: () => (deleteComment(listComments[0].idComment!)),
+      onPresss: () => (deleteComment(id)),
     );
   }
 
@@ -248,12 +391,6 @@ class PostsDetailController extends GetxController {
     return null;
   }
 
-  void updateComment(int index) {
-    CommentData.commentDataList[index - 1]['isActive'] =
-        !CommentData.commentDataList[index - 1]['isActive'];
-    update(["fetchComment"]);
-  }
-
   bool hiddenStar(double star) => star == 0.0;
 
   List<String> listPathUrl = [];
@@ -272,15 +409,7 @@ class PostsDetailController extends GetxController {
     selectedImages.remove(image);
   }
 
-  // phương thức xóa bình luận
-  // void deleteComment(String idComment) async {
-  //   final result = await FirestoreComment.deleteComment(idComment);
-  //   if (result.status == Status.success) {
-  //     listComments.removeWhere((element) => element.idComment == idComment);
-  //     update(["fetchComment"]);
-  //     Fluttertoast.showToast(msg: "Delete comments success".tr);
-  //   } else {
-  //     Fluttertoast.showToast(msg: "Delete comments error".tr);
-  //   }
-  // }
+  void hideKeyboard() {
+    FocusScope.of(Get.context!).requestFocus(FocusNode());
+  }
 }

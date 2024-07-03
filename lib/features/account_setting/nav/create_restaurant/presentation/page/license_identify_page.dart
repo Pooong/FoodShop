@@ -1,7 +1,6 @@
 import 'package:find_food/core/ui/widgets/appbar/license_identify_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/controller/create_restaurant_controller.dart';
-import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/images_identify_page.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/widgets/upload_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,7 +34,7 @@ class LicenseIdentifyPage extends GetView<CreateRestaurantController> {
                     ),
                     titleField(title: "LICENSE RESTAURANT"),
                     UploadImage(
-                      images: controller.licenseImages,
+                      images: controller.licenseRestaurant,
                     ),
                     const SizedBox(
                       height: 20.0,

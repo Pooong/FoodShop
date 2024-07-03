@@ -18,6 +18,7 @@ class FirestoreUser {
     }
   }
 
+
   static Future<Result<UserModel>> getUser(String uid) async {
     try {
       DocumentSnapshot documentSnapshot =
@@ -29,11 +30,11 @@ class FirestoreUser {
       } else {
         return Result.error(FirebaseAuthException(
             code: 'user-not-found',
-            message: 'No user found with the provided UID.'));
+            message: 'No user found with the provided uid.'));
       }
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
-    }
+    } 
   }
 
   static Future<Result<bool>> updateUser(UserModel updatedUserInfo) async {

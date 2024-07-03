@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/maps/location/models/place_map.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 
 enum MapAction {
   zoomIn,
-  zoomOut,  
+  zoomOut,
   resetZoom,
 }
 
@@ -30,14 +30,15 @@ class LocationController extends GetxController
   var currentZoom = 16.0.obs;
   var isLoading = false.obs; // Add this variable to track loading state
 
-  Timer? debounce;  
+  Timer? debounce;
 
   var listLocationName = <dynamic>[];
 
-  late PlaceMap resutlPlaceSearch=PlaceMap();
-
+  late PlaceMap resutlPlaceSearch = PlaceMap();
 
   late AnimationController animationController;
+
+  var dataAgument = Get.arguments;
 
   @override
   void onInit() {
@@ -46,6 +47,16 @@ class LocationController extends GetxController
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
+
+    if (dataAgument is Map<String, dynamic>) {
+      var placeMap = dataAgument['placeMap'] as Map<String, dynamic>;
+      LatLng latlng =
+          LatLng(double.parse(placeMap['lat']), double.parse(placeMap['lon']));
+      initialCenter = latlng;
+      if (placeMap['display_name'] != AppConstants.disPlayLoacionCurrent) {
+        resutlPlaceSearch.displayName = placeMap['display_name'];
+      }
+    }
   }
 
   void setLoading(bool value) {
@@ -89,8 +100,6 @@ class LocationController extends GetxController
         longitude <= 109.464202;
   }
 
-
-
   //================= MOVE MARKER TO NEW LOCATION AND UPDATE MAP ====================================
   void updateMapLocation(LatLng newCenter, {dynamic dataLocaiton}) {
     if (dataLocaiton != null) {
@@ -103,7 +112,7 @@ class LocationController extends GetxController
           resutlPlaceSearch = place;
           update();
           resetSearch();
-        } else {  
+        } else {
           SnackbarUtil.show("Errors outside the scope of search");
         }
       } catch (e) {
@@ -113,12 +122,12 @@ class LocationController extends GetxController
       mapController.move(newCenter, mapController.camera.zoom);
       initialCenter = newCenter;
       resutlPlaceSearch = PlaceMap();
-      resutlPlaceSearch.displayName='Your current location';
-      resutlPlaceSearch.lat=initialCenter.latitude;
-      resutlPlaceSearch.lon=initialCenter.longitude;
+      resutlPlaceSearch.displayName = AppConstants.disPlayLoacionCurrent;
+      resutlPlaceSearch.lat = initialCenter.latitude;
+      resutlPlaceSearch.lon = initialCenter.longitude;
       update();
       resetSearch();
-    } 
+    }
   }
 
   //======================  REST SEARCH ======================================
@@ -160,7 +169,7 @@ class LocationController extends GetxController
         desiredAccuracy: LocationAccuracy.high);
     LatLng currentLocation = LatLng(position.latitude, position.longitude);
     setLoading(false);
-    resutlPlaceSearch.displayName="your current Locaiton";
+    resutlPlaceSearch.displayName = "your current Locaiton";
     updateMapLocation(currentLocation);
   }
 
@@ -199,8 +208,8 @@ class LocationController extends GetxController
         PlaceMap place = PlaceMap.fromJson(results[0]);
         if (isWithinBounds(place.lat ?? 0.0, place.lon ?? 0.0)) {
           listLocationName = results;
-        }else{
-          listLocationName=[];
+        } else {
+          listLocationName = [];
         }
       } else {
         listLocationName = [];

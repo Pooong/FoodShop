@@ -13,13 +13,3 @@ class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
-class CustomShadow {
-  static List<BoxShadow> get cardShadow => [
-        BoxShadow(
-          color: AppColors.gray.withOpacity(.2),
-          blurRadius: 2,
-          spreadRadius: .7,
-          offset: const Offset(0, 1),
-        ),
-      ];
-}

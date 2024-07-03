@@ -1,7 +1,5 @@
-
 import 'dart:ui';
 
-import 'package:find_food/features/model/post_model.dart';
 import 'package:find_food/features/nav/notify/presentation/controller/notify_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +9,6 @@ class NotifyCard extends GetView<NotifyController> {
   final String title;
   final String subtitle;
   final String createAt;
-  final PostModel postModel;
 
   NotifyCard({
     super.key,
@@ -19,7 +16,6 @@ class NotifyCard extends GetView<NotifyController> {
     required this.title,
     required this.subtitle,
     required this.createAt,
-    required this.postModel,
   });
 
   @override
@@ -73,14 +69,14 @@ class NotifyCard extends GetView<NotifyController> {
                         title,
                         style: Theme.of(context).textTheme.bodyLarge,
                         maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        // overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4.0),
                       Text(
                         subtitle,
                         style: Theme.of(context).textTheme.bodySmall,
                         maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                        // overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 8.0),
                       Align(
@@ -102,6 +98,5 @@ class NotifyCard extends GetView<NotifyController> {
         ),
       ),
     );
-
   }
 }

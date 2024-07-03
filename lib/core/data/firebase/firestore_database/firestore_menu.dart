@@ -8,41 +8,54 @@ class FirestoreMenu {
   static final _fireStoreUserCollection =
       FirebaseFirestore.instance.collection('menu');
 
-  static Future<Result<bool>> createMenu(MenuModel newMenu) async {
+  static Future<Result<MenuModel>> createMenu(
+      {required MenuModel newMenu, required String userId}) async {
     try {
       String menuId = FirebaseFirestore.instance.collection('menu').doc().id;
-      newMenu!.id = menuId;
-      await _fireStoreUserCollection.doc(newMenu.id).set(newMenu.toJson());
-      return Result.success(true);
+      newMenu.idMenu = menuId;
+      newMenu.userId = userId;
+
+      await _fireStoreUserCollection.doc(newMenu.idMenu).set(newMenu.toJson());
+      return Result.success(newMenu);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
     }
   }
 
-  static Future<Result<bool>> updateMenu(MenuModel menu) async {
+  static Future<Result<MenuModel>> updateMenu(
+      {required MenuModel newMenu, required String userId}) async {
     try {
-      await _fireStoreUserCollection.doc(menu.id).update(menu.toJson());
-      return Result.success(true);
+      newMenu.userId = userId;
+      await _fireStoreUserCollection
+          .doc(newMenu.idMenu)
+          .update(newMenu.toJson());
+      return Result.success(newMenu);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
     }
   }
 
-  static Future<Result<bool>> deleteMenu(String menuId) async {
+  static Future<Result<MenuModel>> deleteMenu(
+      {required MenuModel newMenu, required String userId}) async {
     try {
-      await _fireStoreUserCollection.doc(menuId).delete();
-      return Result.success(true);
+      newMenu.userId = userId;
+      await _fireStoreUserCollection.doc(newMenu.idMenu).delete();
+      return Result.success(newMenu);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
     }
   }
 
-  static Future<Result<List<MenuModel>>> getMenuList() async {
+  static Future<Result<List<MenuModel>>> getMenu(
+      {required String restaurantID}) async {
     try {
-      final snapshot = await _fireStoreUserCollection.get();
-      final menuList =
-          snapshot.docs.map((doc) => MenuModel.fromJson(doc.data())).toList();
-      return Result.success(menuList);
+      final result = await _fireStoreUserCollection
+          .where('idRestaurant', isEqualTo: restaurantID)
+          .get();
+      final List<MenuModel> listMenu = result.docs
+          .map((e) => MenuModel.fromJson(e.data() as Map<String, dynamic>))
+          .toList();
+      return Result.success(listMenu);
     } on FirebaseAuthException catch (e) {
       return Result.error(e);
     }

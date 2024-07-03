@@ -2,8 +2,10 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
+import 'package:find_food/core/extensions/helper.dart';
 import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/services/images_service.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,37 +15,36 @@ class ExploreFoodCard extends StatelessWidget {
   final double rating;
   final int customerRating;
   final double distance;
+  final PostDataModel postDataModel;
 
-  const ExploreFoodCard({
-    super.key,
-    required this.title,
-    required this.imageUrl,
-    required this.rating,
-    required this.customerRating,
-    required this.distance
-  });
+  const ExploreFoodCard(
+      {super.key,
+      required this.title,
+      required this.imageUrl,
+      required this.rating,
+      required this.customerRating,
+      required this.distance,
+      required this.postDataModel});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        Get.toNamed(Routes.postsDetail);
+      onTap: () async {
+        final result = await Get.toNamed(Routes.postsDetail, arguments: {
+          'postsData': postDataModel,
+          'distace': distance,
+          "isFavorite": false
+        });
       },
       child: Container(
-        constraints: const BoxConstraints(minHeight: 200,minWidth:100 ),
-        margin: const EdgeInsets.symmetric(horizontal: 5,vertical: 10),
-        width: Get.width*.35,
-        height:  Get.height*.2,
+        constraints: const BoxConstraints(minHeight: 200, minWidth: 100),
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        width: Get.width * .35,
+        height: Get.height * .2,
         clipBehavior: Clip.antiAlias,
-        decoration:
-            BoxDecoration(borderRadius: BorderRadius.circular(10), boxShadow: [
-          BoxShadow(
-            color: AppColors.black.withOpacity(0.4),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: const Offset(2, 0),
-          ),
-        ]),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: CustomShadow.cardShadow),
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -53,7 +54,6 @@ class ExploreFoodCard extends StatelessWidget {
                   try {
                     return await ImagesService.doesImageLinkExist(imageUrl);
                   } catch (e) {
-                    print('Error occurred while checking image link: $e');
                     return false;
                   }
                 }(),
@@ -61,8 +61,7 @@ class ExploreFoodCard extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
                       decoration: const BoxDecoration(color: AppColors.white),
-                      child: const Center(
-                        child: CircularProgressIndicator()),
+                      child: const Center(child: CircularProgressIndicator()),
                     );
                   } else {
                     // Trạng thái đã có kết quả
@@ -90,8 +89,8 @@ class ExploreFoodCard extends StatelessWidget {
                 child: Container(
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                      begin:
-                          Alignment.bottomCenter, // Bắt đầu từ góc dưới bên trái
+                      begin: Alignment
+                          .bottomCenter, // Bắt đầu từ góc dưới bên trái
                       end: Alignment.topCenter, // Kết thúc ở góc trên bên phải
                       colors: [
                         Color.fromARGB(255, 0, 0, 0),
@@ -107,7 +106,7 @@ class ExploreFoodCard extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          overflow: TextOverflow.ellipsis,
+                          // overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                               color: AppColors.white,
                               fontWeight: FontWeight.w500),
@@ -116,37 +115,42 @@ class ExploreFoodCard extends StatelessWidget {
                           height: 5,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: postDataModel.restaurantId != ""
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "$rating",
-                                  style: const TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: AppDimens.textSize15),
-                                ),
-                                const SizedBox(
-                                  width: 2,
-                                ),
-                                const Icon(
-                                  Icons.star_rounded,
-                                  color: AppColors.yellow,
-                                  size: AppDimens.textSize20,
-                                ),
-                                const SizedBox(
-                                  width: 2,
-                                ),
-                                Text(
-                                  "($customerRating)",
-                                  style: const TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: AppDimens.textSize10),
-                                ),
-                              ],
-                            ),
+                            postDataModel.restaurantId != ""
+                                ? Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "$rating",
+                                        style: const TextStyle(
+                                            color: AppColors.white,
+                                            fontSize: AppDimens.textSize15),
+                                      ),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      const Icon(
+                                        Icons.star_rounded,
+                                        color: AppColors.yellow,
+                                        size: AppDimens.textSize20,
+                                      ),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      Text(
+                                        "($customerRating)",
+                                        style: const TextStyle(
+                                            color: AppColors.white,
+                                            fontSize: AppDimens.textSize10),
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox(),
                             Text(
                               "$distance km",
                               style: const TextStyle(

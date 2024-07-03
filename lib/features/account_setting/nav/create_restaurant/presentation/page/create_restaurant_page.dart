@@ -1,7 +1,7 @@
 import 'package:find_food/core/ui/widgets/appbar/create_restaurant_appbar.dart';
 import 'package:find_food/core/ui/widgets/button/button_widget.dart';
+import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/controller/create_restaurant_controller.dart';
-import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/license_identify_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +12,9 @@ class CreateRestaurantPage extends GetView<CreateRestaurantController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CreateRestaurantAppbar(),
-      body: buildCreateRestaurantBody(),
+      body: Obx(() => controller.isLoading.value
+          ? const LoadingDataPage()
+          : buildCreateRestaurantBody()),
     );
   }
 
@@ -26,12 +28,14 @@ class CreateRestaurantPage extends GetView<CreateRestaurantController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              textFormFieldList(),
+              GetBuilder<CreateRestaurantController>(
+                id: "updateInfo",
+                builder: (_) {
+                return textFormFieldList();
+              }),
               ButtonWidget(
                 ontap: () {
                   controller.controlCreateRestaurant();
-
-                  // Get.to(() => LicenseIdentifyPage());
                 },
                 text: "CONTINUE",
                 fontWeight: FontWeight.bold,
@@ -46,7 +50,7 @@ class CreateRestaurantPage extends GetView<CreateRestaurantController> {
   Column textFormFieldList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         _buildTitleText(titleText: "RESTAURANT NAME"),
         _buildRestaurantNameField(),
         const SizedBox(height: 10.0),
@@ -93,6 +97,9 @@ class CreateRestaurantPage extends GetView<CreateRestaurantController> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return "Please enter your restaurant name";
+        }
+        if (value.length < 3) {
+          return "Restaurant name must be at least 3 characters long";
         }
         return null;
       },

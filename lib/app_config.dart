@@ -5,3 +5,5 @@ Future appConfig() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 }
+
+

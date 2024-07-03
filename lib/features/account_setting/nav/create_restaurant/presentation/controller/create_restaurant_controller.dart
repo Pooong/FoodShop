@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_restaurant.dart';
-import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/snackbar/snackbar.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/finish_create_restaurant.dart';
 import 'package:find_food/features/account_setting/nav/create_restaurant/presentation/page/images_identify_page.dart';
@@ -21,6 +20,10 @@ class CreateRestaurantController extends GetxController {
     return null;
   }
 
+  
+
+  var isLoading=false.obs;
+
   List<Widget> getPages() {
     return [
       const LicenseIdentifyPage(),
@@ -36,12 +39,11 @@ class CreateRestaurantController extends GetxController {
   final descriptionController = TextEditingController();
   UserModel? user;
 
-  var licenseImages = <File>[].obs;
+  var licenseRestaurant = <File>[].obs;
   var ownerLicenseImages = <File>[].obs;
 
   File? restaurantBackgroundImages;
   File? restaurantLogoImages;
-  List selectedImages = [];
 
   final nameRestaurant = TextEditingController();
   final emailRestaurant = TextEditingController();
@@ -49,7 +51,8 @@ class CreateRestaurantController extends GetxController {
   final addressRestaurant = TextEditingController();
 
   List<String> listPathUrl = [];
-
+  List<String> listPathLisenceRestaurant = [];
+  List<String> listPathOwnerLicenseImages = [];
   @override
   void onInit() async {
     user = await _getuserUseCase.getUser();
@@ -57,34 +60,41 @@ class CreateRestaurantController extends GetxController {
   }
 
   Future<void> saveRestaurant() async {
-    var allImages = [
-      ...licenseImages,
-      ...ownerLicenseImages,
-      restaurantBackgroundImages,
-      restaurantLogoImages,
-    ];
-
-    if (listPathUrl.isEmpty) {
-      for (var file in allImages) {
-        String? pathUrl = await uploadFile(imageFile: file!);
+    if (listPathLisenceRestaurant.isEmpty) {
+      for (var file in licenseRestaurant) {
+        String? pathUrl = await uploadFile(imageFile: file);
         if (pathUrl != null) {
-          listPathUrl.add(pathUrl);
+          listPathLisenceRestaurant.add(pathUrl);
         }
       }
     }
+    if (listPathOwnerLicenseImages.isEmpty) {
+      for (var file in ownerLicenseImages) {
+        String? pathUrl = await uploadFile(imageFile: file);
+        if (pathUrl != null) {
+          listPathOwnerLicenseImages.add(pathUrl);
+        }
+      }
+    }
+    String? pathBackgroundImages =
+        await uploadFile(imageFile: restaurantBackgroundImages!);
+    String? pathLogoImages = await uploadFile(imageFile: restaurantLogoImages!);
 
     final restaurant = RestaurantModel(
       nameRestaurant: nameRestaurant.text,
       emailRestaurant: emailRestaurant.text,
       phoneRestaurant: phoneRestaurant.text,
       addressRestaurant: addressRestaurant.text,
-      listPathUrl: listPathUrl,
+      backgroundUrl: pathBackgroundImages,
+      avatarUrl: pathLogoImages,
+      licenseRestaurant: listPathLisenceRestaurant,
+      onwnerLicenseImages: listPathOwnerLicenseImages,
+      status: StatusPosts.waiting
     );
 
-    final result = await FirestoreRestaurant.createRestaurant(
-        newRestaurant: restaurant, userId: user!.uid);
+    final result = await FirestoreRestaurant.createRestaurant(newRestaurant: restaurant, userId: user!.uid);
     if (result.status == Status.success) {
-      SnackbarUtil.show("Menu created successfully");
+      Fluttertoast.showToast(msg: "Create Restaurant Success ");
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }
@@ -109,8 +119,9 @@ class CreateRestaurantController extends GetxController {
         .addAll(pickedImages.map((image) => File(image.path)).toList());
   }
 
+  // ignore: non_constant_identifier_names
   bool check_list_empty(List selectedImages) {
-    return selectedImages.length == 0;
+    return selectedImages.isEmpty;
   }
 
   void removeImage(List imageVerify, File image) {
@@ -136,7 +147,7 @@ class CreateRestaurantController extends GetxController {
 
   void removeSingleImage(File? file) {
     file = null;
-    update(["clearData"]);  
+    update(["clearData"]);
   }
 
   void controlCreateRestaurant() {
@@ -150,10 +161,11 @@ class CreateRestaurantController extends GetxController {
   }
 
   void controlLicenseIdentify() {
-    if (licenseImages.isEmpty || ownerLicenseImages.isEmpty) {
+    if (licenseRestaurant.isEmpty || ownerLicenseImages.isEmpty) {
       Fluttertoast.showToast(msg: "Please select an image for the posts");
       return;
     }
+    
     if (addressRestaurant.text.isEmpty) {
       Fluttertoast.showToast(msg: "Please fill the address of the restaurant");
       return;
@@ -161,13 +173,14 @@ class CreateRestaurantController extends GetxController {
     Get.to(() => const ImagesIdentifyPage());
   }
 
-  void createRestaurant() {
+  Future<void> createRestaurant()async {
     if (restaurantBackgroundImages == null || restaurantLogoImages == null) {
       Fluttertoast.showToast(msg: "Please select an image for the posts");
       return;
     } else {
-      Fluttertoast.showToast(msg: "Create Restaurant Success ");
-      saveRestaurant();
+      isLoading.value=true;
+      await saveRestaurant();
+      isLoading.value=false;
       Get.to(() => const FinishCreateRestaurantPage());
     }
   }
@@ -180,7 +193,7 @@ class CreateRestaurantController extends GetxController {
       emailRestaurant.text = restaurant.emailRestaurant!;
       phoneRestaurant.text = restaurant.phoneRestaurant!;
       addressRestaurant.text = restaurant.addressRestaurant!;
-      listPathUrl = restaurant.listPathUrl!;
+      listPathUrl = restaurant.licenseRestaurant!;
     } else {
       SnackbarUtil.show(result.exp!.message ?? "something_went_wrong");
     }

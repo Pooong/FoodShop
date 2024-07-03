@@ -8,7 +8,7 @@ import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.d
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/main/presentation/controller/main_controller.dart';
 import 'package:find_food/features/maps/location/models/place_map.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -23,7 +23,9 @@ class UploadController extends GetxController {
   UploadController(this._getuserUseCase);
 
   var selectedImages = <File>[].obs;
+
   final titleController = TextEditingController();
+
   final descriptionController = TextEditingController();
 
   PlaceMap placeSelected = PlaceMap();
@@ -62,17 +64,17 @@ class UploadController extends GetxController {
     }
 
     final post = PostDataModel(
-      title: titleController.text,
-      subtitle: descriptionController.text.trim(),
-      favoriteCount: 10,
-      imageList: listPathUrl,
-      restaurantId: 'restaurant1',
-      createAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now()),
-      isBookmarked: true,
-      isFavorited: true,
-      latitude: placeSelected.lat ?? 0.0,
-      longitude: placeSelected.lon ?? 0.0,
-    );
+        title: titleController.text,
+        subtitle: descriptionController.text.trim(),
+        imageList: listPathUrl,
+        restaurantId: '',
+        createAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now()),
+        latitude: placeSelected.lat ?? 0.0,
+        longitude: placeSelected.lon ?? 0.0,
+        placeMap: placeSelected.toJson(),
+        status: StatusPosts.waiting
+        );
+
     final result = await FirestorePostData.savedPost(
         postDataModel: post, userId: user!.uid);
     if (result.status == Status.success) {

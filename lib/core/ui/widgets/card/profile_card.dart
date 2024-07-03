@@ -1,8 +1,7 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
-import 'package:find_food/core/routes/routes.dart';
-import 'package:find_food/core/ui/widgets/text/text_widget.dart';
-import 'package:find_food/features/nav/post/upload/models/post_data_model.dart';
+import 'package:find_food/core/extensions/helper.dart';
+import 'package:find_food/features/model/post_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,58 +11,47 @@ class ProfileCard extends StatelessWidget {
   final bool isBookmarked;
   final bool isFavorited;
   final PostDataModel postDataModel;
+  final GetxController controller;
 
-  ProfileCard(
+  const ProfileCard(
       {super.key,
       this.favoriteCount = 0,
       this.imageUrl = AppImagesString.iPostsDefault,
       this.isBookmarked = false,
       this.isFavorited = false,
-      required this.postDataModel});
+      required this.postDataModel,
+      required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.toNamed(Routes.postsDetail),
       child: Container(
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.black.withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 3,
-              offset: const Offset(1, 3),
-            )
-          ],
-        ),
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: CustomShadow.cardShadow),
         child: Stack(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(10),
-                onTap: () => Get.toNamed(Routes.postsDetail),
-                child: Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  child: postDataModel.imageList != null &&
-                          postDataModel.imageList!.isNotEmpty
-                      ? Image.network(
-                          postDataModel.imageList!.first,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.asset(
-                          imageUrl,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                ),
+              child: SizedBox(
+                height: double.infinity,
+                width: double.infinity,
+                child: postDataModel.imageList != null &&
+                        postDataModel.imageList!.isNotEmpty
+                    ? Image.network(
+                        postDataModel.imageList!.first,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        imageUrl,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
             Positioned(
@@ -88,55 +76,19 @@ class ProfileCard extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: 10,
-              right: 10,
-              child: iconCardProfile(),
+              bottom: 20,
+              left: 15,
+              child: Text(
+                postDataModel.title ?? "",
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    color: AppColors.white, fontWeight: FontWeight.w500),
+              ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget iconCardProfile() {
-    return Row(
-      children: [
-        Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(3),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.colorPink,
-              ),
-              child: const Icon(
-                Icons.favorite,
-                color: AppColors.white,
-                size: 20,
-              ),
-            ),
-            TextWidget(text: favoriteCount.toString(), color: AppColors.white),
-          ],
-        ),
-        const SizedBox(width: 10),
-        Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(3),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.transparent,
-              ),
-              child: const Icon(
-                Icons.message,
-                color: AppColors.white,
-                size: 25,
-              ),
-            ),
-            const TextWidget(text: "12", color: AppColors.white),
-          ],
-        ),
-      ],
     );
   }
 }

@@ -1,9 +1,8 @@
 import 'package:find_food/core/configs/app_colors.dart';
+import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/features/control_restaurants/restaurant/pressentation/widgets/icon_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class RestaurantAppbar extends StatelessWidget implements PreferredSizeWidget {
   const RestaurantAppbar({super.key});
@@ -33,11 +32,14 @@ class RestaurantAppbar extends StatelessWidget implements PreferredSizeWidget {
         ),
         centerTitle: true,
         actions: [
-          iconButton(
-              icon: Icons.settings,
-              onPressed: () {
-                Get.toNamed('restaurantsetting');
-              })
+          Container(
+            margin: const EdgeInsets.only(right: AppDimens.spacing3),
+            child: InkWell(
+                child: const Icon(Icons.settings),
+                onTap: () {
+                  Get.toNamed('restaurantsetting');
+                }),
+          )
         ],
       ),
     );
@@ -45,6 +47,5 @@ class RestaurantAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => AppBar().preferredSize;
 }

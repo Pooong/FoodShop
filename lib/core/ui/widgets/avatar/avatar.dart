@@ -5,10 +5,10 @@ import 'package:find_food/core/services/images_service.dart';
 
 class Avatar extends StatelessWidget {
   final double radius;
-  final String authorImg;
+  final String ? authorImg;
   const Avatar({
     super.key,
-    required this.authorImg ,
+     this.authorImg ,
     required this.radius,
   });
 
@@ -30,13 +30,13 @@ class Avatar extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10000),
         child: FutureBuilder<bool>(
-          future: ImagesService.doesImageLinkExist(authorImg),
+          future: ImagesService.doesImageLinkExist(authorImg??""),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return SizedBox(
                 width: radius,
                 height: radius,
-                child: const Center(child: CircularProgressIndicator()),
+                child: const Center(child: CircularProgressIndicator(strokeWidth: 2,)),
               );
             } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == false) {
               return Image.asset(
@@ -47,7 +47,7 @@ class Avatar extends StatelessWidget {
               );
             } else {
               return Image.network(
-                authorImg,
+                authorImg??"",
                 width: radius,
                 height: radius,
                 fit: BoxFit.cover,

@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/model/result.dart';
 
-import 'package:find_food/features/model/post_model.dart';
-import 'package:find_food/features/model/menu_food_restaurant_model.dart';
 import 'package:find_food/features/model/restaurant_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -64,10 +63,10 @@ class FirestoreRestaurant {
     try {
       final snapshot = await _fireStoreUserCollection
           .where('userId', isEqualTo: userId)
+          .where('status', isEqualTo: StatusPosts.active.name)
           .get();
       if (snapshot.docs.isEmpty) {
-        return Result.error(FirebaseAuthException(code: 'not found'),
-            data: null);
+        return Result.error(FirebaseAuthException(code: 'not found'),data: null);
       }
       final restaurant = RestaurantModel.fromJson(snapshot.docs.first.data());
       return Result.success(restaurant);
@@ -75,4 +74,30 @@ class FirestoreRestaurant {
       return Result.error(e);
     }
   }
+  static Future<Result<RestaurantModel>> getRestaurantWaiting(String userId) async {
+    try {
+      final snapshot = await _fireStoreUserCollection
+          .where('userId', isEqualTo: userId)
+          .get();
+      if (snapshot.docs.isEmpty) {
+        return Result.error(FirebaseAuthException(code: 'not found'),data: null);
+      }
+      final restaurant = RestaurantModel.fromJson(snapshot.docs.first.data());
+      return Result.success(restaurant);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
+   static Future<Result<bool>> updateRestaurantStatus(
+      {required String restaurantId, required StatusPosts newStatus}) async {
+    try {
+      await _fireStoreUserCollection
+          .doc(restaurantId)
+          .update({'status': newStatus.name});
+      return Result.success(true);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(e);
+    }
+  }
+
 }
