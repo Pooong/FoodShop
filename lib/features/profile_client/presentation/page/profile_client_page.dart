@@ -1,6 +1,7 @@
 import 'package:find_food/core/configs/app_colors.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/configs/app_text_string.dart';
+import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
 import 'package:find_food/core/ui/widgets/card/profile_card.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
@@ -83,7 +84,7 @@ class ProfileClientPage extends GetView<ProfileClientController> {
           height: 80,
         ),
         Container(
-          width: Get.width*.95,
+          width: Get.width * .95,
           height: 1,
           color: AppColors.black.withOpacity(.2),
         ),
@@ -97,7 +98,6 @@ class ProfileClientPage extends GetView<ProfileClientController> {
       ],
     );
   }
-
   // ignore: non_constant_identifier_names
   Widget _BuildListPosts() {
     return controller.listPosts != null && controller.listPosts!.isNotEmpty
@@ -111,8 +111,12 @@ class ProfileClientPage extends GetView<ProfileClientController> {
             ),
             itemBuilder: (_, index) {
               PostDataModel postDataModel = controller.listPosts![index];
-              return ProfileCard(
-                postDataModel: postDataModel, controller: controller,
+              return InkWell(
+                onTap: () => Get.toNamed(Routes.postsDetail),
+                child: ProfileCard(
+                  postDataModel: postDataModel,
+                  controller: controller,
+                ),
               );
             })
         : const Center(
