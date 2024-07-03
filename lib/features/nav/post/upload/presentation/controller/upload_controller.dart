@@ -67,7 +67,7 @@ class UploadController extends GetxController {
         title: titleController.text,
         subtitle: descriptionController.text.trim(),
         imageList: listPathUrl,
-        restaurantId: 'restaurant1',
+        restaurantId: '',
         createAt: DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now()),
         latitude: placeSelected.lat ?? 0.0,
         longitude: placeSelected.lon ?? 0.0,

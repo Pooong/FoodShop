@@ -15,23 +15,31 @@ class PostsDetailPage extends GetView<PostsDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PostDetailAppBar(context),
-        body: RefreshIndicator(onRefresh: () async {
+      appBar: PostDetailAppBar(context),
+      body: RefreshIndicator(
+        onRefresh: () async {
           await controller.refreshPostsDetail();
         }, // Thêm sự kiện làm mới
-            child: Obx(() {
-          return controller.isLoading.value
-              ? const LoadingDataPage()
-              : const SingleChildScrollView(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Wrap(
-                      runSpacing: AppDimens.columnSpacing,
-                      children: [TopPostsDetail(), CommentBoxWidget()],
+        child: Obx(
+          () {
+            return controller.isLoading.value
+                ? const LoadingDataPage()
+                : SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: GetBuilder<PostsDetailController>(
+                      id: "fetchDataPostsDetailPage",
+                      builder: (_) {
+                        return const Wrap(
+                          runSpacing: AppDimens.columnSpacing,
+                          children: [TopPostsDetail(), CommentBoxWidget()],
+                        );
+                      },
                     ),
-                  ),
-                );
-        })));
+                  );
+          },
+        ),
+      ),
+    );
   }
 
   // ignore: non_constant_identifier_names
@@ -42,7 +50,9 @@ class PostsDetailPage extends GetView<PostsDetailController> {
             // controller.activeState?
             Get.back(result: {
               "postsId": controller.postDataModel!.id,
-              "isFavorite": controller.isFavorite.value
+              "isFavorite": controller.isFavorite.value,
+              "isBookmark": controller.isBookmark.value,
+              "status": controller.postDataModel!.status
             });
           },
           child: const Icon(Icons.arrow_back_ios)),
@@ -105,7 +115,11 @@ class PostsDetailPage extends GetView<PostsDetailController> {
                   const SizedBox(
                     width: 5,
                   ),
-                  TextWidget(text:controller.postDataModel?.status == StatusPosts.active? "Private" : "Public")
+                  TextWidget(
+                      text:
+                          controller.postDataModel?.status == StatusPosts.active
+                              ? "Private"
+                              : "Public")
                 ],
               ),
             ),
@@ -131,9 +145,9 @@ class PostsDetailPage extends GetView<PostsDetailController> {
             } else if (value == "_deleteValue") {
               _showDeleteConfirmationDialog(context);
             } else if (value == "_changeStatus") {
-               controller.postDataModel?.status == StatusPosts.active?
-              await controller.privatePosts():
-              await controller.publicPosts();
+              controller.postDataModel?.status == StatusPosts.active
+                  ? await controller.privatePosts()
+                  : await controller.publicPosts();
             }
           }
         });

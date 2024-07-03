@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/firebase_storage/firebase_storage.dart';
 import 'package:find_food/core/data/firebase/firestore_database/firestore_bookmark.dart';
@@ -16,13 +15,13 @@ import 'package:find_food/features/nav/profile/presentation/page/profile_bookmar
 import 'package:find_food/features/nav/profile/presentation/page/profile_favorite_page.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_list_page.dart';
 import 'package:find_food/features/nav/profile/presentation/page/profile_locked_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileController extends GetxController {
   final GetuserUseCase _getuserUseCase;
+
   ProfileController(this._getuserUseCase);
 
   List<PostDataModel> listPostsOfUser = [];
@@ -30,63 +29,63 @@ class ProfileController extends GetxController {
   List<PostDataModel> listBookmarkedPosts = [];
   List<PostDataModel> listFavoritePosts = [];
   UserModel? user;
-  
+
   var isLoading = false.obs;
-
+  var isLoadPosts = false.obs;
   RxInt currentIndex = 0.obs;
-
   PageController pageController = PageController(initialPage: 0);
-
   final picker = ImagePicker();
-
   File? imgAvatar;
-
   File? imgBackground;
+  var restaurant = Rx<RestaurantModel>(RestaurantModel());
 
-  var restaurant = Rx<RestaurantModel>(RestaurantModel()) ?? null.obs;
+  Map<String, bool> checkLoadList = {
+    "listPosts": false,
+    "listPostsFavorite": false,
+    "listPostsBookmark": false,
+    "listPostsLocker": false
+  };
 
   @override
   void onInit() async {
     super.onInit();
-
-    await _init();
+    await init();
   }
 
-  Future<void> _init() async {
+  Future<void> init() async {
     isLoading.value = true;
     user = await _getuserUseCase.getUser();
     if (user != null) {
       await getUser();
       await getPostsOfUser();
-      await getPostsOfUserPrivate();
-      await getFavoritePosts();
-      await getBookmarkedPosts();
-      await getRestaurant();
-      await loadData();
+      await  getRestaurant();
     }
     isLoading.value = false;
+    update(['fetchDataProfilePage']);
   }
 
-  Future<void> getRestaurant() async {
-    final result = await FirestoreRestaurant.getRestaurant(user!.uid);
-    if (result.status == Status.success) {
-      restaurant.value = result.data;
-      print(restaurant.value);
+  Future<void> refreshProfilePage() async {
+    isLoading.value = true;
+    isLoadPosts.value = true;
+    user = await _getuserUseCase.getUser();
+    if (user != null) {
+      await getUser();
+      await getPostsOfUser();
     }
-  }
-
-  Future<void> loadData() async {
-    await Future.wait([getUser(), getPostsOfUser()]);
-    update([
-      "fetchDataProfilePage",
-      "listPostsOfUser",
-      "fetchUser",
-      "fetchPostsOfUser"
-    ]);
-  }
-
-  refreshProfilepage() async {
-    await _init();
+    isLoading.value = false;
+    if (currentIndex.value == 0) {
+      await _loadPosts(0, getPostsOfUser, 'listPosts');
+    }
+    if (currentIndex.value == 1) {
+      await _loadPosts(1, getFavoritePosts, 'listPostsFavorite');
+    }
+    if (currentIndex.value == 2) {
+      await _loadPosts(2, getBookmarkedPosts, 'listPostsBookmark');
+    }
+    if (currentIndex.value == 3) {
+      await _loadPosts(3, getPostsOfUserPrivate, 'listPostsLocker');
+    }
+    isLoadPosts.value = false;
   }
 
   void onChangeNavList(int index) {
@@ -95,21 +94,42 @@ class ProfileController extends GetxController {
     pageController.jumpToPage(index);
   }
 
-  void onChangePage(int index) {
+  void onChangePage(int index) async {
     currentIndex.value = index;
+    if (index == 0 && !checkLoadList['listPosts']!) {
+      await _loadPosts(index, getPostsOfUser, 'listPosts');
+    }
+    if (index == 1 && !checkLoadList['listPostsFavorite']!) {
+      await _loadPosts(index, getFavoritePosts, 'listPostsFavorite');
+    } else if (index == 2 && !checkLoadList['listPostsBookmark']!) {
+      await _loadPosts(index, getBookmarkedPosts, 'listPostsBookmark');
+    } else if (index == 3 && !checkLoadList['listPostsLocker']!) {
+      await _loadPosts(index, getPostsOfUserPrivate, 'listPostsLocker');
+    }
   }
 
-  /// Get the list of profile pages
+  Future<void> _loadPosts(
+      int index, Future<void> Function() loadFunction, String listKey) async {
+    isLoadPosts.value = true;
+    await loadFunction();
+    checkLoadList[listKey] = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (pageController.hasClients) {
+        pageController.jumpToPage(index);
+      }
+    });
+    isLoadPosts.value = false;
+  }
+
   List<Widget> getPages() {
     return [
       const ProfileListPage(),
       const ProfileFavoritePage(),
-      ProfileBookmarkPage(),
-      const ProfileLockedPage()
+      const ProfileBookmarkPage(),
+      const ProfileLockedPage(),
     ];
   }
 
-  /// Select an image for the avatar from the gallery
   Future<void> selectImageAvatar() async {
     final pickedFile =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
@@ -124,7 +144,6 @@ class ProfileController extends GetxController {
     }
   }
 
-  /// Select an image for the background from the gallery
   Future<void> selectImageBackground() async {
     final pickedFile =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
@@ -139,13 +158,33 @@ class ProfileController extends GetxController {
     }
   }
 
-  // Get the list of posts by the user
   Future<void> getPostsOfUser() async {
     if (user == null) return;
     final result = await FirestorePostData.getListPostOfUserPublic(user!.uid);
     if (result.status == Status.success) {
       listPostsOfUser = result.data!;
       update(["fetchPostsOfUser"]);
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+  Future<void> getFavoritePosts() async {
+    if (user == null) return;
+    final result = await FirestoreFavorite.getFavoritedPostOfUser(user!.uid);
+    if (result.status == Status.success) {
+      listFavoritePosts = result.data ?? [];
+    } else {
+      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
+    }
+  }
+
+  Future<void> getBookmarkedPosts() async {
+    if (user == null) return;
+    final result = await FirestoreBookmark.getBoolmarkPostOfUser(user!.uid);
+    if (result.status == Status.success) {
+      listBookmarkedPosts = result.data!;
+      print(listBookmarkedPosts);
     } else {
       SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
     }
@@ -162,31 +201,6 @@ class ProfileController extends GetxController {
     }
   }
 
-  // Get the list of bookmark posts by the user
-  Future<void> getBookmarkedPosts() async {
-    if (user == null) return;
-    final result = await FirestoreBookmark.getBoolmarkPostOfUser(user!.uid);
-    if (result.status == Status.success) {
-      listBookmarkedPosts = result.data!;
-      update(["fetchBookmarkedPosts"]);
-    } else {
-      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
-    }
-  }
-
-  // Get the list of favorite posts by the user
-  Future<void> getFavoritePosts() async {
-    if (user == null) return;
-    var result = await FirestoreFavorite.getFavoritedPostOfUser(user!.uid);
-    if (result.status == Status.success) {
-      listFavoritePosts = result.data ?? [];
-      update(["fetchFavoritePosts"]);
-    } else {
-      SnackbarUtil.show(result.exp?.message ?? "Something went wrong");
-    }
-  }
-
-  //Get the user data from Firestore
   Future<void> getUser() async {
     final result = await FirestoreUser.getUser(user!.uid);
     if (result.status == Status.success) {
@@ -197,10 +211,16 @@ class ProfileController extends GetxController {
     }
   }
 
-  //Update the user's avatar in Firestore
+  Future<void> getRestaurant() async {
+    final result = await FirestoreRestaurant.getRestaurant(user!.uid);
+    if (result.status == Status.success) {
+      restaurant.value = result.data!;
+      print( restaurant.value );
+    }
+  }
+
   Future<void> updateUserAvatar() async {
     if (imgAvatar == null || user == null) return;
-
     final result = await FirebaseStorageData.uploadImage(
       imageFile: imgAvatar!,
       userId: user!.uid,
@@ -214,10 +234,8 @@ class ProfileController extends GetxController {
     }
   }
 
-  // Update the user's background in Firestore
   Future<void> updateUserBackground() async {
     if (imgBackground == null || user == null) return;
-
     final result = await FirebaseStorageData.uploadImage(
       imageFile: imgBackground!,
       userId: user!.uid,
@@ -231,12 +249,10 @@ class ProfileController extends GetxController {
     }
   }
 
-  // Update the user data in Firestore
   Future<void> updateUserInFirestore() async {
     final result = await FirestoreUser.updateUser(user!);
     if (result.status == Status.success) {
       SnackbarUtil.show("Updated successfully!");
-      loadData();
       update(["fetchUser"]);
     } else {
       SnackbarUtil.show(result.exp?.message ?? "Something went wrong");

@@ -22,10 +22,12 @@ class ProfileAppbar extends StatelessWidget implements PreferredSizeWidget {
                   icon: const Icon(Icons.store_mall_directory_rounded),
                 )
               : const SizedBox(),
-
           IconButton(
             onPressed: () {
-              Get.toNamed(Routes.accountSetting,arguments:{"restaurant": controller.restaurant.value?.emailRestaurant});
+              Get.toNamed(Routes.accountSetting, arguments: {
+                "restaurant": controller.restaurant.value?.emailRestaurant,
+                "uid": controller.user?.uid ?? ""
+              });
             },
             icon: const Icon(Icons.settings),
           ),

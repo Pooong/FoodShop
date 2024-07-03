@@ -5,6 +5,7 @@ import 'package:find_food/features/auth/user/domain/use_case/get_user_use_case.d
 import 'package:find_food/features/auth/user/domain/use_case/save_user_use_case.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class SettingInformationController extends GetxController {
@@ -37,6 +38,8 @@ class SettingInformationController extends GetxController {
     }
   }
 
+
+
   Future<void> updateUser() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
@@ -50,7 +53,7 @@ class SettingInformationController extends GetxController {
           SnackbarUtil.show("Something went wrong");
         }
       }else{
-          SnackbarUtil.show("Please enter the information you want to change");
+          Fluttertoast.showToast(msg:"Please enter the information you want to change");
       }
       update(["fetchUserInformation"]);
     } else {

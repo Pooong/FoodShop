@@ -30,10 +30,6 @@ class HomeController extends GetxController {
     scrollController.addListener(_scrollListener);
   }
 
-  // Future<void> _initialize() async {
-
-  // }
-
   void _scrollListener() {
     if (scrollController.position.atEdge &&
         scrollController.position.pixels != 0) {
@@ -76,12 +72,14 @@ class HomeController extends GetxController {
         _postController.add(_allPagedResults);
 
         _lastDocument = snapshot.docs.last;
+
         _hasMoreData = newPosts.length == pageLimit;
+        
       } else {
         _hasMoreData = false;
       }
     } catch (e) {
-      print("Error getting posts: $e");
+      print(e);
     } finally {
       isLoading = false;
     }

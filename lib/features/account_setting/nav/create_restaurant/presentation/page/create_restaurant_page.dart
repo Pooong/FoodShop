@@ -12,11 +12,9 @@ class CreateRestaurantPage extends GetView<CreateRestaurantController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CreateRestaurantAppbar(),
-      body: Obx(()=>
-      controller.isLoading.value?
-      const LoadingDataPage():
-      buildCreateRestaurantBody()
-      ),
+      body: Obx(() => controller.isLoading.value
+          ? const LoadingDataPage()
+          : buildCreateRestaurantBody()),
     );
   }
 
@@ -30,7 +28,11 @@ class CreateRestaurantPage extends GetView<CreateRestaurantController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              textFormFieldList(),
+              GetBuilder<CreateRestaurantController>(
+                id: "updateInfo",
+                builder: (_) {
+                return textFormFieldList();
+              }),
               ButtonWidget(
                 ontap: () {
                   controller.controlCreateRestaurant();
@@ -48,7 +50,7 @@ class CreateRestaurantPage extends GetView<CreateRestaurantController> {
   Column textFormFieldList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         _buildTitleText(titleText: "RESTAURANT NAME"),
         _buildRestaurantNameField(),
         const SizedBox(height: 10.0),
@@ -95,6 +97,9 @@ class CreateRestaurantPage extends GetView<CreateRestaurantController> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return "Please enter your restaurant name";
+        }
+        if (value.length < 3) {
+          return "Restaurant name must be at least 3 characters long";
         }
         return null;
       },

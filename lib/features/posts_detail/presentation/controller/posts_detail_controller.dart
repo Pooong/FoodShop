@@ -87,7 +87,7 @@ class PostsDetailController extends GetxController {
 
   Future<void> deletePosts() async {
     isLoading.value = true;
-    await FirestorePostData.deletePost(postDataModel?.id ?? "");
+    await FirestorePostData.deletePostAndRelatedData(postDataModel?.id ?? "");
     isLoading.value = false;
     Get.back(result: {"deleteSuccess": true});
   }
@@ -137,6 +137,8 @@ class PostsDetailController extends GetxController {
           postDataModel?.id ?? "", StatusPosts.private);
       isLoading.value = false;
       Fluttertoast.showToast(msg: "Posts is Privaiting Status");
+      postDataModel!.status = StatusPosts.private;
+      update(['fetchDataPostsDetailPage']);
     } catch (e) {
       Fluttertoast.showToast(msg: "Change status posts fauil");
     }
@@ -149,6 +151,8 @@ class PostsDetailController extends GetxController {
           postDataModel?.id ?? "", StatusPosts.active);
       isLoading.value = false;
       Fluttertoast.showToast(msg: "Posts is Privaiting Status");
+      postDataModel!.status = StatusPosts.active;
+      update(['fetchDataPostsDetailPage']);
     } catch (e) {
       Fluttertoast.showToast(msg: "Change status posts fauil");
     }
@@ -170,9 +174,7 @@ class PostsDetailController extends GetxController {
   }
 
   refreshPostsDetail() async {
-    super.onInit();
     isLoading.value = true;
-
     userComment = await _getuserUseCase.getUser();
     if (dataAgument is PostDataModel) {
       postDataModel = dataAgument["postsData"];

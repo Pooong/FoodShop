@@ -15,21 +15,18 @@ class ProfilePage extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ProfileAppbar(
-        controller: controller,
-      ),
+      appBar: ProfileAppbar(controller: controller),
       body: RefreshIndicator(
-          onRefresh: () async {
-            await controller.refreshProfilepage();
+        onRefresh: controller.refreshProfilePage,
+        child: GetBuilder<ProfileController>(
+          id: "fetchDataProfilePage",
+          builder: (_) {
+            return controller.isLoading.value
+                ? const LoadingDataPage()
+                : buildProfileBodyPage();
           },
-          child: GetBuilder<ProfileController>(
-            id: "fetchDataProfilePage",
-            builder: (_) {
-              return controller.isLoading.value
-                  ? const LoadingDataPage()
-                  : buildProfileBodyPage();
-            },
-          )),
+        ),
+      ),
     );
   }
 
@@ -38,26 +35,32 @@ class ProfilePage extends GetView<ProfileController> {
       child: Column(
         children: <Widget>[
           _buildUserInfo(),
-          const SizedBox(
-            height: 10.0,
-          ),
+          const SizedBox(height: 10.0),
           Obx(() => NavControllList(
                 currentIndex: controller.currentIndex.value,
-                onPageChanged: (index) {
-                  controller.onChangeNavList(index);
-                },
+                onPageChanged: controller.onChangeNavList,
               )),
-          SizedBox(
-            height: Get.height * 0.6,
-            width: double.infinity,
-            child: PageView(
-              controller: controller.pageController,
-              onPageChanged: (index) {
-                controller.onChangePage(index);
-              },
-              children: controller.getPages(),
-            ),
-          )
+          GetBuilder<ProfileController>(
+              id: "fetchBodyList",
+              builder: (_) {
+                return SizedBox(
+                  height: Get.height * 0.6,
+                  width: double.infinity,
+                  child: Obx(() {
+                    return controller.isLoadPosts.value
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : PageView(
+                            controller: controller.pageController,
+                            onPageChanged: (index) {
+                              controller.onChangePage(index);
+                            },
+                            children: controller.getPages(),
+                          );
+                  }),
+                );
+              })
         ],
       ),
     );
@@ -77,9 +80,7 @@ class ProfilePage extends GetView<ProfileController> {
 
   Widget _buildBackground() {
     return GestureDetector(
-      onTap: () {
-        controller.selectImageBackground();
-      },
+      onTap: controller.selectImageBackground,
       child: GetBuilder<ProfileController>(
         id: "updateBackground",
         builder: (_) {
@@ -98,9 +99,7 @@ class ProfilePage extends GetView<ProfileController> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           GestureDetector(
-            onTap: () async {
-              await controller.selectImageAvatar();
-            },
+            onTap: controller.selectImageAvatar,
             child: GetBuilder<ProfileController>(
               id: "updateAvatar",
               builder: (_) {
@@ -118,7 +117,6 @@ class ProfilePage extends GetView<ProfileController> {
           const SizedBox(height: 10.0),
           TextWidget(
             text: controller.user?.displayName ?? controller.user?.email ?? '',
-            // "Unknown user",
             size: 20.0,
             fontWeight: FontWeight.w500,
           ),

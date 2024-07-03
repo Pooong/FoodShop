@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_food/core/configs/enum.dart';
 import 'package:find_food/core/data/firebase/model/result.dart';
 import 'package:find_food/features/auth/user/model/user_model.dart';
 import 'package:find_food/features/model/bookmark_model.dart';
@@ -8,6 +9,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirestoreBookmark {
   static final _fireStoreBookmarkCollection =
       FirebaseFirestore.instance.collection('bookmark');
+
+  static final CollectionReference _fireStorePostsCollection = FirebaseFirestore.instance.collection('posts');
+
 
   static Future<Result<bool>> createBookmark(BookmarkModel bookmark) async {
     try {
@@ -45,19 +49,42 @@ class FirestoreBookmark {
       return false;
     }
   }
-
-  static Future<Result<List<PostDataModel>>> getBoolmarkPostOfUser(
-      String uid) async {
+  
+  static Future<Result<List<PostDataModel>>> getBoolmarkPostOfUser(String uid) async {
     try {
-      QuerySnapshot snapshot = await _fireStoreBookmarkCollection
+      // Truy vấn các tài liệu trong collection 'favorites' có 'author.uid' bằng uid của người dùng
+      QuerySnapshot bookMarkSnapshot = await _fireStoreBookmarkCollection
           .where('author.uid', isEqualTo: uid)
           .get();
-      List<PostDataModel> users = snapshot.docs
-          .map((doc) =>
-              PostDataModel.fromJson(doc['posts'] as Map<String, dynamic>))
-          .toList();
-      return Result.success(users);
+          
+      // Lấy danh sách idPost từ các tài liệu yêu thích
+      List<String> postIds = bookMarkSnapshot.docs.map((doc) {
+        BookmarkModel bookmark = BookmarkModel.fromJson(doc.data() as Map<String, dynamic>);
+        return bookmark.posts.id!;
+      }).toList();
+
+      if (postIds.isEmpty) {
+        return Result.success([]); // Trả về danh sách rỗng nếu không có idPost nào
+      }
+      
+      // Truy vấn danh sách các bài viết dựa trên idPost
+      QuerySnapshot postSnapshot = await _fireStorePostsCollection
+          .where(FieldPath.documentId, whereIn: postIds)
+          .where('status', isEqualTo: StatusPosts.active.name)
+          .get();
+          
+      // Chuyển đổi các tài liệu thành danh sách các đối tượng PostDataModel
+      List<PostDataModel> posts = postSnapshot.docs.map((doc) {
+        return PostDataModel.fromDocumentSnapshot(doc);
+      }).toList();
+      
+      // Trả về kết quả thành công với danh sách các bài đăng
+      return Result.success(posts);
     } on FirebaseException catch (e) {
+      // Ghi log lỗi
+      print('Error fetching bookmark posts: ${e.message}');
+      
+      // Trả về kết quả lỗi nếu có lỗi xảy ra
       return Result.error(e);
     }
   }

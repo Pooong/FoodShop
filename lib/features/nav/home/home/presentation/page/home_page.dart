@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/core/configs/app_constants.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/ui/widgets/card/posts_card/posts_card.dart';
 import 'package:find_food/core/ui/widgets/loading/loading_data_page.dart';
@@ -41,7 +40,6 @@ class HomePage extends GetView<HomeController> {
               controller: controller.scrollController,
               itemBuilder: (ctx, i) {
                 PostDataModel postDataModel = PostDataModel.fromDocumentSnapshot(postDocs[i]);
-                postDataModel.restaurantId = i % 2 == 0 ? "idrestaurant" : "";
                 return  PostsCard(postDataModel: postDataModel);
               },
               itemCount: postDocs.length,
@@ -75,61 +73,61 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 AppImagesString.iLogo,
                 width: 120,
               ),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.filter_list),
-                  onPressed: () {
-                    final RenderBox overlay = Overlay.of(context)
-                        .context
-                        .findRenderObject() as RenderBox;
-                    final Size overlaySize = overlay.size;
-                    final RelativeRect position = RelativeRect.fromLTRB(
-                      overlaySize.width - 10, // Right padding
-                      85, // Top padding
-                      10, // Left padding (from right edge)
-                      overlaySize.height -
-                          kToolbarHeight -
-                          10, // Bottom padding
-                    );
+              // actions: [
+              //   IconButton(
+              //     icon: const Icon(Icons.filter_list),
+              //     onPressed: () {
+              //       final RenderBox overlay = Overlay.of(context)
+              //           .context
+              //           .findRenderObject() as RenderBox;
+              //       final Size overlaySize = overlay.size;
+              //       final RelativeRect position = RelativeRect.fromLTRB(
+              //         overlaySize.width - 10, // Right padding
+              //         85, // Top padding
+              //         10, // Left padding (from right edge)
+              //         overlaySize.height -
+              //             kToolbarHeight -
+              //             10, // Bottom padding
+              //       );
 
-                    showMenu<String>(
-                      context: context,
-                      position: position,
-                      items: [
-                        const PopupMenuItem<String>(
-                          value: AppConstants.SelectOption_1,
-                          child: Text('Nearest'),
-                        ),
-                        const PopupMenuItem<String>(
-                          value: AppConstants.SelectOption_2,
-                          child: Text('Favorite'),
-                        ),
-                        const PopupMenuItem<String>(
-                          value: AppConstants.SelectOption_3,
-                          child: Text('Best'),
-                        ),
-                      ],
-                      color: Colors.white.withOpacity(0.8),
-                    ).then((value) {
-                      if (value != null) {
-                        print('Selected: $value');
-                      }
-                    });
-                  },
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: Center(
-                    child: Text(
-                      "Filter",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              //       showMenu<String>(
+              //         context: context,
+              //         position: position,
+              //         items: [
+              //           const PopupMenuItem<String>(
+              //             value: AppConstants.SelectOption_1,
+              //             child: Text('Nearest'),
+              //           ),
+              //           const PopupMenuItem<String>(
+              //             value: AppConstants.SelectOption_2,
+              //             child: Text('Favorite'),
+              //           ),
+              //           const PopupMenuItem<String>(
+              //             value: AppConstants.SelectOption_3,
+              //             child: Text('Best'),
+              //           ),
+              //         ],
+              //         color: Colors.white.withOpacity(0.8),
+              //       ).then((value) {
+              //         if (value != null) {
+              //           print('Selected: $value');
+              //         }
+              //       });
+              //     },
+              //   ),
+              //   const Padding(
+              //     padding: EdgeInsets.only(right: 10),
+              //     child: Center(
+              //       child: Text(
+              //         "Filter",
+              //         style: TextStyle(
+              //           fontWeight: FontWeight.bold,
+              //           fontSize: 22,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ],
             ),
           ),
           Container(

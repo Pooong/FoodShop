@@ -1,5 +1,4 @@
 import 'package:find_food/core/configs/app_colors.dart';
-import 'package:find_food/core/configs/app_dimens.dart';
 import 'package:find_food/core/configs/app_images_string.dart';
 import 'package:find_food/core/configs/app_text_string.dart';
 import 'package:find_food/core/ui/widgets/avatar/avatar.dart';
@@ -113,7 +112,7 @@ class ProfileClientPage extends GetView<ProfileClientController> {
             itemBuilder: (_, index) {
               PostDataModel postDataModel = controller.listPosts![index];
               return ProfileCard(
-                postDataModel: postDataModel,
+                postDataModel: postDataModel, controller: controller,
               );
             })
         : const Center(

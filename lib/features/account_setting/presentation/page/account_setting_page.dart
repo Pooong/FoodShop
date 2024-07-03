@@ -2,6 +2,7 @@ import 'package:find_food/core/routes/routes.dart';
 import 'package:find_food/core/ui/widgets/appbar/account_setting_appbar.dart.dart';
 import 'package:find_food/features/account_setting/presentation/controller/account_setting_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class AccountSettingPage extends GetView<AccountSettingController> {
@@ -63,7 +64,6 @@ class AccountSettingPage extends GetView<AccountSettingController> {
           sectionIcon: Icons.arrow_forward_ios,
           route: "",
         ),
-
         GetBuilder<AccountSettingController>(
             id: "fetchRestaurant",
             builder: (_) {
@@ -77,6 +77,14 @@ class AccountSettingPage extends GetView<AccountSettingController> {
                         _buildSection(
                           icon: Icons.store_mall_directory_rounded,
                           title: "Restaurant",
+                          onTap: () {
+                            if (controller.isWaitingCreateRestaurant.value) {
+                              Fluttertoast.showToast(
+                                  msg: "Restaurant waiting create");
+                            }else{
+                              Get.toNamed(Routes.createRestaurant);
+                            }
+                          },
                           subtitle:
                               "Change or create your restaurant information",
                           sectionIcon: Icons.arrow_forward_ios,

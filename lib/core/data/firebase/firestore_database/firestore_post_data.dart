@@ -11,6 +11,12 @@ class FirestorePostData {
   static final _fireStorePostCollection =
       FirebaseFirestore.instance.collection('posts');
   static final _storage = FirebaseStorage.instance;
+  static final _fireStoreCommentsCollection =
+      FirebaseFirestore.instance.collection('comments');
+  static final _fireStoreBookmarksCollection =
+      FirebaseFirestore.instance.collection('bookmarks');
+  static final _fireStoreFavoritesCollection =
+      FirebaseFirestore.instance.collection('favorites');
 
   static Future<Result<PostDataModel>> savedPost(
       {required PostDataModel postDataModel, required String userId}) async {
@@ -138,7 +144,8 @@ class FirestorePostData {
       {int limit = 10}) async {
     try {
       QuerySnapshot querySnapshot = await _fireStorePostCollection
-          .limit(limit) // Apply the limit here
+          .limit(limit)
+          .where("status",isEqualTo: StatusPosts.active.name) // Apply the limit here
           .get();
 
       List<PostDataModel> activityList = querySnapshot.docs.map((doc) {
@@ -214,6 +221,50 @@ class FirestorePostData {
       // Delete the post from Firestore
       await _fireStorePostCollection.doc(postId).delete();
       return Result.success(true);
+    } on FirebaseException catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  static Future<Result<void>> deletePostAndRelatedData(String postId) async {
+    try {
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+     // Truy vấn bài viết để lấy danh sách hình ảnh
+      DocumentSnapshot postSnapshot = await _fireStorePostCollection.doc(postId).get();
+      if (postSnapshot.exists) {
+        PostDataModel post = PostDataModel.fromDocumentSnapshot(postSnapshot);
+
+        // Xóa hình ảnh từ Firebase Storage
+        if (post.imageList != null) {
+          for (String imageUrl in post.imageList!) {
+            await _deleteImageFromStorage(imageUrl);
+          }
+        }
+
+        // Xóa bài viết
+        batch.delete(postSnapshot.reference);
+      }
+
+      // Xóa các bookmarks liên quan đến bài viết
+      QuerySnapshot bookmarkSnapshot = await _fireStoreBookmarksCollection
+          .where('postId', isEqualTo: postId)
+          .get();
+      for (DocumentSnapshot doc in bookmarkSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      // Xóa các favorites liên quan đến bài viết
+      QuerySnapshot favoriteSnapshot = await _fireStoreFavoritesCollection
+          .where('posts.id', isEqualTo: postId)
+          .get();
+      for (DocumentSnapshot doc in favoriteSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      // Commit the batch
+      await batch.commit();
+
+      return Result.success(null);
     } on FirebaseException catch (e) {
       return Result.error(e);
     }

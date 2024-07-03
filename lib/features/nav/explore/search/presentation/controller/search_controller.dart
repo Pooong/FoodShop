@@ -36,6 +36,7 @@ class ExploreController extends GetxController {
 
    Future<void>  refreshPage() async{
     await getPosts();
+    update(["fetchDataExplorepage"]);
   }
    Future<void> getPosts() async {
     final result = await FirestorePostData.getListPostRelate(limit: 5);
